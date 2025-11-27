@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University of San Agustin Comprehensive Exam Countdown</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Bebas+Neue&display=swap');
+        
+        /* Custom Font for the Title (Mimics Excel/Google Sheets Look) */
+        .header-font {
+            font-family: 'Bebas Neue', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+        /* Custom Styles for the Maroon/Brown Theme */
+        .header-bg {
+            background-color: #6d1b1b; /* Deep Maroon/Brown */
+            border-bottom: 5px solid #a32a2a;
+        }
+        .card-header-bg {
+            background-color: #7f2b2b; /* Slightly lighter maroon for card headers */
+        }
+
+        /* Countdown Display Styles */
+        .time-value {
+            font-size: 2rem; /* REDUCED SIZE: 2rem (32px) for better balance */
+            font-weight: 900;
+            line-height: 1;
+            color: #1a202c; /* Dark text */
+        }
+        .time-label {
+            font-size: 0.875rem; /* 14px */
+            font-weight: 700;
+            color: #4a5568; /* Gray text */
+            text-transform: uppercase;
+        }
+        
+        /* DATE EMPHASIS STYLES (REVISED & CLEANED) */
+        .date-display-wrapper { 
+            /* REMOVED FLEX PROPERTIES FOR PERFECT CENTERING */
+            display: inline-block; /* Ensure click area fits content */
+            padding-bottom: 0; /* <-- MODIFIED: Removed padding after date */
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .date-display-wrapper:hover .date-text {
+            color: #1d4ed8; /* Dark blue color on hover */
+        }
+        /* EDIT ICON STYLES REMOVED */
+        .date-text {
+            font-family: 'Bebas Neue', sans-serif; /* Wide font */
+            font-size: 2.25rem; /* Increased size (36px) for high impact */
+            font-weight: 800; /* Bolder weight */
+            color: #000000; /* Black text color */
+            text-transform: uppercase;
+            letter-spacing: 0.15em; /* Increased spacing to stretch text */
+            line-height: 1; 
+        }
+        /* EDIT ICON STYLES REMOVED */
+        .edit-icon {
+            display: none; /* Hide the icon */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-4 sm:p-8">
+    
+    <!-- MODIFIED: Changed max-w-6xl mx-auto space-y-8 to space-y-4 for tighter overall spacing -->
+    <div class="max-w-6xl mx-auto space-y-4">
+
+        <!-- HEADER SECTION --><header class="header-bg text-white p-4 sm:p-6 rounded-xl shadow-2xl">
+            <div class="flex items-center justify-between">
+                
+                <!-- NEW LEFT LOGO (USA Logo, Smaller: w-16 h-16) -->
+                <!-- MODIFIED: Removed bg-yellow-500/10 and p-1 from img tag -->
+                <div class="flex-shrink-0 w-16 h-16 flex items-center justify-center rounded-full overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/USA.png" 
+                         alt="USA Logo" 
+                         class="w-full h-full object-cover"
+                         onerror="this.outerHTML = '<i data-lucide=\'graduation-cap\' class=\'w-12 h-12 text-yellow-300\'></i>'">
+                </div>
+                
+                <div class="text-center mx-4 flex-grow">
+                    <h1 class="text-xl sm:text-3xl font-extrabold header-font tracking-wider mb-2 underline">
+                        UNIVERSITY OF SAN AGUSTIN
+                    </h1>
+                    <h2 class="text-3xl sm:text-5xl italic font-extrabold header-font tracking-widest" style="text-shadow: 2px 2px 0 #000000;">
+                        2026 COMPREHENSIVE EXAM REVIEW TRACKER
+                    </h2>
+                </div>
+                
+                <!-- NEW RIGHT LOGO (USACoL Logo, Larger: w-24 h-24) -->
+                <!-- MODIFIED: Removed bg-yellow-500/10 and p-1 from img tag -->
+                <div class="flex-shrink-0 w-24 h-24 flex items-center justify-center rounded-full overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/usacol%20logo.png" 
+                         alt="USACoL Logo" 
+                         class="w-full h-full object-cover"
+                         onerror="this.outerHTML = '<i data-lucide=\'shield\' class=\'w-12 h-12 text-yellow-300\'></i>'">
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN COUNTDOWN CARDS CONTAINER --><!-- Adjusted top spacing: Removed pt-6 to reduce space --><div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Exam Day 1 Card --><div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                <div class="flex items-center justify-between card-header-bg text-white p-3 text-lg font-bold text-center border-b-4 border-black/50">
+                    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>
+                    Comprehensive Exam Day 1
+                    <i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+                </div>
+                
+                <div class="p-4 text-center">
+                    
+                    <!-- Editable Date Target (MODIFIED STRUCTURE) --><div class="mb-4 flex justify-center items-center">
+                        <span id="target-date-display-1" 
+                              class="date-display-wrapper"
+                              data-target-date="2026-06-14">
+                            <!-- JS will insert content here --><span class="date-text"></span>
+                            <!-- Removed <i data-lucide="edit" class="edit-icon"></i> -->
+                        </span>
+                    </div>
+
+                    <!-- Countdown Grid (Modified classes for new border aesthetic) --><div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
+                        <div class="flex flex-col">
+                            <span id="days-1" class="time-value">000</span>
+                            <span class="time-label">Days</span>
+                        </div>
+                        <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300">
+                            <span id="hrs-1" class="time-value">00</span>
+                            <span class="time-label">Hrs</span>
+                        </div>
+                        <div class="flex flex-col border-r-2 border-dashed border-gray-300">
+                            <span id="mins-1" class="time-value">00</span>
+                            <span class="time-label">Mins</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span id="secs-1" class="time-value">00</span>
+                            <span class="time-label">Secs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exam Day 2 Card --><div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                <div class="flex items-center justify-between card-header-bg text-white p-3 text-lg font-bold text-center border-b-4 border-black/50">
+                    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>
+                    Comprehensive Exam Day 2
+                    <i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+                </div>
+                
+                <div class="p-4 text-center">
+                    <div class="mb-4 flex justify-center items-center">
+                        <span id="target-date-display-2" 
+                              class="date-display-wrapper"
+                              data-target-date="2026-06-21">
+                            <!-- JS will insert content here --><span class="date-text"></span>
+                            <!-- Removed <i data-lucide="edit" class="edit-icon"></i> -->
+                        </span>
+                    </div>
+
+                    <!-- Countdown Grid (Modified classes for new border aesthetic) --><div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
+                        <div class="flex flex-col">
+                            <span id="days-2" class="time-value">000</span>
+                            <span class="time-label">Days</span>
+                        </div>
+                        <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300">
+                            <span id="hrs-2" class="time-value">00</span>
+                            <span class="time-label">Hrs</span>
+                        </div>
+                        <div class="flex flex-col border-r-2 border-dashed border-gray-300">
+                            <span id="mins-2" class="time-value">00</span>
+                            <span class="time-label">Mins</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span id="secs-2" class="time-value">00</span>
+                            <span class="time-label">Secs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exam Day 3 Card --><div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                <div class="flex items-center justify-between card-header-bg text-white p-3 text-lg font-bold text-center border-b-4 border-black/50">
+                    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>
+                    Comprehensive Exam Day 3
+                    <i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+                </div>
+                
+                <div class="p-4 text-center">
+                    <div class="mb-4 flex justify-center items-center">
+                        <span id="target-date-display-3" 
+                              class="date-display-wrapper"
+                              data-target-date="2026-06-28">
+                            <!-- JS will insert content here --><span class="date-text"></span>
+                            <!-- Removed <i data-lucide="edit" class="edit-icon"></i> -->
+                        </span>
+                    </div>
+
+                    <!-- Countdown Grid (Modified classes for new border aesthetic) --><div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
+                        <div class="flex flex-col">
+                            <span id="days-3" class="time-value">000</span>
+                            <span class="time-label">Days</span>
+                        </div>
+                        <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300">
+                            <span id="hrs-3" class="time-value">00</span>
+                            <span class="time-label">Hrs</span>
+                        </div>
+                        <div class="flex flex-col border-r-2 border-dashed border-gray-300">
+                            <span id="mins-3" class="time-value">00</span>
+                            <span class="time-label">Mins</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span id="secs-3" class="time-value">00</span>
+                            <span class="time-label">Secs</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+    </div>
+
+    <!-- MODAL FOR DATE EDITING --><div id="date-edit-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-80">
+            <h3 id="modal-title" class="text-xl font-bold text-gray-900 mb-4">Edit Target Date</h3>
+            <label for="new-target-date" class="block text-sm font-medium text-gray-700 mb-2">Select New Date:</label>
+            <input type="date" id="new-target-date" class="w-full p-2 border border-gray-300 rounded-lg mb-4">
+            
+            <p id="modal-error" class="text-sm text-red-600 hidden mb-4">Please select a future date.</p>
+
+            <div class="flex justify-end space-x-3">
+                <button id="modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Cancel</button>
+                <button id="modal-save-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // === GLOBAL STATE & DOM REFERENCES ===
+        const COUNTDOWN_DATA = [
+            { id: 1, targetDate: localStorage.getItem('comp_exam_date_1') || '2026-06-14' },
+            { id: 2, targetDate: localStorage.getItem('comp_exam_date_2') || '2026-06-21' },
+            { id: 3, targetDate: localStorage.getItem('comp_exam_date_3') || '2026-06-28' },
+        ];
+
+        const DOM_ELEMENTS = {
+            modal: document.getElementById('date-edit-modal'),
+            modalTitle: document.getElementById('modal-title'),
+            dateInput: document.getElementById('new-target-date'),
+            saveBtn: document.getElementById('modal-save-btn'),
+            cancelBtn: document.getElementById('modal-cancel-btn'),
+            errorMsg: document.getElementById('modal-error')
+        };
+        
+        let currentEditingId = null; // To track which date we are currently editing
+        
+        // === DATE FORMATTING UTILITY ===
+        function formatUniqueDate(dateString) {
+            if (!dateString) return '';
+            const date = new Date(dateString + 'T00:00:00');
+            const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+            
+            return formattedDate; // Just return the text, HTML structure is now in the template
+        }
+
+        // === TIME UTILITIES ===
+        function formatNumber(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function calculateCountdown(targetDateString, id) {
+            const now = new Date();
+            const target = new Date(targetDateString);
+            
+            // Check if the target date is in the past
+            if (target <= now) {
+                document.getElementById(`days-${id}`).textContent = '000';
+                document.getElementById(`hrs-${id}`).textContent = '00';
+                document.getElementById(`mins-${id}`).textContent = '00';
+                document.getElementById(`secs-${id}`).textContent = '00'; 
+                return; 
+            }
+            
+            const diffInMilliseconds = target - now;
+            
+            const days = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diffInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diffInMilliseconds % (1000 * 60)) / 1000); 
+
+
+            // Update DOM
+            document.getElementById(`days-${id}`).textContent = formatNumber(days);
+            document.getElementById(`hrs-${id}`).textContent = formatNumber(hours);
+            document.getElementById(`mins-${id}`).textContent = formatNumber(minutes);
+            document.getElementById(`secs-${id}`).textContent = formatNumber(seconds); 
+
+        }
+
+        function updateAllCountdowns() {
+            COUNTDOWN_DATA.forEach(data => {
+                calculateCountdown(data.targetDate, data.id);
+            });
+        }
+        
+        // === MODAL CONTROL ===
+        function openModal(id) {
+            currentEditingId = id;
+            const data = COUNTDOWN_DATA.find(d => d.id === id);
+            
+            DOM_ELEMENTS.modalTitle.textContent = `Edit Target Date - Day ${id}`;
+            DOM_ELEMENTS.dateInput.value = data.targetDate;
+            DOM_ELEMENTS.errorMsg.classList.add('hidden');
+            DOM_ELEMENTS.modal.classList.remove('hidden');
+            DOM_ELEMENTS.modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            DOM_ELEMENTS.modal.classList.add('hidden');
+            DOM_ELEMENTS.modal.style.display = 'none';
+            currentEditingId = null;
+        }
+
+        function saveModal() {
+            const newDateString = DOM_ELEMENTS.dateInput.value;
+            const newDate = new Date(newDateString);
+            const now = new Date();
+
+            if (newDate <= now || !newDateString) {
+                DOM_ELEMENTS.errorMsg.textContent = "Please select a future date.";
+                DOM_ELEMENTS.errorMsg.classList.remove('hidden');
+                return;
+            }
+
+            const data = COUNTDOWN_DATA.find(d => d.id === currentEditingId);
+            if (data) {
+                data.targetDate = newDateString;
+                
+                // Update display text on the card
+                document.querySelector(`#target-date-display-${currentEditingId} .date-text`).textContent = formatUniqueDate(newDateString);
+                
+                // Save to local storage
+                localStorage.setItem(`comp_exam_date_${currentEditingId}`, newDateString);
+
+                updateAllCountdowns();
+            }
+            closeModal();
+        }
+
+        // === INITIALIZATION ===
+        window.onload = () => {
+            // Load saved dates from localStorage first
+            COUNTDOWN_DATA.forEach(data => {
+                const savedDate = localStorage.getItem(`comp_exam_date_${data.id}`);
+                const finalDate = savedDate || data.targetDate; // Use saved or default
+
+                if (finalDate) {
+                    data.targetDate = finalDate;
+                    
+                    // Format and update the initial display text on the card
+                    document.querySelector(`#target-date-display-${data.id} .date-text`).textContent = formatUniqueDate(finalDate);
+                }
+            });
+            
+            // Render Lucide Icons
+            if (lucide && lucide.createIcons) {
+                lucide.createIcons();
+            }
+
+            // Start the countdown timer
+            updateAllCountdowns();
+            setInterval(updateAllCountdowns, 1000); /* MODIFIED: Update every second for dynamic seconds display */
+
+            // Attach listeners to the display elements
+            document.getElementById('target-date-display-1').addEventListener('click', () => openModal(1));
+            document.getElementById('target-date-display-2').addEventListener('click', () => openModal(2));
+            document.getElementById('target-date-display-3').addEventListener('click', () => openModal(3));
+
+            // Attach modal button listeners
+            DOM_ELEMENTS.saveBtn.addEventListener('click', saveModal);
+            DOM_ELEMENTS.cancelBtn.addEventListener('click', closeModal);
+        };
+    </script>
+</body>
+</html>
