@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE ahtml>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -40,46 +40,261 @@
         
         /* DATE EMPHASIS STYLES (REVISED & CLEANED) */
         .date-display-wrapper { 
-            /* REMOVED FLEX PROPERTIES FOR PERFECT CENTERING */
             display: inline-block; /* Ensure click area fits content */
-            padding-bottom: 0; /* <-- MODIFIED: Removed padding after date */
+            padding-bottom: 0;
             cursor: pointer;
             transition: color 0.2s;
         }
         .date-display-wrapper:hover .date-text {
             color: #1d4ed8; /* Dark blue color on hover */
         }
-        /* EDIT ICON STYLES REMOVED */
         .date-text {
-            font-family: 'Bebas Neue', sans-serif; /* Wide font */
-            font-size: 2.25rem; /* Increased size (36px) for high impact */
-            font-weight: 800; /* Bolder weight */
-            color: #000000; /* Black text color */
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #000000;
             text-transform: uppercase;
-            letter-spacing: 0.15em; /* Increased spacing to stretch text */
+            letter-spacing: 0.15em;
             line-height: 1; 
         }
-        /* EDIT ICON STYLES REMOVED */
         .edit-icon {
-            display: none; /* Hide the icon */
+            display: none;
         }
+
+        /* SYLLABUS PANEL STYLES */
+        .syllabus-panel-container {
+            border-radius: 0.75rem; 
+            overflow: hidden;
+        }
+        .syllabus-header {
+            background-color: #674ea7;
+            border-left: 5px solid #8e7cc3;
+        }
+        .syllabus-summary {
+            padding: 1rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+        .syllabus-summary-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .syllabus-progress-metrics {
+            display: flex;
+            gap: 1.5rem; 
+            align-items: center;
+            width: 100%;
+            font-size: 0.75rem; 
+        }
+        .progress-stats {
+            display: flex;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+        .progress-overall-text {
+            white-space: nowrap;
+            font-weight: 700;
+            margin-right: 0.5rem;
+        }
+
+        /* CHEVRONS */
+        .main-summary-chevron {
+            transition: transform 0.2s;
+        }
+        .syllabus-panel[open] > .syllabus-summary .main-summary-chevron {
+            transform: rotate(90deg);
+        }
+
+        .syllabus-summary::-webkit-details-marker { display: none; }
+        .syllabus-content {
+            padding: 1rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-top: none;
+            border-bottom-left-radius: 0.75rem;
+            border-bottom-right-radius: 0.75rem;
+        }
+
+        /* DEPTH 1 SECTION STYLES */
+        .syllabus-sub-section {
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 0.5rem;
+        }
+        .topic-header {
+            background-color: #ede9fe; /* Pastel Purple (Violet-100) */
+            padding: 0.75rem;
+            font-weight: 600;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            list-style: none;
+        }
+        .topic-header::-webkit-details-marker { display: none; }
+        .chevron-icon {
+            transition: transform 0.2s;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        .syllabus-sub-section[open] > details > .topic-header .chevron-icon {
+            transform: rotate(90deg);
+        }
+        
+        /* DEPTH 2 COLLAPSIBLE STYLES (New) */
+        .depth2-details {
+            list-style: none; /* Hide default marker */
+            margin-bottom: 0.25rem; /* Slight spacing for inner container */
+            border: 1px solid #f3f4f6;
+            border-radius: 0.375rem;
+            overflow: hidden;
+            background-color: #fafafa;
+        }
+        .depth2-details > summary {
+             /* Ensure summary element respects layout but hides marker */
+            list-style: none;
+            cursor: pointer;
+            padding: 0;
+            background-color: #ffffff; /* Contrast with the wrapper */
+        }
+        .depth2-details > summary::-webkit-details-marker {
+            display: none;
+        }
+        .depth2-chevron {
+            transition: transform 0.2s;
+            transform: rotate(0deg); /* Collapsed state */
+            flex-shrink: 0;
+            margin-right: 0.5rem; /* Space between chevron and text */
+        }
+        .depth2-details[open] .depth2-chevron {
+            transform: rotate(90deg);
+        }
+
+        /* CHECKLIST GRID STYLES */
+        .font-trackable-lg {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px); 
+            gap: 0.2rem;
+            padding: 0.5rem 0;
+            align-items: center;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+        /* MODIFIED: Ensure the topic column is a flex container for vertical centering */
+        .checklist-grid > div:first-child {
+            padding-left: 1.5rem;
+            font-size: 0.875rem;
+            color: #374151;
+            /* New: Ensure content inside is vertically centered */
+            display: flex; 
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+        
+        /* NEW: Style for the content wrapper inside the first cell to align text/chevron */
+        .topic-content-wrapper {
+             display: flex;
+             align-items: center; /* Vertical center alignment */
+             padding-left: 0.5rem; /* Added slight indentation here for the content within the cell */
+        }
+        /* Reset spacing for the Header row's first child */
+        .checklist-grid.checklist-grid-header > div:first-child {
+            padding-left: 0;
+            align-items: center;
+            text-align: center;
+        }
+        .checklist-grid > div:nth-child(n+2):nth-child(-n+6) {
+            border-right: 1px dashed #d1d5db;
+        }
+        .checklist-grid > div:nth-child(6) {
+            border-right: none;
+        }
+
+        .checklist-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #4b5563;
+            text-align: center;
+            word-break: keep-all; 
+            padding: 0 0.1rem;
+            line-height: 1.1;
+        }
+        .progress-bar-container {
+            height: 0.75rem;
+            background: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            width: 100%;
+            flex-grow: 1;
+            max-width: none;
+        }
+        .progress-bar {
+            height: 100%;
+            transition: width 0.5s ease-in-out;
+        }
+        .tick-all-icon {
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+            color: #9ca3af;
+        }
+        .tick-all-icon.checked {
+            color: #10b981;
+        }
+        .tick-all-icon.partial {
+            color: #f59e0b;
+        }
+        .tick-all-icon:hover {
+            transform: scale(1.1);
+        }
+        .col-progress-bar-container {
+            height: 0.4rem;
+            background: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            margin-top: 0.25rem;
+            width: 100%;
+        }
+        .col-progress-bar {
+            height: 100%;
+            transition: width 0.3s ease-in-out;
+        }
+
+        /* COLUMN COLORS */
+        .col-progress-codal { background-color: #8b5cf6; } 
+        .col-progress-lectures { background-color: #facc15; } 
+        .col-progress-reviewer { background-color: #3b82f6; } 
+        .col-progress-barqas { background-color: #10b981; } 
+        .col-progress-cases { background-color: #f97316; } 
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen p-4 sm:p-8">
     
-    <!-- MODIFIED: Changed max-w-6xl mx-auto space-y-8 to space-y-4 for tighter overall spacing -->
     <div class="max-w-6xl mx-auto space-y-4">
 
-        <!-- HEADER SECTION --><header class="header-bg text-white p-4 sm:p-6 rounded-xl shadow-2xl">
+        <!-- HEADER SECTION -->
+        <header class="header-bg text-white p-4 sm:p-6 rounded-xl shadow-2xl">
             <div class="flex items-center justify-between">
                 
-                <!-- NEW LEFT LOGO (USA Logo, Smaller: w-16 h-16) -->
-                <!-- MODIFIED: Removed bg-yellow-500/10 and p-1 from img tag -->
                 <div class="flex-shrink-0 w-16 h-16 flex items-center justify-center rounded-full overflow-hidden">
                     <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/USA.png" 
-                         alt="USA Logo" 
-                         class="w-full h-full object-cover"
-                         onerror="this.outerHTML = '<i data-lucide=\'graduation-cap\' class=\'w-12 h-12 text-yellow-300\'></i>'">
+                            alt="USA Logo" 
+                            class="w-full h-full object-cover"
+                            onerror="this.outerHTML = '<i data-lucide=\'graduation-cap\' class=\'w-12 h-12 text-yellow-300\'></i>'">
                 </div>
                 
                 <div class="text-center mx-4 flex-grow">
@@ -91,20 +306,20 @@
                     </h2>
                 </div>
                 
-                <!-- NEW RIGHT LOGO (USACoL Logo, Larger: w-24 h-24) -->
-                <!-- MODIFIED: Removed bg-yellow-500/10 and p-1 from img tag -->
                 <div class="flex-shrink-0 w-24 h-24 flex items-center justify-center rounded-full overflow-hidden">
                     <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/usacol%20logo.png" 
-                         alt="USACoL Logo" 
-                         class="w-full h-full object-cover"
-                         onerror="this.outerHTML = '<i data-lucide=\'shield\' class=\'w-12 h-12 text-yellow-300\'></i>'">
+                            alt="USACoL Logo" 
+                            class="w-full h-full object-cover"
+                            onerror="this.outerHTML = '<i data-lucide=\'shield\' class=\'w-12 h-12 text-yellow-300\'></i>'">
                 </div>
             </div>
         </header>
 
-        <!-- MAIN COUNTDOWN CARDS CONTAINER --><!-- Adjusted top spacing: Removed pt-6 to reduce space --><div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- MAIN COUNTDOWN CARDS CONTAINER -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- Exam Day 1 Card --><div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+            <!-- Exam Day 1 Card -->
+            <div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
                 <div class="flex items-center justify-between card-header-bg text-white p-3 text-lg font-bold text-center border-b-4 border-black/50">
                     <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>
                     Comprehensive Exam Day 1
@@ -113,16 +328,15 @@
                 
                 <div class="p-4 text-center">
                     
-                    <!-- Editable Date Target (MODIFIED STRUCTURE) --><div class="mb-4 flex justify-center items-center">
+                    <div class="mb-4 flex justify-center items-center">
                         <span id="target-date-display-1" 
-                              class="date-display-wrapper"
-                              data-target-date="2026-06-14">
-                            <!-- JS will insert content here --><span class="date-text"></span>
-                            <!-- Removed <i data-lucide="edit" class="edit-icon"></i> -->
+                                class="date-display-wrapper"
+                                data-target-date="2026-06-14">
+                            <span class="date-text"></span>
                         </span>
                     </div>
 
-                    <!-- Countdown Grid (Modified classes for new border aesthetic) --><div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
+                    <div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
                         <div class="flex flex-col">
                             <span id="days-1" class="time-value">000</span>
                             <span class="time-label">Days</span>
@@ -143,7 +357,8 @@
                 </div>
             </div>
             
-            <!-- Exam Day 2 Card --><div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+            <!-- Exam Day 2 Card -->
+            <div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
                 <div class="flex items-center justify-between card-header-bg text-white p-3 text-lg font-bold text-center border-b-4 border-black/50">
                     <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>
                     Comprehensive Exam Day 2
@@ -153,14 +368,13 @@
                 <div class="p-4 text-center">
                     <div class="mb-4 flex justify-center items-center">
                         <span id="target-date-display-2" 
-                              class="date-display-wrapper"
-                              data-target-date="2026-06-21">
-                            <!-- JS will insert content here --><span class="date-text"></span>
-                            <!-- Removed <i data-lucide="edit" class="edit-icon"></i> -->
+                                class="date-display-wrapper"
+                                data-target-date="2026-06-21">
+                            <span class="date-text"></span>
                         </span>
                     </div>
 
-                    <!-- Countdown Grid (Modified classes for new border aesthetic) --><div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
+                    <div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
                         <div class="flex flex-col">
                             <span id="days-2" class="time-value">000</span>
                             <span class="time-label">Days</span>
@@ -181,7 +395,8 @@
                 </div>
             </div>
             
-            <!-- Exam Day 3 Card --><div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+            <!-- Exam Day 3 Card -->
+            <div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
                 <div class="flex items-center justify-between card-header-bg text-white p-3 text-lg font-bold text-center border-b-4 border-black/50">
                     <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>
                     Comprehensive Exam Day 3
@@ -191,14 +406,13 @@
                 <div class="p-4 text-center">
                     <div class="mb-4 flex justify-center items-center">
                         <span id="target-date-display-3" 
-                              class="date-display-wrapper"
-                              data-target-date="2026-06-28">
-                            <!-- JS will insert content here --><span class="date-text"></span>
-                            <!-- Removed <i data-lucide="edit" class="edit-icon"></i> -->
+                                class="date-display-wrapper"
+                                data-target-date="2026-06-28">
+                            <span class="date-text"></span>
                         </span>
                     </div>
 
-                    <!-- Countdown Grid (Modified classes for new border aesthetic) --><div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
+                    <div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
                         <div class="flex flex-col">
                             <span id="days-3" class="time-value">000</span>
                             <span class="time-label">Days</span>
@@ -221,9 +435,134 @@
             
         </div>
         
+        <!-- SYLLABUS PANEL (REMEDIAL LAW, LEGAL ETHICS, AND LEGAL FORMS) -->
+        <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container">
+            
+            <details class="syllabus-panel" open>
+                <summary class="syllabus-summary syllabus-header">
+                    <!-- Title Row -->
+                    <div class="syllabus-summary-title-row">
+                        <div class="flex items-center">
+                            <i data-lucide="book-open" class="w-6 h-6 mr-3"></i>
+                            REMEDIAL LAW, LEGAL ETHICS, AND LEGAL FORMS
+                        </div>
+                        <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
+                    </div>
+
+                    <!-- Progress Bar Row -->
+                    <div class="syllabus-progress-metrics text-xs"> 
+                        <div class="progress-stats">
+                            <span class="flex items-center">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-400"></i>
+                                DONE:&nbsp;<span id="progress-done">0</span>&nbsp;TOPICS
+                            </span> 
+                            <span class="flex items-center">
+                                <i data-lucide="book-open-text" class="w-4 h-4 mr-1 text-gray-400"></i>
+                                TO READ: <span id="progress-toread">0</span>&nbsp;TOPICS
+                            </span>
+                        </div>
+                        
+                        <div class="flex items-center space-x-2 flex-grow">
+                            <span class="progress-overall-text flex items-center">
+                                <i data-lucide="chart-spline" class="w-4 h-4 mr-1"></i>
+                                OVERALL PROGRESS:
+                            </span>
+                            <div class="progress-bar-container">
+                                <div id="progress-bar-rem" class="progress-bar" style="width: 0%;"></div>
+                            </div>
+                            <span id="progress-rem" class="font-light">(0.0%)</span>
+                        </div>
+                    </div>
+                </summary>
+
+                <div class="syllabus-content">
+                    
+                    <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-2 py-0 border-b border-gray-200">
+                        <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap">
+                            Overall progress only counts if at least 3 checklist boxes are marked for each topic row.
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-2">
+                            <button id="import-progress-btn" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap">
+                                <i data-lucide="upload" class="w-4 h-4 mr-1 inline-block"></i> Upload Progress
+                            </button>
+                            <button id="export-progress-btn" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap">
+                                <i data-lucide="download" class="w-4 h-4 mr-1 inline-block"></i> Download Progress
+                            </button>
+                            <button id="collapse-all-btn" class="px-3 py-1 text-xs font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 transition duration-150 whitespace-nowrap">
+                                <i data-lucide="chevrons-up" class="w-4 h-4 mr-1"></i> Collapse All
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Checklist Column Headers -->
+                    <div class="checklist-grid checklist-grid-header mt-2 font-bold text-xs text-center border-b-2 border-black/50">
+                        <div>
+                                SUBJECTS/TOPICS
+                        </div>
+                        <div class="checklist-label">Codal</div>
+                        <div class="checklist-label">Books</div>
+                        <div class="checklist-label">Reviewer</div>
+                        <div class="checklist-label">Bar QAs</div>
+                        <div class="checklist-label">Cases</div>
+                        <div></div> <!-- Empty column for row tick/untick icons -->
+                    </div>
+                    
+                    <!-- Micro Progress Bars for Columns -->
+                    <div class="checklist-grid text-center py-2 border-t border-gray-300">
+                        <div></div>
+                        
+                        <div class="px-1 flex flex-col items-center justify-start">
+                            <div class="col-progress-bar-container">
+                                <div id="col-progress-bar-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
+                            </div>
+                            <span id="col-percent-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
+                        </div>
+
+                        <div class="px-1 flex flex-col items-center justify-start">
+                            <div class="col-progress-bar-container">
+                                <div id="col-progress-bar-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
+                            </div>
+                            <span id="col-percent-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
+                        </div>
+
+                        <div class="px-1 flex flex-col items-center justify-start">
+                            <div class="col-progress-bar-container">
+                                <div id="col-progress-bar-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
+                            </div>
+                            <span id="col-percent-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
+                        </div>
+
+                        <div class="px-1 flex flex-col items-center justify-start">
+                            <div class="col-progress-bar-container">
+                                <div id="col-progress-bar-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
+                            </div>
+                            <span id="col-percent-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
+                        </div>
+
+                        <div class="px-1 flex flex-col items-center justify-start">
+                            <div class="col-progress-bar-container">
+                                <div id="col-progress-bar-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
+                            </div>
+                            <span id="col-percent-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+                        </div>
+
+                        <div></div>
+                    </div>
+                    
+
+                    <!-- Syllabus Content Goes Here -->
+                    <div id="syllabus-rem" class="text-xs">
+                        <!-- Content dynamically generated by JavaScript -->
+                    </div>
+                </div>
+            </details>
+        </div>
+
     </div>
 
-    <!-- MODAL FOR DATE EDITING --><div id="date-edit-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+    <!-- MODAL FOR DATE EDITING -->
+    <div id="date-edit-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-xl w-80">
             <h3 id="modal-title" class="text-xl font-bold text-gray-900 mb-4">Edit Target Date</h3>
             <label for="new-target-date" class="block text-sm font-medium text-gray-700 mb-2">Select New Date:</label>
@@ -237,9 +576,635 @@
             </div>
         </div>
     </div>
+    
+    <input type="file" id="file-upload-input" accept=".json" class="hidden">
+
+    <!-- MODAL FOR GENERAL MESSAGES AND EXPORT/IMPORT ACTIONS -->
+    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg shadow-xl w-96 max-w-sm">
+            <h3 id="message-modal-title" class="text-xl font-bold text-gray-900 mb-4">Message</h3>
+            <div id="message-modal-content" class="text-sm text-gray-700 mb-4 break-words"></div>
+            
+            <div id="modal-actions" class="flex justify-end space-x-3 mt-4">
+                <button id="message-modal-close-btn" class="px-3 py-1.5 text-sm font-semibold bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-150">Close</button>
+            </div>
+        </div>
+    </div>
+
 
     <script>
-        // === GLOBAL STATE & DOM REFERENCES ===
+        // === GLOBAL STATE & DATA ===
+        // Syllabus Data structure derived from "REM only.xlsx - REM & ETHICS.csv"
+        const REM_ETHICS_SYLLABUS = [
+            { id: 1, topic: "I. GENERAL PRINCIPLES", depth: 1, trackable: false },
+            { id: 2, topic: "A. Concept and Nature of Remedial Law", depth: 2, trackable: true },
+            { id: 3, topic: "B. Procedural Laws Applicable to Actions Pending at the Time of Promulgation", depth: 2, trackable: true },
+            { id: 4, topic: "C. Construction of Procedural Rules", depth: 2, trackable: true },
+            { id: 5, topic: "D. Rule-making Power of the Supreme Court", depth: 2, trackable: true },
+            { id: 6, topic: "E. Classification of Philippine Courts", depth: 2, trackable: true },
+            { id: 7, topic: "F. Hierarchy of Courts", depth: 2, trackable: true },
+            { id: 8, topic: "G. Doctrine of Non-interference or Judicial Stability", depth: 2, trackable: true },
+            { id: 9, topic: "II. JURISDICTION", depth: 1, trackable: false },
+            { id: 10, topic: "A. Concept", depth: 2, trackable: true },
+            { id: 11, topic: "1. Distinguished from Exercise of Jurisdiction", depth: 3, trackable: false },
+            { id: 12, topic: "2. Distinguished from Venue", depth: 3, trackable: false },
+            { id: 13, topic: "3. Adherence of Jurisdiction; Residual Jurisdiction; Primary Jurisdiction", depth: 3, trackable: false },
+            { id: 14, topic: "4. How Determined and Conferred", depth: 3, trackable: false },
+            { id: 15, topic: "B . Subject Matter Jurisdiction", depth: 2, trackable: true },
+            { id: 16, topic: "1. Kinds", depth: 3, trackable: false },
+            { id: 17, topic: "a. Original and Appellate", depth: 4, trackable: false },
+            { id: 18, topic: "b. General and Special", depth: 4, trackable: false },
+            { id: 19, topic: "c. Exclusive and Concurrent", depth: 4, trackable: false },
+            { id: 20, topic: "2. Waiver and Compromise", depth: 3, trackable: false },
+            { id: 21, topic: "3. Effect of Estoppel", depth: 3, trackable: false },
+            { id: 22, topic: "4. Error of Jurisdiction", depth: 3, trackable: false },
+            { id: 23, topic: "C. Acquired Jurisdiction", depth: 2, trackable: true },
+            { id: 24, topic: "1. Over the Parties", depth: 3, trackable: false },
+            { id: 25, topic: "a. Jurisdiction over the Plaintiff", depth: 4, trackable: false },
+            { id: 26, topic: "b. Jurisdiction over the Defendant", depth: 4, trackable: false },
+            { id: 27, topic: "2. Over the Issues", depth: 3, trackable: false },
+            { id: 28, topic: "3. Over the Res or Property in Litigation", depth: 3, trackable: false },
+            { id: 29, topic: "D. Jurisdiction of Philippine Courts and Tribunals", depth: 2, trackable: true },
+            { id: 30, topic: "1. Inherent Powers and Means to Carry out Jurisdiction", depth: 3, trackable: false },
+            { id: 31, topic: "2. Supreme Court", depth: 3, trackable: false },
+            { id: 32, topic: "3. Court of Appeals", depth: 3, trackable: false },
+            { id: 33, topic: "4. Sandiganbayan", depth: 3, trackable: false },
+            { id: 34, topic: "5. Court of Tax Appeals", depth: 3, trackable: false },
+            { id: 35, topic: "6. Regional Trial Courts", depth: 3, trackable: false },
+            { id: 36, topic: "7. Family Courts", depth: 3, trackable: false },
+            { id: 37, topic: "8. Special Commercial Courts and Cybercrime Courts", depth: 3, trackable: false },
+            { id: 38, topic: "9. Metropolitan and Municipal Trial Courts – R.A. No. 11576", depth: 3, trackable: false },
+            { id: 39, topic: "a. Expedited Proceedings – A.M. No. 08-8-7-SC", depth: 4, trackable: false },
+            { id: 40, topic: "10. Lupong Tagapamayapa – R.A. No. 7160, Secs. 408, 409, and 412", depth: 3, trackable: false },
+            { id: 41, topic: "III. CIVIL PROCEDURE (Rules of Court, as amended by A.M. No. 19-10-20-SC)", depth: 1, trackable: false },
+            { id: 42, topic: "A. Classification of Actions", depth: 2, trackable: true },
+            { id: 43, topic: "1. Ordinary and Special", depth: 3, trackable: false },
+            { id: 44, topic: "2. Personal and Real", depth: 3, trackable: false },
+            { id: 45, topic: "3. In Rem , In Personam , and Quasi In Rem", depth: 3, trackable: false },
+            { id: 46, topic: "B. Cause of Action – Rule 2", depth: 2, trackable: true },
+            { id: 47, topic: "C. Parties to Civil Actions – Rule 3", depth: 2, trackable: true },
+            { id: 48, topic: "D. Venue – Rule 4", depth: 2, trackable: true },
+            { id: 49, topic: "E. Pleadings", depth: 2, trackable: true },
+            { id: 50, topic: "1. Kinds – Rule 6", depth: 3, trackable: false },
+            { id: 51, topic: "2. Parts – Rule 7", depth: 3, trackable: false },
+            { id: 52, topic: "3. Allegations – Rule 8", depth: 3, trackable: false },
+            { id: 53, topic: "4. Effect of Failure to Plead – Rule 9, Secs. 1 and 2", depth: 3, trackable: false },
+            { id: 54, topic: "5. Amended and Supplemental Pleadings – Rule 10", depth: 3, trackable: false },
+            { id: 55, topic: "6. Filing of Responsive Pleadings – Rule 11", depth: 3, trackable: false },
+            { id: 56, topic: "7. Bill of Particulars – Rule 12", depth: 3, trackable: false },
+            { id: 57, topic: "8. Filing and Service of Pleadings – Rule 13", depth: 3, trackable: false },
+            { id: 58, topic: "a. Efficient Use of Paper Rule – A.M. No. 11-9-4-SC", depth: 4, trackable: false },
+            { id: 59, topic: "b. Electronic Filing and Service – A.M. No. 10-3-7-SC; A.M. No. 11-9-4-SC", depth: 4, trackable: false },
+            { id: 60, topic: "F. Summons – Rule 14", depth: 2, trackable: true },
+            { id: 61, topic: "1. Issuance; Contents", depth: 3, trackable: false },
+            { id: 62, topic: "a. By Whom Issued", depth: 4, trackable: false },
+            { id: 63, topic: "b. Purpose in Relation to Actions In Personam , In Rem , and Quasi In Rem", depth: 4, trackable: false },
+            { id: 64, topic: "2. Service", depth: 3, trackable: false },
+            { id: 65, topic: "a. By Whom Made", depth: 4, trackable: false },
+            { id: 66, topic: "b. Modes", depth: 4, trackable: false },
+            { id: 67, topic: "i. Personal", depth: 5, trackable: false },
+            { id: 68, topic: "ii. Substituted", depth: 5, trackable: false },
+            { id: 69, topic: "iii. Extraterritorial", depth: 5, trackable: false },
+            { id: 70, topic: "(a) Hague Service Convention; Administrative Order [A.O.] No. 251-2020", depth: 6, trackable: false },
+            { id: 71, topic: "iv. Upon Specific Persons and Entities", depth: 5, trackable: false },
+            { id: 72, topic: "(a) Entity without Juridical Personality", depth: 6, trackable: false },
+            { id: 73, topic: "(b) Prisoners", depth: 6, trackable: false },
+            { id: 74, topic: "(c) Minors and Incompetents", depth: 6, trackable: false },
+            { id: 75, topic: "(d) Spouses (Relate to Rule 3, Sec. 4)", depth: 6, trackable: false },
+            { id: 76, topic: "(e) Domestic Private Juridical Entity", depth: 6, trackable: false },
+            { id: 77, topic: "(f) Foreign Private Juridical Entity", depth: 6, trackable: false },
+            { id: 78, topic: "(g) Public Corporations", depth: 6, trackable: false },
+            { id: 79, topic: "(h) Defendant whose Identity or Whereabouts Unknown", depth: 6, trackable: false },
+            { id: 80, topic: "(i) Residents Temporarily out of the Philippines", depth: 6, trackable: false },
+            { id: 81, topic: "c. Proof; Alias Summons", depth: 4, trackable: false },
+            { id: 82, topic: "d. Return", depth: 4, trackable: false },
+            { id: 83, topic: "3. Voluntary Appearance", depth: 3, trackable: false },
+            { id: 84, topic: "4. Duty of Counsel of Record", depth: 3, trackable: false },
+            { id: 85, topic: "G. Motions – Rule 15", depth: 2, trackable: true },
+            { id: 86, topic: "1. Distinguished from Pleadings", depth: 3, trackable: false },
+            { id: 87, topic: "2. Litigious and Non-litigious Motions", depth: 3, trackable: false },
+            { id: 88, topic: "3. Prohibited Motions", depth: 3, trackable: false },
+            { id: 89, topic: "4. Omnibus Motion", depth: 3, trackable: false },
+            { id: 90, topic: "H. Dismissal and Default", depth: 2, trackable: true },
+            { id: 91, topic: "1. Dismissal upon Notice by Plaintiff; Two-dismissal Rule – Rule 17, Sec. 1", depth: 3, trackable: false },
+            { id: 92, topic: "2. Dismissal upon Motion by Plaintiff; Effect on Existing Counterclaim – Rule 17, Sec. 2", depth: 3, trackable: false },
+            { id: 93, topic: "3. Dismissal due to Fault of Plaintiff – Rule 17, Sec. 3", depth: 3, trackable: false },
+            { id: 94, topic: "4. Dismissal with Prejudice v. Dismissal without Prejudice", depth: 3, trackable: false },
+            { id: 95, topic: "5. Default – Rule 9, Sec. 3", depth: 3, trackable: false },
+            { id: 96, topic: "I. Pre-trial – Rule 18 and A.M. No. 03-1-09-SC", depth: 2, trackable: true },
+            { id: 97, topic: "1. Court-Annexed Mediation (CAM)", depth: 3, trackable: false },
+            { id: 98, topic: "2. Judicial Dispute Resolution (JDR)", depth: 3, trackable: false },
+            { id: 99, topic: "J. Intervention – Rule 19", depth: 2, trackable: true },
+            { id: 100, topic: "K. Calendar of Cases – Rule 20", depth: 2, trackable: true },
+            { id: 101, topic: "L. Subpoena – Rule 21", depth: 2, trackable: true },
+            { id: 102, topic: "M. Computation of Time – Rule 22", depth: 2, trackable: true },
+            { id: 103, topic: "N. Modes of Discovery – Rules 23-29", depth: 2, trackable: true },
+            { id: 104, topic: "O. Trial – Rule 30", depth: 2, trackable: true },
+            { id: 105, topic: "P. Consolidation or Severance – Rule 31", depth: 2, trackable: true },
+            { id: 106, topic: "Q. Demurrer to Evidence – Rule 33", depth: 2, trackable: true },
+            { id: 107, topic: "1. Denial", depth: 3, trackable: false },
+            { id: 108, topic: "a. Consequences", depth: 4, trackable: false },
+            { id: 109, topic: "b. Remedy", depth: 4, trackable: false },
+            { id: 110, topic: "2. Consequences of Grant", depth: 3, trackable: false },
+            { id: 111, topic: "3. Reversal of Demurrer on Appeal", depth: 3, trackable: false },
+            { id: 112, topic: "R. Judgments and Final Orders", depth: 2, trackable: true },
+            { id: 113, topic: "1. How Rendered – Rule 36", depth: 3, trackable: false },
+            { id: 114, topic: "2. Judgment on the Pleadings – Rule 34", depth: 3, trackable: false },
+            { id: 115, topic: "3. Summary Judgments – Rule 35", depth: 3, trackable: false },
+            { id: 116, topic: "S. Post-judgment Remedies", depth: 2, trackable: true },
+            { id: 117, topic: "1. New Trial – Rule 37", depth: 3, trackable: false },
+            { id: 118, topic: "2. Reconsideration – Rule 37", depth: 3, trackable: false },
+            { id: 119, topic: "a. Remedy against Denial", depth: 4, trackable: false },
+            { id: 120, topic: "b. Fresh Period Rule", depth: 4, trackable: false },
+            { id: 121, topic: "3. Relief from Judgment – Rule 38", depth: 3, trackable: false },
+            { id: 122, topic: "4. Annulment of Judgment – Rule 47", depth: 3, trackable: false },
+            { id: 123, topic: "5. Collateral Attack", depth: 3, trackable: false },
+            { id: 124, topic: "6. Appeal and Review", depth: 3, trackable: false },
+            { id: 125, topic: "a. Coverage", depth: 4, trackable: false },
+            { id: 126, topic: "i. Subjects of Appeal and Review", depth: 5, trackable: false },
+            { id: 127, topic: "ii. Matters not Appealable", depth: 5, trackable: false },
+            { id: 128, topic: "b. Periods for Filing", depth: 4, trackable: false },
+            { id: 129, topic: "c. Perfection of Appeal", depth: 4, trackable: false },
+            { id: 130, topic: "d. Issues Cognizable", depth: 4, trackable: false },
+            { id: 131, topic: "e. Modes", depth: 4, trackable: false },
+            { id: 132, topic: "i. Appeal from the Municipal Trial Courts to the Regional Trial Courts – Rule 40", depth: 5, trackable: false },
+            { id: 133, topic: "ii. Appeal from the Regional Trial Courts to the Court of Appeals – Rule 41", depth: 5, trackable: false },
+            { id: 134, topic: "iii. Petition for Review from the Regional Trial Courts to the Court of Appeals – Rule 42", depth: 5, trackable: false },
+            { id: 135, topic: "iv. Appeal from the Court of Tax Appeals and Quasi-Judicial Bodies to the Court of Appeals – Rule 43", depth: 5, trackable: false },
+            { id: 136, topic: "v. Appeal by Certiorari to the Supreme Court – Rule 45", depth: 5, trackable: false },
+            { id: 137, topic: "vi. Review of Judgments and Final Orders or Resolutions of the Commission on Audit and Commission on Elections – Rule 64", depth: 5, trackable: false },
+            { id: 138, topic: "T. Execution, Satisfaction, and Effect of Judgments – Rule 39", depth: 2, trackable: true },
+            { id: 139, topic: "1. Immutability of Final Judgments", depth: 3, trackable: false },
+            { id: 140, topic: "2. Execution as a Matter of Right and of Discretion", depth: 3, trackable: false },
+            { id: 141, topic: "3. When Execution shall Issue", depth: 3, trackable: false },
+            { id: 142, topic: "4. How a Judgment is Executed", depth: 3, trackable: false },
+            { id: 143, topic: "a. By Motion or Independent Action", depth: 4, trackable: false },
+            { id: 144, topic: "b. Execution of Judgments for Money", depth: 4, trackable: false },
+            { id: 145, topic: "c. Execution of Judgments for Specific Acts", depth: 4, trackable: false },
+            { id: 146, topic: "d. Execution of Special Judgments", depth: 4, trackable: false },
+            { id: 147, topic: "e. Requisites before Demolition Order is Issued", depth: 4, trackable: false },
+            { id: 148, topic: "f. Effect of Levy on Third Persons", depth: 4, trackable: false },
+            { id: 149, topic: "5. Properties Exempt from Execution", depth: 3, trackable: false },
+            { id: 150, topic: "6. Proceedings where Property is Claimed by Third Persons", depth: 3, trackable: false },
+            { id: 151, topic: "7. Effect of Judgment or Final Orders", depth: 3, trackable: false },
+            { id: 152, topic: "8. Res Judicata", depth: 3, trackable: false },
+            { id: 153, topic: "a. Bar by Prior Judgment", depth: 4, trackable: false },
+            { id: 154, topic: "b. Conclusiveness of Judgment", depth: 4, trackable: false },
+            { id: 155, topic: "9. Enforcement and Effect of Foreign Judgments or Final Orders", depth: 3, trackable: false },
+            { id: 156, topic: "IV. PROVISIONAL REMEDIES", depth: 1, trackable: false },
+            { id: 157, topic: "A. Nature and Purpose", depth: 2, trackable: true },
+            { id: 158, topic: "B. Preliminary Attachment – Rule 57", depth: 2, trackable: true },
+            { id: 159, topic: "1. Grounds for Issuance", depth: 3, trackable: false },
+            { id: 160, topic: "2. Grounds for Dissolution", depth: 3, trackable: false },
+            { id: 161, topic: "3. Posting of a Counterbond", depth: 3, trackable: false },
+            { id: 162, topic: "4. Requisites; Issuance and Contents of Order of Attachment; Affidavit and Bond", depth: 3, trackable: false },
+            { id: 163, topic: "C. Preliminary Injunction – Rule 58", depth: 2, trackable: true },
+            { id: 164, topic: "1. Definitions and Differences: Preliminary Injunction, Temporary Restraining Order, and Status Quo Ante Order", depth: 3, trackable: false },
+            { id: 165, topic: "2. Requisites", depth: 3, trackable: false },
+            { id: 166, topic: "3. Kinds", depth: 3, trackable: false },
+            { id: 167, topic: "4. Grounds for Issuance", depth: 3, trackable: false },
+            { id: 168, topic: "D. Receivership – Rule 59", depth: 2, trackable: true },
+            { id: 169, topic: "E. Replevin – Rule 60", depth: 2, trackable: true },
+            { id: 170, topic: "F. Support Pendente Lite – Rule 61", depth: 2, trackable: true },
+            { id: 171, topic: "G. Provisional Deposit – Rule 135, Secs. 5(g) and 6, in relation to Lorenzo Shipping Corp. v. Villarin , G.R. Nos. 175727 & 178713, March 6, 2019 and Guerrero Estate Dev’t. Corp. v. Leviste & Guerrero Realty Corp. , G.R. No. 253428, February 16, 2022", depth: 2, trackable: true },
+            { id: 172, topic: "V. SPECIAL CIVIL ACTIONS", depth: 1, trackable: false },
+            { id: 173, topic: "A. Concept", depth: 2, trackable: true },
+            { id: 174, topic: "B. Interpleader – Rule 62", depth: 2, trackable: true },
+            { id: 175, topic: "C. Declaratory Relief and Similar Remedies – Rule 63", depth: 2, trackable: true },
+            { id: 176, topic: "D. Certiorari , Prohibition, and Mandamus – Rule 65", depth: 2, trackable: true },
+            { id: 177, topic: "E. Quo Warranto – Rule 66", depth: 2, trackable: true },
+            { id: 178, topic: "F. Expropriation – Rule 67; R.A. No. 8974, Sec. 4", depth: 2, trackable: true },
+            { id: 179, topic: "1. Stages of Expropriation", depth: 3, trackable: false },
+            { id: 180, topic: "2. Immediate Possession of Expropriated Land – R.A. No. 10752", depth: 3, trackable: false },
+            { id: 181, topic: "3. Ascertainment of Just Compensation", depth: 3, trackable: false },
+            { id: 182, topic: "G. Foreclosure of Real Estate Mortgage – Rule 68; R.A. No. 8791, Sec. 47", depth: 2, trackable: true },
+            { id: 183, topic: "1. Judicial", depth: 3, trackable: false },
+            { id: 184, topic: "2. Extrajudicial – Act No. 3135", depth: 3, trackable: false },
+            { id: 185, topic: "H. Partition – Rule 69", depth: 2, trackable: true },
+            { id: 186, topic: "I. Forcible Entry and Unlawful Detainer – Rule 70", depth: 2, trackable: true },
+            { id: 187, topic: "J. Contempt – Rule 71", depth: 2, trackable: true },
+            { id: 188, topic: "VI. SPECIAL PROCEEDINGS AND WRITS", depth: 1, trackable: false },
+            { id: 189, topic: "A. Settlement of Estate of Deceased Persons", depth: 2, trackable: true },
+            { id: 190, topic: "1. Venue and Process – Rule 73", depth: 3, trackable: false },
+            { id: 191, topic: "2. Extrajudicial – Rule 74, Secs. 1, 4, and 5", depth: 3, trackable: false },
+            { id: 192, topic: "3. Judicial", depth: 3, trackable: false },
+            { id: 193, topic: "a. Summary Settlement – Rule 74, Secs. 2-5", depth: 4, trackable: false },
+            { id: 194, topic: "b. Intestate – Petition for Letters of Administration – Rules 78-79", depth: 4, trackable: false },
+            { id: 195, topic: "c. Testate – Probate Proceedings", depth: 4, trackable: false },
+            { id: 196, topic: "i. Allowance or Disallowance of Will – Rules 76-77", depth: 5, trackable: false },
+            { id: 197, topic: "ii. Letters Testamentary", depth: 5, trackable: false },
+            { id: 198, topic: "(a) Issuance – Rule 78", depth: 6, trackable: false },
+            { id: 199, topic: "(b) Opposition – Rule 79", depth: 6, trackable: false },
+            { id: 200, topic: "d. Claims against Estate – Rule 86", depth: 4, trackable: false },
+            { id: 201, topic: "e. Payment of the Debts of the Estate – Rule 88", depth: 4, trackable: false },
+            { id: 202, topic: "f. Distribution and Partition of the Estate – Rule 90", depth: 4, trackable: false },
+            { id: 203, topic: "B. Guardianship – Rules 92-97", depth: 2, trackable: true },
+            { id: 204, topic: "C. Habeas Corpus – Rule 102", depth: 2, trackable: true },
+            { id: 205, topic: "D. Habeas Corpus in Relation to Custody of Minors – A.M. No. 03-04-04-SC", depth: 2, trackable: true },
+            { id: 206, topic: "E. Amparo – A.M. No. 07-9-12-SC", depth: 2, trackable: true },
+            { id: 207, topic: "F. Habeas Data – A.M. No. 08-1-16-SC", depth: 2, trackable: true },
+            { id: 208, topic: "G. Change of Name – Rule 103", depth: 2, trackable: true },
+            { id: 209, topic: "H. Cancellation or Correction of Entries in the Civil Registry – Rule 108", depth: 2, trackable: true },
+            { id: 210, topic: "I. Clerical Error Act and its Implementing Rules – R.A. No. 9048, as amended by R.A. No. 10172", depth: 2, trackable: true },
+            { id: 211, topic: "J. Environmental Cases – A.M. No. 09-6-8-SC", depth: 2, trackable: true },
+            { id: 212, topic: "1. Temporary Environmental Protection Order (TEPO)", depth: 3, trackable: false },
+            { id: 213, topic: "2. Writ of Continuing Mandamus", depth: 3, trackable: false },
+            { id: 214, topic: "3. Writ of Kalikasan", depth: 3, trackable: false },
+            { id: 215, topic: "VII. CRIMINAL PROCEDURE", depth: 1, trackable: false },
+            { id: 216, topic: "A. Criminal Jurisdiction", depth: 2, trackable: true },
+            { id: 217, topic: "1. Concept", depth: 3, trackable: false },
+            { id: 218, topic: "2. Requisites", depth: 3, trackable: false },
+            { id: 219, topic: "B. Prosecution of Offenses – Rule 110", depth: 2, trackable: true },
+            { id: 220, topic: "1. Institution of Criminal Actions", depth: 3, trackable: false },
+            { id: 221, topic: "2. Effect of the Institution of the Criminal Action on the Prescriptive Period", depth: 3, trackable: false },
+            { id: 222, topic: "3. Who may Prosecute; Crimes that Cannot be Prosecuted De Oficio", depth: 3, trackable: false },
+            { id: 223, topic: "4. Intervention of Private Offended Party", depth: 3, trackable: false },
+            { id: 224, topic: "5. Control of Prosecution", depth: 3, trackable: false },
+            { id: 225, topic: "6. Complaint and Information; Sufficiency", depth: 3, trackable: false },
+            { id: 226, topic: "7. Date of Commission of the Offense", depth: 3, trackable: false },
+            { id: 227, topic: "8. Designation of Offense; Qualifying and Aggravating Circumstances", depth: 3, trackable: false },
+            { id: 228, topic: "9. Name of the Accused; Name of the Offended Party", depth: 3, trackable: false },
+            { id: 229, topic: "10. Amendment and Substitution of Complaint or Information", depth: 3, trackable: false },
+            { id: 230, topic: "11. Duplicity of the Offense", depth: 3, trackable: false },
+            { id: 231, topic: "C. Prosecution of Civil Action – Rule 111", depth: 2, trackable: true },
+            { id: 232, topic: "1. Implied Institution of Civil Action Ex Delicto", depth: 3, trackable: false },
+            { id: 233, topic: "2. Independent Civil Actions", depth: 3, trackable: false },
+            { id: 234, topic: "3. Reservation, Suspension, and Waiver", depth: 3, trackable: false },
+            { id: 235, topic: "a. In B.P. Blg. 22 Cases", depth: 4, trackable: false },
+            { id: 236, topic: "4. Civil Liability Ex Delicto", depth: 3, trackable: false },
+            { id: 237, topic: "a. When Accused Acquitted", depth: 4, trackable: false },
+            { id: 238, topic: "b. When Accused Dies", depth: 4, trackable: false },
+            { id: 239, topic: "5. Prejudicial Question", depth: 3, trackable: false },
+            { id: 240, topic: "D. Preliminary Investigation – Rule 112", depth: 2, trackable: true },
+            { id: 241, topic: "1. Nature and Purpose", depth: 3, trackable: false },
+            { id: 242, topic: "2. Who may Conduct – R.A. No. 10071", depth: 3, trackable: false },
+            { id: 243, topic: "3. When not Required", depth: 3, trackable: false },
+            { id: 244, topic: "4. Determination of Probable Cause", depth: 3, trackable: false },
+            { id: 245, topic: "a. Nature; Non-interference", depth: 4, trackable: false },
+            { id: 246, topic: "b. Prima Facie Case with Reasonable Certainty of Conviction – Department of Justice [DOJ] Circular No. 2024-015; DOJ Circular No. 2024-028", depth: 4, trackable: false },
+            { id: 247, topic: "5. Remedy from Investigator’s Action", depth: 3, trackable: false },
+            { id: 248, topic: "a. Motion to Reopen", depth: 4, trackable: false },
+            { id: 249, topic: "b. Motion for Reinvestigation", depth: 4, trackable: false },
+            { id: 250, topic: "c. Appeal from Investigator’s Resolution – DOJ Circular No 2000-70; DOJ Circular No. 2022-027", depth: 4, trackable: false },
+            { id: 251, topic: "6. Inquest", depth: 3, trackable: false },
+            { id: 252, topic: "7. Effect of Absence", depth: 3, trackable: false },
+            { id: 253, topic: "8. Withdrawal of Information", depth: 3, trackable: false },
+            { id: 254, topic: "E. Arrest – Rule 113", depth: 2, trackable: true },
+            { id: 255, topic: "1. Warranted Arrest", depth: 3, trackable: false },
+            { id: 256, topic: "a. How Made", depth: 4, trackable: false },
+            { id: 257, topic: "b. Requisites for the Issuance of a Warrant of Arrest", depth: 4, trackable: false },
+            { id: 258, topic: "2. Warrantless Arrest, When Lawful", depth: 3, trackable: false },
+            { id: 259, topic: "3. Method of Arrest", depth: 3, trackable: false },
+            { id: 260, topic: "4. Use of Body Cameras – A.M. No. 21-06-08", depth: 3, trackable: false },
+            { id: 261, topic: "5. Waiver of Objections to Irregularity", depth: 3, trackable: false },
+            { id: 262, topic: "F. Bail – Rule 114", depth: 2, trackable: true },
+            { id: 263, topic: "1. When a Matter of Right; Exceptions", depth: 3, trackable: false },
+            { id: 264, topic: "2. When a Matter of Discretion", depth: 3, trackable: false },
+            { id: 265, topic: "3. Where Filed", depth: 3, trackable: false },
+            { id: 266, topic: "4. Application for Bail in Capital Offenses", depth: 3, trackable: false },
+            { id: 267, topic: "5. Guidelines in Fixing Amount", depth: 3, trackable: false },
+            { id: 268, topic: "6. Bail-negating Circumstances", depth: 3, trackable: false },
+            { id: 269, topic: "7. Remedy When Denied", depth: 3, trackable: false },
+            { id: 270, topic: "8. Forfeiture", depth: 3, trackable: false },
+            { id: 271, topic: "9. Recognizance – R.A. No. 10389", depth: 3, trackable: false },
+            { id: 272, topic: "G. Rights of Accused – Rule 115", depth: 2, trackable: true },
+            { id: 273, topic: "1. Rights of Accused at Trial", depth: 3, trackable: false },
+            { id: 274, topic: "2. Rights of Persons under Custodial Investigation", depth: 3, trackable: false },
+            { id: 275, topic: "H. Arraignment and Plea – Rule 116", depth: 2, trackable: true },
+            { id: 276, topic: "1. Purpose of Arraignment", depth: 3, trackable: false },
+            { id: 277, topic: "2. Searching Inquiry", depth: 3, trackable: false },
+            { id: 278, topic: "3. Guilty Plea", depth: 3, trackable: false },
+            { id: 279, topic: "a. Lesser Offense", depth: 4, trackable: false },
+            { id: 280, topic: "b. Capital Offense", depth: 4, trackable: false },
+            { id: 281, topic: "c. Non-capital Offense", depth: 4, trackable: false },
+            { id: 282, topic: "4. Improvident Plea", depth: 3, trackable: false },
+            { id: 283, topic: "5. Bill of Particulars", depth: 3, trackable: false },
+            { id: 284, topic: "6. Suspension of Arraignment", depth: 3, trackable: false },
+            { id: 285, topic: "I. Motion to Quash – Rule 117", depth: 2, trackable: true },
+            { id: 286, topic: "1. Grounds", depth: 3, trackable: false },
+            { id: 287, topic: "2. Double Jeopardy", depth: 3, trackable: false },
+            { id: 288, topic: "3. Provisional Dismissal", depth: 3, trackable: false },
+            { id: 289, topic: "J. Pre-trial – Rule 118", depth: 2, trackable: true },
+            { id: 290, topic: "1. Pre-trial Agreement", depth: 3, trackable: false },
+            { id: 291, topic: "2. Non-appearance at Pre-trial Conference", depth: 3, trackable: false },
+            { id: 292, topic: "3. Pre–trial Order", depth: 3, trackable: false },
+            { id: 293, topic: "4. Cases for Mediation on the Civil Liability", depth: 3, trackable: false },
+            { id: 294, topic: "K. Trial – Rule 119", depth: 2, trackable: true },
+            { id: 295, topic: "1. Trial In Absentia", depth: 3, trackable: false },
+            { id: 296, topic: "2. Remedy when Accused is Not Brought to Trial within the Time Limit", depth: 3, trackable: false },
+            { id: 297, topic: "3. Conditional Examination of Witness for the Prosecution or Defense", depth: 3, trackable: false },
+            { id: 298, topic: "4. Requisites for Discharge of Accused as State Witness", depth: 3, trackable: false },
+            { id: 299, topic: "5. Reopening of the Proceedings", depth: 3, trackable: false },
+            { id: 300, topic: "6. Revised Guidelines for Continuous Trial of Criminal Cases – A.M. No. 15-06-10-SC", depth: 3, trackable: false },
+            { id: 301, topic: "L. Demurrer to Evidence", depth: 2, trackable: true },
+            { id: 302, topic: "M. Judgment – Rule 120", depth: 2, trackable: true },
+            { id: 303, topic: "1. Requisites of a Valid Judgment", depth: 3, trackable: false },
+            { id: 304, topic: "2. Promulgation of Judgment", depth: 3, trackable: false },
+            { id: 305, topic: "a. Non-appearance of Accused", depth: 4, trackable: false },
+            { id: 306, topic: "b. Promulgation In Absentia", depth: 4, trackable: false },
+            { id: 307, topic: "N. New Trial or Reconsideration – Rule 121", depth: 2, trackable: true },
+            { id: 308, topic: "O. Appeal – Rule 122", depth: 2, trackable: true },
+            { id: 309, topic: "P. Search and Seizure – Rule 126", depth: 2, trackable: true },
+            { id: 310, topic: "1. Warranted Search and Seizure", depth: 3, trackable: false },
+            { id: 311, topic: "a. Search Warrant", depth: 4, trackable: false },
+            { id: 312, topic: "i. Nature", depth: 5, trackable: false },
+            { id: 313, topic: "ii. Requisites for Issuance", depth: 5, trackable: false },
+            { id: 314, topic: "iii. Probable Cause", depth: 5, trackable: false },
+            { id: 315, topic: "iv. Quashal", depth: 5, trackable: false },
+            { id: 316, topic: "v. Cybercrime Warrants – A.M. No. 17-11-03-SC", depth: 5, trackable: false },
+            { id: 317, topic: "vi. Searches in State Detention Facilities", depth: 5, trackable: false },
+            { id: 318, topic: "b. Extent of Search", depth: 4, trackable: false },
+            { id: 319, topic: "c. Conduct of Search", depth: 4, trackable: false },
+            { id: 320, topic: "2. Warrantless Search", depth: 3, trackable: false },
+            { id: 321, topic: "a. Incidental to Lawful Arrest", depth: 4, trackable: false },
+            { id: 322, topic: "b. Moving Vehicle", depth: 4, trackable: false },
+            { id: 323, topic: "c. Public Transit or Public Utility Vehicles", depth: 4, trackable: false },
+            { id: 324, topic: "d. Checkpoints", depth: 4, trackable: false },
+            { id: 325, topic: "e. Airport Frisking", depth: 4, trackable: false },
+            { id: 326, topic: "f. Buy-bust Operation", depth: 4, trackable: false },
+            { id: 327, topic: "g. Plain View", depth: 4, trackable: false },
+            { id: 328, topic: "h. Stop and Frisk", depth: 4, trackable: false },
+            { id: 329, topic: "i. Consented Searches", depth: 4, trackable: false },
+            { id: 330, topic: "3. Rules on the Use of Body-worn Cameras in the Execution of Warrants – A.M. No. 21-06-08-SC", depth: 3, trackable: false },
+            { id: 331, topic: "4. Effect of Illegal Search and Seizure", depth: 3, trackable: false },
+            { id: 332, topic: "Q. Provisional Remedies in Criminal Cases – Rule 127", depth: 2, trackable: true },
+            { id: 333, topic: "VIII. EVIDENCE", depth: 1, trackable: false },
+            { id: 334, topic: "A. General Provisions and Principles – Rule 128", depth: 2, trackable: true },
+            { id: 335, topic: "1. Definition of Evidence", depth: 3, trackable: false },
+            { id: 336, topic: "2. Uniformity of Evidentiary Rules", depth: 3, trackable: false },
+            { id: 337, topic: "3. Proof v. Evidence", depth: 3, trackable: false },
+            { id: 338, topic: "4. Factum Probans v. Factum Probandum", depth: 3, trackable: false },
+            { id: 339, topic: "B. Liberal Construction of the Rules on Evidence", depth: 2, trackable: true },
+            { id: 340, topic: "C. Judicial Notice – Rule 129, Secs. 1-3", depth: 2, trackable: true },
+            { id: 341, topic: "D. Judicial Admissions – Rule 129, Sec. 4", depth: 2, trackable: true },
+            { id: 342, topic: "E. Admissibility", depth: 2, trackable: true },
+            { id: 343, topic: "1. Requisites – Rule 128, Sec. 3", depth: 3, trackable: false },
+            { id: 344, topic: "a. Relevance; Collateral Matters – Rule 128, Sec. 4", depth: 4, trackable: false },
+            { id: 345, topic: "2. Multiple Admissibility", depth: 3, trackable: false },
+            { id: 346, topic: "3. Conditional Admissibility", depth: 3, trackable: false },
+            { id: 347, topic: "4. Curative Admissibility", depth: 3, trackable: false },
+            { id: 348, topic: "F. Weight and Sufficiency – Rule 133", depth: 2, trackable: true },
+            { id: 349, topic: "1. Standards", depth: 3, trackable: false },
+            { id: 350, topic: "a. Proof Beyond Reasonable Doubt", depth: 4, trackable: false },
+            { id: 351, topic: "b. Preponderance of Evidence", depth: 4, trackable: false },
+            { id: 352, topic: "c. Substantial Evidence", depth: 4, trackable: false },
+            { id: 353, topic: "d. Clear and Convincing Evidence", depth: 4, trackable: false },
+            { id: 354, topic: "2. Direct and Circumstantial Evidence", depth: 3, trackable: false },
+            { id: 355, topic: "3. Competent and Credible Evidence", depth: 3, trackable: false },
+            { id: 356, topic: "4. Positive and Negative Evidence", depth: 3, trackable: false },
+            { id: 357, topic: "5. Evidentiary Weight of Electronic Documents – A.M. No. 01-7-01-SC, Rule 7", depth: 3, trackable: false },
+            { id: 358, topic: "G. Kinds", depth: 2, trackable: true },
+            { id: 359, topic: "1. Object or Real Evidence – Rule 130, Part A", depth: 3, trackable: false },
+            { id: 360, topic: "a. Requisites for Admissibility", depth: 4, trackable: false },
+            { id: 361, topic: "b. Categories of Object Evidence", depth: 4, trackable: false },
+            { id: 362, topic: "c. Chain of Custody", depth: 4, trackable: false },
+            { id: 363, topic: "d. Rule on DNA Evidence – A.M. No. 06-11-5-SC", depth: 4, trackable: false },
+            { id: 364, topic: "2. Documentary Evidence – Rule 130, Part B", depth: 3, trackable: false },
+            { id: 365, topic: "a. Original Documents and Secondary Evidence", depth: 4, trackable: false },
+            { id: 366, topic: "b. Parol Evidence", depth: 4, trackable: false },
+            { id: 367, topic: "c. Interpretation of Documents", depth: 4, trackable: false },
+            { id: 368, topic: "d. Electronic Documents and Electronic Signatures – A.M. No. 01-7-01-SC, Rules 3-6", depth: 4, trackable: false },
+            { id: 369, topic: "e. Ephemeral Electronic Communications – A.M. No. 01-7-01-SC, Rule 11, Sec. 2", depth: 4, trackable: false },
+            { id: 370, topic: "3. Testimonial Evidence – Rule 130, Part C", depth: 3, trackable: false },
+            { id: 371, topic: "a. Concept", depth: 4, trackable: false },
+            { id: 372, topic: "b. Who may be Witnesses", depth: 4, trackable: false },
+            { id: 373, topic: "i. Children – A.M. No. 04-07-SC, Sec. 6", depth: 5, trackable: false },
+            { id: 374, topic: "c. Disqualification of Witnesses", depth: 4, trackable: false },
+            { id: 375, topic: "d. Testimonial Privilege", depth: 4, trackable: false },
+            { id: 376, topic: "e. Admissions and Confessions", depth: 4, trackable: false },
+            { id: 377, topic: "f. Previous Conduct as Evidence", depth: 4, trackable: false },
+            { id: 378, topic: "g. Hearsay Rule and Exceptions", depth: 4, trackable: false },
+            { id: 379, topic: "i. Electronic or Optical or Other Similar Business Records – A.M. No. 01-7-01-SC, Rule 8", depth: 5, trackable: false },
+            { id: 380, topic: "h. Opinion Rule", depth: 4, trackable: false },
+            { id: 381, topic: "i. Character Evidence", depth: 4, trackable: false },
+            { id: 382, topic: "4. Audio, Photographic, and Video Evidence – A.M. No. 01-7-01-SC, Rule 11, Sec. 1", depth: 3, trackable: false },
+            { id: 383, topic: "H. Presentation of Evidence – Rule 132", depth: 2, trackable: true },
+            { id: 384, topic: "1. Examination of a Witness", depth: 3, trackable: false },
+            { id: 385, topic: "a. Rights and Obligations of a Witness", depth: 4, trackable: false },
+            { id: 386, topic: "b. Examination of Child Witness – A.M. No. 04-07-SC", depth: 4, trackable: false },
+            { id: 387, topic: "c. Judicial Affidavit in lieu of Direct Examination – A.M. No. 12-8-8-SC", depth: 4, trackable: false },
+            { id: 388, topic: "2. Authentication and Proof of Documents", depth: 3, trackable: false },
+            { id: 389, topic: "a. Meaning of Authentication", depth: 4, trackable: false },
+            { id: 390, topic: "b. Classes of Documents", depth: 4, trackable: false },
+            { id: 391, topic: "c. Authentication of Private Writings", depth: 4, trackable: false },
+            { id: 392, topic: "d. Public Documents as Evidence", depth: 4, trackable: false },
+            { id: 393, topic: "e. Proof of Official Record", depth: 4, trackable: false },
+            { id: 394, topic: "3. Offer and Objection", depth: 3, trackable: false },
+            { id: 395, topic: "a. When Evidence Offered", depth: 4, trackable: false },
+            { id: 396, topic: "b. Objection to Evidence", depth: 4, trackable: false },
+            { id: 397, topic: "c. Tender of Excluded Evidence", depth: 4, trackable: false },
+            { id: 398, topic: "I. Burden of Proof and Burden of Evidence – Rule 131, Sec. 1", depth: 2, trackable: true },
+            { id: 399, topic: "J. Presumptions", depth: 2, trackable: true },
+            { id: 400, topic: "1. Conclusive Presumptions – Rule 131, Sec. 2", depth: 3, trackable: false },
+            { id: 401, topic: "2. Disputable Presumptions – Rule 131, Sec. 3", depth: 3, trackable: false },
+            { id: 402, topic: "3. Presumptions in Civil Actions and Proceedings – Rule 131, Sec. 5", depth: 3, trackable: false },
+            { id: 403, topic: "4. Presumption against an Accused in Criminal Cases – Rule 131, Sec. 6", depth: 3, trackable: false },
+            { id: 404, topic: "K. Rules on the Transmission and Execution of Letters of Request for Taking of Evidence in Civil or Commercial Matters under the 1970 Hague Evidence Convention – A.M. No. 25-02-17-SC", depth: 2, trackable: true },
+            { id: 405, topic: "1. Scope and Applicability – Sec. 1", depth: 3, trackable: false },
+            { id: 406, topic: "2. Definition of Terms – Sec. 2", depth: 3, trackable: false },
+            { id: 407, topic: "3. Use of Evidence Taken Abroad – Sec. 18", depth: 3, trackable: false },
+            { id: 408, topic: "4. Effect of Using Evidence Taken Abroad – Sec. 19", depth: 3, trackable: false },
+            { id: 409, topic: "5. Admissibility of Evidence Taken Abroad – Sec. 20", depth: 3, trackable: false },
+            { id: 410, topic: "6. Privileges – Sec. 33", depth: 3, trackable: false },
+            { id: 411, topic: "7. Interpretation of the Rules – Sec. 34", depth: 3, trackable: false },
+            { id: 412, topic: "IX. LEGAL AND JUDICIAL ETHICS", depth: 1, trackable: false },
+            { id: 413, topic: "A. Legal Ethics – Code of Professional Responsibility and Accountability (CPRA), A.M. No. 22-09-01-SC", depth: 2, trackable: true },
+            { id: 414, topic: "1. Practice of Law", depth: 3, trackable: false },
+            { id: 415, topic: "a. Definition and Nature – CPRA, Canon III, Sec. 1", depth: 4, trackable: false },
+            { id: 416, topic: "2. Admission to the Practice of Law", depth: 3, trackable: false },
+            { id: 417, topic: "a. Legal Education", depth: 4, trackable: false },
+            { id: 418, topic: "i. Pre-law", depth: 5, trackable: false },
+            { id: 419, topic: "ii. Law Proper", depth: 5, trackable: false },
+            { id: 420, topic: "iii. R.A. No. 7662 (Legal Education Reform Act)", depth: 5, trackable: false },
+            { id: 421, topic: "b. Citizenship", depth: 4, trackable: false },
+            { id: 422, topic: "c. Good Moral Character", depth: 4, trackable: false },
+            { id: 423, topic: "d. Bar Examinations", depth: 4, trackable: false },
+            { id: 424, topic: "e. Lawyer’s Oath (Revised as of April 11, 2023)", depth: 4, trackable: false },
+            { id: 425, topic: "f. Signing in the Roll of Attorneys", depth: 4, trackable: false },
+            { id: 426, topic: "3. Continuing Requirements for Membership in the Bar", depth: 3, trackable: false },
+            { id: 427, topic: "a. Mandatory Continuing Legal Education (MCLE) – CPRA, Canon III, Sec. 24; Canon IV, Sec. 8", depth: 4, trackable: false },
+            { id: 428, topic: "b. Membership Dues – CPRA, Canon III, Sec. 26", depth: 4, trackable: false },
+            { id: 429, topic: "c. Professional Tax – R.A. No. 7160, Sec. 139", depth: 4, trackable: false },
+            { id: 430, topic: "d. Legal Aid – CPRA, Canon III, Sec. 25; A.M. No. 22-11-01-SC, (Rules on Unified Legal Aid Service)", depth: 4, trackable: false },
+            { id: 431, topic: "4. Who May Practice Law", depth: 3, trackable: false },
+            { id: 432, topic: "a. Members of the Bar", depth: 4, trackable: false },
+            { id: 433, topic: "i. Suspended or Disbarred Lawyers – CPRA, Canon VI, Sec. 52", depth: 5, trackable: false },
+            { id: 434, topic: "b. Non-members of the Bar", depth: 4, trackable: false },
+            { id: 435, topic: "i. Law Students – A.M. No. 19-03-24-SC", depth: 5, trackable: false },
+            { id: 436, topic: "ii. Paralegals – CPRA, Canon II, Secs. 34-35", depth: 5, trackable: false },
+            { id: 437, topic: "iii. Parties and their Agents or Appearance Pro Se", depth: 5, trackable: false },
+            { id: 438, topic: "(a) Cadastral Proceedings – Act No. 2259, Sec. 9", depth: 6, trackable: false },
+            { id: 439, topic: "(b) Labor Cases – LC, Art. 228", depth: 6, trackable: false },
+            { id: 440, topic: "(c) Agrarian Reform Proceedings – R.A. No. 6657, Sec. 50, as amended by R.A. No. 9700, Sec. 18", depth: 6, trackable: false },
+            { id: 441, topic: "(d) Barangay Conciliation – R.A. No. 7160, Sec. 415", depth: 6, trackable: false },
+            { id: 442, topic: "(e) Cases under Expedited Procedure – A.M. No. 08-8-7-SC, Secs. 12 and 22", depth: 6, trackable: false },
+            { id: 443, topic: "(f) Arbitration – R.A. No. 9285, Sec. 22; R.A. No. 876, Sec. 12", depth: 6, trackable: false },
+            { id: 444, topic: "c. Members of the Bar Prohibited from Private Practice", depth: 4, trackable: false },
+            { id: 445, topic: "i. President, Vice-President, Members of the Cabinet, their Deputies and Assistants", depth: 5, trackable: false },
+            { id: 446, topic: "ii. Senators and Members of the House of Representatives", depth: 5, trackable: false },
+            { id: 447, topic: "iii. Members of the Constitutional Commissions", depth: 5, trackable: false },
+            { id: 448, topic: "iv. Ombudsman and their Deputies", depth: 5, trackable: false },
+            { id: 449, topic: "v. Justices, Judges, and Court Employees", depth: 5, trackable: false },
+            { id: 450, topic: "vi. Governors and Mayors – R.A. No. 7160, Sec. 90(a)", depth: 5, trackable: false },
+            { id: 451, topic: "vii. Government Officials and Employees – R.A. No. 6713, Sec. 7(b)(2) in relation to Office of the President Memorandum Circular No. 17, s. 1986 and Rule XVIII, Sec. 12 of the Revised Civil Service Rules", depth: 5, trackable: false },
+            { id: 452, topic: "d. Members of the Bar with Limited Legal Practice", depth: 4, trackable: false },
+            { id: 453, topic: "i. Vice-Governors, Vice-Mayors, and Members of Local Legislative Bodies – R.A. No. 7160", depth: 5, trackable: false },
+            { id: 454, topic: "ii. Government Lawyers", depth: 5, trackable: false },
+            { id: 455, topic: "(a) With Authority to Engage in Limited Law Practice", depth: 6, trackable: false },
+            { id: 456, topic: "(b) Separated from the Service – R.A. No. 6713", depth: 6, trackable: false },
+            { id: 457, topic: "iii. Retired Judges and Justices – R.A. No. 910, as amended", depth: 5, trackable: false },
+            { id: 458, topic: "iv. In Small Claims and Katarungang Pambarangay", depth: 5, trackable: false },
+            { id: 459, topic: "e. Foreign Lawyers – CPRA, Canon III, Sec. 33", depth: 4, trackable: false },
+            { id: 460, topic: "5. Privileges of a Lawyer", depth: 3, trackable: false },
+            { id: 461, topic: "6. Unauthorized Practice of Law", depth: 3, trackable: false },
+            { id: 462, topic: "a. Penalties", depth: 4, trackable: false },
+            { id: 463, topic: "7. Duties and Responsibilities of Lawyers – CPRA", depth: 3, trackable: false },
+            { id: 464, topic: "a. General Provisions", depth: 4, trackable: false },
+            { id: 465, topic: "i. Integrity as Central Principle – Preamble", depth: 5, trackable: false },
+            { id: 466, topic: "ii. Applicability of CPRA – Sec. 1", depth: 5, trackable: false },
+            { id: 467, topic: "iii. Repealing Clause – Sec. 2", depth: 5, trackable: false },
+            { id: 468, topic: "iv. Effectivity Date – Sec. 3", depth: 5, trackable: false },
+            { id: 469, topic: "b. Independence – Canon I", depth: 4, trackable: false },
+            { id: 470, topic: "i. Concept – Introduction and Sec. 1", depth: 5, trackable: false },
+            { id: 471, topic: "ii. Accessible, Efficient, and Effective Legal Service", depth: 5, trackable: false },
+            { id: 472, topic: "iii. Merit-based Legal Practice", depth: 5, trackable: false },
+            { id: 473, topic: "iv. Avoiding Improper Considerations and External Influence", depth: 5, trackable: false },
+            { id: 474, topic: "v. Non-interference in Courts or Tribunals", depth: 5, trackable: false },
+            { id: 475, topic: "vi. Discretion in Procedure and Strategy", depth: 5, trackable: false },
+            { id: 476, topic: "(a) Client’s Decision to Settle Case", depth: 6, trackable: false },
+            { id: 477, topic: "c. Propriety – Canon II", depth: 4, trackable: false },
+            { id: 478, topic: "i. Concept – Introduction", depth: 5, trackable: false },
+            { id: 479, topic: "ii. Proper and Dignified Conduct – Secs. 1 and 2", depth: 5, trackable: false },
+            { id: 480, topic: "iii. Dignified, Gender-fair, Child- and Culturally-sensitive Language – Sec. 4", depth: 5, trackable: false },
+            { id: 481, topic: "iv. Correcting Misrepresentations in Applications for Admission to the Bar – Sec. 11", depth: 5, trackable: false },
+            { id: 482, topic: "v. Reporting Dishonest, Deceitful, or Misleading Conduct – Sec. 12", depth: 5, trackable: false },
+            { id: 483, topic: "vi. Disclosure of Relationship or Connection – Sec. 20", depth: 5, trackable: false },
+            { id: 484, topic: "vii. Avoiding Plagiarism and Misrepresentation of Legal Authorities – Sec. 8", depth: 5, trackable: false },
+            { id: 485, topic: "viii. Non-solicitation and Advertisement – Sec. 17", depth: 5, trackable: false },
+            { id: 486, topic: "ix. Sub Judice Rule – Sec. 19", depth: 5, trackable: false },
+            { id: 487, topic: "x. Avoiding Gifts and Donations to Courts and Government Agencies – Sec. 21", depth: 5, trackable: false },
+            { id: 488, topic: "xi. Avoiding Abuse of the Right to Sue and of Court Processes – Sec. 23; Canon III, Sec. 7", depth: 5, trackable: false },
+            { id: 489, topic: "xii. Avoiding Encroachment or Interference in Another Lawyer’s Engagement – Sec. 24", depth: 5, trackable: false },
+            { id: 490, topic: "xiii. Responsible Use of Social Media – Secs. 36-44", depth: 5, trackable: false },
+            { id: 491, topic: "d. Fidelity – Canon III", depth: 4, trackable: false },
+            { id: 492, topic: "i. Concept – Introduction and Sec. 2", depth: 5, trackable: false },
+            { id: 493, topic: "ii. Lawyer-Client Relationship", depth: 5, trackable: false },
+            { id: 494, topic: "(a) Definition – Sec. 3", depth: 6, trackable: false },
+            { id: 495, topic: "(b) Duty of Representation", depth: 6, trackable: false },
+            { id: 496, topic: "(1) Authority of Lawyer to Bind Client – Sec. 4", depth: 7, trackable: false },
+            { id: 497, topic: "(2) Authority of Lawyer to Appear – Sec. 5", depth: 7, trackable: false },
+            { id: 498, topic: "(c) Fiduciary Duty – Sec. 6", depth: 6, trackable: false },
+            { id: 499, topic: "(1) Encouragement of Settlement – Sec. 8", depth: 7, trackable: false },
+            { id: 500, topic: "(2) Rectification of Fraud – Sec. 9", depth: 7, trackable: false },
+            { id: 501, topic: "(d) Lawyer’s Right to Compensation", depth: 6, trackable: false },
+            { id: 502, topic: "(1) Attorney’s Fees – Secs. 41-48", depth: 7, trackable: false },
+            { id: 503, topic: "(2) Attorney’s Lien – Sec. 47", depth: 7, trackable: false },
+            { id: 504, topic: "(e) Management of Client Resources", depth: 6, trackable: false },
+            { id: 505, topic: "(1) Lending and Borrowing – Sec. 52", depth: 7, trackable: false },
+            { id: 506, topic: "(2) Interest in Object of Litigation/Transaction – Sec. 51; NCC, Art. 1491(5)", depth: 7, trackable: false },
+            { id: 507, topic: "(3) Accounting and Management of Funds – Secs. 49 and 50", depth: 7, trackable: false },
+            { id: 508, topic: "(f) Keeping Client Confidences – Secs. 27-30", depth: 6, trackable: false },
+            { id: 509, topic: "(g) Duty to Provide Regular Updates – Canon IV, Sec. 6", depth: 6, trackable: false },
+            { id: 510, topic: "(h) Termination – Secs. 53-56", depth: 6, trackable: false },
+            { id: 511, topic: "(1) By the Lawyer", depth: 7, trackable: false },
+            { id: 512, topic: "(2) By the Client", depth: 7, trackable: false },
+            { id: 513, topic: "(3) By Death of Either Party", depth: 7, trackable: false },
+            { id: 514, topic: "(4) Accounting and Turnover of Funds", depth: 7, trackable: false },
+            { id: 515, topic: "iii. Conflict of Interest – Secs. 13-22", depth: 5, trackable: false },
+            { id: 516, topic: "iv. Responsibilities of Solo Practitioners – Canon II, Sec. 25", depth: 5, trackable: false },
+            { id: 517, topic: "v. Responsibilities of Law Firms and Legal Clinics – Secs. 10, 11, 20, and 40", depth: 5, trackable: false },
+            { id: 518, topic: "vi. Responsibilities of Government Lawyers and Prosecutors – Canon II, Secs. 28 and 29", depth: 5, trackable: false },
+            { id: 519, topic: "vii. General Duties of Confidentiality – Secs. 31 and 32", depth: 5, trackable: false },
+            { id: 520, topic: "viii. Limited Legal Services – Secs. 35-40", depth: 5, trackable: false },
+            { id: 521, topic: "e. Competence and Diligence – Canon IV", depth: 4, trackable: false },
+            { id: 522, topic: "i. General Duty of Competence – Sec. 1; Sec. 2, first sentence", depth: 5, trackable: false },
+            { id: 523, topic: "ii. Collaboration with other Counsel – Sec. 2", depth: 5, trackable: false },
+            { id: 524, topic: "iii. Avoidance of Delay – Sec. 3, first sentence; Secs. 4 and 7", depth: 5, trackable: false },
+            { id: 525, topic: "iv. Punctuality – Sec. 3, second sentence", depth: 5, trackable: false },
+            { id: 526, topic: "v. Responding to Inquiries – Sec. 5", depth: 5, trackable: false },
+            { id: 527, topic: "vi. Multiple Professions; Business – Secs. 9 and 10", depth: 5, trackable: false },
+            { id: 528, topic: "f. Equality – Canon V", depth: 4, trackable: false },
+            { id: 529, topic: "i. Non-discrimination – Secs. 1 and 4", depth: 5, trackable: false },
+            { id: 530, topic: "ii. Higher Standard of Service to Vulnerable Persons – Sec. 2", depth: 5, trackable: false },
+            { id: 531, topic: "iii. Representation of Indigents – Sec. 3", depth: 5, trackable: false },
+            { id: 532, topic: "8. Discipline and Disbarment of Lawyers – CPRA, Canon VI", depth: 3, trackable: false },
+            { id: 533, topic: "a. Nature of Bar Discipline Proceedings", depth: 4, trackable: false },
+            { id: 534, topic: "i. Non-penal; Public Welfare Measure", depth: 5, trackable: false },
+            { id: 535, topic: "ii. Not Subject to Desistance or Compromise – Sec. 16", depth: 5, trackable: false },
+            { id: 536, topic: "b. Institution of Bar Discipline Proceedings – Secs. 2, 3, and 30", depth: 4, trackable: false },
+            { id: 537, topic: "i. Against Government Lawyers – Sec. 6", depth: 5, trackable: false },
+            { id: 538, topic: "ii. Against Members of the Judiciary – Sec. 2", depth: 5, trackable: false },
+            { id: 539, topic: "c. Charges and Sanctions – Secs. 33-37", depth: 4, trackable: false },
+            { id: 540, topic: "d. Preventive Suspension – Sec. 31", depth: 4, trackable: false },
+            { id: 541, topic: "e. Quantum and Burden of Proof – Sec. 32", depth: 4, trackable: false },
+            { id: 542, topic: "f. Executory Nature of Decision or Resolution – Sec. 43", depth: 4, trackable: false },
+            { id: 543, topic: "g. Sworn Statement After Service of Suspension – Secs. 45 and 46", depth: 4, trackable: false },
+            { id: 544, topic: "h. Clemency – Secs. 47-51", depth: 4, trackable: false },
+            { id: 545, topic: "9. Notarial Practice – A.M. No. 02-8-13-SC, as amended", depth: 3, trackable: false },
+            { id: 546, topic: "a. Qualifications", depth: 4, trackable: false },
+            { id: 547, topic: "b. Term of Office", depth: 4, trackable: false },
+            { id: 548, topic: "c. Powers and Limitations", depth: 4, trackable: false },
+            { id: 549, topic: "d. Notarial Register", depth: 4, trackable: false },
+            { id: 550, topic: "e. Jurisdiction and Place of Notarization", depth: 4, trackable: false },
+            { id: 551, topic: "f. Competent Evidence of Identity", depth: 4, trackable: false },
+            { id: 552, topic: "g. Sanctions", depth: 4, trackable: false },
+            { id: 553, topic: "h. Remote Notarization – A.M. No. 20-07-04-SC, July 14, 2020", depth: 4, trackable: false },
+            { id: 554, topic: "B. Judicial Ethics", depth: 2, trackable: true },
+            { id: 555, topic: "1. Sources", depth: 3, trackable: false },
+            { id: 556, topic: "a. New Code of Judicial Conduct (NCJC) – A.M. No. 03-05-01-SC", depth: 4, trackable: false },
+            { id: 557, topic: "b. Bangalore Principles of Judicial Conduct 2002", depth: 4, trackable: false },
+            { id: 558, topic: "c. 1989 Code of Judicial Conduct (1989 CJC)", depth: 4, trackable: false },
+            { id: 559, topic: "d. Rules of Court", depth: 4, trackable: false },
+            { id: 560, topic: "2. Principles", depth: 3, trackable: false },
+            { id: 561, topic: "a. Independence – NCJC, Canon 1; 1989 CJC, Canon 1", depth: 4, trackable: false },
+            { id: 562, topic: "b. Integrity – NCJC, Canon 2; 1989 CJC, Canon 1, Rules 3.02 to 3.05", depth: 4, trackable: false },
+            { id: 563, topic: "c. Impartiality – NCJC, Canon 3; 1989 CJC, Canon 3", depth: 4, trackable: false },
+            { id: 564, topic: "d. Propriety – NCJC, Canon 4; 1989 CJC Canon 5, Rule 3.03,", depth: 4, trackable: false },
+            { id: 565, topic: "i. Conditions to Engage in Business – 1989 CJC, Canon 5, Rules 5.02 and 5.04", depth: 5, trackable: false },
+            { id: 566, topic: "ii. Conditions for Teaching – A.M. No. 13-05-05-SC; OCA Circular No. 218-2019", depth: 5, trackable: false },
+            { id: 567, topic: "iii. Purchase of Property in Litigation – NCC, Art. 1491(5)", depth: 5, trackable: false },
+            { id: 568, topic: "e. Equality – NCJC, Canon 5", depth: 4, trackable: false },
+            { id: 569, topic: "f. Competence and Diligence – NCJC, Canon 6; 1989 CJC, Canon 4, Rules 3.01 and 3.05", depth: 5, trackable: false },
+            { id: 570, topic: "3. Inhibition and Disqualification – Rules of Court, Rule 137; 1989 CJC, Rules 3.12 and 3.13", depth: 3, trackable: false },
+            { id: 571, topic: "4. Administration and Discipline of Judges", depth: 3, trackable: false },
+            { id: 572, topic: "a. Legal Basis – 1987 Constitution, Art. VIII, Secs. 5(5), 5(6), 6, 11, and Art. XI, Sec. 2; Rule 140, as amended by A.M. No. 21-08-09-SC", depth: 4, trackable: false },
+            { id: 573, topic: "b. Disciplinary Proceedings against Members of the Judiciary", depth: 4, trackable: false },
+            { id: 574, topic: "i. Impeachment – 1987 Constitution, Art. XI, Sec. 2", depth: 5, trackable: false },
+            { id: 575, topic: "ii. Complaint against Members of the Supreme Court – Rule 140, Sec. 1(3)", depth: 5, trackable: false },
+            { id: 576, topic: "iii. Judicial Disciplinary Proceedings – Rule 140", depth: 5, trackable: false },
+            { id: 577, topic: "(a) Institution – Secs. 1 and 2", depth: 6, trackable: false },
+            { id: 578, topic: "(b) Dual Nature – Sec. 4; A.M. No. 02-9-02-SC", depth: 6, trackable: false },
+            { id: 579, topic: "(c) Charges – Secs. 13-16", depth: 6, trackable: false },
+            { id: 580, topic: "(d) Sanctions – Secs. 17-23", depth: 6, trackable: false },
+            { id: 581, topic: "(e) Clemency", depth: 6, trackable: false },
+            { id: 582, topic: "X. PRACTICAL EXERCISES", depth: 1, trackable: false },
+            { id: 583, topic: "A. Promissory Note or Simple Loan Agreement", depth: 2, trackable: true },
+            { id: 584, topic: "B. Demand and Authorization Letters", depth: 2, trackable: true },
+            { id: 585, topic: "C. Sale Contract", depth: 2, trackable: true },
+            { id: 586, topic: "D. Lease Contract", depth: 2, trackable: true },
+            { id: 587, topic: "E. Special Power of Attorney", depth: 2, trackable: true },
+            { id: 588, topic: "F. Verification and Certification Against Forum Shopping", depth: 2, trackable: true },
+            { id: 589, topic: "G. Extra-judicial Settlement of Estate", depth: 2, trackable: true },
+            { id: 590, topic: "H. Judicial Affidavit", depth: 2, trackable: true },
+            { id: 591, topic: "I. Notarial Acts", depth: 2, trackable: true },
+            { id: 592, topic: "1. Jurat", depth: 3, trackable: false },
+            { id: 593, topic: "2. Acknowledgment", depth: 3, trackable: false },
+            { id: 594, topic: "3. Copy Certification", depth: 3, trackable: false },
+            { id: 595, topic: "J. Motions", depth: 2, trackable: true },
+            { id: 596, topic: "1. To Dismiss", depth: 3, trackable: false },
+            { id: 597, topic: "2. To Declare Defendant in Default", depth: 3, trackable: false },
+            { id: 598, topic: "3. Execution of Judgment", depth: 3, trackable: false },
+            { id: 599, topic: "K. Quitclaim in Labor Cases", depth: 2, trackable: true },
+            { id: 600, topic: "L. Information", depth: 2, trackable: true },
+            { id: 601, topic: "1. Consummated Crimes", depth: 3, trackable: false },
+            { id: 602, topic: "2. Frustrated Crimes", depth: 3, trackable: false },
+            { id: 603, topic: "3. Attempted Crimes", depth: 3, trackable: false }
+        ];
+
+        // Column names used for storage keys (corresponding to CSV columns 11-15)
+        const CHECKLIST_COLUMNS = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
+        const SYLLABUS_STORAGE_KEY = 'rem_ethics_progress';
+
         const COUNTDOWN_DATA = [
             { id: 1, targetDate: localStorage.getItem('comp_exam_date_1') || '2026-06-14' },
             { id: 2, targetDate: localStorage.getItem('comp_exam_date_2') || '2026-06-21' },
@@ -252,99 +1217,632 @@
             dateInput: document.getElementById('new-target-date'),
             saveBtn: document.getElementById('modal-save-btn'),
             cancelBtn: document.getElementById('modal-cancel-btn'),
-            errorMsg: document.getElementById('modal-error')
+            errorMsg: document.getElementById('modal-error'),
+            syllabusContainer: document.getElementById('syllabus-rem'),
+            progressDisplay: document.getElementById('progress-rem'),
+            progressDone: document.getElementById('progress-done'),
+            progressToRead: document.getElementById('progress-toread'),
+            progressBar: document.getElementById('progress-bar-rem'),
+            // New Elements for Features
+            importBtn: document.getElementById('import-progress-btn'),
+            exportBtn: document.getElementById('export-progress-btn'),
+            collapseBtn: document.getElementById('collapse-all-btn'),
+            fileUploadInput: document.getElementById('file-upload-input'),
+            messageModal: document.getElementById('message-modal'),
+            messageModalTitle: document.getElementById('message-modal-title'),
+            messageModalContent: document.getElementById('message-modal-content'),
+            messageModalCloseBtn: document.getElementById('message-modal-close-btn'),
         };
         
-        let currentEditingId = null; // To track which date we are currently editing
+        let currentEditingId = null; 
         
-        // === DATE FORMATTING UTILITY ===
+        // Pre-calculate which topics have children for the new collapsible feature
+        const TOPICS_WITH_CHILDREN = new Set();
+        REM_ETHICS_SYLLABUS.forEach((item, index) => {
+            const nextItem = REM_ETHICS_SYLLABUS[index + 1];
+            if (nextItem && nextItem.depth > item.depth) {
+                TOPICS_WITH_CHILDREN.add(item.id);
+            }
+        });
+        function hasChildren(topicId) {
+            return TOPICS_WITH_CHILDREN.has(topicId);
+        }
+        
+        // === SYLLABUS PROGRESS LOGIC ===
+
+        function getSyllabusProgress() {
+            try {
+                const saved = localStorage.getItem(SYLLABUS_STORAGE_KEY);
+                return saved ? JSON.parse(saved) : {};
+            } catch (e) {
+                console.error("Error loading syllabus progress:", e);
+                return {};
+            }
+        }
+
+        function saveSyllabusProgress(progressData) {
+            localStorage.setItem(SYLLABUS_STORAGE_KEY, JSON.stringify(progressData));
+            updateOverallProgress();
+        }
+
+        function handleCheckboxChange(event) {
+            const checkbox = event.target;
+            const id = checkbox.dataset.id;
+            const column = checkbox.dataset.column;
+            const isChecked = checkbox.checked;
+
+            const progressData = getSyllabusProgress();
+            
+            if (!progressData[id]) {
+                progressData[id] = {};
+            }
+            progressData[id][column] = isChecked;
+
+            // Re-render the panel to update the row/section tick-all icons instantly
+            saveSyllabusProgress(progressData);
+            renderSyllabusPanel();
+        }
+
+        function getTopicStatus(topicId, progressData) {
+            const topic = REM_ETHICS_SYLLABUS.find(t => t.id === topicId);
+            if (!topic) return 0;
+
+            if (topic.depth === 1) {
+                let sectionBoxesTotal = 0;
+                let sectionBoxesChecked = 0;
+                const startIndex = REM_ETHICS_SYLLABUS.findIndex(t => t.id === topicId);
+                
+                for (let i = startIndex; i < REM_ETHICS_SYLLABUS.length; i++) {
+                    const currentItem = REM_ETHICS_SYLLABUS[i];
+                    if (i > startIndex && currentItem.depth <= topic.depth) break;
+                    
+                    if (currentItem.depth === 2 && currentItem.trackable) { 
+                        const prog = progressData[currentItem.id] || {};
+                        CHECKLIST_COLUMNS.forEach(col => {
+                            sectionBoxesTotal++;
+                            if (prog[col] === true) sectionBoxesChecked++;
+                        });
+                    }
+                }
+                if (sectionBoxesTotal === 0) return 0;
+                if (sectionBoxesChecked === sectionBoxesTotal) return 2;
+                if (sectionBoxesChecked > 0) return 1;
+                return 0;
+            } else if (topic.trackable) {
+                const topicProgress = progressData[topicId] || {};
+                const checkedCount = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
+                if (checkedCount === CHECKLIST_COLUMNS.length) return 2;
+                if (checkedCount > 0) return 1;
+                return 0;
+            }
+            return 0;
+        }
+
+        function handleTickAll(topicId) {
+            const progressData = getSyllabusProgress();
+            let topicsToUpdate = [];
+            const currentStatus = getTopicStatus(topicId, progressData);
+            const targetState = (currentStatus === 2) ? false : true; 
+
+            const item = REM_ETHICS_SYLLABUS.find(t => t.id === topicId);
+            if (!item) return;
+
+            const startDepth = item.depth;
+            const startIndex = REM_ETHICS_SYLLABUS.findIndex(t => t.id === topicId);
+            
+            if (startDepth === 2 && item.trackable) {
+                topicsToUpdate.push(item);
+            } else if (startDepth === 1) {
+                for (let i = startIndex; i < REM_ETHICS_SYLLABUS.length; i++) {
+                    const currentItem = REM_ETHICS_SYLLABUS[i];
+                    if (i > startIndex && currentItem.depth <= startDepth) break;
+                    
+                    if (currentItem.depth === 2 && currentItem.trackable) {
+                        topicsToUpdate.push(currentItem);
+                    }
+                }
+            }
+
+            topicsToUpdate.forEach(topic => {
+                const id = topic.id;
+                if (!progressData[id]) {
+                    progressData[id] = {};
+                }
+                CHECKLIST_COLUMNS.forEach(col => {
+                    progressData[id][col] = targetState;
+                });
+            });
+
+            saveSyllabusProgress(progressData);
+            renderSyllabusPanel();
+        }
+
+        function updateOverallProgress() {
+            const progressData = getSyllabusProgress();
+            const mainTopics = REM_ETHICS_SYLLABUS.filter(t => t.depth === 2 && t.trackable);
+            
+            let topicsDoneCount = 0;
+            let topicsToReadCount = 0;
+            const columnProgress = CHECKLIST_COLUMNS.map(() => 0);
+            const totalMainTopics = mainTopics.length;
+            
+            mainTopics.forEach(topic => {
+                const topicProgress = progressData[topic.id] || {};
+                let boxesTicked = 0;
+
+                CHECKLIST_COLUMNS.forEach((col, index) => {
+                    if (topicProgress[col] === true) {
+                        boxesTicked++;
+                        columnProgress[index]++;
+                    }
+                });
+
+                if (boxesTicked >= 3) {
+                    topicsDoneCount++;
+                } else {
+                    topicsToReadCount++;
+                }
+            });
+
+            const overallProgressPercentage = (totalMainTopics > 0) 
+                ? ((topicsDoneCount / totalMainTopics) * 100).toFixed(1)
+                : 0.0;
+            
+            let barColor;
+            if (overallProgressPercentage <= 25) {
+                barColor = '#ef4444';
+            } else if (overallProgressPercentage <= 50) {
+                barColor = '#f97316';
+            } else if (overallProgressPercentage <= 75) {
+                barColor = '#facc15';
+            } else {
+                barColor = '#10b981';
+            }
+
+            const progressRemElement = document.getElementById('progress-rem');
+            if (progressRemElement) {
+                progressRemElement.textContent = `(${overallProgressPercentage}%)`;
+            }
+            
+            DOM_ELEMENTS.progressDone.textContent = topicsDoneCount;
+            DOM_ELEMENTS.progressToRead.textContent = topicsToReadCount;
+            
+            if (DOM_ELEMENTS.progressBar) {
+                 DOM_ELEMENTS.progressBar.style.width = `${overallProgressPercentage}%`;
+                 DOM_ELEMENTS.progressBar.style.backgroundColor = barColor;
+            }
+
+            const columnHeaderNames = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
+            columnProgress.forEach((tickedCount, index) => {
+                const elementId = `col-progress-bar-${columnHeaderNames[index]}`;
+                const percentElementId = `col-percent-${columnHeaderNames[index]}`; 
+                const barElement = document.getElementById(elementId);
+                const percentElement = document.getElementById(percentElementId); 
+                
+                if (barElement) {
+                    const colPercentage = (totalMainTopics > 0) 
+                        ? ((tickedCount / totalMainTopics) * 100).toFixed(1)
+                        : 0.0;
+                    barElement.style.width = `${colPercentage}%`;
+
+                    if (percentElement) {
+                        percentElement.textContent = `${colPercentage}%`;
+                    }
+                }
+            });
+        }
+        
+        function renderSyllabusPanel() {
+            if (!DOM_ELEMENTS.syllabusContainer) return;
+
+            // Capture the open state of all sections BEFORE rerender
+            const openSections = {};
+            document.querySelectorAll('.syllabus-panel details, .depth2-details').forEach(details => {
+                if (details.id) { openSections[details.id] = details.open; }
+            });
+            
+            // Update main summary chevron state based on current main details state
+            const mainDetails = document.querySelector('.syllabus-panel');
+            const mainChevron = document.querySelector('.main-summary-chevron');
+            if (mainDetails && mainChevron) {
+                mainChevron.style.transform = mainDetails.open ? 'rotate(90deg)' : 'rotate(0deg)';
+            }
+
+            const progress = getSyllabusProgress();
+            let html = '';
+            let currentSectionOpen = false; // Tracks if a DEPTH 1 section is open
+            let isDepth2Open = false; // Tracks if a collapsible DEPTH 2 section is currently open
+
+            REM_ETHICS_SYLLABUS.forEach((item, index) => {
+                const topicId = item.id;
+                const nextItem = REM_ETHICS_SYLLABUS[index + 1];
+
+                const currentStatus = getTopicStatus(topicId, progress);
+                const iconName = (currentStatus === 2) ? 'circle-dot' : (currentStatus === 1 ? 'circle-half' : 'circle');
+                const iconColor = (currentStatus === 2) ? 'checked' : (currentStatus === 1 ? 'partial' : 'empty');
+                const iconSize = item.depth === 1 ? 'w-5 h-5' : 'w-4 h-4'; 
+                const iconTitle = (currentStatus === 2) ? 'Clear All' : (currentStatus === 1 ? 'Clear All' : 'Tick All');
+
+                if (item.depth === 1) {
+                    // ------------------------------------
+                    // 1. DEPTH 1: MAJOR SECTION
+                    // ------------------------------------
+                    
+                    // Close previous DEPTH 2 block if it was open
+                    if (isDepth2Open) {
+                        html += `</div></details></div>`; // Close .depth3-content-wrapper, </details>, .depth2-details
+                        isDepth2Open = false;
+                    }
+                    
+                    // Close previous DEPTH 1 section if it was open
+                    if (currentSectionOpen) {
+                        html += `</div></details></div>`; // Close DEPTH 1 content div and details tag
+                    }
+
+                    // Start new DEPTH 1 collapsible section
+                    const sectionId = `section-${item.id}`;
+                    const isOpen = (openSections[sectionId] === true) || (item.id === 1 && openSections[sectionId] !== false); 
+                    const openAttr = isOpen ? 'open' : '';
+
+                    html += `
+                        <div class="syllabus-sub-section">
+                            <details id="${sectionId}" class="w-full" ${openAttr}>
+                                <summary class="topic-header">
+                                    <div class="topic-header-text">
+                                        <i data-lucide="chevron-right" class="w-4 h-4 mr-2 chevron-icon"></i>
+                                        <span class="font-extrabold text-lg text-black/90">${item.topic}</span>
+                                    </div>
+                                    <i data-lucide="${iconName}" 
+                                       class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" 
+                                       title="${iconTitle}"
+                                       onclick="handleTickAll(${item.id}); event.stopPropagation(); event.preventDefault();"></i>
+                                </summary>
+                                <div class="p-2">
+                    `;
+                    currentSectionOpen = true;
+
+                } else if (item.depth === 2 && item.trackable) {
+                    // ------------------------------------
+                    // 2. DEPTH 2: TRACKABLE TOPIC
+                    // ------------------------------------
+                    
+                    const topicProgress = progress[topicId] || {};
+                    const isCollapsible = hasChildren(topicId);
+                    
+                    // Close previous DEPTH 2 block if it was open AND the current item is NOT its child
+                    if (isDepth2Open && !isCollapsible) {
+                        html += `</div></details></div>`; // Close .depth3-content-wrapper, </details>, .depth2-details
+                        isDepth2Open = false;
+                    }
+
+                    const checklist = CHECKLIST_COLUMNS.map(col => {
+                        const checked = topicProgress[col] === true ? 'checked' : '';
+                        return `
+                            <div class="flex justify-center">
+                                <input type="checkbox" data-id="${topicId}" data-column="${col}" ${checked} class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500 syllabus-checkbox">
+                            </div>
+                        `;
+                    }).join('');
+
+                    let rowContent = `
+                        <!-- MODIFIED: Wrapped content in topic-content-wrapper for consistent vertical centering and initial padding adjustment -->
+                        <div class="col-span-1 font-trackable-lg">
+                            <div class="topic-content-wrapper" style="padding-left: 1.5rem;"> 
+                                <!-- Chevron for DEPTH 2 collapse/expand, only if it has children -->
+                                ${isCollapsible ? `<i data-lucide="chevron-right" class="w-3 h-3 depth2-chevron"></i>` : `<span class="w-3 h-3 mr-2 inline-block"></span>`}
+                                ${item.topic}
+                            </div>
+                        </div>
+                        ${checklist}
+                        <div class="flex items-center justify-center space-x-1 pl-2">
+                            <i data-lucide="${iconName}" 
+                               class="tick-all-icon w-4 h-4 ${iconColor}" 
+                               title="${iconTitle}"
+                               onclick="handleTickAll(${item.id}); event.stopPropagation(); event.preventDefault();"></i>
+                        </div>
+                    `;
+                    
+                    if (isCollapsible) {
+                        const depth2Id = `depth2-${item.id}`;
+                        const isOpen = openSections[depth2Id] === true;
+                        const openAttr = isOpen ? 'open' : '';
+                        
+                        html += `<div class="depth2-details">`;
+                        html += `<details id="${depth2Id}" class="w-full" ${openAttr}>`;
+                        html += `<summary class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</summary>`;
+                        html += `<div class="depth3-content-wrapper pt-1 pb-2">`; 
+                        isDepth2Open = true;
+                    } else {
+                        html += `<div class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</div>`;
+                    }
+
+
+                } else if (item.depth >= 3) {
+                    // ------------------------------------
+                    // 3. DEPTH 3+ : UNTRACKABLE SUB-TOPICS
+                    // ------------------------------------
+                    
+                    // Adjusted padding for depth 3+ to start farther in, compensating for the parent grid row structure
+                    // Old: ((item.depth - 2) * 1.25) + 2.5; 
+                    // New: (depth - 3) * 1.25rem + (2.5rem + 1.5rem + 0.5rem)
+                    const dynamicPadding = ((item.depth - 3) * 1.25) + 4.5; 
+                    const fontStyle = item.depth <= 4 ? 'font-medium' : 'font-normal'; 
+                    
+                    html += `<div class="p-1 border-b border-black/10 text-black/70 italic ${fontStyle} text-sm" style="padding-left: ${dynamicPadding}rem;">${item.topic}</div>`;
+                }
+                
+                // Final closing logic for the depth 2 collapsible block
+                if (item.depth >= 3 && isDepth2Open && (!nextItem || nextItem.depth <= 2)) {
+                    html += `</div></details></div>`; // Close .depth3-content-wrapper, </details>, .depth2-details
+                    isDepth2Open = false;
+                }
+            });
+
+            // Close the very last DEPTH 1 section
+            if (currentSectionOpen) {
+                if (isDepth2Open) {
+                    html += `</div></details></div>`; // Close final DEPTH 2 block
+                }
+                html += `</div></details></div>`; // Close final DEPTH 1 block
+            }
+
+            DOM_ELEMENTS.syllabusContainer.innerHTML = html;
+
+            // Re-attach listeners to newly rendered elements
+            document.querySelectorAll('.syllabus-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', handleCheckboxChange);
+            });
+            
+            // Re-attach toggle listener to newly rendered Depth 2 details elements
+            document.querySelectorAll('.depth2-details details').forEach(details => {
+                 details.addEventListener('toggle', (event) => {
+                     if (lucide && lucide.createIcons) {
+                        lucide.createIcons();
+                     }
+                 });
+             });
+
+
+            // Rerender icons after updating content
+            if (lucide && lucide.createIcons) {
+                lucide.createIcons();
+            }
+
+            updateOverallProgress();
+            updateCollapseButtonText();
+        }
+        
+        function handleMainPanelToggle() {
+            const mainChevron = document.querySelector('.main-summary-chevron');
+            const mainDetails = document.querySelector('.syllabus-panel');
+
+            if (mainDetails.open) {
+                mainChevron.style.transform = 'rotate(90deg)';
+            } else {
+                mainChevron.style.transform = 'rotate(0deg)';
+            }
+        }
+        
+        // === IMPORT / EXPORT / COLLAPSE LOGIC ===
+        
+        function downloadFile(data, filename, type) {
+            const blob = new Blob([data], { type: type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function showMessageModal(title, content) {
+            const modal = document.getElementById('message-modal');
+            const titleEl = document.getElementById('message-modal-title');
+            const contentEl = document.getElementById('message-modal-content');
+            
+            if (titleEl) titleEl.textContent = title;
+            if (contentEl) contentEl.innerHTML = content;
+            
+            const actionsEl = document.getElementById('modal-actions');
+            if (actionsEl) {
+                 actionsEl.innerHTML = `
+                     <button id="message-modal-close-btn" class="px-3 py-1.5 text-sm font-semibold bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-150">Close</button>
+                 `;
+            }
+            
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.style.display = 'flex';
+                document.getElementById('message-modal-close-btn')?.addEventListener('click', closeMessageModal);
+            }
+        }
+        
+        function closeMessageModal() {
+            const modal = document.getElementById('message-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.style.display = 'none';
+            }
+        }
+
+        function exportProgress() {
+            const progressData = localStorage.getItem(SYLLABUS_STORAGE_KEY);
+            
+            if (!progressData || progressData === '{}') {
+                showMessageModal("Download Failed", "<p class='text-red-600'>No progress data found to download.</p>");
+                return;
+            }
+
+            downloadFile(progressData, 'rem-ethics-progress.json', 'application/json');
+            showMessageModal("Download Complete", "<p class='text-green-600'>Your progress has been downloaded as **rem-ethics-progress.json**.</p>");
+        }
+
+        function importProgress() {
+            DOM_ELEMENTS.fileUploadInput.click();
+        }
+
+        function handleFileUpload(event) {
+            const file = event.target.files[0];
+
+            if (!file) {
+                showMessageModal("Upload Canceled", "No file was selected for upload.");
+                return;
+            }
+
+            if (file.type !== 'application/json' && !file.name.endsWith('.json')) {
+                showMessageModal("Upload Error", `<p class='text-red-600'>Invalid file type. Please upload a **.json** file.</p>`);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const jsonString = e.target.result;
+                try {
+                    const importedData = JSON.parse(jsonString);
+                    if (typeof importedData !== 'object' || importedData === null) {
+                        throw new Error("Invalid JSON structure.");
+                    }
+                    
+                    saveSyllabusProgress(importedData); 
+                    renderSyllabusPanel();
+                    showMessageModal("Success!", "<p class='text-green-600'>Progress successfully uploaded and applied.</p>");
+
+                } catch (e) {
+                    console.error("Import error:", e);
+                    showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON.</p>`);
+                }
+            };
+            reader.onerror = function() {
+                showMessageModal("Upload Error", `<p class='text-red-600'>Error reading the file.</p>`);
+            };
+            
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        function toggleAllSections() {
+            // Include both Depth 1 (.syllabus-panel details) and Depth 2 (.depth2-details details) elements
+            const allDetails = document.querySelectorAll('.syllabus-panel details, .depth2-details details');
+            
+            // Check if ANY section is currently CLOSED. If yes, the goal is to OPEN ALL.
+            let shouldOpen = false;
+            for (const details of allDetails) {
+                if (!details.open) {
+                    shouldOpen = true;
+                    break;
+                }
+            }
+
+            allDetails.forEach(details => {
+                details.open = shouldOpen;
+            });
+            
+            if (lucide && lucide.createIcons) {
+                 lucide.createIcons();
+            }
+            updateCollapseButtonText(shouldOpen);
+        }
+
+        function updateCollapseButtonText(isOpen) {
+            const btn = DOM_ELEMENTS.collapseBtn;
+            if (btn) {
+                if (typeof isOpen === 'undefined') {
+                    const allDetails = document.querySelectorAll('.syllabus-panel details, .depth2-details details');
+                    let anyClosed = false;
+                    for (const details of allDetails) {
+                        if (!details.open) {
+                            anyClosed = true;
+                            break;
+                        }
+                    }
+                    isOpen = !anyClosed;
+                }
+                const iconName = isOpen ? 'chevrons-up' : 'chevrons-down';
+                const text = isOpen ? 'Collapse All' : 'Expand All';
+
+                btn.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4 mr-1"></i> ${text}`;
+                
+                if (!btn.classList.contains('flex')) {
+                    btn.classList.add('flex', 'items-center', 'justify-center');
+                }
+
+                if (lucide && lucide.createIcons) {
+                    lucide.createIcons();
+                }
+            }
+        }
+
+        // === DATE FORMATTING / COUNTDOWN LOGIC (Untouched) ===
         function formatUniqueDate(dateString) {
             if (!dateString) return '';
             const date = new Date(dateString + 'T00:00:00');
-            const formattedDate = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
-            
-            return formattedDate; // Just return the text, HTML structure is now in the template
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
         }
-
-        // === TIME UTILITIES ===
         function formatNumber(num) {
-            return num.toString().padStart(2, '0');
+            return num.toString().padStart(num >= 100 ? 3 : 2, '0');
         }
-
         function calculateCountdown(targetDateString, id) {
             const now = new Date();
-            const target = new Date(targetDateString);
+            const target = new Date(targetDateString + 'T00:00:00Z'); 
             
-            // Check if the target date is in the past
             if (target <= now) {
-                document.getElementById(`days-${id}`).textContent = '000';
-                document.getElementById(`hrs-${id}`).textContent = '00';
-                document.getElementById(`mins-${id}`).textContent = '00';
-                document.getElementById(`secs-${id}`).textContent = '00'; 
-                return; 
+                const elements = [`days-${id}`, `hrs-${id}`, `mins-${id}`, `secs-${id}`];
+                elements.forEach(elId => {
+                    const el = document.getElementById(elId);
+                    if (el) el.textContent = (elId === `days-${id}`) ? '000' : '00';
+                });
+                return;
             }
             
             const diffInMilliseconds = target - now;
-            
             const days = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
             const hours = Math.floor((diffInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((diffInMilliseconds % (1000 * 60)) / 1000); 
 
-
-            // Update DOM
             document.getElementById(`days-${id}`).textContent = formatNumber(days);
             document.getElementById(`hrs-${id}`).textContent = formatNumber(hours);
             document.getElementById(`mins-${id}`).textContent = formatNumber(minutes);
             document.getElementById(`secs-${id}`).textContent = formatNumber(seconds); 
-
         }
-
         function updateAllCountdowns() {
             COUNTDOWN_DATA.forEach(data => {
                 calculateCountdown(data.targetDate, data.id);
             });
         }
-        
-        // === MODAL CONTROL ===
         function openModal(id) {
             currentEditingId = id;
             const data = COUNTDOWN_DATA.find(d => d.id === id);
             
-            DOM_ELEMENTS.modalTitle.textContent = `Edit Target Date - Day ${id}`;
-            DOM_ELEMENTS.dateInput.value = data.targetDate;
-            DOM_ELEMENTS.errorMsg.classList.add('hidden');
-            DOM_ELEMENTS.modal.classList.remove('hidden');
-            DOM_ELEMENTS.modal.style.display = 'flex';
+            document.getElementById('modal-title').textContent = `Edit Target Date - Day ${id}`;
+            document.getElementById('new-target-date').value = data.targetDate;
+            document.getElementById('modal-error').classList.add('hidden');
+            document.getElementById('date-edit-modal').classList.remove('hidden');
+            document.getElementById('date-edit-modal').style.display = 'flex';
         }
-
         function closeModal() {
-            DOM_ELEMENTS.modal.classList.add('hidden');
-            DOM_ELEMENTS.modal.style.display = 'none';
+            document.getElementById('date-edit-modal').classList.add('hidden');
+            document.getElementById('date-edit-modal').style.display = 'none';
             currentEditingId = null;
         }
-
         function saveModal() {
-            const newDateString = DOM_ELEMENTS.dateInput.value;
+            const newDateString = document.getElementById('new-target-date').value;
             const newDate = new Date(newDateString);
             const now = new Date();
 
             if (newDate <= now || !newDateString) {
-                DOM_ELEMENTS.errorMsg.textContent = "Please select a future date.";
-                DOM_ELEMENTS.errorMsg.classList.remove('hidden');
+                document.getElementById('modal-error').textContent = "Please select a future date.";
+                document.getElementById('modal-error').classList.remove('hidden');
                 return;
             }
 
             const data = COUNTDOWN_DATA.find(d => d.id === currentEditingId);
             if (data) {
                 data.targetDate = newDateString;
-                
-                // Update display text on the card
                 document.querySelector(`#target-date-display-${currentEditingId} .date-text`).textContent = formatUniqueDate(newDateString);
-                
-                // Save to local storage
                 localStorage.setItem(`comp_exam_date_${currentEditingId}`, newDateString);
-
                 updateAllCountdowns();
             }
             closeModal();
@@ -352,36 +1850,42 @@
 
         // === INITIALIZATION ===
         window.onload = () => {
-            // Load saved dates from localStorage first
             COUNTDOWN_DATA.forEach(data => {
                 const savedDate = localStorage.getItem(`comp_exam_date_${data.id}`);
-                const finalDate = savedDate || data.targetDate; // Use saved or default
-
+                const finalDate = savedDate || data.targetDate; 
                 if (finalDate) {
                     data.targetDate = finalDate;
-                    
-                    // Format and update the initial display text on the card
                     document.querySelector(`#target-date-display-${data.id} .date-text`).textContent = formatUniqueDate(finalDate);
                 }
             });
             
-            // Render Lucide Icons
+            renderSyllabusPanel();
+
             if (lucide && lucide.createIcons) {
                 lucide.createIcons();
             }
+            
+            const mainDetails = document.querySelector('.syllabus-panel');
+            if (mainDetails) {
+                mainDetails.addEventListener('toggle', handleMainPanelToggle);
+            }
 
-            // Start the countdown timer
             updateAllCountdowns();
-            setInterval(updateAllCountdowns, 1000); /* MODIFIED: Update every second for dynamic seconds display */
+            setInterval(updateAllCountdowns, 1000); 
 
-            // Attach listeners to the display elements
             document.getElementById('target-date-display-1').addEventListener('click', () => openModal(1));
             document.getElementById('target-date-display-2').addEventListener('click', () => openModal(2));
             document.getElementById('target-date-display-3').addEventListener('click', () => openModal(3));
 
-            // Attach modal button listeners
-            DOM_ELEMENTS.saveBtn.addEventListener('click', saveModal);
-            DOM_ELEMENTS.cancelBtn.addEventListener('click', closeModal);
+            document.getElementById('modal-save-btn').addEventListener('click', saveModal);
+            document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
+            
+            document.getElementById('export-progress-btn').addEventListener('click', exportProgress);
+            document.getElementById('import-progress-btn').addEventListener('click', importProgress);
+            document.getElementById('collapse-all-btn').addEventListener('click', toggleAllSections);
+            
+            DOM_ELEMENTS.fileUploadInput.addEventListener('change', handleFileUpload);
+            document.getElementById('message-modal-close-btn').addEventListener('click', closeMessageModal);
         };
     </script>
 </body>
