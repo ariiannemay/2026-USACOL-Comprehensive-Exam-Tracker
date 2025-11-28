@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 Exam Tracker</title>
+    <title>University of San Agustin Comprehensive Exam Countdown</title>
     <link rel="icon" href="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/usacol%20logo.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -109,8 +109,11 @@
             border-bottom: 1px dashed #e5e7eb;
         }
 
+        /* ****************************************************** */
+        /* DEPTH 2 CUSTOMIZATION POINTS (Indentation and Font) */
+        /* ****************************************************** */
         .checklist-grid>div:first-child {
-            padding-left: 1.0rem;
+            padding-left: 1.0rem; /* Indentation for depth 2 items */
             font-size: .875rem;
             color: #374151;
             display: flex;
@@ -118,6 +121,18 @@
             align-items: flex-start;
             justify-content: center;
         }
+        
+        .font-trackable-lg {
+            font-size: 1rem;    /* Size of trackable topic name text */
+            font-weight: 600;
+        }
+        
+        /* New Style for Percentage Display */
+        .progress-percent-bold {
+            font-weight: 700; /* Make it bold */
+            font-size: .8rem; 
+        }
+        /* ****************************************************** */
 
         /* Subject Themes */
         /* COMMERCIAL Law (Yellow Theme) */
@@ -372,11 +387,6 @@
             transform: rotate(90deg);
         }
 
-        .font-trackable-lg {
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
         .topic-content-wrapper {
             display: flex;
             align-items: flex-start;
@@ -597,14 +607,13 @@
 
         <!-- 4. SUBJECT TRACKERS (Dynamic Content) -->
         <div id="subject-trackers-container" class="space-y-4">
-            <!-- Subject panels will be dynamically injected here by the JS modules -->
-             <!-- Placeholders for quick loading/injection point for the factory logic -->
+            <!-- Subject panels will be dynamically injected here by the JS modules in this order: rem, crim, lab, civ, comm, poli -->
             <div id="subject-tracker-panel-rem"></div>
             <div id="subject-tracker-panel-crim"></div>
             <div id="subject-tracker-panel-lab"></div>
             <div id="subject-tracker-panel-civ"></div>
             <div id="subject-tracker-panel-comm"></div>
-            <div id="subject-tracker-panel-poli"></div> <!-- Use a clean injection point here -->
+            <div id="subject-tracker-panel-poli"></div> 
         </div>
         
     </div>
@@ -836,7 +845,13 @@
                 document.getElementById(`progress-toread-${subjectName}`) && (document.getElementById(`progress-toread-${subjectName}`).textContent = topicsToReadCount);
                 
                 const progressElement = document.getElementById(`progress-${subjectName}`);
-                if (progressElement) progressElement.textContent = `(${overallProgressPercentage}%)`;
+                if (progressElement) {
+                    // *** FIX: Remove brackets and apply custom bold class ***
+                    progressElement.textContent = `${overallProgressPercentage}%`;
+                    progressElement.classList.remove('font-light'); // Remove tailwind font-light class if present
+                    progressElement.classList.add('progress-percent-bold'); // Apply custom bold style
+                    // *******************************************************
+                }
                 
                 const progressBar = document.getElementById(`progress-bar-${subjectName}`);
                 if (progressBar) {
@@ -928,7 +943,8 @@
                         if (currentSectionOpen) { html += `</div></details></div>`; }
                         
                         const sectionId = `${subjectName}-section-${item.id}`;
-                        const isOpen = openSections[sectionId] === true || (index === 0 && openSections[sectionId] !== false);
+                        // This ensures default state is collapsed unless explicitly saved as open
+                        const isOpen = openSections[sectionId] === true; 
                         const openAttr = isOpen ? 'open' : '';
                         
                         html += `\n<div class="syllabus-sub-section"><details id="${sectionId}" class="w-full" ${openAttr}><summary class="topic-header"><div class="topic-header-text"><i data-lucide="chevron-right" class="w-4 h-4 mr-2 chevron-icon"></i><span class="font-extrabold text-lg text-black/90">${item.topic}</span></div><i data-lucide="${iconName}" class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></summary><div class="p-2">\n`;
@@ -1150,7 +1166,7 @@
                                     <div class="progress-bar-container">
                                         <div id="progress-bar-${subjectName}" class="progress-bar" style="width: 0%;"></div>
                                     </div>
-                                    <span id="progress-${subjectName}" class="font-light">(0.0%)</span>
+                                    <span id="progress-${subjectName}" class="progress-percent-bold">(0.0%)</span>
                                 </div>
                             </div>
                         </summary>
@@ -1241,7 +1257,6 @@
             });
 
             // 2. Load Subject Panels (This is the load sequence, ensuring the correct order)
-            // Note: The loading order here determines the order they appear on the page.
             loadSubjectPanel('rem', 'rem_logic.js');
             loadSubjectPanel('crim', 'crim_logic.js');
             loadSubjectPanel('lab', 'lab_logic.js');
