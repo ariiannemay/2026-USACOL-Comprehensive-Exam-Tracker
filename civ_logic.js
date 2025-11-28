@@ -12,13 +12,5 @@ const SUBJECT_ICON_CIV = 'building';
 // 3. Create Logic Instance
 const CIV_LOGIC = window.createSyllabusLogic(SUBJECT_NAME_CIV, CIV_SYLLABUS, SYLLABUS_STORAGE_KEY_CIV, SUBJECT_ICON_CIV, SUBJECT_TITLE_CIV);
 
-// 4. [DELETED DUE TO DASHBAORD UPDATE] Inject Panel HTML into the main container in index.html
-// document.addEventListener('DOMContentLoaded', () => {
-//     const container = document.getElementById('subject-trackers-container');
-//     if (container) {
-//         container.innerHTML += CIV_LOGIC.getPanelHtml(SUBJECT_NAME_CIV, SUBJECT_TITLE_CIV, SUBJECT_ICON_CIV);
-//     }
-// });
-
 // 5. Expose Logic Globally (needed for index.html onload to attach to map)
 window.createCIV_LOGIC = () => CIV_LOGIC;
