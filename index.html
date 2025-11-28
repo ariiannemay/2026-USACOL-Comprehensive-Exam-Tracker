@@ -1754,9 +1754,13 @@
                         isOpen = allOpen;
                     }
                     const iconName = isOpen ? 'chevrons-up' : 'chevrons-down';
-                    const text = isOpen ? 'Collapse All' : 'Expand All';
-                    btn.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4 mr-1"></i> ${text}`;
-                    if (!btn.classList.contains('flex')) { btn.classList.add('flex', 'items-center', 'justify-center'); }
+                    // REMOVE TEXT AND USE ICON ONLY
+                    btn.innerHTML = `<i data-lucide="${iconName}" class="w-5 h-5"></i>`; // Larger icon
+                    
+                    // Add utility classes to make it look like a floating action button
+                    btn.classList.remove('px-3', 'py-1', 'whitespace-nowrap', 'text-xs', 'mr-1');
+                    btn.classList.add('w-8', 'h-8', 'p-0', 'flex', 'items-center', 'justify-center', 'shadow-md'); 
+
                     if (lucide && lucide.createIcons) { lucide.createIcons(); }
                 }
             }
@@ -1799,12 +1803,14 @@
                             </div>
                         </summary>
                         <div class="syllabus-content">
-                            <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-2 status-message-row border-b border-gray-200">
-                                <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
+                            <!-- MODIFIED LAYOUT START -->
+                            <div class="w-full flex justify-between items-end pb-1 border-b border-gray-200">
+                                <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap"></div>
+                                <!-- REMOVED UPLOAD/DOWNLOAD BUTTONS -->
                                 <div class="flex flex-wrap gap-2">
-                                    <button id="import-progress-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="upload" class="w-4 h-4 mr-1 inline-block"></i> Upload Progress</button>
-                                    <button id="export-progress-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="download" class="w-4 h-4 mr-1 inline-block"></i> Download Progress</button>
-                                    <button id="collapse-all-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap"><i data-lucide="chevrons-up" class="w-4 h-4 mr-1"></i> Collapse All</button>
+                                    <button id="collapse-all-btn-${subjectName}" class="w-8 h-8 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
+                                        <i data-lucide="chevrons-down" class="w-5 h-5"></i>
+                                    </button>
                                 </div>
                             </div>
                             <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
@@ -1816,6 +1822,10 @@
                                 <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
                                 <div></div>
                             </div>
+                            <!-- NEW: Insert the helper message directly after the header -->
+                            <div class="text-xs font-semibold text-gray-700 italic leading-snug pt-2 px-1 mb-1">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
+                            <!-- MODIFIED LAYOUT END -->
+                            
                             <div id="syllabus-${subjectName}" class="text-xs"></div>
                         </div>
                     </details>
