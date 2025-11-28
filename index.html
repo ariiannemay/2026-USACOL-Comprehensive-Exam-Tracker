@@ -604,20 +604,7 @@
             <div id="subject-tracker-panel-lab"></div>
             <div id="subject-tracker-panel-civ"></div>
             <div id="subject-tracker-panel-comm"></div>
-            <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container syllabus-panel-poli" id="subject-tracker-panel-poli">
-                <div class="syllabus-summary p-4">
-                    <div class="syllabus-summary-title-row">
-                        <div class="flex items-center">
-                            <i data-lucide="gavel" class="w-6 h-6 mr-3"></i>POLITICAL AND PUBLIC INTERNATIONAL LAW
-                        </div>
-                        <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
-                    </div>
-                    <div class="text-white text-sm">
-                        <p class="font-bold">Subject 6 (POLI) Loading...</p>
-                        <p class="font-light mt-1">Ready to receive syllabus data when provided.</p>
-                    </div>
-                </div>
-            </div>
+            <div id="subject-tracker-panel-poli"></div> <!-- Use a clean injection point here -->
         </div>
         
     </div>
@@ -1134,173 +1121,6 @@
                 }
             }
             
-            function getPanelHtml(subjectName, title, icon) {
-                const themeClass = `syllabus-panel-${subjectName}`;
-                const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
-                const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
-                
-                return `
-                <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container ${themeClass}" id="subject-tracker-panel-${subjectName}">
-                    <details class="syllabus-panel" open>
-                        <summary class="syllabus-summary" id="summary-${subjectName}">
-                            <div class="syllabus-summary-title-row">
-                                <div class="flex items-center">
-                                    <i data-lucide="${icon}" class="w-6 h-6 mr-3"></i>${title}
-                                </div>
-                                <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
-                            </div>
-                            <div class="syllabus-progress-metrics text-xs">
-                                <div class="progress-stats">
-                                    <span class="flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>DONE:&nbsp;<span id="progress-done-${subjectName}">0</span>&nbsp;TOPICS</span>
-                                    <span class="flex items-center"><i data-lucide="book-open-text" class="w-4 h-4 mr-1 text-gray-200"></i>TO READ:&nbsp;<span id="progress-toread-${subjectName}">0</span>&nbsp;TOPICS</span>
-                                </div>
-                                <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
-                                    <span class="progress-overall-text flex items-center"><i data-lucide="chart-spline" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:</span>
-                                    <div class="progress-bar-container">
-                                        <div id="progress-bar-${subjectName}" class="progress-bar" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="progress-${subjectName}" class="font-light">(0.0%)</span>
-                                </div>
-                            </div>
-                        </summary>
-                        <div class="syllabus-content">
-                            <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-2 status-message-row border-b border-gray-200">
-                                <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
-                                <div class="flex flex-wrap gap-2">
-                                    <button id="import-progress-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="upload" class="w-4 h-4 mr-1 inline-block"></i> Upload Progress</button>
-                                    <button id="export-progress-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="download" class="w-4 h-4 mr-1 inline-block"></i> Download Progress</button>
-                                    <button id="collapse-all-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap"><i data-lucide="chevrons-up" class="w-4 h-4 mr-1"></i> Collapse All</button>
-                                </div>
-                            </div>
-                            <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
-                                <div>SUBJECTS/TOPICS</div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
-                                <div></div>
-                            </div>
-                            <div class="checklist-grid checklist-grid-micro-progress text-center border-t border-gray-300">
-                                <div></div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
-                                </div>
-                                <div></div>
-                            </div>
-                            <div id="syllabus-${subjectName}" class="text-xs"></div>
-                        </div>
-                    </details>
-                </div>
-                `;
-            }
-
-            function exportProgress() {
-                const progressData = localStorage.getItem(storageKey);
-                if (!progressData || '{}' === progressData) {
-                    showMessageModal("Download Failed", `<p class='text-red-600'>No ${title} progress data found to download.</p>`);
-                    return;
-                }
-                downloadFile(progressData, `${subjectName}-progress.json`, 'application/json');
-                showMessageModal("Download Complete", `<p class='text-green-600'>Your ${title} progress has been downloaded as **${subjectName}-progress.json**</p>`);
-            }
-
-            function triggerImport() {
-                 DOM_ELEMENTS.fileUploadInput.dataset.targetSubject = subjectName;
-                 DOM_ELEMENTS.fileUploadInput.click();
-            }
-
-            function processImport(file) {
-                 if (!file) { showMessageModal("Upload Canceled", "No file was selected for upload."); return; }
-                 if ('application/json' !== file.type && !file.name.endsWith('.json')) { showMessageModal("Upload Error", `<p class='text-red-600'>Invalid file type. Please upload a **.json** file.</p>`); return; }
-                 
-                 const reader = new FileReader();
-                 reader.onload = function(e) {
-                     const jsonString = e.target.result;
-                     try {
-                         const importedData = JSON.parse(jsonString);
-                         if ('object' !== typeof importedData || null === importedData) { throw new Error("Invalid JSON structure."); }
-                         saveProgress(importedData);
-                         renderSyllabusPanel();
-                         showMessageModal("Success!", `<p class='text-green-600'>${title} progress successfully uploaded and applied.</p>`);
-                     } catch (e) {
-                         console.error("Import error:", e);
-                         showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON.</p>`);
-                     }
-                 };
-                 reader.onerror = function() { showMessageModal("Upload Error", `<p class='text-red-600'>Error reading the file.</p>`); };
-                 reader.readAsText(file);
-            }
-
-            function toggleAllSections() {
-                const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
-                
-                let shouldOpen = false;
-                for (const details of allDetails) {
-                    if (!details.open) {
-                        shouldOpen = true;
-                        break;
-                    }
-                }
-                allDetails.forEach(details => {
-                    details.open = shouldOpen;
-                });
-                
-                if (lucide && lucide.createIcons) {
-                    lucide.createIcons();
-                }
-                updateCollapseButtonText(shouldOpen);
-            }
-
-            function updateCollapseButtonText(isOpen) {
-                const btn = document.getElementById(`collapse-all-btn-${subjectName}`);
-                if (btn) {
-                    if (typeof isOpen === 'undefined') {
-                        const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
-                        let allOpen = true;
-                        for (const details of allDetails) {
-                            if (!details.open) {
-                                allOpen = false;
-                                break;
-                            }
-                        }
-                        isOpen = allOpen;
-                    }
-                    const iconName = isOpen ? 'chevrons-up' : 'chevrons-down';
-                    const text = isOpen ? 'Collapse All' : 'Expand All';
-                    btn.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4 mr-1"></i> ${text}`;
-                    if (!btn.classList.contains('flex')) { btn.classList.add('flex', 'items-center', 'justify-center'); }
-                    if (lucide && lucide.createIcons) { lucide.createIcons(); }
-                }
-            }
-            
             // Attach unique global handlers for onclick/onchange HTML events
             window[`handleTickAll${subjectName.toUpperCase()}`] = handleTickAll;
             window[`handleCheckboxChange${subjectName.toUpperCase()}`] = handleCheckboxChange;
@@ -1337,8 +1157,7 @@
             loadSubjectPanel('lab', 'lab_logic.js');
             loadSubjectPanel('civ', 'civ_logic.js');
             loadSubjectPanel('comm', 'comm_logic.js');
-            // POLI (Subject 6) will be loaded here once the file is ready:
-            // loadSubjectPanel('poli', 'poli_logic.js');
+            loadSubjectPanel('poli', 'poli_logic.js'); // Add POLI loading here
             
             // 3. Initialize Lucide Icons for static content
             if (lucide && lucide.createIcons) {
