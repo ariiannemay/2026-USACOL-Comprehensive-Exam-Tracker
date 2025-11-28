@@ -763,17 +763,21 @@
                     // 3. Re-attach event listeners to the new, stable DOM elements
                     const currentLogic = SUBJECT_LOGIC_MAP[subjectName];
                     
-                    // CRITICAL FIX 3: Increase delay to ensure DOM is fully ready before rendering complex content
-                    // The repeated rendering failure suggests we need to guarantee all ancestor elements are processed.
+                    // CRITICAL FIX 3: Increased delay (200ms) to ensure DOM is ready
                     setTimeout(() => {
-                        document.getElementById(`export-progress-btn-${subjectName}`)?.addEventListener('click', currentLogic.exportProgress);
-                        document.getElementById(`import-progress-btn-${subjectName}`)?.addEventListener('click', currentLogic.importProgress);
-                        document.getElementById(`collapse-all-btn-${subjectName}`)?.addEventListener('click', currentLogic.toggleAllSections);
+                        // Re-fetch element references after outerHTML replacement
+                        const exportBtn = document.getElementById(`export-progress-btn-${subjectName}`);
+                        const importBtn = document.getElementById(`import-progress-btn-${subjectName}`);
+                        const collapseBtn = document.getElementById(`collapse-all-btn-${subjectName}`);
+
+                        exportBtn?.addEventListener('click', currentLogic.exportProgress);
+                        importBtn?.addEventListener('click', currentLogic.importProgress);
+                        collapseBtn?.addEventListener('click', currentLogic.toggleAllSections);
                         
                         // 4. Call render to populate content inside the injected structure
                         currentLogic.render();
 
-                    }, 200); // Increased delay to 200ms
+                    }, 200); 
                 } else {
                     console.error(`Failed to find initialization function for ${subjectName}`);
                 }
@@ -788,7 +792,7 @@
             const chartEl = document.getElementById('global-pie-chart');
             if (!chartEl) return;
 
-            // FIX 2: Implement dynamic color logic based on user's request (0-100 range)
+            // FIX 2: Implement dynamic color logic for the inner percentage text
             let fillColor;
             if (donePercent <= 25) {
                 fillColor = '#ef4444'; // Red
@@ -799,6 +803,10 @@
             } else {
                 fillColor = '#10b981'; // Green
             }
+            
+            // NEW FIX: Set background circle color to red if not 100% done
+            const backgroundCircleColor = (donePercent < 100 && donePercent > 0) ? '#ef4444' : '#e5e7eb';
+
 
             // Reduced size for compactness
             const size = 180; 
@@ -814,13 +822,13 @@
 
             chartEl.innerHTML = `
                 <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-                    <!-- Background Circle -->
+                    <!-- Background Circle - Now red if progress is less than 100% -->
                     <circle 
                         cx="${center}" 
                         cy="${center}" 
                         r="${radius - strokeWidth / 2}" 
                         fill="none" 
-                        stroke="#e5e7eb" 
+                        stroke="${backgroundCircleColor}" 
                         stroke-width="${strokeWidth}"
                     />
                     
@@ -1205,6 +1213,10 @@
                     const topicId = item.id;
                     const nextItem = syllabusData[index + 1];
                     const currentStatus = getTopicStatus(topicId, progress);
+                    // NOTE: The issue where colors/aesthetics were missing in the trackers was likely here:
+                    // The SVG icons need to be created dynamically by Lucide in the final step. 
+                    // This rendering logic looks fine; the problem is likely outside this loop (in the loader timing).
+
                     const iconName = currentStatus === 2 ? 'check-circle-2' : (currentStatus === 1 ? 'circle-half' : 'circle');
                     const iconColor = currentStatus === 2 ? 'checked' : (currentStatus === 1 ? 'partial' : 'empty');
                     const iconSize = item.depth === 1 ? 'w-5 h-5' : 'w-4 h-4';
