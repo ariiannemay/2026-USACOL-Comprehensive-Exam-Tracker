@@ -318,7 +318,7 @@
         .bg-rem { background-color: #674ea7; }
         
         /* -------------------------------------------------------------------------- */
-        /* 3. SUBJECT TRACKER STYLES (RESTORED FROM OLD FILE) */
+        /* 3. SUBJECT TRACKER STYLES (Checklist Fix Applied) */
         /* -------------------------------------------------------------------------- */
 
         /* Syllabus Panel Common Styles */
@@ -345,10 +345,9 @@
             border-bottom: 1px dashed #e5e7eb; 
         }
         
-        /* NEW: Safari/WebKit checkbox layout fixes */
-        /* This forces Safari to respect the explicit size and ensures the checkbox is perfectly centered. */
+        /* CRITICAL CHECKBOX STYLING OVERRIDE */
         .checklist-grid input[type="checkbox"] {
-            /* Reset default appearance */
+            /* Reset default appearance - CRITICAL */
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
@@ -360,26 +359,26 @@
             cursor: pointer;
             transition: background-color 0.2s, border-color 0.2s;
             background-color: #ffffff;
-            /* Flex centering hint */
             align-self: center;
+            position: relative; /* Needed for ::before checkmark */
         }
 
-        /* FIX: Re-implement individual color theming for checked boxes */
+        /* Default checked state style */
         .checklist-grid input[type="checkbox"]:checked {
-             border-color: transparent; /* Hide the gray border when checked */
+             border-color: transparent !important; /* Force border to disappear */
         }
 
-        /* This applies the theme color to the checked box */
-        .syllabus-checkbox-rem:checked { background-color: #8b5cf6; } 
-        .syllabus-checkbox-crim:checked { background-color: #ef4444; }
-        .syllabus-checkbox-lab:checked { background-color: #38761d; }
-        .syllabus-checkbox-civ:checked { background-color: #2563eb; }
-        .syllabus-checkbox-comm:checked { background-color: #eab308; }
-        .syllabus-checkbox-poli:checked { background-color: #795548; }
+        /* THEME-SPECIFIC CHECKED BACKGROUND COLOR (with !important override) */
+        .syllabus-checkbox-rem:checked { background-color: #8b5cf6 !important; } 
+        .syllabus-checkbox-crim:checked { background-color: #ef4444 !important; }
+        .syllabus-checkbox-lab:checked { background-color: #38761d !important; }
+        .syllabus-checkbox-civ:checked { background-color: #2563eb !important; }
+        .syllabus-checkbox-comm:checked { background-color: #eab308 !important; }
+        .syllabus-checkbox-poli:checked { background-color: #795548 !important; }
 
 
+        /* CUSTOM CHECKMARK DRAWING (Always white) */
         .checklist-grid input[type="checkbox"]:checked::before {
-            /* Custom checkmark using border hack for reliability across WebKit (Safari) */
             content: '';
             display: block;
             width: 0.25rem;
@@ -388,9 +387,13 @@
             border-width: 0 2px 2px 0;
             /* Transforms the checkmark into a tick and centers it */
             transform: rotate(45deg) translate(0.35rem, 0.05rem);
+            /* Ensure the checkmark is positioned relative to the box */
+            position: absolute;
+            left: 0;
+            top: 0;
         }
 
-        /* End Safari/WebKit checkbox layout fixes */
+        /* End Checkbox Fixes */
         
         .checklist-grid>div:first-child { padding-left: 1.0rem; font-size: .875rem; color: #374151; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
         .font-trackable-lg { font-size: 1rem; font-weight: 600; }
