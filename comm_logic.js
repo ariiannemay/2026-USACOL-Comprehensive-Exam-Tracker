@@ -3,7 +3,7 @@
 // 1. Syllabus Data
 const COMM_TAX_SYLLABUS = [
     {id: 4001, topic: "1. BUSINESS ORGANIZATIONS", depth: 1, trackable: false},
-    {id: 4002, topic: "1. Corporations – R.A. No. 11232", depth: 2, trackable: true},
+    {id: 4002, topic: "1. CORPORATIONS – R.A. No. 11232", depth: 2, trackable: true},
     {id: 4003, topic: "1. Definition of Corporation", depth: 3, trackable: false},
     {id: 4004, topic: "2. Classes of Corporations", depth: 3, trackable: false},
     {id: 4005, topic: "3. Nationality of Corporations", depth: 3, trackable: false},
@@ -97,7 +97,7 @@ const COMM_TAX_SYLLABUS = [
     {id: 4093, topic: "6. Nominee", depth: 5, trackable: false},
     {id: 4094, topic: "7. Liability", depth: 5, trackable: false},
     {id: 4095, topic: "8. Conversion of Corporation", depth: 5, trackable: false},
-    {id: 4096, topic: "2. Partnerships", depth: 2, trackable: true},
+    {id: 4096, topic: "2. PARTNERSHIPS", depth: 2, trackable: true},
     {id: 4097, topic: "1. General Provisions", depth: 3, trackable: false},
     {id: 4098, topic: "1. Definition and Separate Juridical Personality", depth: 4, trackable: false},
     {id: 4099, topic: "2. Rules to Determine Existence", depth: 4, trackable: false},
@@ -375,7 +375,7 @@ const COMM_TAX_SYLLABUS = [
 // 2. Storage Key and Subject Details
 const SYLLABUS_STORAGE_KEY_COMM = 'comm_tax_progress';
 const SUBJECT_NAME_COMM = 'comm';
-const SUBJECT_TITLE_COMM = 'COMMERCIAL AND TAXATION LAWS';
+const SUBJECT_TITLE_COMM = 'COMMERCIAL AND TAXATION LAWS (20%)';
 const SUBJECT_ICON_COMM = 'banknote';
 
 // 3. Create Logic Instance
