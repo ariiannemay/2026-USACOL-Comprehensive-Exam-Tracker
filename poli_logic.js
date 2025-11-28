@@ -336,19 +336,19 @@ const SUBJECT_ICON_POLI = 'landmark'; // Using 'gavel' as a thematic icon
 const POLI_LOGIC = window.createSyllabusLogic(SUBJECT_NAME_POLI, POLI_SYLLABUS, SYLLABUS_STORAGE_KEY_POLI, SUBJECT_ICON_POLI, SUBJECT_TITLE_POLI);
 
 // 4. Inject Panel HTML into the main container in index.html
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('subject-trackers-container');
-    if (container) {
-        // Find the placeholder div by ID and replace it with the actual rendered content
-        const placeholderDiv = document.getElementById(`subject-tracker-panel-${SUBJECT_NAME_POLI}`);
-        if (placeholderDiv) {
-            placeholderDiv.outerHTML = POLI_LOGIC.getPanelHtml(SUBJECT_NAME_POLI, SUBJECT_TITLE_POLI, SUBJECT_ICON_POLI);
-        } else {
-            // Fallback: append if placeholder was missed or container is empty
-            container.innerHTML += POLI_LOGIC.getPanelHtml(SUBJECT_NAME_POLI, SUBJECT_TITLE_POLI, SUBJECT_ICON_POLI);
-        }
-    }
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//     const container = document.getElementById('subject-trackers-container');
+//     if (container) {
+//         // Find the placeholder div by ID and replace it with the actual rendered content
+//         const placeholderDiv = document.getElementById(`subject-tracker-panel-${SUBJECT_NAME_POLI}`);
+//         if (placeholderDiv) {
+//             placeholderDiv.outerHTML = POLI_LOGIC.getPanelHtml(SUBJECT_NAME_POLI, SUBJECT_TITLE_POLI, SUBJECT_ICON_POLI);
+//         } else {
+//             // Fallback: append if placeholder was missed or container is empty
+//             container.innerHTML += POLI_LOGIC.getPanelHtml(SUBJECT_NAME_POLI, SUBJECT_TITLE_POLI, SUBJECT_ICON_POLI);
+//         }
+//     }
+// });
 
 // 5. Expose Logic Globally (needed for index.html onload to attach to map)
 window.createPOLI_LOGIC = () => POLI_LOGIC;
