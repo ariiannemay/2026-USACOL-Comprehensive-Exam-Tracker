@@ -364,10 +364,9 @@
             align-self: center;
         }
 
+        /* FIX: Re-implement individual color theming for checked boxes */
         .checklist-grid input[type="checkbox"]:checked {
-             /* FIX: Removed currentColor and rely on theme's accent-color property (below) */
-             /* We still need the border-color override for the checkmark effect to be visible */
-             border-color: transparent; 
+             border-color: transparent; /* Hide the gray border when checked */
         }
 
         /* This applies the theme color to the checked box */
@@ -951,7 +950,7 @@
             const data=COUNTDOWN_DATA.find(d=>d.id===currentEditingId);
             if(data){
                 data.targetDate=newDateString;
-                document.querySelector(`#target-date-display-${currentEditingId} .date-text`).textContent=formatUniqueDate(newDateString);
+                document.querySelector(`#target-date-display-${currentEditingId} .date-text`).textContent = formatUniqueDate(newDateString);
                 localStorage.setItem(`comp_exam_date_${currentEditingId}`,newDateString);
                 updateAllCountdowns();
             }
@@ -1774,10 +1773,10 @@
                         isOpen = allOpen;
                     }
                     const iconName = isOpen ? 'chevrons-up' : 'chevrons-down';
-                    // REDUCED ICON SIZE from w-5 h-5 to w-4 h-4
+                    // Final small size for the icon
                     btn.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4"></i>`; 
                     
-                    // REDUCED BUTTON SIZE from w-8 h-8 to w-7 h-7
+                    // Final button size
                     btn.classList.remove('w-8', 'h-8');
                     btn.classList.add('w-7', 'h-7', 'p-0', 'flex', 'items-center', 'justify-center', 'shadow-md'); 
 
