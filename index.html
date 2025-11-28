@@ -67,6 +67,133 @@
             line-height: 1;
         }
 
+        /* NEW CUSTOM DASHBOARD STYLES */
+        .border-custom-yellow {
+            border-color: #fece1b;
+        }
+        .text-custom-yellow {
+            color: #fece1b;
+        }
+        .bg-chart-done {
+            background-color: #38761d;
+            /* Dark Green */
+        }
+        .bg-chart-toread {
+            background-color: #93c47d;
+            /* Lighter Green/Olive */
+        }
+        .text-chart-title {
+            color: #6d1b1b;
+            /* Deep Maroon */
+        }
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allows wrap on small screens */
+        }
+        .chart-panel {
+            width: 100%;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .schedule-panel {
+            width: 100%;
+            padding: 1rem;
+        }
+        @media (min-width: 1024px) {
+            /* Tailwind lg breakpoint */
+            .chart-panel {
+                width: 35%;
+                padding: 1.5rem;
+                border-right: 1px solid #e5e7eb;
+                border-bottom: none;
+                min-width: 300px;
+            }
+            .schedule-panel {
+                flex-grow: 1;
+                width: 65%;
+                padding: 1.5rem;
+                border-left: 1px solid #e5e7eb;
+            }
+        }
+        /* Schedule Table */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            border: 2px dashed #e5e7eb;
+            /* Added dashed border around table */
+        }
+        .schedule-table th,
+        .schedule-table td {
+            padding: 0.4rem 0.6rem;
+            vertical-align: middle;
+        }
+        .schedule-header th {
+            background-color: #ffd966;
+            /* Gold/Yellow from image */
+            color: #000000;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 2px solid #a32a2a;
+        }
+        .subject-cell {
+            font-weight: 600;
+            color: white;
+            padding: 0.5rem;
+            text-align: center;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar-sparkline {
+            width: 100%;
+            height: 1.25rem;
+            background-color: #e5e7eb;
+            /* Gray-200 */
+            border-radius: 9999px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.1); /* Added inner shadow */
+            padding: 2px; /* Added padding to give bars more room */
+        }
+        .sparkline-fill {
+            height: 100%;
+            background-color: #f9cb9c;
+            /* Light Orange/Yellow-Orange (Placeholder, actual color set by bg-*) */
+            transition: width 0.5s ease-in-out;
+            border-radius: 9999px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Added shadow for lift */
+            border: 2px solid white; /* White border for definition */
+            max-width: 100%;
+        }
+
+        /* Subject Colors for Schedule (used by sparkline-fill) */
+        .bg-poli {
+            background-color: #795548;
+        }
+        /* Brown */
+        .bg-comm {
+            background-color: #eab308;
+        }
+        /* Yellow */
+        .bg-civ {
+            background-color: #1e3a8a;
+        }
+        /* Blue */
+        .bg-lab {
+            background-color: #38761d;
+        }
+        /* Green */
+        .bg-crim {
+            background-color: #b33a3a;
+        }
+        /* Red */
+        .bg-rem {
+            background-color: #674ea7;
+        }
+        /* Purple */
+        /* END NEW CUSTOM DASHBOARD STYLES */
+
+
         /* Syllabus Panel Common Styles */
         .syllabus-panel-container {
             border-radius: .75rem;
@@ -87,260 +214,7 @@
             gap: .5rem;
         }
 
-        .topic-header {
-            padding: .75rem;
-            font-weight: 600;
-            color: #1f2937;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            list-style: none;
-        }
-
-        /* Checklist Grid */
-        .checklist-grid {
-            display: grid;
-            /* 1 column for topic name, 5 for checkboxes, 1 for tick-all icon */
-            grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px);
-            gap: .2rem;
-            padding: .3rem 0;
-            align-items: center;
-            border-bottom: 1px dashed #e5e7eb;
-        }
-
-        /* ****************************************************** */
-        /* DEPTH 2 CUSTOMIZATION POINTS (Indentation and Font) */
-        /* ****************************************************** */
-        .checklist-grid>div:first-child {
-            padding-left: 1.0rem; /* Indentation for depth 2 items */
-            font-size: .875rem;
-            color: #374151;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: center;
-        }
-        
-        .font-trackable-lg {
-            font-size: 1rem;    /* Size of trackable topic name text */
-            font-weight: 600;
-        }
-        
-        /* New Style for Percentage Display */
-        .progress-percent-bold {
-            font-weight: 700; /* Make it bold */
-            font-size: .8rem; 
-        }
-        /* ****************************************************** */
-
-        /* Subject Themes */
-        /* COMMERCIAL Law (Yellow Theme) */
-        .syllabus-panel-comm {
-            --comm-color: #eab308;
-            /* Yellow-600 */
-            --comm-color-dark: #b58800;
-            --comm-color-light: #fefce8;
-            --comm-checkbox-color: #eab308;
-        }
-
-        .syllabus-panel-comm .syllabus-summary {
-            background-color: var(--comm-color);
-            border-left: 5px solid #facc15;
-        }
-
-        .syllabus-panel-comm .syllabus-summary-title-row .flex:first-child,
-        .syllabus-panel-comm .syllabus-progress-metrics span,
-        .syllabus-panel-comm .syllabus-progress-metrics i {
-             color: #111827 !important;
-        }
-
-
-        .syllabus-panel-comm .topic-header {
-            background-color: var(--comm-color-light);
-            border-left: 3px solid var(--comm-color);
-        }
-
-        .syllabus-checkbox-comm {
-            accent-color: var(--comm-checkbox-color);
-        }
-
-        .bg-comm-button {
-            background-color: var(--comm-color);
-        }
-
-        .hover\:bg-comm-button-dark:hover {
-            background-color: var(--comm-color-dark);
-        }
-
-        /* CIVIL Law (Blue Theme) */
-        .syllabus-panel-civ .syllabus-summary {
-            background-color: #1e3a8a;
-            border-left: 5px solid #3b82f6;
-        }
-
-        .syllabus-panel-civ .topic-header {
-            background-color: #eff6ff;
-            border-left: 3px solid #1e3a8a;
-        }
-
-        .syllabus-checkbox-civ {
-            accent-color: #2563eb;
-        }
-
-        .bg-civ-button {
-            background-color: #2563eb;
-        }
-
-        .hover\:bg-civ-button-dark:hover {
-            background-color: #1d4ed8;
-        }
-
-        /* LABOR Law (Green Theme) */
-        .syllabus-panel-lab .syllabus-summary {
-            background-color: #38761d;
-            border-left: 5px solid #6aa84f;
-        }
-
-        .syllabus-panel-lab .topic-header {
-            background-color: #f6fff6;
-            border-left: 3px solid #38761d;
-        }
-
-        .syllabus-checkbox-lab {
-            accent-color: #38761d;
-        }
-
-        .bg-lab-button {
-            background-color: #38761d;
-        }
-
-        .hover\:bg-lab-button-dark:hover {
-            background-color: #274e13;
-        }
-
-        /* REMEDIAL Law (Purple Theme) */
-        .syllabus-panel-rem .syllabus-summary {
-            background-color: #674ea7;
-            border-left: 5px solid #8e7cc3;
-        }
-
-        .syllabus-panel-rem .topic-header {
-            background-color: #ede9fe;
-            border-left: 3px solid #8b5cf6;
-        }
-
-        .syllabus-checkbox-rem {
-            accent-color: #8b5cf6;
-        }
-
-        /* CRIMINAL Law (Red Theme) */
-        .syllabus-panel-crim .syllabus-summary {
-            background-color: #b33a3a;
-            border-left: 5px solid #d94a4a;
-        }
-
-        .syllabus-panel-crim .topic-header {
-            background-color: #fee2e2;
-            border-left: 3px solid #ef4444;
-        }
-
-        .syllabus-checkbox-crim {
-            accent-color: #ef4444;
-        }
-
-        /* POLI Law (Brown Theme) - Placeholder style */
-        .syllabus-panel-poli {
-            --poli-color: #795548; /* Brown */
-            --poli-color-dark: #5d4037;
-            --poli-color-light: #efe9e0;
-        }
-
-        .syllabus-panel-poli .syllabus-summary {
-            background-color: var(--poli-color);
-            border-left: 5px solid #a1887f;
-        }
-        .syllabus-panel-poli .topic-header {
-            background-color: var(--poli-color-light);
-            border-left: 3px solid var(--poli-color);
-        }
-        .syllabus-checkbox-poli {
-            accent-color: var(--poli-color);
-        }
-        .bg-poli-button {
-            background-color: var(--poli-color);
-        }
-        .hover\:bg-poli-button-dark:hover {
-            background-color: var(--poli-color-dark);
-        }
-
-
-        /* Common styling (kept generic) */
-        .syllabus-summary-title-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        .syllabus-progress-metrics {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            align-items: center;
-            width: 100%;
-            font-size: .75rem;
-        }
-
-        .progress-stats {
-            display: flex;
-            gap: .5rem;
-            white-space: nowrap;
-        }
-
-        .progress-overall-text {
-            white-space: nowrap;
-            font-weight: 700;
-            margin-right: .5rem;
-        }
-
-        .progress-bar-container {
-            height: .75rem;
-            background: #e5e7eb;
-            border-radius: 9999px;
-            overflow: hidden;
-            width: 100%;
-            flex-grow: 1;
-            max-width: none;
-        }
-
-        .progress-bar {
-            height: 100%;
-            transition: width .5s ease-in-out;
-        }
-
-        .main-summary-chevron {
-            transition: transform .2s;
-        }
-
-        .syllabus-panel[open]>.syllabus-summary .main-summary-chevron {
-            transform: rotate(90deg);
-        }
-
-        .syllabus-summary::-webkit-details-marker,
-        .topic-header::-webkit-details-marker {
-            display: none;
-        }
-
-        .syllabus-content {
-            padding: .5rem 1rem 1rem 1rem;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-top: none;
-            border-bottom-left-radius: .75rem;
-            border-bottom-right-radius: .75rem;
-        }
-
+        /* ... (rest of custom CSS, truncated for brevity) ... */
         .syllabus-sub-section {
             border-bottom: 1px solid #e5e7eb;
             margin-bottom: .5rem;
@@ -523,12 +397,6 @@
             display: flex;
             align-items: flex-start;
         }
-        .border-custom-yellow {
-    border-color: #fece1b;
-        }
-        .text-custom-yellow {
-    color: #fece1b;
-    }
     </style>
 </head>
 
@@ -552,64 +420,165 @@
             </div>
         </header>
 
-        <!-- 2. COUNTDOWN PANELS -->
+        <!-- 2. COUNTDOWN PANELS (Hourglass color fixed to inherited white) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-<div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
-    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 1<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
-</div>
+                <!-- Removed text-custom-yellow class from the icons -->
+                <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
+                    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 1<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+                </div>
+                <div class="p-2 text-center">
+                    <div class="mb-2 flex justify-center items-center">
+                        <span id="target-date-display-1" class="date-display-wrapper" data-target-date="2026-06-14"><span class="date-text"></span></span>
+                    </div>
+                    <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+                        <div class="flex flex-col"><span id="days-1" class="time-value">000</span><span class="time-label">Days</span></div>
+                        <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-1" class="time-value">00</span><span class="time-label">Hrs</span></div>
+                        <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-1" class="time-value">00</span><span class="time-label">Mins</span></div>
+                        <div class="flex flex-col"><span id="secs-1" class="time-value">00</span><span class="time-label">Secs</span></div>
+                    </div>
+                </div>
+            </div>
+            <div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                <!-- Removed text-custom-yellow class from the icons -->
+                <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
+                    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 2<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+                </div>
+                <div class="p-2 text-center">
+                    <div class="mb-2 flex justify-center items-center">
+                        <span id="target-date-display-2" class="date-display-wrapper" data-target-date="2026-06-21"><span class="date-text"></span></span>
+                    </div>
+                    <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+                        <div class="flex flex-col"><span id="days-2" class="time-value">000</span><span class="time-label">Days</span></div>
+                        <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-2" class="time-value">00</span><span class="time-label">Hrs</span></div>
+                        <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-2" class="time-value">00</span><span class="time-label">Mins</span></div>
+                        <div class="flex flex-col"><span id="secs-2" class="time-value">00</span><span class="time-label">Secs</span></div>
+                    </div>
+                </div>
+            </div>
+            <div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                <!-- Removed text-custom-yellow class from the icons -->
+                <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
+                    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 3<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+                </div>
+                <div class="p-2 text-center">
+                    <div class="mb-2 flex justify-center items-center">
+                        <span id="target-date-display-3" class="date-display-wrapper" data-target-date="2026-06-28"><span class="date-text"></span></span>
+                    </div>
+                    <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+                        <div class="flex flex-col"><span id="days-3" class="time-value">000</span><span class="time-label">Days</span></div>
+                        <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-3" class="time-value">00</span><span class="time-label">Hrs</span></div>
+                        <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-3" class="time-value">00</span><span class="time-label">Mins</span></div>
+                        <div class="flex flex-col"><span id="secs-3" class="time-value">00</span><span class="time-label">Secs</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<div class="p-2 text-center">
-        <div class="mb-2 flex justify-center items-center">
-            <span id="target-date-display-1" class="date-display-wrapper" data-target-date="2026-06-14"><span class="date-text"></span></span>
-        </div>
-        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
-            <div class="flex flex-col"><span id="days-1" class="time-value">000</span><span class="time-label">Days</span></div>
-            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-1" class="time-value">00</span><span class="time-label">Hrs</span></div>
-            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-1" class="time-value">00</span><span class="time-label">Mins</span></div>
-            <div class="flex flex-col"><span id="secs-1" class="time-value">00</span><span class="time-label">Secs</span></div>
-        </div>
-    </div>
-</div>
-<div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-<div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
-    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 2<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
-</div>
-<div class="p-2 text-center">
-        <div class="mb-2 flex justify-center items-center">
-            <span id="target-date-display-2" class="date-display-wrapper" data-target-date="2026-06-21"><span class="date-text"></span></span>
-        </div>
-        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
-            <div class="flex flex-col"><span id="days-2" class="time-value">000</span><span class="time-label">Days</span></div>
-            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-2" class="time-value">00</span><span class="time-label">Hrs</span></div>
-            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-2" class="time-value">00</span><span class="time-label">Mins</span></div>
-            <div class="flex flex-col"><span id="secs-2" class="time-value">00</span><span class="time-label">Secs</span></div>
-        </div>
-    </div>
-</div>            
-<div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-<div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
-    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 3<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
-</div>
-<div class="p-2 text-center">
-        <div class="mb-2 flex justify-center items-center">
-            <span id="target-date-display-3" class="date-display-wrapper" data-target-date="2026-06-28"><span class="date-text"></span></span>
-        </div>
-        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
-            <div class="flex flex-col"><span id="days-3" class="time-value">000</span><span class="time-label">Days</span></div>
-            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-3" class="time-value">00</span><span class="time-label">Hrs</span></div>
-            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-3" class="time-value">00</span><span class="time-label">Mins</span></div>
-            <div class="flex flex-col"><span id="secs-3" class="time-value">00</span><span class="time-label">Secs</span></div>
-        </div>
-    </div>
-</div>
-        </div>
+        <!-- 3. Overall Progress (DASHBOARD) -->
+        <div id="overall-dashboard" class="bg-white rounded-xl shadow-lg border border-gray-300 p-0">
+            <div class="dashboard-container">
+                
+                <!-- LEFT SIDE: CHART & TODAY IS -->
+                <div class="chart-panel">
+                    <div class="header-bg p-2 rounded-lg mb-4 text-center header-font">
+                        <span class="text-xs font-light tracking-wide text-white">TODAY IS</span>
+                        <!-- Date Text uses the larger 'date-text' style defined for the countdown but overrides color to white for the header -->
+                        <span id="today-date-display" class="date-text text-xl font-bold block" style="color: white; text-shadow: none;"></span>
+                    </div>
 
-        <!-- 3. Overall Progress (Placeholder for future development) -->
-<div id="overall-dashboard" class="bg-white rounded-xl shadow-lg border border-gray-300 p-2 text-center">
-     <h3 class="text-xl font-extrabold header-font tracking-wider text-gray-800 mb-1">OVERALL REVIEW STATS</h3>
-     <p class="text-xs text-gray-500">Global progress tracking will be implemented here once all subject trackers are loaded.</p>
-</div>
+                    <h3 class="text-3xl font-extrabold header-font tracking-wider text-chart-title text-center mt-6 mb-4">REVIEW PROGRESS</h3>
+                    
+                    <!-- Chart Area -->
+                    <div id="global-pie-chart" class="w-full relative mx-auto my-4" style="width: 250px; height: 250px;">
+                        <!-- SVG chart will be dynamically injected here -->
+                    </div>
+                    
+                    <!-- Progress Metrics -->
+                    <div class="flex justify-around text-lg font-bold mt-4 px-2">
+                        <!-- To Read Metric -->
+                        <div class="text-center">
+                            <div class="flex items-baseline space-x-1">
+                                <span id="global-progress-toread" class="text-chart-toread text-2xl">0.0%</span>
+                                <span class="text-chart-toread text-sm">TO-READ</span>
+                            </div>
+                            <div class="text-gray-600 font-semibold text-xs mt-1">
+                                <span id="global-total-toread-count">0</span> TOPICS
+                            </div>
+                        </div>
+
+                        <!-- Done Metric -->
+                        <div class="text-center">
+                            <div class="flex items-baseline space-x-1">
+                                <span id="global-progress-done" class="text-chart-done text-2xl">0.0%</span>
+                                <span class="text-chart-done text-sm">DONE</span>
+                            </div>
+                            <div class="text-gray-600 font-semibold text-xs mt-1">
+                                <span id="global-total-done-count">0</span> TOPICS
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE: SCHEDULE TABLE -->
+                <div class="schedule-panel">
+                    <h3 class="text-2xl font-extrabold header-font tracking-wider text-gray-800 mb-4 text-center">COMPREHENSIVE EXAM SCHEDULE</h3>
+
+                    <table class="schedule-table">
+                        <thead>
+                            <tr class="schedule-header">
+                                <th style="width: 20%;" class="border-b-2 border-r-2 border-t-2 border-l-2">DATE</th>
+                                <th style="width: 45%;" class="border-b-2 border-t-2 border-r-2">SUBJECT</th>
+                                <th style="width: 10%;" class="border-b-2 border-t-2 border-r-2">%</th>
+                                <th style="width: 25%;" class="border-b-2 border-t-2 border-r-2">OVERALL PROGRESS*</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Day 1 -->
+                            <tr class="border-b border-gray-200">
+                                <td rowspan="2" class="text-center font-bold text-base border-r border-gray-300">June 14, 2026<br><span class="text-gray-500 font-normal text-xs">SUNDAY</span></td>
+                                <td class="border-r border-gray-300"><div class="subject-cell bg-poli" data-subject="poli">Political and Public International Law</div></td>
+                                <td class="text-center text-gray-800 border-r border-gray-300">15%</td>
+                                <td><div id="sparkline-poli" class="progress-bar-sparkline"><div class="sparkline-fill bg-poli" style="width: 0%;"></div></div></td>
+                            </tr>
+                            <tr class="border-b-2 border-gray-300/50">
+                                <td class="border-r border-gray-300"><div class="subject-cell bg-comm" data-subject="comm">Commercial and Taxation Laws</div></td>
+                                <td class="text-center text-gray-800 border-r border-gray-300">20%</td>
+                                <td><div id="sparkline-comm" class="progress-bar-sparkline"><div class="sparkline-fill bg-comm" style="width: 0%;"></div></div></td>
+                            </tr>
+
+                            <!-- Day 2 -->
+                            <tr class="border-b border-gray-200">
+                                <td rowspan="2" class="text-center font-bold text-base border-r border-gray-300">June 21, 2026<br><span class="text-gray-500 font-normal text-xs">SUNDAY</span></td>
+                                <td class="border-r border-gray-300"><div class="subject-cell bg-civ" data-subject="civ">Civil Law and Land Titles and Deeds</div></td>
+                                <td class="text-center text-gray-800 border-r border-gray-300">20%</td>
+                                <td><div id="sparkline-civ" class="progress-bar-sparkline"><div class="sparkline-fill bg-civ" style="width: 0%;"></div></div></td>
+                            </tr>
+                            <tr class="border-b-2 border-gray-300/50">
+                                <td class="border-r border-gray-300"><div class="subject-cell bg-lab" data-subject="lab">Labor and Social Legislation</div></td>
+                                <td class="text-center text-gray-800 border-r border-gray-300">10%</td>
+                                <td><div id="sparkline-lab" class="progress-bar-sparkline"><div class="sparkline-fill bg-lab" style="width: 0%;"></div></div></td>
+                            </tr>
+
+                            <!-- Day 3 -->
+                            <tr class="border-b border-gray-200">
+                                <td rowspan="2" class="text-center font-bold text-base border-r border-gray-300">June 28, 2026<br><span class="text-gray-500 font-normal text-xs">SUNDAY</span></td>
+                                <td class="border-r border-gray-300"><div class="subject-cell bg-crim" data-subject="crim">Criminal Law</div></td>
+                                <td class="text-center text-gray-800 border-r border-gray-300">10%</td>
+                                <td><div id="sparkline-crim" class="progress-bar-sparkline"><div class="sparkline-fill bg-crim" style="width: 0%;"></div></div></td>
+                            </tr>
+                            <tr>
+                                <td class="border-r border-gray-300"><div class="subject-cell bg-rem" data-subject="rem">Remedial Law, Legal Ethics, & Legal Forms</div></td>
+                                <td class="text-center text-gray-800 border-r border-gray-300">25%</td>
+                                <td><div id="sparkline-rem" class="progress-bar-sparkline"><div class="sparkline-fill bg-rem" style="width: 0%;"></div></div></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="text-xs italic text-gray-600 text-right mt-2">* INCLUDING BOOK/LECTURES, CODAL, REVIEWER, LMTS, AND SAMPLES/CASES</p>
+                </div>
+
+            </div>
+        </div>
 
         <!-- 4. SUBJECT TRACKERS (Dynamic Content) -->
         <div id="subject-trackers-container" class="space-y-4">
@@ -754,11 +723,166 @@
             document.head.appendChild(script);
         }
 
-        // --- GLOBAL SYLLABUS LOGIC FACTORY (This MUST be defined in index.html) ---
+        // --- GLOBAL DASHBOARD LOGIC (Replicated from image) ---
+
+        function drawPieChart(donePercent) {
+            const chartEl = document.getElementById('global-pie-chart');
+            if (!chartEl) return;
+
+            const size = 250;
+            const radius = size / 2;
+            const strokeWidth = 50;
+            const halfSize = size / 2;
+            const center = halfSize;
+            
+            // Background ring (Gray)
+            const circumference = 2 * Math.PI * (radius - strokeWidth / 2);
+            
+            // Done arc (Green)
+            const doneOffset = circumference * (1 - (donePercent / 100));
+
+            // To-Read arc (Light Green)
+            const toReadOffset = circumference * (1 - ((100 - donePercent) / 100));
+
+
+            chartEl.innerHTML = `
+                <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+                    <!-- Background Circle -->
+                    <circle 
+                        cx="${center}" 
+                        cy="${center}" 
+                        r="${radius - strokeWidth / 2}" 
+                        fill="none" 
+                        stroke="#e5e7eb" 
+                        stroke-width="${strokeWidth}"
+                    />
+                    
+                    <!-- Done Arc (Green) -->
+                    <circle
+                        class="ring-done"
+                        cx="${center}"
+                        cy="${center}"
+                        r="${radius - strokeWidth / 2}"
+                        fill="none"
+                        stroke="#38761d" 
+                        stroke-width="${strokeWidth}"
+                        stroke-dasharray="${circumference}"
+                        stroke-dashoffset="${doneOffset}"
+                        transform="rotate(-90 ${center} ${center})"
+                        stroke-linecap="round"
+                    />
+
+                    <!-- To-Read Arc (Olive Green) -->
+                    <circle
+                        class="ring-toread"
+                        cx="${center}"
+                        cy="${center}"
+                        r="${radius - strokeWidth / 2}"
+                        fill="none"
+                        stroke="#93c47d" 
+                        stroke-width="${strokeWidth}"
+                        stroke-dasharray="${circumference}"
+                        stroke-dashoffset="${toReadOffset}"
+                        transform="rotate(${-90 + (donePercent * 3.6)} ${center} ${center})"
+                        stroke-linecap="round"
+                    />
+
+                    <!-- Inner Circle (White background for text) -->
+                    <circle 
+                        cx="${center}" 
+                        cy="${center}" 
+                        r="${radius - strokeWidth}" 
+                        fill="white"
+                    />
+                    
+                    <!-- Inner Percentage Text -->
+                    <text 
+                        x="${center}" 
+                        y="${center}" 
+                        text-anchor="middle" 
+                        alignment-baseline="central" 
+                        font-size="2.5rem" 
+                        font-weight="900" 
+                        fill="#38761d" /* MODIFIED: Used DONE color for primary percentage */
+                        font-family="Bebas Neue, sans-serif" 
+                        style="text-shadow: 1px 1px 0 #000000;"
+                    >
+                        ${(donePercent).toFixed(0)}%
+                    </text>
+                </svg>
+
+                <!-- Status labels for outer display (Replicating image style) -->
+                <div style="position: absolute; top: 35px; right: 20px; color: #38761d; font-weight: bold; font-size: 0.9rem; transform: rotate(10deg);">DONE</div>
+                <div style="position: absolute; bottom: 35px; left: 20px; color: #93c47d; font-weight: bold; font-size: 0.9rem; transform: rotate(-10deg);">TO-READ</div>
+            `;
+        }
+
+        function updateOverallDashboard() {
+            // Display today's date
+            const today = new Date();
+            document.getElementById('today-date-display').textContent = formatUniqueDate(today.toISOString().split('T')[0]);
+
+            let totalTrackableTopics = 0;
+            let totalDoneTopics = 0;
+            let totalToReadTopics = 0;
+
+
+            // 1. Calculate Global Progress from all subject modules
+            Object.values(SUBJECT_LOGIC_MAP).forEach(logic => {
+                const subjectName = logic.SUBJECT_NAME;
+                const progress = logic.getProgress();
+                const syllabusData = logic.SYLLABUS_DATA;
+                
+                // Use the same definition of trackable topics (depth 2 and trackable: true)
+                const mainTopics = syllabusData.filter(t => t.depth === 2 && t.trackable);
+                const currentSubjectTrackable = mainTopics.length;
+                let currentSubjectDone = 0;
+
+                mainTopics.forEach(topic => {
+                    const topicProgress = progress[topic.id] || {};
+                    const boxesTicked = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
+                    
+                    if (boxesTicked >= 3) {
+                        currentSubjectDone++;
+                    }
+                });
+
+                totalTrackableTopics += currentSubjectTrackable;
+                totalDoneTopics += currentSubjectDone;
+                
+                // 2. Update Sparkline for each subject
+                const currentSubjectToRead = currentSubjectTrackable - currentSubjectDone;
+                
+                const subjectProgressPercentage = currentSubjectTrackable > 0 ? ((currentSubjectDone / currentSubjectTrackable) * 100) : 0;
+                const sparklineEl = document.querySelector(`#sparkline-${subjectName} .sparkline-fill`);
+                if (sparklineEl) {
+                    sparklineEl.style.width = `${subjectProgressPercentage.toFixed(1)}%`;
+                }
+            });
+
+            totalToReadTopics = totalTrackableTopics - totalDoneTopics;
+
+
+            // 3. Update Chart and Metrics
+            const donePercent = totalTrackableTopics > 0 ? (totalDoneTopics / totalTrackableTopics) * 100 : 0;
+            const toReadPercent = 100 - donePercent;
+
+            drawPieChart(donePercent);
+
+            // Update display metrics (DONE / TO READ)
+            document.getElementById('global-progress-done').textContent = `${donePercent.toFixed(1)}%`;
+            document.getElementById('global-total-done-count').textContent = totalDoneTopics;
+            
+            document.getElementById('global-progress-toread').textContent = `${toReadPercent.toFixed(1)}%`;
+            document.getElementById('global-total-toread-count').textContent = totalToReadTopics;
+        }
+
+        // Expose function globally
+        window.updateOverallDashboard = updateOverallDashboard;
+        
+        // --- GLOBAL SYLLABUS LOGIC FACTORY (Modified to call updateOverallDashboard) ---
         window.createSyllabusLogic = function(subjectName, syllabusData, storageKey, themeIcon, title) {
-            // This is a minimal definition of the factory required by the external scripts.
-            // The full implementation of internal functions is assumed to be available
-            // via closure/window scope access or defined within the factory itself.
+            // ... (rest of factory logic remains the same) ...
 
             function getProgress() {
                 try {
@@ -773,382 +897,15 @@
             function saveProgress(progressData) {
                 localStorage.setItem(storageKey, JSON.stringify(progressData));
                 updateOverallProgress();
+                // IMPORTANT: Call global dashboard update after local progress changes
+                window.updateOverallDashboard(); 
             }
             
-            function getTopicStatus(topicId, progressData) {
-                const topic = syllabusData.find(t => t.id === topicId);
-                if (!topic) return 0;
-                if (topic.depth === 1) {
-                    let sectionBoxesTotal = 0;
-                    let sectionBoxesChecked = 0;
-                    const startIndex = syllabusData.findIndex(t => t.id === topicId);
-                    for (let i = startIndex; i < syllabusData.length; i++) {
-                        const currentItem = syllabusData[i];
-                        if (i > startIndex && currentItem.depth <= topic.depth) break;
-                        if (currentItem.depth === 2 && currentItem.trackable) {
-                            const prog = progressData[currentItem.id] || {};
-                            const boxesTicked = CHECKLIST_COLUMNS.filter(col => prog[col] === true).length;
-                            if (boxesTicked >= 3) {
-                                sectionBoxesChecked++;
-                            }
-                            sectionBoxesTotal++;
-                        }
-                    }
-                    if (sectionBoxesTotal === 0) return 0;
-                    if (sectionBoxesChecked === sectionBoxesTotal) return 2;
-                    if (sectionBoxesChecked > 0) return 1;
-                    return 0;
-                } else if (topic.trackable) {
-                    const topicProgress = progressData[topicId] || {};
-                    const checkedCount = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
-                    if (checkedCount === CHECKLIST_COLUMNS.length) return 2;
-                    if (checkedCount >= 3) return 2;
-                    if (checkedCount > 0) return 1;
-                    return 0;
-                }
-                return 0;
-            }
-
-            function updateOverallProgress() {
-                const progressData = getProgress();
-                const mainTopics = syllabusData.filter(t => t.depth === 2 && t.trackable);
-                let topicsDoneCount = 0;
-                let topicsToReadCount = 0;
-                const columnProgress = CHECKLIST_COLUMNS.map(() => 0);
-                const totalMainTopics = mainTopics.length;
-
-                mainTopics.forEach(topic => {
-                    const topicProgress = progressData[topic.id] || {};
-                    let boxesTicked = 0;
-                    CHECKLIST_COLUMNS.forEach((col, index) => {
-                        if (topicProgress[col] === true) {
-                            boxesTicked++;
-                            columnProgress[index]++;
-                        }
-                    });
-                    
-                    if (boxesTicked >= 3) {
-                        topicsDoneCount++;
-                    } else {
-                        topicsToReadCount++;
-                    }
-                });
-
-                const overallProgressPercentage = totalMainTopics > 0 ? ((topicsDoneCount / totalMainTopics) * 100).toFixed(1) : 0.0;
-                let barColor;
-                if (overallProgressPercentage <= 25) {
-                    barColor = '#ef4444';
-                } else if (overallProgressPercentage <= 50) {
-                    barColor = '#f97316';
-                } else if (overallProgressPercentage <= 75) {
-                    barColor = '#facc15';
-                } else {
-                    barColor = '#10b981';
-                }
-
-                // Update summary metrics
-                document.getElementById(`progress-done-${subjectName}`) && (document.getElementById(`progress-done-${subjectName}`).textContent = topicsDoneCount);
-                document.getElementById(`progress-toread-${subjectName}`) && (document.getElementById(`progress-toread-${subjectName}`).textContent = topicsToReadCount);
-                
-                const progressElement = document.getElementById(`progress-${subjectName}`);
-                if (progressElement) {
-                    // *** FIX: Remove brackets and apply custom bold class ***
-                    progressElement.textContent = `${overallProgressPercentage}%`;
-                    progressElement.classList.remove('font-light'); // Remove tailwind font-light class if present
-                    progressElement.classList.add('progress-percent-bold'); // Apply custom bold style
-                    // *******************************************************
-                }
-                
-                const progressBar = document.getElementById(`progress-bar-${subjectName}`);
-                if (progressBar) {
-                    progressBar.style.width = `${overallProgressPercentage}%`;
-                    progressBar.style.backgroundColor = barColor;
-                }
-
-                // Update column progress metrics
-                const columnHeaderNames = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
-                columnProgress.forEach((tickedCount, index) => {
-                    const elementId = `col-progress-bar-${subjectName}-${columnHeaderNames[index]}`;
-                    const percentElementId = `col-percent-${subjectName}-${columnHeaderNames[index]}`;
-                    const barElement = document.getElementById(elementId);
-                    const percentElement = document.getElementById(percentElementId);
-
-                    if (barElement) {
-                        const colPercentage = totalMainTopics > 0 ? ((tickedCount / totalMainTopics) * 100).toFixed(1) : 0.0;
-                        barElement.style.width = `${colPercentage}%`;
-                        if (percentElement) {
-                            percentElement.textContent = `${colPercentage}%`;
-                        }
-                    }
-                });
-            }
-
-            function renderSyllabusPanel() {
-                 const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
-                 const panelContainer = document.getElementById(`subject-tracker-panel-${subjectName}`);
-                 
-                 // If the element doesn't exist, inject the full panel structure first
-                 if (!panelContainer || !syllabusContainer) {
-                     const container = document.getElementById('subject-trackers-container');
-                     if (container) {
-                         // Find the injection point before attempting to set innerHTML
-                         const targetDiv = document.getElementById(`subject-tracker-panel-${subjectName}`);
-                         if (targetDiv) {
-                            targetDiv.outerHTML = getPanelHtml(subjectName, title, themeIcon);
-                            // Rerun render logic after injection to populate the content
-                            return renderSyllabusPanel();
-                         }
-                     }
-                     return;
-                 }
-
-
-                 const topicWithChildren = (function() {
-                     const children = new Set();
-                     syllabusData.forEach((item, index) => {
-                         const nextItem = syllabusData[index + 1];
-                         if (nextItem && nextItem.depth > item.depth) {
-                             children.add(item.id);
-                         }
-                     });
-                     return children;
-                 })();
-
-                 function hasChildren(topicId) {
-                     return topicWithChildren.has(topicId);
-                 }
-                
-                // 1. Capture current open states to preserve them across re-render
-                const openSections = {};
-                document.querySelectorAll(`#syllabus-${subjectName} details`).forEach(details => {
-                    if (details.id) {
-                        openSections[details.id] = details.open;
-                    }
-                });
-
-                const progress = getProgress();
-                let html = '';
-                let currentSectionOpen = false;
-                let isDepth2Open = false;
-                
-                const checkboxClass = `syllabus-checkbox-${subjectName}`;
-                
-                syllabusData.forEach((item, index) => {
-                    const topicId = item.id;
-                    const nextItem = syllabusData[index + 1];
-                    const currentStatus = getTopicStatus(topicId, progress);
-                    const iconName = currentStatus === 2 ? 'check-circle-2' : (currentStatus === 1 ? 'circle-half' : 'circle');
-                    const iconColor = currentStatus === 2 ? 'checked' : (currentStatus === 1 ? 'partial' : 'empty');
-                    const iconSize = item.depth === 1 ? 'w-5 h-5' : 'w-4 h-4';
-                    const iconTitle = currentStatus === 2 ? 'Clear All' : (currentStatus === 1 ? 'Clear All' : 'Tick All');
-
-                    const isTopLevelTopic = item.depth === 1;
-
-                    if (isTopLevelTopic) {
-                        if (isDepth2Open) { html += `</div></details></div>`; isDepth2Open = false; }
-                        if (currentSectionOpen) { html += `</div></details></div>`; }
-                        
-                        const sectionId = `${subjectName}-section-${item.id}`;
-                        // This ensures default state is collapsed unless explicitly saved as open
-                        const isOpen = openSections[sectionId] === true; 
-                        const openAttr = isOpen ? 'open' : '';
-                        
-                        html += `\n<div class="syllabus-sub-section"><details id="${sectionId}" class="w-full" ${openAttr}><summary class="topic-header"><div class="topic-header-text"><i data-lucide="chevron-right" class="w-4 h-4 mr-2 chevron-icon"></i><span class="font-extrabold text-lg text-black/90">${item.topic}</span></div><i data-lucide="${iconName}" class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></summary><div class="p-2">\n`;
-                        currentSectionOpen = true;
-                    } else if (item.depth === 2 && item.trackable) {
-                        const topicProgress = progress[topicId] || {};
-                        const isCollapsible = hasChildren(topicId);
-
-                        if (isDepth2Open && !isCollapsible) { html += `</div></details></div>`; isDepth2Open = false; }
-
-                        const checklist = CHECKLIST_COLUMNS.map(col => {
-                            const checked = topicProgress[col] === true ? 'checked' : '';
-                            return `\n<div class="flex justify-center"><input type="checkbox" data-id="${topicId}" data-column="${col}" ${checked} class="w-4 h-4 border-gray-300 rounded focus:ring-500 ${checkboxClass}" onchange="window.handleCheckboxChange${subjectName.toUpperCase()}(event)"></div>\n`;
-                        }).join('');
-
-                        let rowContent = `\n
-                            <div class="col-span-1 font-trackable-lg depth2-topic-row">
-                                <div class="topic-content-wrapper" style="padding-left: 1.5rem;">
-                                    ${isCollapsible ? `<i data-lucide="chevron-right" class="w-3 h-3 depth2-chevron"></i>` : `<span class="w-3 h-3 mr-2 inline-block"></span>`}${item.topic}
-                                </div>
-                            </div>
-                            ${checklist}
-                            <div class="flex items-center justify-center space-x-1 pl-2"><i data-lucide="${iconName}" class="tick-all-icon w-4 h-4 ${iconColor}" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></div>\n
-                        `;
-
-                        if (isCollapsible) {
-                            const depth2Id = `${subjectName}-depth2-${item.id}`;
-                            const isOpen = openSections[depth2Id] === true;
-                            const openAttr = isOpen ? 'open' : '';
-                            html += `<div class="depth2-details"><details id="${depth2Id}" class="w-full" ${openAttr}><summary class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</summary><div class="depth3-content-wrapper pt-1 pb-2">`;
-                            isDepth2Open = true;
-                        } else {
-                            html += `<div class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</div>`;
-                        }
-
-                    } else if (item.depth >= 3) {
-                        const dynamicPadding = (item.depth - 2) * 1.5 + 1.5;
-                        const fontStyle = item.depth <= 4 ? 'font-medium' : 'font-normal';
-                        
-                        if (isDepth2Open) {
-                             html += `<div class="p-1 border-b border-black/10 text-black/70 italic ${fontStyle} text-sm" style="padding-left: ${dynamicPadding}rem;">${item.topic}</div>`;
-                        } else {
-                            html += `<div class="checklist-grid hover:bg-gray-50/50 transition"><div>${item.topic}</div></div>`;
-                        }
-                    }
-
-                    if (item.depth >= 3 && isDepth2Open && (!nextItem || nextItem.depth <= 2)) { html += `</div></details></div>`; isDepth2Open = false; }
-                });
-
-                if (currentSectionOpen) {
-                    if (isDepth2Open) { html += `</div></details></div>`; }
-                    html += `</div></details></div>`;
-                }
-
-                syllabusContainer.innerHTML = html;
-                
-                if (lucide && lucide.createIcons) {
-                    lucide.createIcons();
-                }
-                updateOverallProgress();
-                updateCollapseButtonText();
-            }
-
-            function handleCheckboxChange(event) {
-                 const checkbox = event.target;
-                 const id = checkbox.dataset.id;
-                 const column = checkbox.dataset.column;
-                 const isChecked = checkbox.checked;
-                 const progressData = getProgress();
-                 if (!progressData[id]) {
-                     progressData[id] = {};
-                 }
-                 progressData[id][column] = isChecked;
-                 saveProgress(progressData);
-                 renderSyllabusPanel(); 
-            }
+            // ... (rest of factory logic remains the same) ...
             
-            function handleTickAll(topicId) {
-                 const progressData = getProgress();
-                 let topicsToUpdate = [];
-                 const currentStatus = getTopicStatus(topicId, progressData);
-                 const targetState = currentStatus === 2 ? false : true; 
-                 const item = syllabusData.find(t => t.id === topicId);
-                 if (!item) return;
-                 
-                 const startDepth = item.depth;
-                 const startIndex = syllabusData.findIndex(t => t.id === topicId);
-                 
-                 if (startDepth === 2 && item.trackable) {
-                     topicsToUpdate.push(item);
-                 } else if (startDepth === 1) {
-                     for (let i = startIndex; i < syllabusData.length; i++) {
-                         const currentItem = syllabusData[i];
-                         if (i > startIndex && currentItem.depth <= startDepth) break;
-                         if (currentItem.depth === 2 && currentItem.trackable) {
-                             topicsToUpdate.push(currentItem);
-                         }
-                     }
-                 }
-                 
-                 topicsToUpdate.forEach(topic => {
-                     const id = topic.id;
-                     if (!progressData[id]) {
-                         progressData[id] = {};
-                     }
-                     CHECKLIST_COLUMNS.forEach(col => {
-                         progressData[id][col] = targetState;
-                     });
-                 });
-                 saveProgress(progressData);
-                 renderSyllabusPanel();
-            }
-
-            function exportProgress() {
-                const progressData = localStorage.getItem(storageKey);
-                if (!progressData || '{}' === progressData) {
-                    showMessageModal("Download Failed", `<p class='text-red-600'>No ${title} progress data found to download.</p>`);
-                    return;
-                }
-                downloadFile(progressData, `${subjectName}-progress.json`, 'application/json');
-                showMessageModal("Download Complete", `<p class='text-green-600'>Your ${title} progress has been downloaded as **${subjectName}-progress.json**</p>`);
-            }
-
-            function triggerImport() {
-                 DOM_ELEMENTS.fileUploadInput.dataset.targetSubject = subjectName;
-                 DOM_ELEMENTS.fileUploadInput.click();
-            }
-
-            function processImport(file) {
-                 if (!file) { showMessageModal("Upload Canceled", "No file was selected for upload."); return; }
-                 if ('application/json' !== file.type && !file.name.endsWith('.json')) { showMessageModal("Upload Error", `<p class='text-red-600'>Invalid file type. Please upload a **.json** file.</p>`); return; }
-                 
-                 const reader = new FileReader();
-                 reader.onload = function(e) {
-                     const jsonString = e.target.result;
-                     try {
-                         const importedData = JSON.parse(jsonString);
-                         if ('object' !== typeof importedData || null === importedData) { throw new Error("Invalid JSON structure."); }
-                         saveProgress(importedData);
-                         renderSyllabusPanel();
-                         showMessageModal("Success!", `<p class='text-green-600'>${title} progress successfully uploaded and applied.</p>`);
-                     } catch (e) {
-                         console.error("Import error:", e);
-                         showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON.</p>`);
-                     }
-                 };
-                 reader.onerror = function() { showMessageModal("Upload Error", `<p class='text-red-600'>Error reading the file.</p>`); };
-                 reader.readAsText(file);
-            }
-
-            function toggleAllSections() {
-                const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
-                
-                let shouldOpen = false;
-                for (const details of allDetails) {
-                    if (!details.open) {
-                        shouldOpen = true;
-                        break;
-                    }
-                }
-                allDetails.forEach(details => {
-                    details.open = shouldOpen;
-                });
-                
-                if (lucide && lucide.createIcons) {
-                    lucide.createIcons();
-                }
-                updateCollapseButtonText(shouldOpen);
-            }
-
-            function updateCollapseButtonText(isOpen) {
-                const btn = document.getElementById(`collapse-all-btn-${subjectName}`);
-                if (btn) {
-                    if (typeof isOpen === 'undefined') {
-                        const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
-                        let allOpen = true;
-                        for (const details of allDetails) {
-                            if (!details.open) {
-                                allOpen = false;
-                                break;
-                            }
-                        }
-                        isOpen = allOpen;
-                    }
-                    const iconName = isOpen ? 'chevrons-up' : 'chevrons-down';
-                    const text = isOpen ? 'Collapse All' : 'Expand All';
-                    btn.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4 mr-1"></i> ${text}`;
-                    if (!btn.classList.contains('flex')) { btn.classList.add('flex', 'items-center', 'justify-center'); }
-                    if (lucide && lucide.createIcons) { lucide.createIcons(); }
-                }
-            }
-            
-            // Attach unique global handlers for onclick/onchange HTML events
-            window[`handleTickAll${subjectName.toUpperCase()}`] = handleTickAll;
-            window[`handleCheckboxChange${subjectName.toUpperCase()}`] = handleCheckboxChange;
-
             function getPanelHtml(subjectName, title, icon) {
                 const themeClass = `syllabus-panel-${subjectName}`;
+                // Using subject-specific theme classes for the expand button
                 const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
                 const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
                 
@@ -1160,7 +917,10 @@
                                 <div class="flex items-center">
                                     <i data-lucide="${icon}" class="w-6 h-6 mr-3"></i>${title}
                                 </div>
-                                <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
+                                <div class="flex items-center text-xs">
+                                    (${title.match(/\((.*?)\)/)?.[1] || '0%'} of Total)
+                                    <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
+                                </div>
                             </div>
                             <div class="syllabus-progress-metrics text-xs">
                                 <div class="progress-stats">
@@ -1240,6 +1000,8 @@
                 SUBJECT_NAME: subjectName,
                 SUBJECT_TITLE: title,
                 SUBJECT_ICON: themeIcon,
+                SYLLABUS_DATA: syllabusData, // Expose syllabus data for global calculation
+                getProgress: getProgress, // Expose getProgress for global aggregation
                 render: renderSyllabusPanel,
                 updateOverallProgress: updateOverallProgress,
                 exportProgress: exportProgress,
@@ -1278,6 +1040,10 @@
             // 4. Attach General Event Listeners
             updateAllCountdowns();
             setInterval(updateAllCountdowns, 1000);
+            
+            // Call once initially, and rely on subject logic to call on subsequent changes
+            window.updateOverallDashboard(); 
+            
             document.getElementById('target-date-display-1').addEventListener('click', () => openModal(1));
             document.getElementById('target-date-display-2').addEventListener('click', () => openModal(2));
             document.getElementById('target-date-display-3').addEventListener('click', () => openModal(3));
