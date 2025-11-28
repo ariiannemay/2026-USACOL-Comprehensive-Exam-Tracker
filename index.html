@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>University of San Agustin Comprehensive Exam Countdown</title>
-    <link rel="icon" href="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/usacol%20logo.png" type="image/png">
+    <title>2026 Review Tracker</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -71,15 +71,13 @@
         .syllabus-panel-container {
             border-radius: .75rem;
             overflow: hidden;
-            /* Removed cursor: grab and margin-top reset is handled implicitly */
-            margin-top: 1rem !important;
         }
-        
+
         .syllabus-summary {
             padding: 1rem;
             font-size: 1.25rem;
             font-weight: 700;
-            color: white; /* Default text color for all summaries */
+            color: white;
             cursor: pointer;
             list-style: none;
             display: flex;
@@ -100,9 +98,6 @@
             list-style: none;
         }
 
-        /* Removed Drag Over Visual Indicator */
-
-
         /* Checklist Grid */
         .checklist-grid {
             display: grid;
@@ -118,7 +113,7 @@
         /* DEPTH 2 CUSTOMIZATION POINTS (Indentation and Font) */
         /* ****************************************************** */
         .checklist-grid>div:first-child {
-            padding-left: 1.0rem; /* Indentation for depth 2 items */
+            padding-left: .875rem; /* Indentation for depth 2 items */
             font-size: .875rem;
             color: #374151;
             display: flex;
@@ -128,7 +123,7 @@
         }
         
         .font-trackable-lg {
-            font-size: 1rem;    /* Size of trackable topic name text */
+            font-size: 1.25rem;    /* Size of trackable topic name text */
             font-weight: 600;
         }
         
@@ -154,11 +149,11 @@
             border-left: 5px solid #facc15;
         }
 
-        /* FIX: Reset text color for yellow panels to black for readability on a light background */
-        .syllabus-panel-comm .syllabus-summary-title-row > div:first-child,
+        /* FIX: This block ensures all text (spans) and the main icon (i) are dark on the yellow background */
+        .syllabus-panel-comm .syllabus-summary-title-row .flex:first-child,
         .syllabus-panel-comm .syllabus-progress-metrics span,
         .syllabus-panel-comm .syllabus-progress-metrics i {
-             color: #111827 !important; /* Black text for contrast on yellow */
+             color: #111827 !important;
         }
 
 
@@ -255,7 +250,7 @@
             accent-color: #ef4444;
         }
 
-        /* POLI Law (Brown Theme) */
+        /* POLI Law (Brown Theme) - Placeholder style */
         .syllabus-panel-poli {
             --poli-color: #795548; /* Brown */
             --poli-color-dark: #5d4037;
@@ -612,10 +607,8 @@
 
 
         <!-- 4. SUBJECT TRACKERS (Dynamic Content) -->
-        <!-- Note: This container is now set to use Flexbox to make drag and drop simpler -->
-        <div id="subject-trackers-container" class="space-y-4 flex flex-col">
-            <!-- Subject panels will be dynamically injected here by the JS modules in the custom/saved order -->
-            <!-- The following divs are targets for dynamic replacement by the loading scripts -->
+        <div id="subject-trackers-container" class="space-y-4">
+            <!-- Subject panels will be dynamically injected here by the JS modules in this order: rem, crim, lab, civ, comm, poli -->
             <div id="subject-tracker-panel-rem"></div>
             <div id="subject-tracker-panel-crim"></div>
             <div id="subject-tracker-panel-lab"></div>
@@ -657,9 +650,6 @@
         // --- CORE UTILITY AND COUNTDOWN LOGIC (REMAINS IN INDEX) ---
         
         const CHECKLIST_COLUMNS = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
-        const DEFAULT_SUBJECT_ORDER = ['rem', 'crim', 'lab', 'civ', 'comm', 'poli'];
-        // Removed STORAGE_KEY_ORDER since we are dropping the save/load order feature.
-        
         const COUNTDOWN_DATA = [
             {id:1,targetDate:localStorage.getItem('comp_exam_date_1')||'2026-06-14'},
             {id:2,targetDate:localStorage.getItem('comp_exam_date_2')||'2026-06-21'},
@@ -714,9 +704,6 @@
         function closeModal(){document.getElementById('date-edit-modal').classList.add('hidden');document.getElementById('date-edit-modal').style.display='none';currentEditingId=null;}
         function saveModal(){const newDateString=document.getElementById('new-target-date').value;const newDate=new Date(newDateString);const now=new Date();if(newDate<=now||!newDateString){document.getElementById('modal-error').textContent="Please select a future date.";document.getElementById('modal-error').classList.remove('hidden');return;}const data=COUNTDOWN_DATA.find(d=>d.id===currentEditingId);if(data){data.targetDate=newDateString;document.querySelector(`#target-date-display-${currentEditingId} .date-text`).textContent=formatUniqueDate(newDateString);localStorage.setItem(`comp_exam_date_${currentEditingId}`,newDateString);updateAllCountdowns();}closeModal();}
         
-        // --- Drag and Drop Logic (Removed) ---
-        // Functions removed: saveOrder, handleDragStart, handleDragEnd, handleDragOver, handleDragEnter, handleDragLeave, handleDrop, getDragTarget, attachDndListeners
-
         // Global File Upload Handler (Used by all subject modules)
         function handleFileUpload(event){
             const file = event.target.files[0];
@@ -742,19 +729,21 @@
                 if (window[`create${subjectName.toUpperCase()}_LOGIC`]) {
                     const logic = window[`create${subjectName.toUpperCase()}_LOGIC`]();
                     SUBJECT_LOGIC_MAP[subjectName] = logic;
-                    
-                    // Initial injection logic
-                    const targetDiv = document.getElementById(`subject-tracker-panel-${subjectName}`);
-                    if (targetDiv) {
-                        // Replace the placeholder div with the actual panel HTML
-                        targetDiv.outerHTML = logic.getPanelHtml(logic.SUBJECT_NAME, logic.SUBJECT_TITLE, logic.SUBJECT_ICON);
-                        
-                        // NOTE: DND listeners removed, no attachDndListeners here.
+                    // Initial render/injection is now handled by the module's DOMContentLoaded listener,
+                    // but we call render explicitly if the panel doesn't exist yet, as a fallback.
+                    if (!document.getElementById(`subject-tracker-panel-${subjectName}`)) {
+                        const container = document.getElementById('subject-trackers-container');
+                        if (container) {
+                            // Find the injection point before attempting to set innerHTML
+                            const targetDiv = document.getElementById(`subject-tracker-panel-${subjectName}`);
+                            if (targetDiv) {
+                                targetDiv.outerHTML = logic.getPanelHtml(logic.SUBJECT_NAME, logic.SUBJECT_TITLE, logic.SUBJECT_ICON);
+                                // Rerun render logic after injection to populate the content
+                                logic.render();
+                            }
+                        }
                     }
-
-                    // Render internal syllabus content and update progress
                     logic.render();
-                    
                     // Attach event listeners for buttons that are now in the DOM
                     document.getElementById(`export-progress-btn-${subjectName}`)?.addEventListener('click', logic.exportProgress);
                     document.getElementById(`import-progress-btn-${subjectName}`)?.addEventListener('click', logic.importProgress);
@@ -768,8 +757,10 @@
 
         // --- GLOBAL SYLLABUS LOGIC FACTORY (This MUST be defined in index.html) ---
         window.createSyllabusLogic = function(subjectName, syllabusData, storageKey, themeIcon, title) {
-            // Internal Logic functions (kept minimal for brevity)
-            
+            // This is a minimal definition of the factory required by the external scripts.
+            // The full implementation of internal functions is assumed to be available
+            // via closure/window scope access or defined within the factory itself.
+
             function getProgress() {
                 try {
                     const saved = localStorage.getItem(storageKey);
@@ -862,9 +853,11 @@
                 
                 const progressElement = document.getElementById(`progress-${subjectName}`);
                 if (progressElement) {
+                    // *** FIX: Remove brackets and apply custom bold class ***
                     progressElement.textContent = `${overallProgressPercentage}%`;
-                    progressElement.classList.remove('font-light');
-                    progressElement.classList.add('progress-percent-bold');
+                    progressElement.classList.remove('font-light'); // Remove tailwind font-light class if present
+                    progressElement.classList.add('progress-percent-bold'); // Apply custom bold style
+                    // *******************************************************
                 }
                 
                 const progressBar = document.getElementById(`progress-bar-${subjectName}`);
@@ -892,37 +885,39 @@
             }
 
             function renderSyllabusPanel() {
-                 const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
-                 const panelContainer = document.getElementById(`subject-tracker-panel-${subjectName}`);
-                 
-                 // If the element doesn't exist, inject the full panel structure first
-                 if (!panelContainer || !syllabusContainer) {
-                     const container = document.getElementById('subject-trackers-container');
-                     if (container) {
-                         const targetDiv = document.getElementById(`subject-tracker-panel-${subjectName}`);
-                         if (targetDiv) {
+                const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
+                const panelContainer = document.getElementById(`subject-tracker-panel-${subjectName}`);
+                
+                // If the element doesn't exist, inject the full panel structure first
+                if (!panelContainer || !syllabusContainer) {
+                    const container = document.getElementById('subject-trackers-container');
+                    if (container) {
+                        // Find the injection point before attempting to set innerHTML
+                        const targetDiv = document.getElementById(`subject-tracker-panel-${subjectName}`);
+                        if (targetDiv) {
                             targetDiv.outerHTML = getPanelHtml(subjectName, title, themeIcon);
+                            // Rerun render logic after injection to populate the content
                             return renderSyllabusPanel();
-                         }
-                     }
-                     return;
-                 }
+                        }
+                    }
+                    return;
+                }
 
 
-                 const topicWithChildren = (function() {
-                     const children = new Set();
-                     syllabusData.forEach((item, index) => {
-                         const nextItem = syllabusData[index + 1];
-                         if (nextItem && nextItem.depth > item.depth) {
-                             children.add(item.id);
-                         }
-                     });
-                     return children;
-                 })();
+                const topicWithChildren = (function() {
+                    const children = new Set();
+                    syllabusData.forEach((item, index) => {
+                        const nextItem = syllabusData[index + 1];
+                        if (nextItem && nextItem.depth > item.depth) {
+                            children.add(item.id);
+                        }
+                    });
+                    return children;
+                })();
 
-                 function hasChildren(topicId) {
-                     return topicWithChildren.has(topicId);
-                 }
+                function hasChildren(topicId) {
+                    return topicWithChildren.has(topicId);
+                }
                 
                 // 1. Capture current open states to preserve them across re-render
                 const openSections = {};
@@ -955,6 +950,7 @@
                         if (currentSectionOpen) { html += `</div></details></div>`; }
                         
                         const sectionId = `${subjectName}-section-${item.id}`;
+                        // This ensures default state is collapsed unless explicitly saved as open
                         const isOpen = openSections[sectionId] === true; 
                         const openAttr = isOpen ? 'open' : '';
                         
@@ -1019,6 +1015,93 @@
                 updateCollapseButtonText();
             }
 
+            function handleCheckboxChange(event) {
+                const checkbox = event.target;
+                const id = checkbox.dataset.id;
+                const column = checkbox.dataset.column;
+                const isChecked = checkbox.checked;
+                const progressData = getProgress();
+                if (!progressData[id]) {
+                    progressData[id] = {};
+                }
+                progressData[id][column] = isChecked;
+                saveProgress(progressData);
+                renderSyllabusPanel(); 
+            }
+            
+            function handleTickAll(topicId) {
+                const progressData = getProgress();
+                let topicsToUpdate = [];
+                const currentStatus = getTopicStatus(topicId, progressData);
+                const targetState = currentStatus === 2 ? false : true; 
+                const item = syllabusData.find(t => t.id === topicId);
+                if (!item) return;
+                
+                const startDepth = item.depth;
+                const startIndex = syllabusData.findIndex(t => t.id === topicId);
+                
+                if (startDepth === 2 && item.trackable) {
+                    topicsToUpdate.push(item);
+                } else if (startDepth === 1) {
+                    for (let i = startIndex; i < syllabusData.length; i++) {
+                        const currentItem = syllabusData[i];
+                        if (i > startIndex && currentItem.depth <= startDepth) break;
+                        if (currentItem.depth === 2 && currentItem.trackable) {
+                            topicsToUpdate.push(currentItem);
+                        }
+                    }
+                }
+                
+                topicsToUpdate.forEach(topic => {
+                    const id = topic.id;
+                    if (!progressData[id]) {
+                        progressData[id] = {};
+                    }
+                    CHECKLIST_COLUMNS.forEach(col => {
+                        progressData[id][col] = targetState;
+                    });
+                });
+                saveProgress(progressData);
+                renderSyllabusPanel();
+            }
+
+            function exportProgress() {
+                const progressData = localStorage.getItem(storageKey);
+                if (!progressData || '{}' === progressData) {
+                    showMessageModal("Download Failed", `<p class='text-red-600'>No ${title} progress data found to download.</p>`);
+                    return;
+                }
+                downloadFile(progressData, `${subjectName}-progress.json`, 'application/json');
+                showMessageModal("Download Complete", `<p class='text-green-600'>Your ${title} progress has been downloaded as **${subjectName}-progress.json**</p>`);
+            }
+
+            function triggerImport() {
+                DOM_ELEMENTS.fileUploadInput.dataset.targetSubject = subjectName;
+                DOM_ELEMENTS.fileUploadInput.click();
+            }
+
+            function processImport(file) {
+                if (!file) { showMessageModal("Upload Canceled", "No file was selected for upload."); return; }
+                if ('application/json' !== file.type && !file.name.endsWith('.json')) { showMessageModal("Upload Error", `<p class='text-red-600'>Invalid file type. Please upload a **.json** file.</p>`); return; }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const jsonString = e.target.result;
+                    try {
+                        const importedData = JSON.parse(jsonString);
+                        if ('object' !== typeof importedData || null === importedData) { throw new Error("Invalid JSON structure."); }
+                        saveProgress(importedData);
+                        renderSyllabusPanel();
+                        showMessageModal("Success!", `<p class='text-green-600'>${title} progress successfully uploaded and applied.</p>`);
+                    } catch (e) {
+                        console.error("Import error:", e);
+                        showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON.</p>`);
+                    }
+                };
+                reader.onerror = function() { showMessageModal("Upload Error", `<p class='text-red-600'>Error reading the file.</p>`); };
+                reader.readAsText(file);
+            }
+
             function toggleAllSections() {
                 const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
                 
@@ -1070,27 +1153,24 @@
                 const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
                 const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
                 
-                // Determine the base icon color (defaults to white for dark headers)
-                let iconColor = 'text-white';
-                if (subjectName === 'comm') {
-                     // Commercial Law (yellow theme) needs dark icons/text for contrast
-                    iconColor = 'text-black';
-                }
-
+                // Determine the icon color class for the summary metrics based on subject name
+                // COMM uses a yellow background, requiring dark text/icons for contrast.
+                const summaryIconColorClass = subjectName === 'comm' ? 'text-gray-900' : 'text-gray-200';
+                
                 return `
                 <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container ${themeClass}" id="subject-tracker-panel-${subjectName}">
                     <details class="syllabus-panel">
                         <summary class="syllabus-summary" id="summary-${subjectName}">
                             <div class="syllabus-summary-title-row">
                                 <div class="flex items-center">
-                                    <i data-lucide="${icon}" class="w-6 h-6 mr-3 ${iconColor}"></i>${title}
+                                    <i data-lucide="${icon}" class="w-6 h-6 mr-3"></i>${title}
                                 </div>
                                 <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
                             </div>
                             <div class="syllabus-progress-metrics text-xs">
                                 <div class="progress-stats">
-                                    <span class="flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>DONE:&nbsp;<span id="progress-done-${subjectName}">0</span>&nbsp;TOPICS</span>
-                                    <span class="flex items-center"><i data-lucide="book-open-text" class="w-4 h-4 mr-1 text-gray-200"></i>TO READ:&nbsp;<span id="progress-toread-${subjectName}">0</span>&nbsp;TOPICS</span>
+                                    <span class="flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 ${summaryIconColorClass}"></i>DONE:&nbsp;<span id="progress-done-${subjectName}">0</span>&nbsp;TOPICS</span>
+                                    <span class="flex items-center"><i data-lucide="book-open-text" class="w-4 h-4 mr-1 ${summaryIconColorClass}"></i>TO READ:&nbsp;<span id="progress-toread-${subjectName}">0</span>&nbsp;TOPICS</span>
                                 </div>
                                 <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
                                     <span class="progress-overall-text flex items-center"><i data-lucide="chart-spline" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:</span>
@@ -1170,7 +1250,6 @@
                 exportProgress: exportProgress,
                 importProgress: triggerImport,
                 processImport: processImport,
-                renderSyllabusPanel: renderSyllabusPanel, // Added for convenience
                 toggleAllSections: toggleAllSections,
                 getPanelHtml: getPanelHtml
             };
@@ -1187,15 +1266,8 @@
                     document.querySelector(`#target-date-display-${data.id} .date-text`).textContent = formatUniqueDate(finalDate);
                 }
             });
-            
-            // 2. Restore fixed default order and load subjects
-            const subjectOrder = DEFAULT_SUBJECT_ORDER;
-            
-            // A. Create temporary placeholder divs based on the desired order
-            DOM_ELEMENTS.subjectContainer.innerHTML = subjectOrder.map(s => `<div id="subject-tracker-panel-${s}"></div>`).join('');
 
-
-            // B. Trigger the load for each script in order
+            // 2. Load Subject Panels (This is the load sequence, ensuring the correct order)
             loadSubjectPanel('rem', 'rem_logic.js');
             loadSubjectPanel('crim', 'crim_logic.js');
             loadSubjectPanel('lab', 'lab_logic.js');
