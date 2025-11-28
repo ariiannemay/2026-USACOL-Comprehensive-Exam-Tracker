@@ -119,16 +119,76 @@
             justify-content: center;
         }
 
-        /* New Styles for LABOR Law (Green Theme) */
+        /* Subject Themes */
+        /* COMMERCIAL Law (Yellow Theme) */
+        .syllabus-panel-comm {
+            --comm-color: #eab308;
+            /* Yellow-600 */
+            --comm-color-dark: #b58800;
+            --comm-color-light: #fefce8;
+            --comm-checkbox-color: #eab308;
+        }
+
+        .syllabus-panel-comm .syllabus-summary {
+            background-color: var(--comm-color);
+            border-left: 5px solid #facc15;
+        }
+
+        .syllabus-panel-comm .syllabus-summary-title-row .flex:first-child,
+        .syllabus-panel-comm .syllabus-progress-metrics span,
+        .syllabus-panel-comm .syllabus-progress-metrics i {
+             color: #111827 !important;
+        }
+
+
+        .syllabus-panel-comm .topic-header {
+            background-color: var(--comm-color-light);
+            border-left: 3px solid var(--comm-color);
+        }
+
+        .syllabus-checkbox-comm {
+            accent-color: var(--comm-checkbox-color);
+        }
+
+        .bg-comm-button {
+            background-color: var(--comm-color);
+        }
+
+        .hover\:bg-comm-button-dark:hover {
+            background-color: var(--comm-color-dark);
+        }
+
+        /* CIVIL Law (Blue Theme) */
+        .syllabus-panel-civ .syllabus-summary {
+            background-color: #1e3a8a;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .syllabus-panel-civ .topic-header {
+            background-color: #eff6ff;
+            border-left: 3px solid #1e3a8a;
+        }
+
+        .syllabus-checkbox-civ {
+            accent-color: #2563eb;
+        }
+
+        .bg-civ-button {
+            background-color: #2563eb;
+        }
+
+        .hover\:bg-civ-button-dark:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* LABOR Law (Green Theme) */
         .syllabus-panel-lab .syllabus-summary {
             background-color: #38761d;
-            /* Deep Forest Green */
             border-left: 5px solid #6aa84f;
         }
 
         .syllabus-panel-lab .topic-header {
             background-color: #f6fff6;
-            /* Very light green */
             border-left: 3px solid #38761d;
         }
 
@@ -144,17 +204,14 @@
             background-color: #274e13;
         }
 
-
-        /* Existing REMEDIAL Law (Purple Theme) */
+        /* REMEDIAL Law (Purple Theme) */
         .syllabus-panel-rem .syllabus-summary {
             background-color: #674ea7;
-            /* Deep Purple */
             border-left: 5px solid #8e7cc3;
         }
 
         .syllabus-panel-rem .topic-header {
             background-color: #ede9fe;
-            /* Very light purple */
             border-left: 3px solid #8b5cf6;
         }
 
@@ -162,16 +219,14 @@
             accent-color: #8b5cf6;
         }
 
-        /* Existing CRIMINAL Law (Red Theme) */
+        /* CRIMINAL Law (Red Theme) */
         .syllabus-panel-crim .syllabus-summary {
             background-color: #b33a3a;
-            /* Dark Red */
             border-left: 5px solid #d94a4a;
         }
 
         .syllabus-panel-crim .topic-header {
             background-color: #fee2e2;
-            /* Very light red */
             border-left: 3px solid #ef4444;
         }
 
@@ -179,7 +234,33 @@
             accent-color: #ef4444;
         }
 
-        /* Common details styling */
+        /* POLI Law (Brown Theme) - Placeholder style */
+        .syllabus-panel-poli {
+            --poli-color: #795548; /* Brown */
+            --poli-color-dark: #5d4037;
+            --poli-color-light: #f1f1f1;
+        }
+
+        .syllabus-panel-poli .syllabus-summary {
+            background-color: var(--poli-color);
+            border-left: 5px solid #a1887f;
+        }
+        .syllabus-panel-poli .topic-header {
+            background-color: var(--poli-color-light);
+            border-left: 3px solid var(--poli-color);
+        }
+        .syllabus-checkbox-poli {
+            accent-color: var(--poli-color);
+        }
+        .bg-poli-button {
+            background-color: var(--poli-color);
+        }
+        .hover\:bg-poli-button-dark:hover {
+            background-color: var(--poli-color-dark);
+        }
+
+
+        /* Common styling (kept generic) */
         .syllabus-summary-title-row {
             display: flex;
             align-items: center;
@@ -507,251 +588,38 @@
             </div>
         </div>
 
-        <!-- 4.1 REMEDIAL LAW & ETHICS TRACKER (PURPLE) - FIXED IDS -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container syllabus-panel-rem">
-            <details class="syllabus-panel" open>
-                <summary class="syllabus-summary" id="summary-rem">
+        <!-- 3. Overall Progress (Placeholder for future development) -->
+        <div id="overall-dashboard" class="bg-white rounded-xl shadow-lg border border-gray-300 p-4 text-center">
+             <h3 class="text-2xl font-extrabold header-font tracking-wider text-gray-800 mb-2">OVERALL REVIEW STATS</h3>
+             <p class="text-sm text-gray-500">Global progress tracking will be implemented here once all subject trackers are loaded.</p>
+        </div>
+
+
+        <!-- 4. SUBJECT TRACKERS (Dynamic Content) -->
+        <div id="subject-trackers-container" class="space-y-4">
+            <!-- Subject panels will be dynamically injected here by the JS modules -->
+             <!-- Placeholders for quick loading/injection point for the factory logic -->
+            <div id="subject-tracker-panel-rem"></div>
+            <div id="subject-tracker-panel-crim"></div>
+            <div id="subject-tracker-panel-lab"></div>
+            <div id="subject-tracker-panel-civ"></div>
+            <div id="subject-tracker-panel-comm"></div>
+            <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container syllabus-panel-poli" id="subject-tracker-panel-poli">
+                <div class="syllabus-summary p-4">
                     <div class="syllabus-summary-title-row">
                         <div class="flex items-center">
-                            <i data-lucide="book-open" class="w-6 h-6 mr-3"></i>REMEDIAL LAW, LEGAL ETHICS, AND LEGAL FORMS
+                            <i data-lucide="gavel" class="w-6 h-6 mr-3"></i>POLITICAL AND PUBLIC INTERNATIONAL LAW
                         </div>
                         <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
                     </div>
-                    <div class="syllabus-progress-metrics text-xs">
-                        <div class="progress-stats">
-                            <!-- ID FIX: Use unique subject suffix -rem -->
-                            <span class="flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>DONE:&nbsp;<span id="progress-done-rem">0</span>&nbsp;TOPICS</span>
-                            <span class="flex items-center"><i data-lucide="book-open-text" class="w-4 h-4 mr-1 text-gray-200"></i>TO READ:&nbsp;<span id="progress-toread-rem">0</span>&nbsp;TOPICS</span>
-                        </div>
-                        <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
-                            <span class="progress-overall-text flex items-center"><i data-lucide="chart-spline" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:</span>
-                            <div class="progress-bar-container">
-                                <div id="progress-bar-rem" class="progress-bar" style="width: 0%;"></div>
-                            </div>
-                            <span id="progress-rem" class="font-light">(0.0%)</span>
-                        </div>
+                    <div class="text-white text-sm">
+                        <p class="font-bold">Subject 6 (POLI) Loading...</p>
+                        <p class="font-light mt-1">Ready to receive syllabus data when provided.</p>
                     </div>
-                </summary>
-                <div class="syllabus-content">
-                    <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-2 status-message-row border-b border-gray-200">
-                        <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
-                        <div class="flex flex-wrap gap-2">
-                            <button id="import-progress-btn-rem" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="upload" class="w-4 h-4 mr-1 inline-block"></i> Upload Progress</button>
-                            <button id="export-progress-btn-rem" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="download" class="w-4 h-4 mr-1 inline-block"></i> Download Progress</button>
-                            <button id="collapse-all-btn-rem" class="px-3 py-1 text-xs font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 transition duration-150 whitespace-nowrap"><i data-lucide="chevrons-up" class="w-4 h-4 mr-1"></i> Collapse All</button>
-                        </div>
-                    </div>
-                    <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
-                        <div>SUBJECTS/TOPICS</div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
-                        <div></div>
-                    </div>
-                    <div class="checklist-grid checklist-grid-micro-progress text-center border-t border-gray-300">
-                        <div></div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <!-- ID FIX: Use unique subject suffix -rem -->
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-rem-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-rem-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-rem-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-rem-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-rem-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-rem-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-rem-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-rem-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-rem-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-rem-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
-                        </div>
-                        <div></div>
-                    </div>
-                    <div id="syllabus-rem" class="text-xs"></div>
                 </div>
-            </details>
+            </div>
         </div>
-
-        <!-- 4.2 CRIMINAL LAW TRACKER (RED) -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container syllabus-panel-crim">
-            <details class="syllabus-panel" open>
-                <summary class="syllabus-summary" id="summary-crim">
-                    <div class="syllabus-summary-title-row">
-                        <div class="flex items-center">
-                            <i data-lucide="shield-half" class="w-6 h-6 mr-3"></i>CRIMINAL LAW (RPC BOOK 1 & 2)
-                        </div>
-                        <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
-                    </div>
-                    <div class="syllabus-progress-metrics text-xs">
-                        <div class="progress-stats">
-                            <span id="progress-done-crim-display" class="flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>DONE:&nbsp;<span id="progress-done-crim">0</span>&nbsp;TOPICS</span>
-                            <span id="progress-toread-crim-display" class="flex items-center"><i data-lucide="book-open-text" class="w-4 h-4 mr-1 text-gray-200"></i>TO READ:&nbsp;<span id="progress-toread-crim">0</span>&nbsp;TOPICS</span>
-                        </div>
-                        <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
-                            <span class="progress-overall-text flex items-center"><i data-lucide="chart-spline" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:</span>
-                            <div class="progress-bar-container">
-                                <div id="progress-bar-crim" class="progress-bar" style="width: 0%;"></div>
-                            </div>
-                            <span id="progress-crim" class="font-light">(0.0%)</span>
-                        </div>
-                    </div>
-                </summary>
-                <div class="syllabus-content">
-                    <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-2 status-message-row border-b border-gray-200">
-                        <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
-                        <div class="flex flex-wrap gap-2">
-                            <button id="import-progress-btn-crim" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="upload" class="w-4 h-4 mr-1 inline-block"></i> Upload Progress</button>
-                            <button id="export-progress-btn-crim" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="download" class="w-4 h-4 mr-1 inline-block"></i> Download Progress</button>
-                            <button id="collapse-all-btn-crim" class="px-3 py-1 text-xs font-semibold text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 transition duration-150 whitespace-nowrap"><i data-lucide="chevrons-up" class="w-4 h-4 mr-1"></i> Collapse All</button>
-                        </div>
-                    </div>
-                    <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
-                        <div>SUBJECTS/TOPICS</div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
-                        <div></div>
-                    </div>
-                    <div class="checklist-grid checklist-grid-micro-progress text-center border-t border-gray-300">
-                        <div></div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-crim-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-crim-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-crim-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-crim-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-crim-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-crim-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-crim-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-crim-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-crim-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-crim-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
-                        </div>
-                        <div></div>
-                    </div>
-                    <div id="syllabus-crim" class="text-xs"></div>
-                </div>
-            </details>
-        </div>
-
-        <!-- 4.3 LABOR LAW TRACKER (GREEN) -->
-        <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container syllabus-panel-lab">
-            <details class="syllabus-panel" open>
-                <summary class="syllabus-summary" id="summary-lab">
-                    <div class="syllabus-summary-title-row">
-                        <div class="flex items-center">
-                            <i data-lucide="hand-metal" class="w-6 h-6 mr-3"></i>LABOR AND SOCIAL LEGISLATION
-                        </div>
-                        <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
-                    </div>
-                    <div class="syllabus-progress-metrics text-xs">
-                        <div class="progress-stats">
-                            <span id="progress-done-lab-display" class="flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>DONE:&nbsp;<span id="progress-done-lab">0</span>&nbsp;TOPICS</span>
-                            <span id="progress-toread-lab-display" class="flex items-center"><i data-lucide="book-open-text" class="w-4 h-4 mr-1 text-gray-200"></i>TO READ:&nbsp;<span id="progress-toread-lab">0</span>&nbsp;TOPICS</span>
-                        </div>
-                        <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
-                            <span class="progress-overall-text flex items-center"><i data-lucide="chart-spline" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:</span>
-                            <div class="progress-bar-container">
-                                <div id="progress-bar-lab" class="progress-bar" style="width: 0%;"></div>
-                            </div>
-                            <span id="progress-lab" class="font-light">(0.0%)</span>
-                        </div>
-                    </div>
-                </summary>
-                <div class="syllabus-content">
-                    <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-2 status-message-row border-b border-gray-200">
-                        <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
-                        <div class="flex flex-wrap gap-2">
-                            <button id="import-progress-btn-lab" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="upload" class="w-4 h-4 mr-1 inline-block"></i> Upload Progress</button>
-                            <button id="export-progress-btn-lab" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="download" class="w-4 h-4 mr-1 inline-block"></i> Download Progress</button>
-                            <button id="collapse-all-btn-lab" class="px-3 py-1 text-xs font-semibold text-white bg-lab-button rounded-lg shadow-md hover:bg-lab-button-dark transition duration-150 whitespace-nowrap"><i data-lucide="chevrons-up" class="w-4 h-4 mr-1"></i> Collapse All</button>
-                        </div>
-                    </div>
-                    <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
-                        <div>SUBJECTS/TOPICS</div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
-                        <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
-                        <div></div>
-                    </div>
-                    <div class="checklist-grid checklist-grid-micro-progress text-center border-t border-gray-300">
-                        <div></div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-lab-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-lab-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-lab-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-lab-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-lab-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-lab-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-lab-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-lab-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
-                        </div>
-                        <div class="px-1 flex flex-col items-center justify-start">
-                            <div class="col-progress-bar-container">
-                                <div id="col-progress-bar-lab-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
-                            </div>
-                            <span id="col-percent-lab-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
-                        </div>
-                        <div></div>
-                    </div>
-                    <div id="syllabus-lab" class="text-xs"></div>
-                </div>
-            </details>
-        </div>
-
+        
     </div>
 
     <!-- Modals (Date Edit & Message) -->
@@ -780,19 +648,16 @@
         </div>
     </div>
 
+    <!-- Dynamic JavaScript Loader and Core Logic -->
     <script>
-        // --- SYLLABUS DATA (REM & CRIM from previous code, LAB added) ---
-        var REM_ETHICS_SYLLABUS = [{id:1,topic:"I. GENERAL PRINCIPLES",depth:1,trackable:!1},{id:2,topic:"A. Concept and Nature of Remedial Law",depth:2,trackable:!0},{id:3,topic:"B. Procedural Laws Applicable to Actions Pending at the Time of Promulgation",depth:2,trackable:!0},{id:4,topic:"C. Construction of Procedural Rules",depth:2,trackable:!0},{id:5,topic:"D. Rule-making Power of the Supreme Court",depth:2,trackable:!0},{id:6,topic:"E. Classification of Philippine Courts",depth:2,trackable:!0},{id:7,topic:"F. Hierarchy of Courts",depth:2,trackable:!0},{id:8,topic:"G. Doctrine of Non-interference or Judicial Stability",depth:2,trackable:!0},{id:9,topic:"II. JURISDICTION",depth:1,trackable:!1},{id:10,topic:"A. Concept",depth:2,trackable:!0},{id:11,topic:"1. Distinguished from Exercise of Jurisdiction",depth:3,trackable:!1},{id:12,topic:"2. Distinguished from Venue",depth:3,trackable:!1},{id:13,topic:"3. Adherence of Jurisdiction; Residual Jurisdiction; Primary Jurisdiction",depth:3,trackable:!1},{id:14,topic:"4. How Determined and Conferred",depth:3,trackable:!1},{id:15,topic:"B . Subject Matter Jurisdiction",depth:2,trackable:!0},{id:16,topic:"1. Kinds",depth:3,trackable:!1},{id:17,topic:"a. Original and Appellate",depth:4,trackable:!1},{id:18,topic:"b. General and Special",depth:4,trackable:!1},{id:19,topic:"c. Exclusive and Concurrent",depth:4,trackable:!1},{id:20,topic:"2. Waiver and Compromise",depth:3,trackable:!1},{id:21,topic:"3. Effect of Estoppel",depth:3,trackable:!1},{id:22,topic:"4. Error of Jurisdiction",depth:3,trackable:!1},{id:23,topic:"C. Acquired Jurisdiction",depth:2,trackable:!0},{id:24,topic:"1. Over the Parties",depth:3,trackable:!1},{id:25,topic:"a. Jurisdiction over the Plaintiff",depth:4,trackable:!1},{id:26,topic:"b. Jurisdiction over the Defendant",depth:4,trackable:!1},{id:27,topic:"2. Over the Issues",depth:3,trackable:!1},{id:28,topic:"3. Over the Res or Property in Litigation",depth:3,trackable:!1},{id:29,topic:"D. Jurisdiction of Philippine Courts and Tribunals",depth:2,trackable:!0},{id:30,topic:"1. Inherent Powers and Means to Carry out Jurisdiction",depth:3,trackable:!1},{id:31,topic:"2. Supreme Court",depth:3,trackable:!1},{id:32,topic:"3. Court of Appeals",depth:3,trackable:!1},{id:33,topic:"4. Sandiganbayan",depth:3,trackable:!1},{id:34,topic:"5. Court of Tax Appeals",depth:3,trackable:!1},{id:35,topic:"6. Regional Trial Courts",depth:3,trackable:!1},{id:36,topic:"7. Family Courts",depth:3,trackable:!1},{id:37,topic:"8. Special Commercial Courts and Cybercrime Courts",depth:3,trackable:!1},{id:38,topic:"9. Metropolitan and Municipal Trial Courts – R.A. No. 11576",depth:3,trackable:!1},{id:39,topic:"a. Expedited Proceedings – A.M. No. 08-8-7-SC",depth:4,trackable:!1},{id:40,topic:"10. Lupong Tagapamayapa – R.A. No. 7160, Secs. 408, 409, and 412",depth:3,trackable:!1},{id:41,topic:"III. CIVIL PROCEDURE (Rules of Court, as amended by A.M. No. 19-10-20-SC)",depth:1,trackable:!1},{id:42,topic:"A. Classification of Actions",depth:2,trackable:!0},{id:43,topic:"1. Ordinary and Special",depth:3,trackable:!1},{id:44,topic:"2. Personal and Real",depth:3,trackable:!1},{id:45,topic:"3. In Rem , In Personam , and Quasi In Rem",depth:3,trackable:!1},{id:46,topic:"B. Cause of Action – Rule 2",depth:2,trackable:!0},{id:47,topic:"C. Parties to Civil Actions – Rule 3",depth:2,trackable:!0},{id:48,topic:"D. Venue – Rule 4",depth:2,trackable:!0},{id:49,topic:"E. Pleadings",depth:2,trackable:!0},{id:50,topic:"1. Kinds – Rule 6",depth:3,trackable:!1},{id:51,topic:"2. Parts – Rule 7",depth:3,trackable:!1},{id:52,topic:"3. Allegations – Rule 8",depth:3,trackable:!1},{id:53,topic:"4. Effect of Failure to Plead – Rule 9, Secs. 1 and 2",depth:3,trackable:!1},{id:54,topic:"5. Amended and Supplemental Pleadings – Rule 10",depth:3,trackable:!1},{id:55,topic:"6. Filing of Responsive Pleadings – Rule 11",depth:3,trackable:!1},{id:56,topic:"7. Bill of Particulars – Rule 12",depth:3,trackable:!1},{id:57,topic:"8. Filing and Service of Pleadings – Rule 13",depth:3,trackable:!1},{id:58,topic:"a. Efficient Use of Paper Rule – A.M. No. 11-9-4-SC",depth:4,trackable:!1},{id:59,topic:"b. Electronic Filing and Service – A.M. No. 10-3-7-SC; A.M. No. 11-9-4-SC",depth:4,trackable:!1},{id:60,topic:"F. Summons – Rule 14",depth:2,trackable:!0},{id:61,topic:"1. Issuance; Contents",depth:3,trackable:!1},{id:62,topic:"a. By Whom Issued",depth:4,trackable:!1},{id:63,topic:"b. Purpose in Relation to Actions In Personam , In Rem , and Quasi In Rem",depth:4,trackable:!1},{id:64,topic:"2. Service",depth:3,trackable:!1},{id:65,topic:"a. By Whom Made",depth:4,trackable:!1},{id:66,topic:"b. Modes",depth:4,trackable:!1},{id:67,topic:"i. Personal",depth:5,trackable:!1},{id:68,topic:"ii. Substituted",depth:5,trackable:!1},{id:69,topic:"iii. Extraterritorial",depth:5,trackable:!1},{id:70,topic:"(a) Hague Service Convention; Administrative Order [A.O.] No. 251-2020",depth:6,trackable:!1},{id:71,topic:"iv. Upon Specific Persons and Entities",depth:5,trackable:!1},{id:72,topic:"(a) Entity without Juridical Personality",depth:6,trackable:!1},{id:73,topic:"(b) Prisoners",depth:6,trackable:!1},{id:74,topic:"(c) Minors and Incompetents",depth:6,trackable:!1},{id:75,topic:"(d) Spouses (Relate to Rule 3, Sec. 4)",depth:6,trackable:!1},{id:76,topic:"(e) Domestic Private Juridical Entity",depth:6,trackable:!1},{id:77,topic:"(f) Foreign Private Juridical Entity",depth:6,trackable:!1},{id:78,topic:"(g) Public Corporations",depth:6,trackable:!1},{id:79,topic:"(h) Defendant whose Identity or Whereabouts Unknown",depth:6,trackable:!1},{id:80,topic:"(i) Residents Temporarily out of the Philippines",depth:6,trackable:!1},{id:81,topic:"c. Proof; Alias Summons",depth:4,trackable:!1},{id:82,topic:"d. Return",depth:4,trackable:!1},{id:83,topic:"3. Voluntary Appearance",depth:3,trackable:!1},{id:84,topic:"4. Duty of Counsel of Record",depth:3,trackable:!1},{id:85,topic:"G. Motions – Rule 15",depth:2,trackable:!0},{id:86,topic:"1. Distinguished from Pleadings",depth:3,trackable:!1},{id:87,topic:"2. Litigious and Non-litigious Motions",depth:3,trackable:!1},{id:88,topic:"3. Prohibited Motions",depth:3,trackable:!1},{id:89,topic:"4. Omnibus Motion",depth:3,trackable:!1},{id:90,topic:"H. Dismissal and Default",depth:2,trackable:!0},{id:91,topic:"1. Dismissal upon Notice by Plaintiff; Two-dismissal Rule – Rule 17, Sec. 1",depth:3,trackable:!1},{id:92,topic:"2. Dismissal upon Motion by Plaintiff; Effect on Existing Counterclaim – Rule 17, Sec. 2",depth:3,trackable:!1},{id:93,topic:"3. Dismissal due to Fault of Plaintiff – Rule 17, Sec. 3",depth:3,trackable:!1},{id:94,topic:"4. Dismissal with Prejudice v. Dismissal without Prejudice",depth:3,trackable:!1},{id:95,topic:"5. Default – Rule 9, Sec. 3",depth:3,trackable:!1},{id:96,topic:"I. Pre-trial – Rule 18 and A.M. No. 03-1-09-SC",depth:2,trackable:!0},{id:97,topic:"1. Court-Annexed Mediation (CAM)",depth:3,trackable:!1},{id:98,topic:"2. Judicial Dispute Resolution (JDR)",depth:3,trackable:!1},{id:99,topic:"J. Intervention – Rule 19",depth:2,trackable:!0},{id:100,topic:"K. Calendar of Cases – Rule 20",depth:2,trackable:!0},{id:101,topic:"L. Subpoena – Rule 21",depth:2,trackable:!0},{id:102,topic:"M. Computation of Time – Rule 22",depth:2,trackable:!0},{id:103,topic:"N. Modes of Discovery – Rules 23-29",depth:2,trackable:!0},{id:104,topic:"O. Trial – Rule 30",depth:2,trackable:!0},{id:105,topic:"P. Consolidation or Severance – Rule 31",depth:2,trackable:!0},{id:106,topic:"Q. Demurrer to Evidence – Rule 33",depth:2,trackable:!0},{id:107,topic:"1. Denial",depth:3,trackable:!1},{id:108,topic:"a. Consequences",depth:4,trackable:!1},{id:109,topic:"b. Remedy",depth:4,trackable:!1},{id:110,topic:"2. Consequences of Grant",depth:3,trackable:!1},{id:111,topic:"3. Reversal of Demurrer on Appeal",depth:3,trackable:!1},{id:112,topic:"R. Judgments and Final Orders",depth:2,trackable:!0},{id:113,topic:"1. How Rendered – Rule 36",depth:3,trackable:!1},{id:114,topic:"2. Judgment on the Pleadings – Rule 34",depth:3,trackable:!1},{id:115,topic:"3. Summary Judgments – Rule 35",depth:3,trackable:!1},{id:116,topic:"S. Post-judgment Remedies",depth:2,trackable:!0},{id:117,topic:"1. New Trial – Rule 37",depth:3,trackable:!1},{id:118,topic:"2. Reconsideration – Rule 37",depth:3,trackable:!1},{id:119,topic:"a. Remedy against Denial",depth:4,trackable:!1},{id:120,topic:"b. Fresh Period Rule",depth:4,trackable:!1},{id:121,topic:"3. Relief from Judgment – Rule 38",depth:3,trackable:!1},{id:122,topic:"4. Annulment of Judgment – Rule 47",depth:3,trackable:!1},{id:123,topic:"5. Collateral Attack",depth:3,trackable:!1},{id:124,topic:"6. Appeal and Review",depth:3,trackable:!1},{id:125,topic:"a. Coverage",depth:4,trackable:!1},{id:126,topic:"i. Subjects of Appeal and Review",depth:5,trackable:!1},{id:127,topic:"ii. Matters not Appealable",depth:5,trackable:!1},{id:128,topic:"b. Periods for Filing",depth:4,trackable:!1},{id:129,topic:"c. Perfection of Appeal",depth:4,trackable:!1},{id:130,topic:"d. Issues Cognizable",depth:4,trackable:!1},{id:131,topic:"e. Modes",depth:4,trackable:!1},{id:132,topic:"i. Appeal from the Municipal Trial Courts to the Regional Trial Courts – Rule 40",depth:5,trackable:!1},{id:133,topic:"ii. Appeal from the Regional Trial Courts to the Court of Appeals – Rule 41",depth:5,trackable:!1},{id:134,topic:"iii. Petition for Review from the Regional Trial Courts to the Court of Appeals – Rule 42",depth:5,trackable:!1},{id:135,topic:"iv. Appeal from the Court of Tax Appeals and Quasi-Judicial Bodies to the Court of Appeals – Rule 43",depth:5,trackable:!1},{id:136,topic:"v. Appeal by Certiorari to the Supreme Court – Rule 45",depth:5,trackable:!1},{id:137,topic:"vi. Review of Judgments and Final Orders or Resolutions of the Commission on Audit and Commission on Elections – Rule 64",depth:5,trackable:!1},{id:138,topic:"T. Execution, Satisfaction, and Effect of Judgments – Rule 39",depth:2,trackable:!0},{id:139,topic:"1. Immutability of Final Judgments",depth:3,trackable:!1},{id:140,topic:"2. Execution as a Matter of Right and of Discretion",depth:3,trackable:!1},{id:141,topic:"3. When Execution shall Issue",depth:3,trackable:!1},{id:142,topic:"4. How a Judgment is Executed",depth:3,trackable:!1},{id:143,topic:"a. By Motion or Independent Action",depth:4,trackable:!1},{id:144,topic:"b. Execution of Judgments for Money",depth:4,trackable:!1},{id:145,topic:"c. Execution of Judgments for Specific Acts",depth:4,trackable:!1},{id:146,topic:"d. Execution of Special Judgments",depth:4,trackable:!1},{id:147,topic:"e. Requisites before Demolition Order is Issued",depth:4,trackable:!1},{id:148,topic:"f. Effect of Levy on Third Persons",depth:4,trackable:!1},{id:149,topic:"5. Properties Exempt from Execution",depth:3,trackable:!1},{id:150,topic:"6. Proceedings where Property is Claimed by Third Persons",depth:3,trackable:!1},{id:151,topic:"7. Effect of Judgment or Final Orders",depth:3,trackable:!1},{id:152,topic:"8. Res Judicata",depth:3,trackable:!1},{id:153,topic:"a. Bar by Prior Judgment",depth:4,trackable:!1},{id:154,topic:"b. Conclusiveness of Judgment",depth:4,trackable:!1},{id:155,topic:"9. Enforcement and Effect of Foreign Judgments or Final Orders",depth:3,trackable:!1},{id:156,topic:"V. PROVISIONAL REMEDIES",depth:1,trackable:!1},{id:157,topic:"A. Nature and Purpose",depth:2,trackable:!0},{id:158,topic:"B. Preliminary Attachment – Rule 57",depth:2,trackable:!0},{id:159,topic:"1. Grounds for Issuance",depth:3,trackable:!1},{id:160,topic:"2. Grounds for Dissolution",depth:3,trackable:!1},{id:161,topic:"3. Posting of a Counterbond",depth:3,trackable:!1},{id:162,topic:"4. Requisites; Issuance and Contents of Order of Attachment; Affidavit and Bond",depth:3,trackable:!1},{id:163,topic:"C. Preliminary Injunction – Rule 58",depth:2,trackable:!0},{id:164,topic:"1. Definitions and Differences: Preliminary Injunction, Temporary Restraining Order, and Status Quo Ante Order",depth:3,trackable:!1},{id:165,topic:"2. Requisites",depth:3,trackable:!1},{id:166,topic:"3. Kinds",depth:3,trackable:!1},{id:167,topic:"4. Grounds for Issuance",depth:3,trackable:!1},{id:168,topic:"D. Receivership – Rule 59",depth:2,trackable:!0},{id:169,topic:"E. Replevin – Rule 60",depth:2,trackable:!0},{id:170,topic:"F. Support Pendente Lite – Rule 61",depth:2,trackable:!0},{id:171,topic:"G. Provisional Deposit – Rule 135, Secs. 5(g) and 6, in relation to Lorenzo Shipping Corp. v. Villarin , G.R. Nos. 175727 & 178713, March 6, 2019 and Guerrero Estate Dev’t. Corp. v. Leviste & Guerrero Realty Corp. , G.R. No. 253428, February 16, 2022",depth:2,trackable:!0},{id:172,topic:"V. SPECIAL CIVIL ACTIONS",depth:1,trackable:!1},{id:173,topic:"A. Concept",depth:2,trackable:!0},{id:174,topic:"B. Interpleader – Rule 62",depth:2,trackable:!0},{id:175,topic:"C. Declaratory Relief and Similar Remedies – Rule 63",depth:2,trackable:!0},{id:176,topic:"D. Certiorari , Prohibition, and Mandamus – Rule 65",depth:2,trackable:!0},{id:177,topic:"E. Quo Warranto – Rule 66",depth:2,trackable:!0},{id:178,topic:"F. Expropriation – Rule 67; R.A. No. 8974, Sec. 4",depth:2,trackable:!0},{id:179,topic:"1. Stages of Expropriation",depth:3,trackable:!1},{id:180,topic:"2. Immediate Possession of Expropriated Land – R.A. No. 10752",depth:3,trackable:!1},{id:181,topic:"3. Ascertainment of Just Compensation",depth:3,trackable:!1},{id:182,topic:"G. Foreclosure of Real Estate Mortgage – Rule 68; R.A. No. 8791, Sec. 47",depth:2,trackable:!0},{id:183,topic:"1. Judicial",depth:3,trackable:!1},{id:184,topic:"2. Extrajudicial – Act No. 3135",depth:3,trackable:!1},{id:185,topic:"H. Partition – Rule 69",depth:2,trackable:!0},{id:186,topic:"I. Forcible Entry and Unlawful Detainer – Rule 70",depth:2,trackable:!0},{id:187,topic:"J. Contempt – Rule 71",depth:2,trackable:!0},{id:188,topic:"VI. SPECIAL PROCEEDINGS AND WRITS",depth:1,trackable:!1},{id:189,topic:"A. Settlement of Estate of Deceased Persons",depth:2,trackable:!0},{id:190,topic:"1. Venue and Process – Rule 73",depth:3,trackable:!1},{id:191,topic:"2. Extrajudicial – Rule 74, Secs. 1, 4, and 5",depth:3,trackable:!1},{id:192,topic:"3. Judicial",depth:3,trackable:!1},{id:193,topic:"a. Summary Settlement – Rule 74, Secs. 2-5",depth:4,trackable:!1},{id:194,topic:"b. Intestate – Petition for Letters of Administration – Rules 78-79",depth:4,trackable:!1},{id:195,topic:"c. Testate – Probate Proceedings",depth:4,trackable:!1},{id:196,topic:"i. Allowance or Disallowance of Will – Rules 76-77",depth:5,trackable:!1},{id:197,topic:"ii. Letters Testamentary",depth:5,trackable:!1},{id:198,topic:"(a) Issuance – Rule 78",depth:6,trackable:!1},{id:199,topic:"(b) Opposition – Rule 79",depth:6,trackable:!1},{id:200,topic:"d. Claims against Estate – Rule 86",depth:4,trackable:!1},{id:201,topic:"e. Payment of the Debts of the Estate – Rule 88",depth:4,trackable:!1},{id:202,topic:"f. Distribution and Partition of the Estate – Rule 90",depth:4,trackable:!1},{id:203,topic:"B. Guardianship – Rules 92-97",depth:2,trackable:!0},{id:204,topic:"C. Habeas Corpus – Rule 102",depth:2,trackable:!0},{id:205,topic:"D. Habeas Corpus in Relation to Custody of Minors – A.M. No. 03-04-04-SC",depth:2,trackable:!0},{id:206,topic:"E. Amparo – A.M. No. 07-9-12-SC",depth:2,trackable:!0},{id:207,topic:"F. Habeas Data – A.M. No. 08-1-16-SC",depth:2,trackable:!0},{id:208,topic:"G. Change of Name – Rule 103",depth:2,trackable:!0},{id:209,topic:"H. Cancellation or Correction of Entries in the Civil Registry – Rule 108",depth:2,trackable:!0},{id:210,topic:"I. Clerical Error Act and its Implementing Rules – R.A. No. 9048, as amended by R.A. No. 10172",depth:2,trackable:!0},{id:211,topic:"J. Environmental Cases – A.M. No. 09-6-8-SC",depth:2,trackable:!0},{id:212,topic:"1. Temporary Environmental Protection Order (TEPO)",depth:3,trackable:!1},{id:213,topic:"2. Writ of Continuing Mandamus",depth:3,trackable:!1},{id:214,topic:"3. Writ of Kalikasan",depth:3,trackable:!1},{id:215,topic:"VII. CRIMINAL PROCEDURE",depth:1,trackable:!1},{id:216,topic:"A. Criminal Jurisdiction",depth:2,trackable:!0},{id:217,topic:"1. Concept",depth:3,trackable:!1},{id:218,topic:"2. Requisites",depth:3,trackable:!1},{id:219,topic:"B. Prosecution of Offenses – Rule 110",depth:2,trackable:!0},{id:220,topic:"1. Institution of Criminal Actions",depth:3,trackable:!1},{id:221,topic:"2. Effect of the Institution of the Criminal Action on the Prescriptive Period",depth:3,trackable:!1},{id:222,topic:"3. Who may Prosecute; Crimes that Cannot be Prosecuted De Oficio",depth:3,trackable:!1},{id:223,topic:"4. Intervention of Private Offended Party",depth:3,trackable:!1},{id:224,topic:"5. Control of Prosecution",depth:3,trackable:!1},{id:225,topic:"6. Complaint and Information; Sufficiency",depth:3,trackable:!1},{id:226,topic:"7. Date of Commission of the Offense",depth:3,trackable:!1},{id:227,topic:"8. Designation of Offense; Qualifying and Aggravating Circumstances",depth:3,trackable:!1},{id:228,topic:"9. Name of the Accused; Name of the Offended Party",depth:3,trackable:!1},{id:229,topic:"10. Amendment and Substitution of Complaint or Information",depth:3,trackable:!1},{id:230,topic:"11. Duplicity of the Offense",depth:3,trackable:!1},{id:231,topic:"C. Prosecution of Civil Action – Rule 111",depth:2,trackable:!0},{id:232,topic:"1. Implied Institution of Civil Action Ex Delicto",depth:3,trackable:!1},{id:233,topic:"2. Independent Civil Actions",depth:3,trackable:!1},{id:234,topic:"3. Reservation, Suspension, and Waiver",depth:3,trackable:!1},{id:235,topic:"a. In B.P. Blg. 22 Cases",depth:4,trackable:!1},{id:236,topic:"4. Civil Liability Ex Delicto",depth:3,trackable:!1},{id:237,topic:"a. When Accused Acquitted",depth:4,trackable:!1},{id:238,topic:"b. When Accused Dies",depth:4,trackable:!1},{id:239,topic:"5. Prejudicial Question",depth:3,trackable:!1},{id:240,topic:"D. Preliminary Investigation – Rule 112",depth:2,trackable:!0},{id:241,topic:"1. Nature and Purpose",depth:3,trackable:!1},{id:242,topic:"2. Who may Conduct – R.A. No. 10071",depth:3,trackable:!1},{id:243,topic:"3. When not Required",depth:3,trackable:!1},{id:244,topic:"4. Determination of Probable Cause",depth:3,trackable:!1},{id:245,topic:"a. Nature; Non-interference",depth:4,trackable:!1},{id:246,topic:"b. Prima Facie Case with Reasonable Certainty of Conviction – Department of Justice [DOJ] Circular No. 2024-015; DOJ Circular No. 2024-028",depth:4,trackable:!1},{id:247,topic:"5. Remedy from Investigator’s Action",depth:3,trackable:!1},{id:248,topic:"a. Motion to Reopen",depth:4,trackable:!1},{id:249,topic:"b. Motion for Reinvestigation",depth:4,trackable:!1},{id:250,topic:"c. Appeal from Investigator’s Resolution – DOJ Circular No 2000-70; DOJ Circular No. 2022-027",depth:4,trackable:!1},{id:251,topic:"6. Inquest",depth:3,trackable:!1},{id:252,topic:"7. Effect of Absence",depth:3,trackable:!1},{id:253,topic:"8. Withdrawal of Information",depth:3,trackable:!1},{id:254,topic:"E. Arrest – Rule 113",depth:2,trackable:!0},{id:255,topic:"1. Warranted Arrest",depth:3,trackable:!1},{id:256,topic:"a. How Made",depth:4,trackable:!1},{id:257,topic:"b. Requisites for the Issuance of a Warrant of Arrest",depth:4,trackable:!1},{id:258,topic:"2. Warrantless Arrest, When Lawful",depth:3,trackable:!1},{id:259,topic:"3. Method of Arrest",depth:3,trackable:!1},{id:260,topic:"4. Use of Body Cameras – A.M. No. 21-06-08",depth:3,trackable:!1},{id:261,topic:"5. Waiver of Objections to Irregularity",depth:3,trackable:!1},{id:262,topic:"F. Bail – Rule 114",depth:2,trackable:!0},{id:263,topic:"1. When a Matter of Right; Exceptions",depth:3,trackable:!1},{id:264,topic:"2. When a Matter of Discretion",depth:3,trackable:!1},{id:265,topic:"3. Where Filed",depth:3,trackable:!1},{id:266,topic:"4. Application for Bail in Capital Offenses",depth:3,trackable:!1},{id:267,topic:"5. Guidelines in Fixing Amount",depth:3,trackable:!1},{id:268,topic:"6. Bail-negating Circumstances",depth:3,trackable:!1},{id:269,topic:"7. Remedy When Denied",depth:3,trackable:!1},{id:270,topic:"8. Forfeiture",depth:3,trackable:!1},{id:271,topic:"9. Recognizance – R.A. No. 10389",depth:3,trackable:!1},{id:272,topic:"G. Rights of Accused – Rule 115",depth:2,trackable:!0},{id:273,topic:"1. Rights of Accused at Trial",depth:3,trackable:!1},{id:274,topic:"2. Rights of Persons under Custodial Investigation",depth:3,trackable:!1},{id:275,topic:"H. Arraignment and Plea – Rule 116",depth:2,trackable:!0},{id:276,topic:"1. Purpose of Arraignment",depth:3,trackable:!1},{id:277,topic:"2. Searching Inquiry",depth:3,trackable:!1},{id:278,topic:"3. Guilty Plea",depth:3,trackable:!1},{id:279,topic:"a. Lesser Offense",depth:4,trackable:!1},{id:280,topic:"b. Capital Offense",depth:4,trackable:!1},{id:281,topic:"c. Non-capital Offense",depth:4,trackable:!1},{id:282,topic:"4. Improvident Plea",depth:3,trackable:!1},{id:283,topic:"5. Bill of Particulars",depth:3,trackable:!1},{id:284,topic:"6. Suspension of Arraignment",depth:3,trackable:!1},{id:285,topic:"I. Motion to Quash – Rule 117",depth:2,trackable:!0},{id:286,topic:"1. Grounds",depth:3,trackable:!1},{id:287,topic:"2. Double Jeopardy",depth:3,trackable:!1},{id:288,topic:"3. Provisional Dismissal",depth:3,trackable:!1},{id:289,topic:"J. Pre-trial – Rule 118",depth:2,trackable:!0},{id:290,topic:"1. Pre-trial Agreement",depth:3,trackable:!1},{id:291,topic:"2. Non-appearance at Pre-trial Conference",depth:3,trackable:!1},{id:292,topic:"3. Pre–trial Order",depth:3,trackable:!1},{id:293,topic:"4. Cases for Mediation on the Civil Liability",depth:3,trackable:!1},{id:294,topic:"K. Trial – Rule 119",depth:2,trackable:!0},{id:295,topic:"1. Trial In Absentia",depth:3,trackable:!1},{id:296,topic:"2. Remedy when Accused is Not Brought to Trial within the Time Limit",depth:3,trackable:!1},{id:297,topic:"3. Conditional Examination of Witness for the Prosecution or Defense",depth:3,trackable:!1},{id:298,topic:"4. Requisites for Discharge of Accused as State Witness",depth:3,trackable:!1},{id:299,topic:"5. Reopening of the Proceedings",depth:3,trackable:!1},{id:300,topic:"6. Revised Guidelines for Continuous Trial of Criminal Cases – A.M. No. 15-06-10-SC",depth:3,trackable:!1},{id:301,topic:"L. Demurrer to Evidence",depth:2,trackable:!0},{id:302,topic:"M. Judgment – Rule 120",depth:2,trackable:!0},{id:303,topic:"1. Requisites of a Valid Judgment",depth:3,trackable:!1},{id:304,topic:"2. Promulgation of Judgment",depth:3,trackable:!1},{id:305,topic:"a. Non-appearance of Accused",depth:4,trackable:!1},{id:306,topic:"b. Promulgation In Absentia",depth:4,trackable:!1},{id:307,topic:"N. New Trial or Reconsideration – Rule 121",depth:2,trackable:!0},{id:308,topic:"O. Appeal – Rule 122",depth:2,trackable:!0},{id:309,topic:"P. Search and Seizure – Rule 126",depth:2,trackable:!0},{id:310,topic:"1. Warranted Search and Seizure",depth:3,trackable:!1},{id:311,topic:"a. Search Warrant",depth:4,trackable:!1},{id:312,topic:"i. Nature",depth:5,trackable:!1},{id:313,topic:"ii. Requisites for Issuance",depth:5,trackable:!1},{id:314,topic:"iii. Probable Cause",depth:5,trackable:!1},{id:315,topic:"iv. Quashal",depth:5,trackable:!1},{id:316,topic:"v. Cybercrime Warrants – A.M. No. 17-11-03-SC",depth:5,trackable:!1},{id:317,topic:"vi. Searches in State Detention Facilities",depth:5,trackable:!1},{id:318,topic:"b. Extent of Search",depth:4,trackable:!1},{id:319,topic:"c. Conduct of Search",depth:4,trackable:!1},{id:320,topic:"2. Warrantless Search",depth:3,trackable:!1},{id:321,topic:"a. Incidental to Lawful Arrest",depth:4,trackable:!1},{id:322,topic:"b. Moving Vehicle",depth:4,trackable:!1},{id:323,topic:"c. Public Transit or Public Utility Vehicles",depth:4,trackable:!1},{id:324,topic:"d. Checkpoints",depth:4,trackable:!1},{id:325,topic:"e. Airport Frisking",depth:4,trackable:!1},{id:326,topic:"f. Buy-bust Operation",depth:4,trackable:!1},{id:327,topic:"g. Plain View",depth:4,trackable:!1},{id:328,topic:"h. Stop and Frisk",depth:4,trackable:!1},{id:329,topic:"i. Consented Searches",depth:4,trackable:!1},{id:330,topic:"3. Rules on the Use of Body-worn Cameras in the Execution of Warrants – A.M. No. 21-06-08-SC",depth:3,trackable:!1},{id:331,topic:"4. Effect of Illegal Search and Seizure",depth:3,trackable:!1},{id:332,topic:"Q. Provisional Remedies in Criminal Cases – Rule 127",depth:2,trackable:!0},{id:333,topic:"VIII. EVIDENCE",depth:1,trackable:!1},{id:334,topic:"A. General Provisions and Principles – Rule 128",depth:2,trackable:!0},{id:335,topic:"1. Definition of Evidence",depth:3,trackable:!1},{id:336,topic:"2. Uniformity of Evidentiary Rules",depth:3,trackable:!1},{id:337,topic:"3. Proof v. Evidence",depth:3,trackable:!1},{id:338,topic:"4. Factum Probans v. Factum Probandum",depth:3,trackable:!1},{id:339,topic:"B. Liberal Construction of the Rules on Evidence",depth:2,trackable:!0},{id:340,topic:"C. Judicial Notice – Rule 129, Secs. 1-3",depth:2,trackable:!0},{id:341,topic:"D. Judicial Admissions – Rule 129, Sec. 4",depth:2,trackable:!0},{id:342,topic:"E. Admissibility",depth:2,trackable:!0},{id:343,topic:"1. Requisites – Rule 128, Sec. 3",depth:3,trackable:!1},{id:344,topic:"a. Relevance; Collateral Matters – Rule 128, Sec. 4",depth:4,trackable:!1},{id:345,topic:"2. Multiple Admissibility",depth:3,trackable:!1},{id:346,topic:"3. Conditional Admissibility",depth:3,trackable:!1},{id:347,topic:"4. Curative Admissibility",depth:3,trackable:!1},{id:348,topic:"F. Weight and Sufficiency – Rule 133",depth:2,trackable:!0},{id:349,topic:"1. Standards",depth:3,trackable:!1},{id:350,topic:"a. Proof Beyond Reasonable Doubt",depth:4,trackable:!1},{id:351,topic:"b. Preponderance of Evidence",depth:4,trackable:!1},{id:352,topic:"c. Substantial Evidence",depth:4,trackable:!1},{id:353,topic:"d. Clear and Convincing Evidence",depth:4,trackable:!1},{id:354,topic:"2. Direct and Circumstantial Evidence",depth:3,trackable:!1},{id:355,topic:"3. Competent and Credible Evidence",depth:3,trackable:!1},{id:356,topic:"4. Positive and Negative Evidence",depth:3,trackable:!1},{id:357,topic:"5. Evidentiary Weight of Electronic Documents – A.M. No. 01-7-01-SC, Rule 7",depth:3,trackable:!1},{id:358,topic:"G. Kinds",depth:2,trackable:!0},{id:359,topic:"1. Object or Real Evidence – Rule 130, Part A",depth:3,trackable:!1},{id:360,topic:"a. Requisites for Admissibility",depth:4,trackable:!1},{id:361,topic:"b. Categories of Object Evidence",depth:4,trackable:!1},{id:362,topic:"c. Chain of Custody",depth:4,trackable:!1},{id:363,topic:"d. Rule on DNA Evidence – A.M. No. 06-11-5-SC",depth:4,trackable:!1},{id:364,topic:"2. Documentary Evidence – Rule 130, Part B",depth:3,trackable:!1},{id:365,topic:"a. Original Documents and Secondary Evidence",depth:4,trackable:!1},{id:366,topic:"b. Parol Evidence",depth:4,trackable:!1},{id:367,topic:"c. Interpretation of Documents",depth:4,trackable:!1},{id:368,topic:"d. Electronic Documents and Electronic Signatures – A.M. No. 01-7-01-SC, Rules 3-6",depth:4,trackable:!1},{id:369,topic:"e. Ephemeral Electronic Communications – A.M. No. 01-7-01-SC, Rule 11, Sec. 2",depth:4,trackable:!1},{id:370,topic:"3. Testimonial Evidence – Rule 130, Part C",depth:3,trackable:!1},{id:371,topic:"a. Concept",depth:4,trackable:!1},{id:372,topic:"b. Who may be Witnesses",depth:4,trackable:!1},{id:373,topic:"i. Children – A.M. No. 04-07-SC, Sec. 6",depth:5,trackable:!1},{id:374,topic:"c. Disqualification of Witnesses",depth:4,trackable:!1},{id:375,topic:"d. Testimonial Privilege",depth:4,trackable:!1},{id:376,topic:"e. Admissions and Confessions",depth:4,trackable:!1},{id:377,topic:"f. Previous Conduct as Evidence",depth:4,trackable:!1},{id:378,topic:"g. Hearsay Rule and Exceptions",depth:4,trackable:!1},{id:379,topic:"i. Electronic or Optical or Other Similar Business Records – A.M. No. 01-7-01-SC, Rule 8",depth:5,trackable:!1},{id:380,topic:"h. Opinion Rule",depth:4,trackable:!1},{id:381,topic:"i. Character Evidence",depth:4,trackable:!1},{id:382,topic:"4. Audio, Photographic, and Video Evidence – A.M. No. 01-7-01-SC, Rule 11, Sec. 1",depth:3,trackable:!1},{id:383,topic:"H. Presentation of Evidence – Rule 132",depth:2,trackable:!0},{id:384,topic:"1. Examination of a Witness",depth:3,trackable:!1},{id:385,topic:"a. Rights and Obligations of a Witness",depth:4,trackable:!1},{id:386,topic:"b. Examination of Child Witness – A.M. No. 04-07-SC",depth:4,trackable:!1},{id:387,topic:"c. Judicial Affidavit in lieu of Direct Examination – A.M. No. 12-8-8-SC",depth:4,trackable:!1},{id:388,topic:"2. Authentication and Proof of Documents",depth:3,trackable:!1},{id:389,topic:"a. Meaning of Authentication",depth:4,trackable:!1},{id:390,topic:"b. Classes of Documents",depth:4,trackable:!1},{id:391,topic:"c. Authentication of Private Writings",depth:4,trackable:!1},{id:392,topic:"d. Public Documents as Evidence",depth:4,trackable:!1},{id:393,topic:"e. Proof of Official Record",depth:4,trackable:!1},{id:394,topic:"3. Offer and Objection",depth:3,trackable:!1},{id:395,topic:"a. When Evidence Offered",depth:4,trackable:!1},{id:396,topic:"b. Objection to Evidence",depth:4,trackable:!1},{id:397,topic:"c. Tender of Excluded Evidence",depth:4,trackable:!1},{id:398,topic:"I. Burden of Proof and Burden of Evidence – Rule 131, Sec. 1",depth:2,trackable:!0},{id:399,topic:"J. Presumptions",depth:2,trackable:!0},{id:400,topic:"1. Conclusive Presumptions – Rule 131, Sec. 2",depth:3,trackable:!1},{id:401,topic:"2. Disputable Presumptions – Rule 131, Sec. 3",depth:3,trackable:!1},{id:402,topic:"3. Presumptions in Civil Actions and Proceedings – Rule 131, Sec. 5",depth:3,trackable:!1},{id:403,topic:"4. Presumption against an Accused in Criminal Cases – Rule 131, Sec. 6",depth:3,trackable:!1},{id:404,topic:"K. Rules on the Transmission and Execution of Letters of Request for Taking of Evidence in Civil or Commercial Matters under the 1970 Hague Evidence Convention – A.M. No. 25-02-17-SC",depth:2,trackable:!0},{id:405,topic:"1. Scope and Applicability – Sec. 1",depth:3,trackable:!1},{id:406,topic:"2. Definition of Terms – Sec. 2",depth:3,trackable:!1},{id:407,topic:"3. Use of Evidence Taken Abroad – Sec. 18",depth:3,trackable:!1},{id:408,topic:"4. Effect of Using Evidence Taken Abroad – Sec. 19",depth:3,trackable:!1},{id:409,topic:"5. Admissibility of Evidence Taken Abroad – Sec. 20",depth:3,trackable:!1},{id:410,topic:"6. Privileges – Sec. 33",depth:3,trackable:!1},{id:411,topic:"7. Interpretation of the Rules – Sec. 34",depth:3,trackable:!1},{id:412,topic:"IX. LEGAL AND JUDICIAL ETHICS",depth:1,trackable:!1},{id:413,topic:"A. Legal Ethics – Code of Professional Responsibility and Accountability (CPRA), A.M. No. 22-09-01-SC",depth:2,trackable:!0},{id:414,topic:"1. Practice of Law",depth:3,trackable:!1},{id:415,topic:"a. Definition and Nature – CPRA, Canon III, Sec. 1",depth:4,trackable:!1},{id:416,topic:"2. Admission to the Practice of Law",depth:3,trackable:!1},{id:417,topic:"a. Legal Education",depth:4,trackable:!1},{id:418,topic:"i. Pre-law",depth:5,trackable:!1},{id:419,topic:"ii. Law Proper",depth:5,trackable:!1},{id:420,topic:"iii. R.A. No. 7662 (Legal Education Reform Act)",depth:5,trackable:!1},{id:421,topic:"b. Citizenship",depth:4,trackable:!1},{id:422,topic:"c. Good Moral Character",depth:4,trackable:!1},{id:423,topic:"d. Bar Examinations",depth:4,trackable:!1},{id:424,topic:"e. Lawyer’s Oath (Revised as of April 11, 2023)",depth:4,trackable:!1},{id:425,topic:"f. Signing in the Roll of Attorneys",depth:4,trackable:!1},{id:426,topic:"3. Continuing Requirements for Membership in the Bar",depth:3,trackable:!1},{id:427,topic:"a. Mandatory Continuing Legal Education (MCLE) – CPRA, Canon III, Sec. 24; Canon IV, Sec. 8",depth:4,trackable:!1},{id:428,topic:"b. Membership Dues – CPRA, Canon III, Sec. 26",depth:4,trackable:!1},{id:429,topic:"c. Professional Tax – R.A. No. 7160, Sec. 139",depth:4,trackable:!1},{id:430,topic:"d. Legal Aid – CPRA, Canon III, Sec. 25; A.M. No. 22-11-01-SC, (Rules on Unified Legal Aid Service)",depth:4,trackable:!1},{id:431,topic:"4. Who May Practice Law",depth:3,trackable:!1},{id:432,topic:"a. Members of the Bar",depth:4,trackable:!1},{id:433,topic:"i. Suspended or Disbarred Lawyers – CPRA, Canon VI, Sec. 52",depth:5,trackable:!1},{id:434,topic:"b. Non-members of the Bar",depth:4,trackable:!1},{id:435,topic:"i. Law Students – A.M. No. 19-03-24-SC",depth:5,trackable:!1},{id:436,topic:"ii. Paralegals – CPRA, Canon II, Secs. 34-35",depth:5,trackable:!1},{id:437,topic:"iii. Parties and their Agents or Appearance Pro Se",depth:5,trackable:!1},{id:438,topic:"(a) Cadastral Proceedings – Act No. 2259, Sec. 9",depth:6,trackable:!1},{id:439,topic:"(b) Labor Cases – LC, Art. 228",depth:6,trackable:!1},{id:440,topic:"(c) Agrarian Reform Proceedings – R.A. No. 6657, Sec. 50, as amended by R.A. No. 9700, Sec. 18",depth:6,trackable:!1},{id:441,topic:"(d) Barangay Conciliation – R.A. No. 7160, Sec. 415",depth:6,trackable:!1},{id:442,topic:"(e) Cases under Expedited Procedure – A.M. No. 08-8-7-SC, Secs. 12 and 22",depth:6,trackable:!1},{id:443,topic:"(f) Arbitration – R.A. No. 9285, Sec. 22; R.A. No. 876, Sec. 12",depth:6,trackable:!1},{id:444,topic:"c. Members of the Bar Prohibited from Private Practice",depth:4,trackable:!1},{id:445,topic:"i. President, Vice-President, Members of the Cabinet, their Deputies and Assistants",depth:5,trackable:!1},{id:446,topic:"ii. Senators and Members of the House of Representatives",depth:5,trackable:!1},{id:447,topic:"iii. Members of the Constitutional Commissions",depth:5,trackable:!1},{id:448,topic:"iv. Ombudsman and their Deputies",depth:5,trackable:!1},{id:449,topic:"v. Justices, Judges, and Court Employees",depth:5,trackable:!1},{id:450,topic:"vi. Governors and Mayors – R.A. No. 7160, Sec. 90(a)",depth:5,trackable:!1},{id:451,topic:"vii. Government Officials and Employees – R.A. No. 6713, Sec. 7(b)(2) in relation to Office of the President Memorandum Circular No. 17, s. 1986 and Rule XVIII, Sec. 12 of the Revised Civil Service Rules",depth:5,trackable:!1},{id:452,topic:"d. Members of the Bar with Limited Legal Practice",depth:4,trackable:!1},{id:453,topic:"i. Vice-Governors, Vice-Mayors, and Members of Local Legislative Bodies – R.A. No. 7160",depth:5,trackable:!1},{id:454,topic:"ii. Government Lawyers",depth:5,trackable:!1},{id:455,topic:"(a) With Authority to Engage in Limited Law Practice",depth:6,trackable:!1},{id:456,topic:"(b) Separated from the Service – R.A. No. 6713",depth:6,trackable:!1},{id:457,topic:"iii. Retired Judges and Justices – R.A. No. 910, as amended",depth:5,trackable:!1},{id:458,topic:"iv. In Small Claims and Katarungang Pambarangay",depth:5,trackable:!1},{id:459,topic:"e. Foreign Lawyers – CPRA, Canon III, Sec. 33",depth:4,trackable:!1},{id:460,topic:"5. Privileges of a Lawyer",depth:3,trackable:!1},{id:461,topic:"6. Unauthorized Practice of Law",depth:3,trackable:!1},{id:462,topic:"a. Penalties",depth:4,trackable:!1},{id:463,topic:"7. Duties and Responsibilities of Lawyers – CPRA",depth:3,trackable:!1},{id:464,topic:"a. General Provisions",depth:4,trackable:!1},{id:465,topic:"i. Integrity as Central Principle – Preamble",depth:5,trackable:!1},{id:466,topic:"ii. Applicability of CPRA – Sec. 1",depth:5,trackable:!1},{id:467,topic:"iii. Repealing Clause – Sec. 2",depth:5,trackable:!1},{id:468,topic:"iv. Effectivity Date – Sec. 3",depth:5,trackable:!1},{id:469,topic:"b. Independence – Canon I",depth:4,trackable:!1},{id:470,topic:"i. Concept – Introduction and Sec. 1",depth:5,trackable:!1},{id:471,topic:"ii. Accessible, Efficient, and Effective Legal Service",depth:5,trackable:!1},{id:472,topic:"iii. Merit-based Legal Practice",depth:5,trackable:!1},{id:473,topic:"iv. Avoiding Improper Considerations and External Influence",depth:5,trackable:!1},{id:474,topic:"v. Non-interference in Courts or Tribunals",depth:5,trackable:!1},{id:475,topic:"vi. Discretion in Procedure and Strategy",depth:5,trackable:!1},{id:476,topic:"(a) Client’s Decision to Settle Case",depth:6,trackable:!1},{id:477,topic:"c. Propriety – Canon II",depth:4,trackable:!1},{id:478,topic:"i. Concept – Introduction",depth:5,trackable:!1},{id:479,topic:"ii. Proper and Dignified Conduct – Secs. 1 and 2",depth:5,trackable:!1},{id:480,topic:"iii. Dignified, Gender-fair, Child- and Culturally-sensitive Language – Sec. 4",depth:5,trackable:!1},{id:481,topic:"iv. Correcting Misrepresentations in Applications for Admission to the Bar – Sec. 11",depth:5,trackable:!1},{id:482,topic:"v. Reporting Dishonest, Deceitful, or Misleading Conduct – Sec. 12",depth:5,trackable:!1},{id:483,topic:"vii. Disclosure of Relationship or Connection – Sec. 20",depth:5,trackable:!1},{id:484,topic:"viii. Avoiding Plagiarism and Misrepresentation of Legal Authorities – Sec. 8",depth:5,trackable:!1},{id:485,topic:"ix. Non-solicitation and Advertisement – Sec. 17",depth:5,trackable:!1},{id:486,topic:"x. Sub Judice Rule – Sec. 19",depth:5,trackable:!1},{id:487,topic:"xi. Avoiding Gifts and Donations to Courts and Government Agencies – Sec. 21",depth:5,trackable:!1},{id:488,topic:"xii. Avoiding Abuse of the Right to Sue and of Court Processes – Sec. 23; Canon III, Sec. 7",depth:5,trackable:!1},{id:489,topic:"xiii. Avoiding Encroachment or Interference in Another Lawyer’s Engagement – Sec. 24",depth:5,trackable:!1},{id:490,topic:"xiv. Responsible Use of Social Media – Secs. 36-44",depth:5,trackable:!1},{id:491,topic:"d. Fidelity – Canon III",depth:4,trackable:!1},{id:492,topic:"i. Concept – Introduction and Sec. 2",depth:5,trackable:!1},{id:493,topic:"ii. Lawyer-Client Relationship",depth:5,trackable:!1},{id:494,topic:"(a) Definition – Sec. 3",depth:6,trackable:!1},{id:495,topic:"(b) Duty of Representation",depth:6,trackable:!1},{id:496,topic:"(1) Authority of Lawyer to Bind Client – Sec. 4",depth:7,trackable:!1},{id:497,topic:"(2) Authority of Lawyer to Appear – Sec. 5",depth:7,trackable:!1},{id:498,topic:"(c) Fiduciary Duty – Sec. 6",depth:6,trackable:!1},{id:499,topic:"(1) Encouragement of Settlement – Sec. 8",depth:7,trackable:!1},{id:500,topic:"(2) Rectification of Fraud – Sec. 9",depth:7,trackable:!1},{id:501,topic:"(d) Lawyer’s Right to Compensation",depth:6,trackable:!1},{id:502,topic:"(1) Attorney’s Fees – Secs. 41-48",depth:7,trackable:!1},{id:503,topic:"(2) Attorney’s Lien – Sec. 47",depth:7,trackable:!1},{id:504,topic:"(e) Management of Client Resources",depth:6,trackable:!1},{id:505,topic:"(1) Lending and Borrowing – Sec. 52",depth:7,trackable:!1},{id:506,topic:"(2) Interest in Object of Litigation/Transaction – Sec. 51; NCC, Art. 1491(5)",depth:7,trackable:!1},{id:507,topic:"(3) Accounting and Management of Funds – Secs. 49 and 50",depth:7,trackable:!1},{id:508,topic:"(f) Keeping Client Confidences – Secs. 27-30",depth:6,trackable:!1},{id:509,topic:"(g) Duty to Provide Regular Updates – Canon IV, Sec. 6",depth:6,trackable:!1},{id:510,topic:"(h) Termination – Secs. 53-56",depth:6,trackable:!1},{id:511,topic:"(1) By the Lawyer",depth:7,trackable:!1},{id:512,topic:"(2) By the Client",depth:7,trackable:!1},{id:513,topic:"(3) By Death of Either Party",depth:7,trackable:!1},{id:514,topic:"(4) Accounting and Turnover of Funds",depth:7,trackable:!1},{id:515,topic:"iii. Conflict of Interest – Secs. 13-22",depth:5,trackable:!1},{id:516,topic:"iv. Responsibilities of Solo Practitioners – Canon II, Sec. 25",depth:5,trackable:!1},{id:517,topic:"v. Responsibilities of Law Firms and Legal Clinics – Secs. 10, 11, 20, and 40",depth:5,trackable:!1},{id:518,topic:"vii. General Duties of Confidentiality – Secs. 31 and 32",depth:5,trackable:!1},{id:519,topic:"viii. Limited Legal Services – Secs. 35-40",depth:5,trackable:!1},{id:520,topic:"e. Competence and Diligence – Canon IV",depth:4,trackable:!1},{id:521,topic:"i. General Duty of Competence – Sec. 1; Sec. 2, first sentence",depth:5,trackable:!1},{id:522,topic:"ii. Collaboration with other Counsel – Sec. 2",depth:5,trackable:!1},{id:523,topic:"iii. Avoidance of Delay – Sec. 3, first sentence; Secs. 4 and 7",depth:5,trackable:!1},{id:524,topic:"iv. Punctuality – Sec. 3, second sentence",depth:5,trackable:!1},{id:525,topic:"v. Responding to Inquiries – Sec. 5",depth:5,trackable:!1},{id:526,topic:"vi. Multiple Professions; Business – Secs. 9 and 10",depth:5,trackable:!1},{id:527,topic:"f. Equality – Canon V",depth:4,trackable:!1},{id:528,topic:"i. Non-discrimination – Secs. 1 and 4",depth:5,trackable:!1},{id:529,topic:"ii. Higher Standard of Service to Vulnerable Persons – Sec. 2",depth:5,trackable:!1},{id:530,topic:"iii. Representation of Indigents – Sec. 3",depth:5,trackable:!1},{id:531,topic:"8. Discipline and Disbarment of Lawyers – CPRA, Canon VI",depth:3,trackable:!1},{id:532,topic:"a. Nature of Bar Discipline Proceedings",depth:4,trackable:!1},{id:533,topic:"i. Non-penal; Public Welfare Measure",depth:5,trackable:!1},{id:534,topic:"ii. Not Subject to Desistance or Compromise – Sec. 16",depth:5,trackable:!1},{id:535,topic:"b. Institution of Bar Discipline Proceedings – Secs. 2, 3, and 30",depth:4,trackable:!1},{id:536,topic:"i. Against Government Lawyers – Sec. 6",depth:5,trackable:!1},{id:537,topic:"ii. Against Members of the Judiciary – Sec. 2",depth:5,trackable:!1},{id:538,topic:"c. Charges and Sanctions – Secs. 33-37",depth:4,trackable:!1},{id:539,topic:"d. Preventive Suspension – Sec. 31",depth:4,trackable:!1},{id:540,topic:"e. Quantum and Burden of Proof – Sec. 32",depth:4,trackable:!1},{id:541,topic:"f. Executory Nature of Decision or Resolution – Sec. 43",depth:4,trackable:!1},{id:542,topic:"g. Sworn Statement After Service of Suspension – Secs. 45 and 46",depth:4,trackable:!1},{id:543,topic:"h. Clemency – Secs. 47-51",depth:4,trackable:!1},{id:544,topic:"9. Notarial Practice – A.M. No. 02-8-13-SC, as amended",depth:3,trackable:!1},{id:545,topic:"a. Qualifications",depth:4,trackable:!1},{id:546,topic:"b. Term of Office",depth:4,trackable:!1},{id:547,topic:"c. Powers and Limitations",depth:4,trackable:!1},{id:548,topic:"d. Notarial Register",depth:4,trackable:!1},{id:549,topic:"e. Jurisdiction and Place of Notarization",depth:4,trackable:!1},{id:550,topic:"f. Competent Evidence of Identity",depth:4,trackable:!1},{id:551,topic:"g. Sanctions",depth:4,trackable:!1},{id:552,topic:"h. Remote Notarization – A.M. No. 20-07-04-SC, July 14, 2020",depth:4,trackable:!1},{id:553,topic:"B. Judicial Ethics",depth:2,trackable:!0},{id:554,topic:"1. Sources",depth:3,trackable:!1},{id:555,topic:"a. New Code of Judicial Conduct (NCJC) – A.M. No. 03-05-01-SC",depth:4,trackable:!1},{id:556,topic:"b. Bangalore Principles of Judicial Conduct 2002",depth:4,trackable:!1},{id:557,topic:"c. 1989 Code of Judicial Conduct (1989 CJC)",depth:4,trackable:!1},{id:558,topic:"d. Rules of Court",depth:4,trackable:!1},{id:559,topic:"2. Principles",depth:3,trackable:!1},{id:560,topic:"a. Independence – NCJC, Canon 1; 1989 CJC, Canon 1",depth:4,trackable:!1},{id:561,topic:"b. Integrity – NCJC, Canon 2; 1989 CJC, Canon 1, Rules 3.02 to 3.05",depth:4,trackable:!1},{id:562,topic:"c. Impartiality – NCJC, Canon 3; 1989 CJC, Canon 3",depth:4,trackable:!1},{id:563,topic:"d. Propriety – NCJC, Canon 4; 1989 CJC Canon 5, Rule 3.03,",depth:4,trackable:!1},{id:564,topic:"i. Conditions to Engage in Business – 1989 CJC, Canon 5, Rules 5.02 and 5.04",depth:5,trackable:!1},{id:565,topic:"ii. Conditions for Teaching – A.M. No. 13-05-05-SC; OCA Circular No. 218-2019",depth:5,trackable:!1},{id:566,topic:"iii. Purchase of Property in Litigation – NCC, Art. 1491(5)",depth:5,trackable:!1},{id:567,topic:"e. Equality – NCJC, Canon 5",depth:4,trackable:!1},{id:568,topic:"f. Competence and Diligence – NCJC, Canon 6; 1989 CJC, Canon 4, Rules 3.01 and 3.05",depth:5,trackable:!1},{id:569,topic:"3. Inhibition and Disqualification – Rules of Court, Rule 137; 1989 CJC, Rules 3.12 and 3.13",depth:3,trackable:!1},{id:570,topic:"4. Administration and Discipline of Judges",depth:3,trackable:!1},{id:571,topic:"a. Legal Basis – 1987 Constitution, Art. VIII, Secs. 5(5), 5(6), 6, 11, and Art. XI, Sec. 2; Rule 140, as amended by A.M. No. 21-08-09-SC",depth:4,trackable:!1},{id:572,topic:"b. Disciplinary Proceedings against Members of the Judiciary",depth:4,trackable:!1},{id:573,topic:"i. Impeachment – 1987 Constitution, Art. XI, Sec. 2",depth:5,trackable:!1},{id:574,topic:"ii. Complaint against Members of the Supreme Court – Rule 140, Sec. 1(3)",depth:5,trackable:!1},{id:575,topic:"iii. Judicial Disciplinary Proceedings – Rule 140",depth:5,trackable:!1},{id:576,topic:"(a) Institution – Secs. 1 and 2",depth:6,trackable:!1},{id:577,topic:"(b) Dual Nature – Sec. 4; A.M. No. 02-9-02-SC",depth:6,trackable:!1},{id:578,topic:"(c) Charges – Secs. 13-16",depth:6,trackable:!1},{id:579,topic:"(d) Sanctions – Secs. 17-23",depth:6,trackable:!1},{id:580,topic:"(e) Clemency",depth:6,trackable:!1},{id:581,topic:"X. PRACTICAL EXERCISES",depth:1,trackable:!1},{id:582,topic:"A. Promissory Note or Simple Loan Agreement",depth:2,trackable:!0},{id:583,topic:"B. Demand and Authorization Letters",depth:2,trackable:!0},{id:584,topic:"C. Sale Contract",depth:2,trackable:!0},{id:585,topic:"D. Lease Contract",depth:2,trackable:!0},{id:586,topic:"E. Special Power of Attorney",depth:2,trackable:!0},{id:587,topic:"F. Verification and Certification Against Forum Shopping",depth:2,trackable:!0},{id:588,topic:"G. Extra-judicial Settlement of Estate",depth:2,trackable:!0},{id:589,topic:"H. Judicial Affidavit",depth:2,trackable:!0},{id:590,topic:"I. Notarial Acts",depth:2,trackable:!0},{id:591,topic:"1. Jurat",depth:3,trackable:!1},{id:592,topic:"2. Acknowledgment",depth:3,trackable:!1},{id:593,topic:"3. Copy Certification",depth:3,trackable:!1},{id:594,topic:"J. Motions",depth:2,trackable:!0},{id:595,topic:"1. To Dismiss",depth:3,trackable:!1},{id:596,topic:"2. To Declare Defendant in Default",depth:3,trackable:!1},{id:597,topic:"3. Execution of Judgment",depth:3,trackable:!1},{id:598,topic:"K. Quitclaim in Labor Cases",depth:2,trackable:!0},{id:599,topic:"L. Information",depth:2,trackable:!0},{id:600,topic:"1. Consummated Crimes",depth:3,trackable:!1},{id:601,topic:"2. Frustrated Crimes",depth:3,trackable:!1},{id:602,topic:"3. Attempted Crimes",depth:3,trackable:!1}];
-        var CRIM_SYLLABUS = [{id:1001,topic:"I. FUNDAMENTAL PRINCIPLES",depth:1,trackable:!1},{id:1002,topic:"A. Construction or Interpretation of Penal Laws",depth:2,trackable:!0},{id:1003,topic:"1. Effects of Repeal or Amendment",depth:3,trackable:!1},{id:1004,topic:"2. Retroactive Effect of Penal Laws",depth:3,trackable:!1},{id:1005,topic:"3. Pro Reo Principle or Rule of Lenity",depth:3,trackable:!1},{id:1006,topic:"4. Suppletory Application of Revised Penal Code to Special Laws - RPC, Art. 10",depth:3,trackable:!1},{id:1007,topic:"B. Nullum Crimen, Nulla Poena Sine Lege",depth:2,trackable:!0},{id:1008,topic:"C. Mala In Se and Mala Prohibita",depth:2,trackable:!0},{id:1009,topic:"D. Cardinal Principles of Criminal Law",depth:2,trackable:!0},{id:1010,topic:"1. Generality",depth:3,trackable:!1},{id:1011,topic:"2. Territoriality",depth:3,trackable:!1},{id:1012,topic:"3. Prospectivity",depth:3,trackable:!1},{id:1013,topic:"E. Constitutional Limitations on the Power to Enact Penal Laws",depth:2,trackable:!0},{id:1014,topic:"1. Equal Protection",depth:3,trackable:!1},{id:1015,topic:"2. Due Process",depth:3,trackable:!1},{id:1016,topic:"3. Bill of Attainder",depth:3,trackable:!1},{id:1017,topic:"4. Ex Post Facto Law",depth:3,trackable:!1},{id:1018,topic:"5. Excessive Fines, Cruel, Degrading, or Inhuman Punishment",depth:3,trackable:!1},{id:1019,topic:"II. FELONIES AND CRIMINAL LIABILITY (RPC Book 1 and Related Laws)",depth:1,trackable:!1},{id:1020,topic:"A. Felonies",depth:2,trackable:!0},{id:1021,topic:"1. Definition",depth:3,trackable:!1},{id:1022,topic:"2. Dolo and Culpa",depth:3,trackable:!1},{id:1023,topic:"3. Felony and Crime, Distinguished",depth:3,trackable:!1},{id:1024,topic:"4. Gravity",depth:3,trackable:!1},{id:1025,topic:"5. Stages of Execution",depth:3,trackable:!1},{id:1026,topic:"a. Subjective Phase and Objective Phase",depth:4,trackable:!1},{id:1027,topic:"b. Spontaneous Desistance",depth:4,trackable:!1},{id:1028,topic:"c. Attempted, Frustrated, and Consummated Stages",depth:4,trackable:!1},{id:1029,topic:"d. Preparatory and Overt Acts",depth:4,trackable:!1},{id:1030,topic:"6. Plurality of Crimes",depth:3,trackable:!1},{id:1031,topic:"a. Absorption Principle",depth:4,trackable:!1},{id:1032,topic:"b. Single Impulse Rule",depth:4,trackable:!1},{id:1033,topic:"c. Compound Complex Crime",depth:4,trackable:!1},{id:1034,topic:"d. Complex Crime Proper",depth:4,trackable:!1},{id:1035,topic:"e. Special Complex Crime or Composite Crimes",depth:4,trackable:!1},{id:1036,topic:"f. Continuous or Continuing Crime",depth:4,trackable:!1},{id:1037,topic:"B. Criminal Liability",depth:2,trackable:!0},{id:1038,topic:"1. Actus Reus and Mens Rea",depth:3,trackable:!1},{id:1039,topic:"2. Criminal Causation",depth:3,trackable:!1},{id:1040,topic:"a. Proximate Cause",depth:4,trackable:!1},{id:1041,topic:"b. Efficient Intervening Cause",depth:4,trackable:!1},{id:1042,topic:"3. Aberratio Ictus, Error In Personae, and Praeter Intentionem",depth:3,trackable:!1},{id:1043,topic:"4. Impossible Crime",depth:3,trackable:!1},{id:1044,topic:"5. Duty of Courts when Act is Non-punishable or Penalty is Excessive",depth:3,trackable:!1},{id:1045,topic:"6. Participation in Acts Giving Rise to Criminal Liability",depth:3,trackable:!1},{id:1046,topic:"a. Principals, Accomplices, and Accessories",depth:4,trackable:!1},{id:1047,topic:"i. Fencers P.D. No. 1612",depth:5,trackable:!1},{id:1048,topic:"ii. Obstructors of Criminal Prosecution - P.D. No. 1829",depth:5,trackable:!1},{id:1049,topic:"b. Conspiracy and Proposal",depth:4,trackable:!1},{id:1050,topic:"i. As a Mode of Incurring Criminal Liability",depth:5,trackable:!1},{id:1051,topic:"ii. As a Criminal Act",depth:5,trackable:!1},{id:1052,topic:"7. Circumstances Affecting Criminal Liability",depth:3,trackable:!1},{id:1053,topic:"a. Justifying Circumstances - RPC, Art. 11",depth:4,trackable:!1},{id:1054,topic:"b. Exempting Circumstances - RPC, Art. 12",depth:4,trackable:!1},{id:1055,topic:"i. Minority - R.A. No. 9344, Sec. 6, as amended",depth:5,trackable:!1},{id:1056,topic:"ii. Battered Woman Syndrome - R.A. No. 9262",depth:5,trackable:!1},{id:1057,topic:"c. Mitigating Circumstances - RPC, Art. 13",depth:4,trackable:!1},{id:1058,topic:"d. Aggravating Circumstances - RPC, Art. 14",depth:4,trackable:!1},{id:1059,topic:"i. Using Loose Firearm - R.A. No. 10591, Sec. 29",depth:5,trackable:!1},{id:1060,topic:"ii. Being under the Influence of Dangerous Drugs - R.A. No. 9165, Sec. 25",depth:5,trackable:!1},{id:1061,topic:"iii. Using Information and Communications Technologies R.A. No. 10175, Sec. 6",depth:5,trackable:!1},{id:1062,topic:"e. Alternative Circumstances - RPC, Art. 15",depth:4,trackable:!1},{id:1063,topic:"f. Absolutory Causes",depth:4,trackable:!1},{id:1064,topic:"g. Instigation and Entrapment",depth:4,trackable:!1},{id:1065,topic:"8. Effect of Repeat Commission of Crimes",depth:3,trackable:!1},{id:1066,topic:"a. Recidivism - RPC, Art. 14(9)",depth:4,trackable:!1},{id:1067,topic:"b. Quasi-recidivism - RPC, Art. 160",depth:4,trackable:!1},{id:1068,topic:"c. Habituality - RPC, Art. 14(10)",depth:4,trackable:!1},{id:1069,topic:"d. Habitual Delinquency - RPC, Art. 62(5)",depth:4,trackable:!1},{id:1070,topic:"9. Criminal Liability of Minors",depth:3,trackable:!1},{id:1071,topic:"C. Penalties",depth:2,trackable:!0},{id:1072,topic:"1. Classification R.A. No. 9344, as amended",depth:3,trackable:!1},{id:1073,topic:"2. Principal and Accessory Penalties",depth:3,trackable:!1},{id:1074,topic:"3. Duration and Effects",depth:3,trackable:!1},{id:1075,topic:"4. Application and Graduation",depth:3,trackable:!1},{id:1076,topic:"5. Determination of Imposable Penalty",depth:3,trackable:!1},{id:1077,topic:"6. Preventive Imprisonment",depth:3,trackable:!1},{id:1078,topic:"7. Subsidiary Penalty",depth:3,trackable:!1},{id:1079,topic:"8. Execution and Service",depth:3,trackable:!1},{id:1080,topic:"a. Community Service - R.A. No. 11362; A.M. No. 20-06-14-SC",depth:4,trackable:!1},{id:1081,topic:"b. Recognizance R.A. No. 10389",depth:4,trackable:!1},{id:1082,topic:"c. Successive Service of Sentence",depth:4,trackable:!1},{id:1083,topic:"d. Three-Fold Rule",depth:4,trackable:!1},{id:1084,topic:"e. Indeterminate Sentence Law - Act No. 4103, as amended",depth:4,trackable:!1},{id:1085,topic:"f. Probation - P.D. No. 968, as amended",depth:4,trackable:!1},{id:1086,topic:"D. Extinction of Criminal Liability",depth:2,trackable:!0},{id:1087,topic:"1. Total Extinction",depth:3,trackable:!1},{id:1088,topic:"a. Death of Convict",depth:4,trackable:!1},{id:1089,topic:"b. Service of Sentence",depth:4,trackable:!1},{id:1090,topic:"c. Amnesty",depth:4,trackable:!1},{id:1091,topic:"d. Absolute Pardon",depth:4,trackable:!1},{id:1092,topic:"e. Prescription",depth:4,trackable:!1},{id:1093,topic:"i. Prescription of Crimes",depth:5,trackable:!1},{id:1094,topic:"ii. Act No. 3326",depth:5,trackable:!1},{id:1095,topic:"iii. Prescription of Penalties",depth:5,trackable:!1},{id:1096,topic:"f. Marriage between the Offender and the Offended Party",depth:4,trackable:!1},{id:1097,topic:"2. Partial Extinction",depth:3,trackable:!1},{id:1098,topic:"a. Conditional Pardon Act No. 1524",depth:4,trackable:!1},{id:1099,topic:"b. Commutation of Sentence",depth:4,trackable:!1},{id:1100,topic:"c. Good Conduct Time Allowance R.A. No. 10592",depth:4,trackable:!1},{id:1101,topic:"d. Parole",depth:4,trackable:!1},{id:1102,topic:"E. Civil Liability Ex Delicto",depth:2,trackable:!0},{id:1103,topic:"1. Primary and Subsidiary",depth:3,trackable:!1},{id:1104,topic:"2. Restitution, Reparation, and Indemnification",depth:3,trackable:!1},{id:1105,topic:"3. Civil Liability of an Offender Exempted from Criminal Liability",depth:3,trackable:!1},{id:1106,topic:"4. Share of Each Person Civilly Liable for a Felony",depth:3,trackable:!1},{id:1107,topic:"5. Preference in Payment",depth:3,trackable:!1},{id:1108,topic:"6. Extinction and Survival of Civil Liability Ex Delicto",depth:3,trackable:!1},{id:1109,topic:"III. CRIMES AND THEIR PENALTIES (RPC Book 2 and Related Special Laws)",depth:1,trackable:!1},{id:1110,topic:"A. Title One - Crimes against National Security and the Law of Nations",depth:2,trackable:!0},{id:1111,topic:"1. Piracy - P.D. No. 532",depth:3,trackable:!1},{id:1112,topic:"2. Terrorism R.A. No. 11479",depth:3,trackable:!1},{id:1113,topic:"3. Terrorism Financing - R.A. No. 10168",depth:3,trackable:!1},{id:1114,topic:"4. Genocide and War Crimes - R.A. No. 9851, Secs. 4 and 5",depth:3,trackable:!1},{id:1115,topic:"B. Title Two - Crimes against the Fundamental Laws of the State",depth:2,trackable:!0},{id:1116,topic:"1. Torture - R.A. No. 9745",depth:3,trackable:!1},{id:1117,topic:"2. Other Crimes against Humanity - R.A. No. 9851, Sec. 6",depth:3,trackable:!1},{id:1118,topic:"3. Refusal of Emergency Treatment - B.P. Blg. 702, as amended by R.A. No. 8344",depth:3,trackable:!1},{id:1119,topic:"C. Title Three - Crimes against Public Order",depth:2,trackable:!0},{id:1120,topic:"1. Crimes relating to Firearms and Ammunition - R.A. No. 10591, Secs. 3 and 28-41",depth:3,trackable:!1},{id:1121,topic:"2. Obstruction of Justice - P.D. No. 1829",depth:3,trackable:!1},{id:1122,topic:"3. Highway Robbery - P.D. No. 532",depth:3,trackable:!1},{id:1123,topic:"D. Title Four - Crimes against Public Interest",depth:2,trackable:!0},{id:1124,topic:"1. Computer-related Forgery - R.A. No. 10175, Sec. 4(b)(1)",depth:3,trackable:!1},{id:1125,topic:"2. Computer-related Fraud - R.A. No. 10175, Sec. 4(b)(2)",depth:3,trackable:!1},{id:1126,topic:"3. Computer-related Identity Theft - R.A. No. 10175, Sec. 4(b)(3)",depth:3,trackable:!1},{id:1127,topic:"4. Cyber-squatting - R.A. No. 10175, Sec. 4(a)(6)",depth:3,trackable:!1},{id:1128,topic:"E. Dangerous Drugs Crimes R.A. No. 9165, as amended by R.A. No. 10640 and its IRR; A.M. No. 18-03-16-SC",depth:2,trackable:!0},{id:1129,topic:"F. Title Six - Crimes against Public Morals",depth:2,trackable:!0},{id:1130,topic:"1. Gambling - P.D. No. 1602, as amended by R.A. No. 9287",depth:3,trackable:!1},{id:1131,topic:"2. Immoral Doctrines - RPC, Arts. 133 and 201",depth:3,trackable:!1},{id:1132,topic:"G. Title Seven - Crimes Committed by Public Officers",depth:2,trackable:!0},{id:1133,topic:"1. Plunder - R.A. No. 7080, as amended",depth:3,trackable:!1},{id:1134,topic:"a. Definitions",depth:4,trackable:!1},{id:1135,topic:"b. Series and Combination",depth:4,trackable:!1},{id:1136,topic:"c. Pattern",depth:4,trackable:!1},{id:1137,topic:"d. Wheel and Chain Conspiracy",depth:4,trackable:!1},{id:1138,topic:"2. Graft and Corrupt Practices - R.A. No. 3019, as amended",depth:3,trackable:!1},{id:1139,topic:"3. Unethical Conduct R.A. No. 6713",depth:3,trackable:!1},{id:1140,topic:"4. Facilitation of Child Marriage - R.A. No. 11596",depth:3,trackable:!1},{id:1141,topic:"H. Title Eight - Crimes against Persons",depth:2,trackable:!0},{id:1142,topic:"1. Human Trafficking - R.A. No. 9208, as amended",depth:3,trackable:!1},{id:1143,topic:"2. Violence Against Women and their Children (VAWC) - R.A. No. 9262",depth:3,trackable:!1},{id:1144,topic:"3. Abuse of Children - R.A. No. 7610, as amended",depth:3,trackable:!1},{id:1145,topic:"a. Attempt to Commit Child Prostitution - Sec. 6",depth:4,trackable:!1},{id:1146,topic:"b. Child Prostitution and Other Sexual Abuse - Sec. 5",depth:4,trackable:!1},{id:1147,topic:"c. Attempt to Commit Child Trafficking - Sec. 8",depth:4,trackable:!1},{id:1148,topic:"d. Child Trafficking - Sec. 7",depth:4,trackable:!1},{id:1149,topic:"e. Obscene Publication and Indecent Shows - Sec. 9",depth:4,trackable:!1},{id:1150,topic:"f. Child Labor Sec. 12",depth:4,trackable:!1},{id:1151,topic:"g. Child Pornography - R.A. No. 11930, in relation to R.A. No. 10175, Sec. 4(c)(2)",depth:4,trackable:!1},{id:1152,topic:"h. Child Marriage - R.A. No. 11596",depth:4,trackable:!1},{id:1153,topic:"4. Rape, Sexual Exploitation, and Sexual Abuse - R.A. No. 11648",depth:3,trackable:!1},{id:1154,topic:"5. Sexual Harassment - R.A. No. 11313, Secs. 3-7, 11-12, and 14",depth:3,trackable:!1},{id:1155,topic:"6. Hazing - R.A. No. 8049, as amended by R.A. No. 11053",depth:3,trackable:!1},{id:1156,topic:"I. Title Nine - Crimes against Personal Liberty and Security",depth:2,trackable:!0},{id:1157,topic:"1. Offenses against Confidentiality, Integrity, and Availability of Computer Data and Systems R.A. No. 10175, Sec. 4(a)(1) to (5)",depth:3,trackable:!1},{id:1158,topic:"2. Hacking/Cracking - R.A. No. 8792, Sec. 33(a)",depth:3,trackable:!1},{id:1159,topic:"J. Title Ten - Crimes against Property",depth:2,trackable:!0},{id:1160,topic:"1. Fencing - P.D. No. 1612",depth:3,trackable:!1},{id:1161,topic:"2. Cattle Rustling - P.D. No. 533",depth:3,trackable:!1},{id:1162,topic:"3. Arson P.D. No. 1613",depth:3,trackable:!1},{id:1163,topic:"4. Carnapping - R.A. No. 10883; R.A. No. 11235",depth:3,trackable:!1},{id:1164,topic:"5. Issuance of Bouncing Checks - B.P. Blg. 22; A.C. No. 12-2000; A.C. No. 13-2001",depth:3,trackable:!1},{id:1165,topic:"6. Swindling by Syndicate - P.D. No. 1689",depth:3,trackable:!1},{id:1166,topic:"7. Intellectual Property Piracy - R.A. No. 8792, Sec. 33(b)",depth:3,trackable:!1},{id:1167,topic:"K. Title Eleven - Crimes against Chastity",depth:2,trackable:!0},{id:1168,topic:"1. Photo and Video Voyeurism - R.A. No. 9995",depth:3,trackable:!1},{id:1169,topic:"2. Lascivious Conduct - R.A. No. 7610, Sec. 5(b)",depth:3,trackable:!1},{id:1170,topic:"L. Title Twelve - Crimes against the Civil Status of Persons",depth:2,trackable:!0},{id:1171,topic:"1. Unauthorized Use of Alias - C.A. No. 148, as amended by R.A. No. 6805; RPC, Arts. 177-178 and 348",depth:3,trackable:!1},{id:1172,topic:"M. Title Thirteen - Crimes against Honor",depth:2,trackable:!0},{id:1173,topic:"1. Cyber Libel - R.A. No. 10175, Sec. 4(c)(4)",depth:3,trackable:!1},{id:1174,topic:"N. Title Fourteen - Quasi-offenses",depth:2,trackable:!0},{id:1175,topic:"1. Morales v. People, G.R. No. 240337, January 2, 2022",depth:3,trackable:!1}];
-        var LABOR_SYLLABUS=[{id:2001,topic:"I. BASIC PRINCIPLES AND CONCEPTS",depth:1,trackable:!1},{id:2002,topic:"A. Legal Basis",depth:2,trackable:!0},{id:2003,topic:"1. International Documents",depth:3,trackable:!1},{id:2004,topic:"a. International Labor Organization Ratifications",depth:4,trackable:!1},{id:2005,topic:"2. 1987 Constitution",depth:3,trackable:!1},{id:2006,topic:"3. Civil Code",depth:3,trackable:!1},{id:2007,topic:"4. Labor Code",depth:3,trackable:!1},{id:2008,topic:"B. State Labor Policies",depth:2,trackable:!0},{id:2009,topic:"1. Labor as Primary Social Economic Force – 1987 Constitution, Art. II, Sec. 18",depth:3,trackable:!1},{id:2010,topic:"2. Full Protection to Labor – 1987 Constitution, Art. XIII, Sec. 3",depth:3,trackable:!1},{id:2011,topic:"3. Security of Tenure – 1987 Constitution, Art. XIII, Sec. 3",depth:3,trackable:!1},{id:2012,topic:"4. Social Justice – 1987 Constitution, Art. II, Sec. 10; LC, Art. 218",depth:3,trackable:!1},{id:2013,topic:"5. Equal Work Opportunities – 1987 Constitution, Art. XIII, Sec. 3; LC, Art. 3",depth:3,trackable:!1},{id:2014,topic:"6. Right to Self-organization and Collective Bargaining – 1987 Constitution, Art. XIII, Sec. 3; LC, Arts. 3 and 253",depth:3,trackable:!1},{id:2015,topic:"7. Construction of Labor and Social Legislation – LC, Art. 4; NCC, Art. 1702",depth:3,trackable:!1},{id:2016,topic:"II. RECRUITMENT AND PLACEMENT",depth:1,trackable:!1},{id:2017,topic:"A. Definition of Recruitment and Placement",depth:2,trackable:!0},{id:2018,topic:"B. Local Employment – LC, Title I",depth:2,trackable:!0},{id:2019,topic:"1. Parties",depth:3,trackable:!1},{id:2020,topic:"a. Worker",depth:4,trackable:!1},{id:2021,topic:"i. Employment of Non-resident Aliens",depth:5,trackable:!1},{id:2022,topic:"b. Employment Office or Agency",depth:4,trackable:!1},{id:2023,topic:"i. Public Employment Offices – LC, Art. 16",depth:5,trackable:!1},{id:2024,topic:"ii. Private Employment Entities – LC, Art. 25",depth:5,trackable:!1},{id:2025,topic:"(a) Employment Agency v. Recruitment Entity",depth:6,trackable:!1},{id:2026,topic:"(b) License/Authority Requirement",depth:6,trackable:!1},{id:2027,topic:"C. Overseas Employment – R.A. No. 8042, as amended",depth:2,trackable:!0},{id:2028,topic:"1. Regulatory Authorities",depth:3,trackable:!1},{id:2029,topic:"a. Department of Labor and Employment (DOLE)",depth:4,trackable:!1},{id:2030,topic:"b. Department of Migrant Workers (DMW)",depth:4,trackable:!1},{id:2031,topic:"2. Parties",depth:3,trackable:!1},{id:2032,topic:"a. Migrant Worker or Overseas Filipino Worker",depth:4,trackable:!1},{id:2033,topic:"b. Private Employers or Employment and Recruitment Agents",depth:4,trackable:!1},{id:2034,topic:"3. Regulation of Recruitment and Placement Activities",depth:3,trackable:!1},{id:2035,topic:"a. Prohibited Practices – LC, Art. 34",depth:4,trackable:!1},{id:2036,topic:"b. Illegal Recruitment",depth:4,trackable:!1},{id:2037,topic:"III. EMPLOYMENT RELATIONSHIP",depth:1,trackable:!1},{id:2038,topic:"A. Employer–Employee Relationship",depth:2,trackable:!0},{id:2039,topic:"1. Definition - D.O. No. 147, s. 2015, Sec. 3",depth:3,trackable:!1},{id:2040,topic:"2. Tests",depth:3,trackable:!1},{id:2041,topic:"3. Burden of Proof",depth:3,trackable:!1},{id:2042,topic:"4. Piercing the Corporate Veil",depth:3,trackable:!1},{id:2043,topic:"5. Cases Involving Television Broadcasters",depth:3,trackable:!1},{id:2044,topic:"B. Contracting – D.O. No. 174, s. 2017; E.O. No. 51; DC No. 1, s. 2017",depth:2,trackable:!0},{id:2045,topic:"1. Trilateral Relationship; Requirements for Independent Contractor",depth:3,trackable:!1},{id:2046,topic:"2. Permissible Contracting or Subcontracting; Not Covered",depth:3,trackable:!1},{id:2047,topic:"3. Rights of Contractor’s or Subcontractor’s Employees",depth:3,trackable:!1},{id:2048,topic:"4. Effect of Termination of Employment",depth:3,trackable:!1},{id:2049,topic:"5. Labor-only Contracting",depth:3,trackable:!1},{id:2050,topic:"6. Registration of Contractor; Other Prohibitions",depth:3,trackable:!1},{id:2051,topic:"7. Solidary Liability; Retaliatory Measures",depth:3,trackable:!1},{id:2052,topic:"C. Kinds of Employment",depth:2,trackable:!0},{id:2053,topic:"1. Regular, Casual, Fixed Term, Seasonal, Probationary",depth:3,trackable:!1},{id:2054,topic:"2. Project – D.O. No. 19, s. 1993",depth:3,trackable:!1},{id:2055,topic:"V. LABOR STANDARDS",depth:1,trackable:!1},{id:2056,topic:"A. Conditions of Employment (Hours of Work, Rest Periods, Service Charge)",depth:2,trackable:!0},{id:2057,topic:"1. Hours of Work",depth:3,trackable:!1},{id:2058,topic:"a. Flexible Work Arrangements – R.A. No. 11165",depth:4,trackable:!1},{id:2059,topic:"b. Bunkhouse Rule; Personal Comfort Doctrine",depth:4,trackable:!1},{id:2060,topic:"c. Normal Hours of Work; Night Shift Differential",depth:4,trackable:!1},{id:2061,topic:"d. Overtime Work (Compressed Work Week, Built-in Overtime)",depth:4,trackable:!1},{id:2062,topic:"e. Non-compensable Hours (Meal Break, Idle Time, Travel/Commuting/Waiting Time)",depth:4,trackable:!1},{id:2063,topic:"2. Rest Periods",depth:3,trackable:!1},{id:2064,topic:"3. Service Charge – R.A. No. 11360; D.O. No. 242, s. 2024",depth:3,trackable:!1},{id:2065,topic:"B. Wages",depth:2,trackable:!0},{id:2066,topic:"1. Definition, Components, and Exclusions (Wage v. Salary, Bonus, 13th Month, Holiday Pay)",depth:3,trackable:!1},{id:2067,topic:"2. Principles (No Work, No Pay; Equal Pay; Non-diminution of Benefits)",depth:3,trackable:!1},{id:2068,topic:"3. Minimum Wage (Payment by Hours Worked, Payment by Results)",depth:3,trackable:!1},{id:2069,topic:"4. Payment of Wages; Prohibitions Regarding Wages",depth:3,trackable:!1},{id:2070,topic:"5. Wage Determination (Wage Order, Wage Distortion) – R.A. No. 6727, R.A. No. 8188, etc.",depth:3,trackable:!1},{id:2071,topic:"C. Leaves",depth:2,trackable:!0},{id:2072,topic:"1. Under the Labor Code (Service Incentive Leave)",depth:3,trackable:!1},{id:2073,topic:"2. Under Special Laws",depth:3,trackable:!1},{id:2074,topic:"a. Parental Leave for Solo Parents – R.A. No. 8972, as amended by R.A. No. 11861",depth:4,trackable:!1},{id:2075,topic:"b. Maternity Leave – R.A. No. 11210",depth:4,trackable:!1},{id:2076,topic:"c. Paternity Leave – R.A. No. 8187",depth:4,trackable:!1},{id:2077,topic:"d. Gynecological Leave – R.A. No. 9710, Sec. 18",depth:4,trackable:!1},{id:2078,topic:"e. VAWC Leave – R.A. No. 9262",depth:4,trackable:!1},{id:2079,topic:"D. Telecommuting – R.A. No. 11165",depth:2,trackable:!0},{id:2080,topic:"1. Definition, Telecommuting Program, Fair Treatment",depth:3,trackable:!1},{id:2081,topic:"E. Working Conditions for Special Workers",depth:2,trackable:!0},{id:2082,topic:"1. Apprentices and Learners (Dual Training System, R.A. No. 11230)",depth:3,trackable:!1},{id:2083,topic:"2. Persons with Disabilities – R.A. No. 7277, as amended",depth:3,trackable:!1},{id:2084,topic:"F. Working Conditions for Special Groups of Employees",depth:2,trackable:!0},{id:2085,topic:"1. Women Workers (Discrimination, Stipulation Against Marriage, Prohibited Acts, Facilities)",depth:3,trackable:!1},{id:2086,topic:"2. Minors (R.A. No. 7610, Work Permit Guidelines)",depth:3,trackable:!1},{id:2087,topic:"3. Night Workers – R.A. No. 10151",depth:3,trackable:!1},{id:2088,topic:"4. Kasambahay – R.A. No. 10361",depth:3,trackable:!1},{id:2089,topic:"5. Homeworkers",depth:3,trackable:!1},{id:2090,topic:"G. Sexual Harassment in the Work Environment – R.A. No. 7877; R.A. No. 11313",depth:2,trackable:!0},{id:2091,topic:"H. Management Prerogative",depth:2,trackable:!0},{id:2092,topic:"1. Occupational Qualifications; Productivity Standards",depth:3,trackable:!1},{id:2093,topic:"2. Change of Working Hours; Transfer of Employees; Discipline of Employees",depth:3,trackable:!1},{id:2094,topic:"3. Grant of Bonuses and Other Benefits; Clearance Process",depth:3,trackable:!1},{id:2095,topic:"4. Post-employment Restrictions; Limitations",depth:3,trackable:!1},{id:2096,topic:"5. Discriminatory Practices (Age, Gender, Marital Status, Disability)",depth:3,trackable:!1},{id:2097,topic:"V. LABOR RELATIONS",depth:1,trackable:!1},{id:2098,topic:"A. Right to Self-organization",depth:2,trackable:!0},{id:2099,topic:"1. Coverage (Government Employees)",depth:3,trackable:!1},{id:2100,topic:"2. Eligibility for Membership (Doctrine of Necessary Implication, Commingling)",depth:3,trackable:!1},{id:2101,topic:"3. Labor Organizations (Legitimate, Union, Association, Federation, Company Union)",depth:3,trackable:!1},{id:2102,topic:"B. Bargaining Unit",depth:2,trackable:!0},{id:2103,topic:"1. Determination of Constituency; Employees Outside the Bargaining Unit",depth:3,trackable:!1},{id:2104,topic:"C. Bargaining Representative (SEBA, Certification/Consent Elections)",depth:2,trackable:!0},{id:2105,topic:"D. Bystander Rule",depth:2,trackable:!0},{id:2106,topic:"E. Rights, Terms, and Conditions of Membership",depth:2,trackable:!0},{id:2107,topic:"1. Admission/Discipline; Election of Officers; Major Policy Matter; Union Funds; Attorney's Fees; Check-off; Mandatory Activity; Union Information; Enforcement",depth:3,trackable:!1},{id:2108,topic:"2. Collective Bargaining",depth:3,trackable:!1},{id:2109,topic:"a. Duty to Bargain; Procedure (Freedom Period)",depth:4,trackable:!1},{id:2110,topic:"b. Collective Bargaining Agreement (Mandatory/Non-economic Provisions, Union Security Clause)",depth:4,trackable:!1},{id:2111,topic:"F. Union Chartering or Registration",depth:2,trackable:!0},{id:2112,topic:"G. Unfair Labor Practice",depth:2,trackable:!0},{id:2113,topic:"1. Definition and Concept",depth:3,trackable:!1},{id:2114,topic:"2. By Employers; By Labor Organizations",depth:3,trackable:!1},{id:2115,topic:"H. Peaceful Concerted Activities",depth:2,trackable:!0},{id:2116,topic:"1. Strikes, Pickets, Lockouts",depth:3,trackable:!1},{id:2117,topic:"2. Assumption of Jurisdiction by DOLE Secretary",depth:3,trackable:!1},{id:2118,topic:"VI. SUSPENSION AND TERMINATION OF EMPLOYMENT",depth:1,trackable:!1},{id:2119,topic:"A. Termination or Suspension by Employer",depth:2,trackable:!0},{id:2120,topic:"1. General Concept; Just Causes",depth:3,trackable:!1},{id:2121,topic:"2. Authorized Causes (Retrenchment, Redundancy, Closure, Disease)",depth:3,trackable:!1},{id:2122,topic:"3. Union Security Clause; Illegal Strike",depth:3,trackable:!1},{id:2123,topic:"4. Procedure; Quitclaim; Due Process Requirements; Preventive Suspension",depth:3,trackable:!1},{id:2124,topic:"5. Constructive Dismissal v. Demotion",depth:3,trackable:!1},{id:2125,topic:"6. Termination of Migrant Worker’s Contract – R.A. No. 8042, as amended",depth:3,trackable:!1},{id:2126,topic:"B. Termination by employee",depth:2,trackable:!0},{id:2127,topic:"1. Resignation; Unilateral Termination – LC, Art. 300(b); Abandonment",depth:3,trackable:!1},{id:2128,topic:"C. Illegal Dismissal",depth:2,trackable:!0},{id:2129,topic:"1. Definition; Reliefs (Reinstatement, Backwages, Damages, Separation Pay, Financial Assistance, Indemnity, Corporate Officer Liability)",depth:3,trackable:!1},{id:2130,topic:"D. Retirement – R.A. No. 7641 and its IRR",depth:2,trackable:!0},{id:2131,topic:"VII. SOCIAL LEGISLATION",depth:1,trackable:!1},{id:2132,topic:"A. Social Security – R.A. No. 11199",depth:2,trackable:!0},{id:2133,topic:"1. Coverage and Exclusions; Dependents; Beneficiaries; Benefits",depth:3,trackable:!1},{id:2134,topic:"B. Government Service Insurance – R.A. No. 8291",depth:2,trackable:!0},{id:2135,topic:"1. Coverage and Exclusions; Dependents; Beneficiaries; Benefits",depth:3,trackable:!1},{id:2136,topic:"C. Limited Portability Scheme – R.A. No. 7699",depth:2,trackable:!0},{id:2137,topic:"D. Disability and Death Benefits",depth:2,trackable:!0},{id:2138,topic:"1. In General – LC, Art. 198",depth:3,trackable:!1},{id:2139,topic:"2. Seafarers’ Disability Claims – 2010 POEA-SEC; R.A. No. 12021",depth:3,trackable:!1},{id:2140,topic:"3. Supplemental Guidelines on the Implementation of the Mental Health Policy and Program in the Workplace",depth:3,trackable:!1},{id:2141,topic:"VIII. LABOR ADJUDICATION: JURISDICTION & REMEDIES",depth:1,trackable:!1},{id:2142,topic:"A. Labor Adjudication Agencies and their Jurisdiction",depth:2,trackable:!0},{id:2143,topic:"1. National Labor Relations Commission (NLRC) and Regional Arbitration Branches (RAB)",depth:3,trackable:!1},{id:2144,topic:"2. DOLE (Regional Directors and DOLE Secretary)",depth:3,trackable:!1},{id:2145,topic:"3. National Conciliation and Mediation Board (NCMB) and Voluntary Arbitrators",depth:3,trackable:!1},{id:2146,topic:"4. Bureau of Labor Relations; Court of Appeals; Supreme Court",depth:3,trackable:!1},{id:2147,topic:"B. Procedure and Remedies",depth:2,trackable:!0},{id:2148,topic:"1. Procedural Standards in Labor Proceedings (Burden of Proof, Quantum of Evidence, Technical Rules not Binding)",depth:3,trackable:!1},{id:2149,topic:"2. Single-Entry Approach; Mandatory Conciliation-Mediation – R.A. No. 10396",depth:3,trackable:!1},{id:2150,topic:"3. Procedure in the NLRC (Appeal, Injunction)",depth:3,trackable:!1},{id:2151,topic:"4. Certiorari against DOLE Secretary and NLRC Proper Rulings",depth:3,trackable:!1}];
+        // --- CORE UTILITY AND COUNTDOWN LOGIC (REMAINS IN INDEX) ---
         
-        // --- GLOBAL CONSTANTS ---
         const CHECKLIST_COLUMNS = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
-        const SYLLABUS_STORAGE_KEY_REM = 'rem_ethics_progress';
-        const SYLLABUS_STORAGE_KEY_CRIM = 'crim_progress';
-        const SYLLABUS_STORAGE_KEY_LAB = 'lab_progress'; 
-        
-        const COUNTDOWN_DATA = [{id:1,targetDate:localStorage.getItem('comp_exam_date_1')||'2026-06-14'},{id:2,targetDate:localStorage.getItem('comp_exam_date_2')||'2026-06-21'},{id:3,targetDate:localStorage.getItem('comp_exam_date_3')||'2026-06-28'}];
+        const COUNTDOWN_DATA = [
+            {id:1,targetDate:localStorage.getItem('comp_exam_date_1')||'2026-06-14'},
+            {id:2,targetDate:localStorage.getItem('comp_exam_date_2')||'2026-06-21'},
+            {id:3,targetDate:localStorage.getItem('comp_exam_date_3')||'2026-06-28'}
+        ];
         
         const DOM_ELEMENTS = {
             modal: document.getElementById('date-edit-modal'),
@@ -806,11 +671,13 @@
             messageModalTitle: document.getElementById('message-modal-title'),
             messageModalContent: document.getElementById('message-modal-content'),
             messageModalCloseBtn: document.getElementById('message-modal-close-btn'),
+            subjectContainer: document.getElementById('subject-trackers-container')
         };
         
         let currentEditingId = null;
-        
-        // --- Utility Functions ---
+        const SUBJECT_LOGIC_MAP = {}; // Map to store subject logic objects after loading
+
+        // Utility Functions
         function formatUniqueDate(dateString){if(!dateString)return'';const date=new Date(dateString+'T00:00:00');return date.toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'}).toUpperCase();}
         function formatNumber(num){return num.toString().padStart(num>=100?3:2,'0');}
         function downloadFile(data,filename,type){const blob=new Blob([data],{type:type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);}
@@ -820,10 +687,6 @@
             const contentEl=DOM_ELEMENTS.messageModalContent;
             if(titleEl)titleEl.textContent=title;
             if(contentEl)contentEl.innerHTML=content;
-            
-            // Re-create the close button listener every time
-            const existingCloseBtn = document.getElementById('message-modal-close-btn');
-            if (existingCloseBtn) existingCloseBtn.removeEventListener('click', closeMessageModal);
             
             const actionsEl=document.getElementById('modal-actions');
             if(actionsEl){
@@ -837,31 +700,63 @@
         }
         function closeMessageModal(){DOM_ELEMENTS.messageModal.classList.add('hidden');DOM_ELEMENTS.messageModal.style.display='none';}
         
-        // --- Countdown Logic ---
+        // Countdown Logic
         function calculateCountdown(targetDateString,id){const now=new Date();const target=new Date(targetDateString+'T00:00:00Z');if(target<=now){const elements=[`days-${id}`,`hrs-${id}`,`mins-${id}`,`secs-${id}`];elements.forEach(elId=>{const el=document.getElementById(elId);if(el)el.textContent=elId===`days-${id}`?'000':'00';});return;}const diffInMilliseconds=target-now;const days=Math.floor(diffInMilliseconds/(1000*60*60*24));const hours=Math.floor(diffInMilliseconds%(1000*60*60*24)/(1000*60*60));const minutes=Math.floor(diffInMilliseconds%(1000*60*60)/(1000*60));const seconds=Math.floor(diffInMilliseconds%(1000*60)/1000);document.getElementById(`days-${id}`).textContent=formatNumber(days);document.getElementById(`hrs-${id}`).textContent=formatNumber(hours);document.getElementById(`mins-${id}`).textContent=formatNumber(minutes);document.getElementById(`secs-${id}`).textContent=formatNumber(seconds);}
         function updateAllCountdowns(){COUNTDOWN_DATA.forEach(data=>{calculateCountdown(data.targetDate,data.id);});}
         function openModal(id){currentEditingId=id;const data=COUNTDOWN_DATA.find(d=>d.id===id);document.getElementById('modal-title').textContent=`Edit Target Date - Day ${id}`;document.getElementById('new-target-date').value=data.targetDate;document.getElementById('modal-error').classList.add('hidden');document.getElementById('date-edit-modal').classList.remove('hidden');document.getElementById('date-edit-modal').style.display='flex';}
         function closeModal(){document.getElementById('date-edit-modal').classList.add('hidden');document.getElementById('date-edit-modal').style.display='none';currentEditingId=null;}
         function saveModal(){const newDateString=document.getElementById('new-target-date').value;const newDate=new Date(newDateString);const now=new Date();if(newDate<=now||!newDateString){document.getElementById('modal-error').textContent="Please select a future date.";document.getElementById('modal-error').classList.remove('hidden');return;}const data=COUNTDOWN_DATA.find(d=>d.id===currentEditingId);if(data){data.targetDate=newDateString;document.querySelector(`#target-date-display-${currentEditingId} .date-text`).textContent=formatUniqueDate(newDateString);localStorage.setItem(`comp_exam_date_${currentEditingId}`,newDateString);updateAllCountdowns();}closeModal();}
         
-        // --- Core Syllabus Logic Factory (to avoid repetition) ---
-        function createSyllabusLogic(subjectName, syllabusData, storageKey) {
+        // Global File Upload Handler (Used by all subject modules)
+        function handleFileUpload(event){
+            const file = event.target.files[0];
+            const targetSubject = event.target.dataset.targetSubject;
             
-            // Pre-calculate which topics have children to determine if they need to be collapsible (<details>)
-            const topicWithChildren = (function() {
-                const children = new Set();
-                syllabusData.forEach((item, index) => {
-                    const nextItem = syllabusData[index + 1];
-                    if (nextItem && nextItem.depth > item.depth) {
-                        children.add(item.id);
-                    }
-                });
-                return children;
-            })();
-
-            function hasChildren(topicId) {
-                return topicWithChildren.has(topicId);
+            if (file && targetSubject && SUBJECT_LOGIC_MAP[targetSubject]) {
+                SUBJECT_LOGIC_MAP[targetSubject].processImport(file);
+            } else if (!file) {
+                showMessageModal("Upload Canceled", "No file was selected for upload.");
+            } else {
+                showMessageModal("Upload Error", "Could not determine the target subject for the upload.");
             }
+            event.target.value = '';
+        }
+
+        // Subject Logic Loader
+        function loadSubjectPanel(subjectName, filePath) {
+            const script = document.createElement('script');
+            script.src = filePath;
+            script.type = 'text/javascript';
+            script.onload = () => {
+                // Ensure the logic function is defined globally by the loaded script
+                if (window[`create${subjectName.toUpperCase()}_LOGIC`]) {
+                    const logic = window[`create${subjectName.toUpperCase()}_LOGIC`]();
+                    SUBJECT_LOGIC_MAP[subjectName] = logic;
+                    // Initial render/injection is now handled by the module's DOMContentLoaded listener,
+                    // but we call render explicitly if the panel doesn't exist yet, as a fallback.
+                    if (!document.getElementById(`subject-tracker-panel-${subjectName}`)) {
+                        const container = document.getElementById('subject-trackers-container');
+                        if (container) {
+                             container.innerHTML += logic.getPanelHtml(logic.SUBJECT_NAME, logic.SUBJECT_TITLE, logic.SUBJECT_ICON);
+                        }
+                    }
+                    logic.render();
+                    // Attach event listeners for buttons that are now in the DOM
+                    document.getElementById(`export-progress-btn-${subjectName}`)?.addEventListener('click', logic.exportProgress);
+                    document.getElementById(`import-progress-btn-${subjectName}`)?.addEventListener('click', logic.importProgress);
+                    document.getElementById(`collapse-all-btn-${subjectName}`)?.addEventListener('click', logic.toggleAllSections);
+                } else {
+                    console.error(`Failed to find initialization function for ${subjectName}`);
+                }
+            };
+            document.head.appendChild(script);
+        }
+
+        // --- GLOBAL SYLLABUS LOGIC FACTORY (This MUST be defined in index.html) ---
+        window.createSyllabusLogic = function(subjectName, syllabusData, storageKey, themeIcon, title) {
+            // This is a minimal definition of the factory required by the external scripts.
+            // The full implementation of internal functions is assumed to be available
+            // via closure/window scope access or defined within the factory itself.
 
             function getProgress() {
                 try {
@@ -877,11 +772,10 @@
                 localStorage.setItem(storageKey, JSON.stringify(progressData));
                 updateOverallProgress();
             }
-
+            
             function getTopicStatus(topicId, progressData) {
                 const topic = syllabusData.find(t => t.id === topicId);
                 if (!topic) return 0;
-
                 if (topic.depth === 1) {
                     let sectionBoxesTotal = 0;
                     let sectionBoxesChecked = 0;
@@ -891,7 +785,6 @@
                         if (i > startIndex && currentItem.depth <= topic.depth) break;
                         if (currentItem.depth === 2 && currentItem.trackable) {
                             const prog = progressData[currentItem.id] || {};
-                            // Only check if topic has achieved the 'done' state (>= 3 boxes checked)
                             const boxesTicked = CHECKLIST_COLUMNS.filter(col => prog[col] === true).length;
                             if (boxesTicked >= 3) {
                                 sectionBoxesChecked++;
@@ -907,69 +800,15 @@
                     const topicProgress = progressData[topicId] || {};
                     const checkedCount = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
                     if (checkedCount === CHECKLIST_COLUMNS.length) return 2;
-                    if (checkedCount >= 3) return 2; // Treat >=3 as done for overall progress calculation
+                    if (checkedCount >= 3) return 2;
                     if (checkedCount > 0) return 1;
                     return 0;
                 }
                 return 0;
             }
 
-            function handleCheckboxChange(event) {
-                const checkbox = event.target;
-                const id = checkbox.dataset.id;
-                const column = checkbox.dataset.column;
-                const isChecked = checkbox.checked;
-                const progressData = getProgress();
-                if (!progressData[id]) {
-                    progressData[id] = {};
-                }
-                progressData[id][column] = isChecked;
-                saveProgress(progressData);
-                // Re-render to update the parent icon statuses
-                renderSyllabusPanel(); 
-            }
-
-            function handleTickAll(topicId) {
-                const progressData = getProgress();
-                let topicsToUpdate = [];
-                const currentStatus = getTopicStatus(topicId, progressData);
-                // If currentStatus is 2 (fully done), target state is false (uncheck all). Otherwise, true (check all).
-                const targetState = currentStatus === 2 ? false : true; 
-                const item = syllabusData.find(t => t.id === topicId);
-                if (!item) return;
-                
-                const startDepth = item.depth;
-                const startIndex = syllabusData.findIndex(t => t.id === topicId);
-                
-                if (startDepth === 2 && item.trackable) {
-                    topicsToUpdate.push(item);
-                } else if (startDepth === 1) {
-                    // Collect all trackable depth 2 topics within this depth 1 section
-                    for (let i = startIndex; i < syllabusData.length; i++) {
-                        const currentItem = syllabusData[i];
-                        if (i > startIndex && currentItem.depth <= startDepth) break;
-                        if (currentItem.depth === 2 && currentItem.trackable) {
-                            topicsToUpdate.push(currentItem);
-                        }
-                    }
-                }
-                
-                topicsToUpdate.forEach(topic => {
-                    const id = topic.id;
-                    if (!progressData[id]) {
-                        progressData[id] = {};
-                    }
-                    CHECKLIST_COLUMNS.forEach(col => {
-                        progressData[id][col] = targetState;
-                    });
-                });
-                saveProgress(progressData);
-                renderSyllabusPanel();
-            }
-
             function updateOverallProgress() {
                 const progressData = getProgress();
-                // Filter only the trackable Depth 2 topics (the row items)
                 const mainTopics = syllabusData.filter(t => t.depth === 2 && t.trackable);
                 let topicsDoneCount = 0;
                 let topicsToReadCount = 0;
@@ -986,7 +825,6 @@
                         }
                     });
                     
-                    // Logic: Overall progress only counts if at least 3 checklist boxes are marked
                     if (boxesTicked >= 3) {
                         topicsDoneCount++;
                     } else {
@@ -1038,9 +876,40 @@
             }
 
             function renderSyllabusPanel() {
-                const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
-                if (!syllabusContainer) return;
+                 const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
+                 const panelContainer = document.getElementById(`subject-tracker-panel-${subjectName}`);
+                 
+                 // If the element doesn't exist, inject the full panel structure first
+                 if (!panelContainer || !syllabusContainer) {
+                     const container = document.getElementById('subject-trackers-container');
+                     if (container) {
+                         // Find the injection point before attempting to set innerHTML
+                         const targetDiv = document.getElementById(`subject-tracker-panel-${subjectName}`);
+                         if (targetDiv) {
+                            targetDiv.outerHTML = getPanelHtml(subjectName, title, themeIcon);
+                            // Rerun render logic after injection to populate the content
+                            return renderSyllabusPanel();
+                         }
+                     }
+                     return;
+                 }
 
+
+                 const topicWithChildren = (function() {
+                     const children = new Set();
+                     syllabusData.forEach((item, index) => {
+                         const nextItem = syllabusData[index + 1];
+                         if (nextItem && nextItem.depth > item.depth) {
+                             children.add(item.id);
+                         }
+                     });
+                     return children;
+                 })();
+
+                 function hasChildren(topicId) {
+                     return topicWithChildren.has(topicId);
+                 }
+                
                 // 1. Capture current open states to preserve them across re-render
                 const openSections = {};
                 document.querySelectorAll(`#syllabus-${subjectName} details`).forEach(details => {
@@ -1065,16 +934,17 @@
                     const iconSize = item.depth === 1 ? 'w-5 h-5' : 'w-4 h-4';
                     const iconTitle = currentStatus === 2 ? 'Clear All' : (currentStatus === 1 ? 'Clear All' : 'Tick All');
 
-                    if (item.depth === 1) {
+                    const isTopLevelTopic = item.depth === 1;
+
+                    if (isTopLevelTopic) {
                         if (isDepth2Open) { html += `</div></details></div>`; isDepth2Open = false; }
                         if (currentSectionOpen) { html += `</div></details></div>`; }
                         
                         const sectionId = `${subjectName}-section-${item.id}`;
-                        // Preserve open state if known, otherwise default to open for the first section only
                         const isOpen = openSections[sectionId] === true || (index === 0 && openSections[sectionId] !== false);
                         const openAttr = isOpen ? 'open' : '';
                         
-                        html += `\n<div class="syllabus-sub-section"><details id="${sectionId}" class="w-full" ${openAttr}><summary class="topic-header"><div class="topic-header-text"><i data-lucide="chevron-right" class="w-4 h-4 mr-2 chevron-icon"></i><span class="font-extrabold text-lg text-black/90">${item.topic}</span></div><i data-lucide="${iconName}" class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" title="${iconTitle}" onclick="${subjectName.toUpperCase()}_LOGIC.handleTickAll(${item.id}); event.stopPropagation(); event.preventDefault();"></i></summary><div class="p-2">\n`;
+                        html += `\n<div class="syllabus-sub-section"><details id="${sectionId}" class="w-full" ${openAttr}><summary class="topic-header"><div class="topic-header-text"><i data-lucide="chevron-right" class="w-4 h-4 mr-2 chevron-icon"></i><span class="font-extrabold text-lg text-black/90">${item.topic}</span></div><i data-lucide="${iconName}" class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></summary><div class="p-2">\n`;
                         currentSectionOpen = true;
                     } else if (item.depth === 2 && item.trackable) {
                         const topicProgress = progress[topicId] || {};
@@ -1084,7 +954,7 @@
 
                         const checklist = CHECKLIST_COLUMNS.map(col => {
                             const checked = topicProgress[col] === true ? 'checked' : '';
-                            return `\n<div class="flex justify-center"><input type="checkbox" data-id="${topicId}" data-column="${col}" ${checked} class="w-4 h-4 border-gray-300 rounded focus:ring-500 ${checkboxClass}"></div>\n`;
+                            return `\n<div class="flex justify-center"><input type="checkbox" data-id="${topicId}" data-column="${col}" ${checked} class="w-4 h-4 border-gray-300 rounded focus:ring-500 ${checkboxClass}" onchange="window.handleCheckboxChange${subjectName.toUpperCase()}(event)"></div>\n`;
                         }).join('');
 
                         let rowContent = `\n
@@ -1094,7 +964,7 @@
                                 </div>
                             </div>
                             ${checklist}
-                            <div class="flex items-center justify-center space-x-1 pl-2"><i data-lucide="${iconName}" class="tick-all-icon w-4 h-4 ${iconColor}" title="${iconTitle}" onclick="${subjectName.toUpperCase()}_LOGIC.handleTickAll(${item.id}); event.stopPropagation(); event.preventDefault();"></i></div>\n
+                            <div class="flex items-center justify-center space-x-1 pl-2"><i data-lucide="${iconName}" class="tick-all-icon w-4 h-4 ${iconColor}" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></div>\n
                         `;
 
                         if (isCollapsible) {
@@ -1114,10 +984,8 @@
                         if (isDepth2Open) {
                              html += `<div class="p-1 border-b border-black/10 text-black/70 italic ${fontStyle} text-sm" style="padding-left: ${dynamicPadding}rem;">${item.topic}</div>`;
                         } else {
-                             // This fallback handles cases where a depth 3+ item exists outside a depth 2 container
-                             html += `<div class="checklist-grid hover:bg-gray-50/50 transition"><div>${item.topic}</div></div>`;
+                            html += `<div class="checklist-grid hover:bg-gray-50/50 transition"><div>${item.topic}</div></div>`;
                         }
-
                     }
 
                     if (item.depth >= 3 && isDepth2Open && (!nextItem || nextItem.depth <= 2)) { html += `</div></details></div>`; isDepth2Open = false; }
@@ -1130,23 +998,6 @@
 
                 syllabusContainer.innerHTML = html;
                 
-                // Re-attach event listeners
-                document.querySelectorAll(`#syllabus-${subjectName} .${checkboxClass}`).forEach(checkbox => {
-                    checkbox.addEventListener('change', handleCheckboxChange);
-                });
-                // Re-create icons on toggle to ensure chevrons appear inside dynamic details elements
-                document.querySelectorAll(`#syllabus-${subjectName} details`).forEach(details => {
-                    details.addEventListener('toggle', event => {
-                        if (lucide && lucide.createIcons) {
-                            lucide.createIcons();
-                        }
-                        // Update button state if the main panel is toggled
-                        if (details.classList.contains('syllabus-panel')) {
-                            updateCollapseButtonText();
-                        }
-                    });
-                });
-                
                 if (lucide && lucide.createIcons) {
                     lucide.createIcons();
                 }
@@ -1154,17 +1005,72 @@
                 updateCollapseButtonText();
             }
 
+            function handleCheckboxChange(event) {
+                 const checkbox = event.target;
+                 const id = checkbox.dataset.id;
+                 const column = checkbox.dataset.column;
+                 const isChecked = checkbox.checked;
+                 const progressData = getProgress();
+                 if (!progressData[id]) {
+                     progressData[id] = {};
+                 }
+                 progressData[id][column] = isChecked;
+                 saveProgress(progressData);
+                 renderSyllabusPanel(); 
+            }
+            
+            function handleTickAll(topicId) {
+                 const progressData = getProgress();
+                 let topicsToUpdate = [];
+                 const currentStatus = getTopicStatus(topicId, progressData);
+                 const targetState = currentStatus === 2 ? false : true; 
+                 const item = syllabusData.find(t => t.id === topicId);
+                 if (!item) return;
+                 
+                 const startDepth = item.depth;
+                 const startIndex = syllabusData.findIndex(t => t.id === topicId);
+                 
+                 if (startDepth === 2 && item.trackable) {
+                     topicsToUpdate.push(item);
+                 } else if (startDepth === 1) {
+                     for (let i = startIndex; i < syllabusData.length; i++) {
+                         const currentItem = syllabusData[i];
+                         if (i > startIndex && currentItem.depth <= startDepth) break;
+                         if (currentItem.depth === 2 && currentItem.trackable) {
+                             topicsToUpdate.push(currentItem);
+                         }
+                     }
+                 }
+                 
+                 topicsToUpdate.forEach(topic => {
+                     const id = topic.id;
+                     if (!progressData[id]) {
+                         progressData[id] = {};
+                     }
+                     CHECKLIST_COLUMNS.forEach(col => {
+                         progressData[id][col] = targetState;
+                     });
+                 });
+                 saveProgress(progressData);
+                 renderSyllabusPanel();
+            }
+
             function exportProgress() {
                 const progressData = localStorage.getItem(storageKey);
                 if (!progressData || '{}' === progressData) {
-                    showMessageModal("Download Failed", `<p class='text-red-600'>No ${subjectName.toUpperCase()} progress data found to download.</p>`);
+                    showMessageModal("Download Failed", `<p class='text-red-600'>No ${title} progress data found to download.</p>`);
                     return;
                 }
                 downloadFile(progressData, `${subjectName}-progress.json`, 'application/json');
-                showMessageModal("Download Complete", `<p class='text-green-600'>Your ${subjectName.toUpperCase()} progress has been downloaded as **${subjectName}-progress.json**</p>`);
+                showMessageModal("Download Complete", `<p class='text-green-600'>Your ${title} progress has been downloaded as **${subjectName}-progress.json**</p>`);
             }
 
-            function importProgress(file) {
+            function triggerImport() {
+                 DOM_ELEMENTS.fileUploadInput.dataset.targetSubject = subjectName;
+                 DOM_ELEMENTS.fileUploadInput.click();
+            }
+
+            function processImport(file) {
                  if (!file) { showMessageModal("Upload Canceled", "No file was selected for upload."); return; }
                  if ('application/json' !== file.type && !file.name.endsWith('.json')) { showMessageModal("Upload Error", `<p class='text-red-600'>Invalid file type. Please upload a **.json** file.</p>`); return; }
                  
@@ -1176,7 +1082,7 @@
                          if ('object' !== typeof importedData || null === importedData) { throw new Error("Invalid JSON structure."); }
                          saveProgress(importedData);
                          renderSyllabusPanel();
-                         showMessageModal("Success!", `<p class='text-green-600'>${subjectName.toUpperCase()} progress successfully uploaded and applied.</p>`);
+                         showMessageModal("Success!", `<p class='text-green-600'>${title} progress successfully uploaded and applied.</p>`);
                      } catch (e) {
                          console.error("Import error:", e);
                          showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON.</p>`);
@@ -1186,14 +1092,8 @@
                  reader.readAsText(file);
             }
 
-            function triggerImport() {
-                 // Store which subject is currently being imported for handleFileUpload to use
-                 DOM_ELEMENTS.fileUploadInput.dataset.targetSubject = subjectName;
-                 DOM_ELEMENTS.fileUploadInput.click();
-            }
-
             function toggleAllSections() {
-                const allDetails = document.querySelectorAll(`.syllabus-panel-${subjectName} details`);
+                const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
                 
                 let shouldOpen = false;
                 for (const details of allDetails) {
@@ -1216,8 +1116,7 @@
                 const btn = document.getElementById(`collapse-all-btn-${subjectName}`);
                 if (btn) {
                     if (typeof isOpen === 'undefined') {
-                        // Check state by sampling a few details elements inside the panel
-                        const allDetails = document.querySelectorAll(`.syllabus-panel-${subjectName} details`);
+                        const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
                         let allOpen = true;
                         for (const details of allDetails) {
                             if (!details.open) {
@@ -1235,47 +1134,192 @@
                 }
             }
             
-            // Export functions with globally unique names
+            function getPanelHtml(subjectName, title, icon) {
+                const themeClass = `syllabus-panel-${subjectName}`;
+                const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
+                const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
+                
+                return `
+                <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container ${themeClass}" id="subject-tracker-panel-${subjectName}">
+                    <details class="syllabus-panel" open>
+                        <summary class="syllabus-summary" id="summary-${subjectName}">
+                            <div class="syllabus-summary-title-row">
+                                <div class="flex items-center">
+                                    <i data-lucide="${icon}" class="w-6 h-6 mr-3"></i>${title}
+                                </div>
+                                <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
+                            </div>
+                            <div class="syllabus-progress-metrics text-xs">
+                                <div class="progress-stats">
+                                    <span class="flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>DONE:&nbsp;<span id="progress-done-${subjectName}">0</span>&nbsp;TOPICS</span>
+                                    <span class="flex items-center"><i data-lucide="book-open-text" class="w-4 h-4 mr-1 text-gray-200"></i>TO READ:&nbsp;<span id="progress-toread-${subjectName}">0</span>&nbsp;TOPICS</span>
+                                </div>
+                                <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
+                                    <span class="progress-overall-text flex items-center"><i data-lucide="chart-spline" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:</span>
+                                    <div class="progress-bar-container">
+                                        <div id="progress-bar-${subjectName}" class="progress-bar" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="progress-${subjectName}" class="font-light">(0.0%)</span>
+                                </div>
+                            </div>
+                        </summary>
+                        <div class="syllabus-content">
+                            <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-2 status-message-row border-b border-gray-200">
+                                <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
+                                <div class="flex flex-wrap gap-2">
+                                    <button id="import-progress-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="upload" class="w-4 h-4 mr-1 inline-block"></i> Upload Progress</button>
+                                    <button id="export-progress-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="download" class="w-4 h-4 mr-1 inline-block"></i> Download Progress</button>
+                                    <button id="collapse-all-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap"><i data-lucide="chevrons-up" class="w-4 h-4 mr-1"></i> Collapse All</button>
+                                </div>
+                            </div>
+                            <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
+                                <div>SUBJECTS/TOPICS</div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
+                                <div></div>
+                            </div>
+                            <div class="checklist-grid checklist-grid-micro-progress text-center border-t border-gray-300">
+                                <div></div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div id="syllabus-${subjectName}" class="text-xs"></div>
+                        </div>
+                    </details>
+                </div>
+                `;
+            }
+
+            function exportProgress() {
+                const progressData = localStorage.getItem(storageKey);
+                if (!progressData || '{}' === progressData) {
+                    showMessageModal("Download Failed", `<p class='text-red-600'>No ${title} progress data found to download.</p>`);
+                    return;
+                }
+                downloadFile(progressData, `${subjectName}-progress.json`, 'application/json');
+                showMessageModal("Download Complete", `<p class='text-green-600'>Your ${title} progress has been downloaded as **${subjectName}-progress.json**</p>`);
+            }
+
+            function triggerImport() {
+                 DOM_ELEMENTS.fileUploadInput.dataset.targetSubject = subjectName;
+                 DOM_ELEMENTS.fileUploadInput.click();
+            }
+
+            function processImport(file) {
+                 if (!file) { showMessageModal("Upload Canceled", "No file was selected for upload."); return; }
+                 if ('application/json' !== file.type && !file.name.endsWith('.json')) { showMessageModal("Upload Error", `<p class='text-red-600'>Invalid file type. Please upload a **.json** file.</p>`); return; }
+                 
+                 const reader = new FileReader();
+                 reader.onload = function(e) {
+                     const jsonString = e.target.result;
+                     try {
+                         const importedData = JSON.parse(jsonString);
+                         if ('object' !== typeof importedData || null === importedData) { throw new Error("Invalid JSON structure."); }
+                         saveProgress(importedData);
+                         renderSyllabusPanel();
+                         showMessageModal("Success!", `<p class='text-green-600'>${title} progress successfully uploaded and applied.</p>`);
+                     } catch (e) {
+                         console.error("Import error:", e);
+                         showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON.</p>`);
+                     }
+                 };
+                 reader.onerror = function() { showMessageModal("Upload Error", `<p class='text-red-600'>Error reading the file.</p>`); };
+                 reader.readAsText(file);
+            }
+
+            function toggleAllSections() {
+                const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
+                
+                let shouldOpen = false;
+                for (const details of allDetails) {
+                    if (!details.open) {
+                        shouldOpen = true;
+                        break;
+                    }
+                }
+                allDetails.forEach(details => {
+                    details.open = shouldOpen;
+                });
+                
+                if (lucide && lucide.createIcons) {
+                    lucide.createIcons();
+                }
+                updateCollapseButtonText(shouldOpen);
+            }
+
+            function updateCollapseButtonText(isOpen) {
+                const btn = document.getElementById(`collapse-all-btn-${subjectName}`);
+                if (btn) {
+                    if (typeof isOpen === 'undefined') {
+                        const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
+                        let allOpen = true;
+                        for (const details of allDetails) {
+                            if (!details.open) {
+                                allOpen = false;
+                                break;
+                            }
+                        }
+                        isOpen = allOpen;
+                    }
+                    const iconName = isOpen ? 'chevrons-up' : 'chevrons-down';
+                    const text = isOpen ? 'Collapse All' : 'Expand All';
+                    btn.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4 mr-1"></i> ${text}`;
+                    if (!btn.classList.contains('flex')) { btn.classList.add('flex', 'items-center', 'justify-center'); }
+                    if (lucide && lucide.createIcons) { lucide.createIcons(); }
+                }
+            }
+            
+            // Attach unique global handlers for onclick/onchange HTML events
             window[`handleTickAll${subjectName.toUpperCase()}`] = handleTickAll;
+            window[`handleCheckboxChange${subjectName.toUpperCase()}`] = handleCheckboxChange;
 
             return {
+                SUBJECT_NAME: subjectName,
+                SUBJECT_TITLE: title,
+                SUBJECT_ICON: themeIcon,
                 render: renderSyllabusPanel,
                 updateOverallProgress: updateOverallProgress,
                 exportProgress: exportProgress,
-                importProgress: triggerImport, 
-                handleTickAll: handleTickAll,
-                processImport: importProgress,
-                toggleAllSections: toggleAllSections
+                importProgress: triggerImport,
+                processImport: processImport,
+                toggleAllSections: toggleAllSections,
+                getPanelHtml: getPanelHtml
             };
         }
 
-        // --- Instantiate Subject Logic ---
-        const REM_LOGIC = createSyllabusLogic('rem', REM_ETHICS_SYLLABUS, SYLLABUS_STORAGE_KEY_REM);
-        const CRIM_LOGIC = createSyllabusLogic('crim', CRIM_SYLLABUS, SYLLABUS_STORAGE_KEY_CRIM);
-        const LAB_LOGIC = createSyllabusLogic('lab', LABOR_SYLLABUS, SYLLABUS_STORAGE_KEY_LAB); 
-        
-        // --- Subject Map for Generic Import Handler ---
-        const SUBJECT_LOGIC_MAP = {
-            'rem': REM_LOGIC,
-            'crim': CRIM_LOGIC,
-            'lab': LAB_LOGIC
-        };
-
-        // --- Global File Upload Handler (Used by all subjects) ---
-        function handleFileUpload(event){
-            const file = event.target.files[0];
-            const targetSubject = event.target.dataset.targetSubject;
-            
-            if (file && targetSubject && SUBJECT_LOGIC_MAP[targetSubject]) {
-                SUBJECT_LOGIC_MAP[targetSubject].processImport(file);
-            } else if (!file) {
-                showMessageModal("Upload Canceled", "No file was selected for upload.");
-            } else {
-                showMessageModal("Upload Error", "Could not determine the target subject for the upload.");
-            }
-            event.target.value = ''; // Clear the input after file selection/cancellation to allow re-selection
-        }
-
+        // --- INITIALIZATION ---
         window.onload = () => {
             // 1. Initialize Countdown Dates
             COUNTDOWN_DATA.forEach(data => {
@@ -1287,37 +1331,21 @@
                 }
             });
 
-            // 2. Render all panels
-            REM_LOGIC.render();
-            CRIM_LOGIC.render();
-            LAB_LOGIC.render(); 
-
-            // 3. Initialize Lucide Icons
+            // 2. Load Subject Panels (This is the load sequence)
+            loadSubjectPanel('rem', 'rem_logic.js');
+            loadSubjectPanel('crim', 'crim_logic.js');
+            loadSubjectPanel('lab', 'lab_logic.js');
+            loadSubjectPanel('civ', 'civ_logic.js');
+            loadSubjectPanel('comm', 'comm_logic.js');
+            // POLI (Subject 6) will be loaded here once the file is ready:
+            // loadSubjectPanel('poli', 'poli_logic.js');
+            
+            // 3. Initialize Lucide Icons for static content
             if (lucide && lucide.createIcons) {
                 lucide.createIcons();
             }
-            
-            // 4. --- Event Listeners ---
-            
-            // REM Panel Events
-            document.getElementById('export-progress-btn-rem').addEventListener('click', REM_LOGIC.exportProgress);
-            document.getElementById('import-progress-btn-rem').addEventListener('click', REM_LOGIC.importProgress);
-            document.getElementById('collapse-all-btn-rem').addEventListener('click', REM_LOGIC.toggleAllSections);
 
-            // CRIM Panel Events
-            document.getElementById('export-progress-btn-crim').addEventListener('click', CRIM_LOGIC.exportProgress);
-            document.getElementById('import-progress-btn-crim').addEventListener('click', CRIM_LOGIC.importProgress);
-            document.getElementById('collapse-all-btn-crim').addEventListener('click', CRIM_LOGIC.toggleAllSections);
-            
-            // LAB Panel Events
-            document.getElementById('export-progress-btn-lab').addEventListener('click', LAB_LOGIC.exportProgress);
-            document.getElementById('import-progress-btn-lab').addEventListener('click', LAB_LOGIC.importProgress);
-            document.getElementById('collapse-all-btn-lab').addEventListener('click', LAB_LOGIC.toggleAllSections);
-
-            // Global Upload Input listener (used by all import functions)
-            DOM_ELEMENTS.fileUploadInput.addEventListener('change', handleFileUpload);
-            
-            // Countdown Events
+            // 4. Attach General Event Listeners
             updateAllCountdowns();
             setInterval(updateAllCountdowns, 1000);
             document.getElementById('target-date-display-1').addEventListener('click', () => openModal(1));
@@ -1325,10 +1353,8 @@
             document.getElementById('target-date-display-3').addEventListener('click', () => openModal(3));
             document.getElementById('modal-save-btn').addEventListener('click', saveModal);
             document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
-            
-            // Message Modal Close
+            DOM_ELEMENTS.fileUploadInput.addEventListener('change', handleFileUpload);
             document.getElementById('message-modal-close-btn')?.addEventListener('click', closeMessageModal);
-
         };
     </script>
 </body>
