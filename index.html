@@ -334,7 +334,56 @@
         }
         
         .topic-header { padding: .75rem; font-weight: 600; color: #1f2937; display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; }
-        .checklist-grid { display: grid; grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px); gap: .2rem; padding: .3rem 0; align-items: center; border-bottom: 1px dashed #e5e7eb; }
+        
+        /* Checklist Grid */
+        .checklist-grid { 
+            display: grid; 
+            grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px); 
+            gap: .2rem; 
+            padding: .3rem 0; 
+            align-items: center; 
+            border-bottom: 1px dashed #e5e7eb; 
+        }
+        
+        /* NEW: Safari/WebKit checkbox layout fixes */
+        /* This forces Safari to respect the explicit size and ensures the checkbox is perfectly centered. */
+        .checklist-grid input[type="checkbox"] {
+            /* Reset default appearance */
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            /* Explicit size to match w-4 h-4 (1rem) */
+            width: 1rem; 
+            height: 1rem;
+            border: 1px solid #d1d5db; /* border-gray-300 */
+            border-radius: 0.25rem; /* rounded */
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            background-color: #ffffff;
+            /* Flex centering hint */
+            align-self: center;
+        }
+
+        .checklist-grid input[type="checkbox"]:checked {
+             /* Use currentColor property of the checkbox wrapper, which is set by the JS accent color logic */
+             background-color: currentColor; 
+             border-color: currentColor;
+        }
+
+        .checklist-grid input[type="checkbox"]:checked::before {
+            /* Custom checkmark using border hack for reliability across WebKit (Safari) */
+            content: '';
+            display: block;
+            width: 0.25rem;
+            height: 0.5rem;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            /* Transforms the checkmark into a tick and centers it */
+            transform: rotate(45deg) translate(0.35rem, 0.05rem);
+        }
+
+        /* End Safari/WebKit checkbox layout fixes */
+        
         .checklist-grid>div:first-child { padding-left: 1.0rem; font-size: .875rem; color: #374151; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
         .font-trackable-lg { font-size: 1rem; font-weight: 600; }
         .progress-percent-bold { font-weight: 700; font-size: .8rem; }
@@ -376,7 +425,7 @@
         .tick-all-icon.checked { color: #10b981; }
         .tick-all-icon.partial { color: #f59e0b; }
         .tick-all-icon:hover { transform: scale(1.1); }
-        .col-progress-bar-container { height: .4rem; background: #e5e7eb; border-radius: 9999px; overflow: hidden; margin-top: .25rem; width: 100%; }
+        .col-progress-bar-container { height: .4rem; background: #e5e7eb; border-radius: 9999px; overflow: hidden; width: 100%; }
         .col-progress-bar { height: 100%; transition: width .3s ease-in-out; }
         .status-message-row { padding-top: .25rem; padding-bottom: .25rem; }
         .checklist-grid-micro-progress { padding-top: .25rem; padding-bottom: .5rem; }
@@ -683,6 +732,16 @@
                 <div id="subject-tracker-panel-comm"></div>
                 <div id="subject-tracker-panel-poli"></div> 
             </div>
+
+            <!-- 5. GLOBAL DATA MANAGEMENT BUTTONS (UPDATED) -->
+            <div class="max-w-3xl mx-auto mt-6 mb-6 flex space-x-3 px-2 sm:px-0">
+                <button onclick="exportAllData()" class="flex-1 px-3 py-2 bg-green-600 text-white font-semibold text-sm rounded-lg shadow-lg hover:bg-green-700 transition duration-150 uppercase flex items-center justify-center">
+                    <i data-lucide="download-cloud" class="w-4 h-4 mr-1"></i> Export All Data
+                </button>
+                <button onclick="document.getElementById('global-file-input').click()" class="flex-1 px-3 py-2 bg-blue-600 text-white font-semibold text-sm rounded-lg shadow-lg hover:bg-blue-700 transition duration-150 uppercase flex items-center justify-center">
+                    <i data-lucide="upload-cloud" class="w-4 h-4 mr-1"></i> Import Existing Data
+                </button>
+            </div>
             
         </div>
     </div>
@@ -716,7 +775,8 @@
         </div>
     </div>
 
-    <input type="file" id="file-upload-input" accept=".json" class="hidden">
+    <!-- Consolidated file input for all import actions -->
+    <input type="file" id="global-file-input" accept=".json" class="hidden" onchange="importAllData(event)"> 
 
     <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
         <div class="bg-white p-6 rounded-lg shadow-xl w-96 max-w-sm">
@@ -746,7 +806,7 @@
             saveBtn: document.getElementById('modal-save-btn'),
             cancelBtn: document.getElementById('modal-cancel-btn'),
             errorMsg: document.getElementById('modal-error'),
-            fileUploadInput: document.getElementById('file-upload-input'),
+            globalFileInput: document.getElementById('global-file-input'), // Renamed to be global
             messageModal: document.getElementById('message-modal'),
             messageModalTitle: document.getElementById('message-modal-title'),
             messageModalContent: document.getElementById('message-modal-content'),
@@ -756,6 +816,12 @@
         
         let currentEditingId = null;
         const SUBJECT_LOGIC_MAP = {}; // Map to store subject logic objects after loading
+        // All known storage keys for subjects, used by global export/import
+        const ALL_SUBJECT_STORAGE_KEYS = [
+            'rem_ethics_progress', 'crim_progress', 'lab_progress', 
+            'civ_progress', 'comm_tax_progress', 'poli_progress'
+        ];
+
 
         // --- Schedule Data (Central source of truth for table) ---
         const SCHEDULE_DATA = [
@@ -869,6 +935,7 @@
         // Global File Upload Handler (Used by all subject modules)
         function handleFileUpload(event){
             const file = event.target.files[0];
+            // This now checks for the targetSubject set by individual subject import buttons
             const targetSubject = event.target.dataset.targetSubject;
             
             if (file && targetSubject && SUBJECT_LOGIC_MAP[targetSubject]) {
@@ -880,6 +947,120 @@
             }
             event.target.value = '';
         }
+
+        // --- GLOBAL EXPORT/IMPORT FUNCTIONS (NEW) ---
+
+        function exportAllData() {
+            const data = {};
+            const subjectKeys = {};
+
+            // 1. Gather fixed data (Name, Countdown Dates)
+            data.user_name = localStorage.getItem(USER_NAME_KEY) || null;
+            
+            data.dates = {};
+            COUNTDOWN_DATA.forEach((d, index) => {
+                data.dates[`comp_exam_date_${d.id}`] = localStorage.getItem(`comp_exam_date_${d.id}`) || d.targetDate;
+            });
+
+            // 2. Gather all subject data
+            data.subjects = {};
+            ALL_SUBJECT_STORAGE_KEYS.forEach(key => {
+                 const progress = localStorage.getItem(key);
+                 if (progress) {
+                     // Parse and re-stringify to ensure the data is valid JSON format, otherwise save as null/empty
+                     try {
+                         data.subjects[key] = JSON.parse(progress);
+                     } catch(e) {
+                         data.subjects[key] = {};
+                     }
+                 }
+            });
+
+            const jsonString = JSON.stringify(data, null, 2);
+            downloadFile(jsonString, 'comprehensive-review-tracker-backup.json', 'application/json');
+            showMessageModal("Export Complete", "<p class='text-green-600'>All data (progress, dates, name) has been downloaded as **comprehensive-review-tracker-backup.json**</p>");
+        }
+        
+        function importAllData(event) {
+            const file = event.target.files[0];
+            
+            // Clear the file input immediately so the change event fires again if the same file is selected later
+            event.target.value = '';
+
+            if (!file || !file.name.endsWith('.json')) {
+                showMessageModal("Import Error", "<p class='text-red-600'>Please select a valid .json file for import.</p>");
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const jsonString = e.target.result;
+                try {
+                    const importedData = JSON.parse(jsonString);
+                    if (typeof importedData !== 'object' || importedData === null) {
+                         throw new Error("Invalid file structure.");
+                    }
+                    
+                    let subjectsImported = 0;
+
+                    // 1. Import Subject Data
+                    if (importedData.subjects) {
+                        Object.keys(importedData.subjects).forEach(key => {
+                            if (ALL_SUBJECT_STORAGE_KEYS.includes(key)) {
+                                localStorage.setItem(key, JSON.stringify(importedData.subjects[key]));
+                                subjectsImported++;
+                            }
+                        });
+                    }
+
+                    // 2. Import User Name
+                    if (importedData.user_name) {
+                        localStorage.setItem(USER_NAME_KEY, importedData.user_name);
+                        loadUserName();
+                    } else {
+                        localStorage.removeItem(USER_NAME_KEY);
+                        loadUserName(); // Refresh if no name found
+                    }
+
+                    // 3. Import Dates
+                    if (importedData.dates) {
+                        Object.keys(importedData.dates).forEach(key => {
+                            if (key.startsWith('comp_exam_date_')) {
+                                localStorage.setItem(key, importedData.dates[key]);
+                            }
+                        });
+                        // Reload dates into memory
+                        COUNTDOWN_DATA.forEach(data => {
+                            const savedDate = localStorage.getItem(`comp_exam_date_${data.id}`);
+                            data.targetDate = savedDate || data.targetDate;
+                            document.querySelector(`#target-date-display-${data.id} .date-text`).textContent = formatUniqueDate(data.targetDate);
+                        });
+                        updateAllCountdowns();
+                    }
+
+                    // 4. Update UI: Re-render all subjects and the dashboard
+                    Object.values(SUBJECT_LOGIC_MAP).forEach(logic => {
+                        logic.render();
+                    });
+                    window.updateOverallDashboard();
+
+                    showMessageModal("Import Success", `<p class='text-green-600'>Successfully imported data for ${subjectsImported} subjects, dates, and user name. The tracker has been refreshed.</p>`);
+
+                } catch (e) {
+                    console.error("Global Import error:", e);
+                    showMessageModal("Import Failed", `<p class='text-red-600'>Failed to import data. Please ensure the file is a valid JSON backup from this tracker. Error: ${e.message}</p>`);
+                }
+            };
+            reader.onerror = function() { showMessageModal("Import Error", `<p class='text-red-600'>Error reading the file.</p>`); };
+            reader.readAsText(file);
+        }
+
+        // Expose global functions
+        window.exportAllData = exportAllData;
+        window.importAllData = importAllData;
+
+        // --- END GLOBAL EXPORT/IMPORT FUNCTIONS ---
+
 
         // Subject Logic Loader
         function loadSubjectPanel(subjectName, filePath) {
@@ -913,7 +1094,11 @@
 
                         // Attach listeners
                         exportBtn?.addEventListener('click', currentLogic.exportProgress);
-                        importBtn?.addEventListener('click', currentLogic.importProgress);
+                        // NOTE: Individual import buttons now trigger the global file input
+                        importBtn?.addEventListener('click', () => { 
+                            DOM_ELEMENTS.globalFileInput.dataset.targetSubject = currentLogic.SUBJECT_NAME;
+                            DOM_ELEMENTS.globalFileInput.click();
+                        });
                         collapseBtn?.addEventListener('click', currentLogic.toggleAllSections);
                         
                         // 4. Call render to populate content inside the injected structure
@@ -947,6 +1132,14 @@
             
             // NEW FIX: Set background circle color to red if progress is less than 100%
             const backgroundRingColor = (donePercent < 100) ? '#ef4444' : '#e5e7eb';
+
+
+            // --- START STYLE CHANGES FOR CENTER TEXT (Request 3) ---
+            // RESTORING DYNAMIC COLOR HERE (fillColor)
+            const centerTextColor = fillColor; 
+            const centerFontSize = '2.5rem'; 
+            const centerFontFamily = 'Bebas Neue, sans-serif'; 
+            // --- END STYLE CHANGES FOR CENTER TEXT (Request 3) ---
 
 
             // Reduced size for compactness
@@ -996,17 +1189,17 @@
                         fill="white"
                     />
                     
-                    <!-- Inner Percentage Text (Dynamic color) -->
+                    <!-- Inner Percentage Text (Custom styles applied) -->
                     <text 
                         x="${center}" 
                         y="${center}" 
                         text-anchor="middle" 
                         alignment-baseline="central" 
-                        font-size="1.8rem"
+                        font-size="${centerFontSize}"
                         font-weight="900" 
-                        fill="${fillColor}"
-                        font-family="Bebas Neue, sans-serif" 
-                        style="text-shadow: 1px 1px 0 #000000;"
+                        fill="${centerTextColor}"
+                        font-family="${centerFontFamily}" 
+                        style="text-shadow: 1px 1px 0 #cccccc; letter-spacing: 1px;"
                     >
                         ${(donePercent).toFixed(0)}%
                     </text>
@@ -1487,6 +1680,7 @@
                  renderSyllabusPanel();
             }
 
+            // NOTE: Individual export function remains unchanged but uses global download utility.
             function exportProgress() {
                 const progressData = localStorage.getItem(storageKey);
                 if (!progressData || '{}' === progressData) {
@@ -1497,9 +1691,10 @@
                 showMessageModal("Download Complete", `<p class='text-green-600'>Your ${title} progress has been downloaded as **${subjectName}-progress.json**</p>`);
             }
 
+            // NOTE: Individual import function now targets the global file input.
             function triggerImport() {
-                 DOM_ELEMENTS.fileUploadInput.dataset.targetSubject = subjectName;
-                 DOM_ELEMENTS.fileUploadInput.click();
+                 DOM_ELEMENTS.globalFileInput.dataset.targetSubject = subjectName;
+                 DOM_ELEMENTS.globalFileInput.click();
             }
 
             function processImport(file) {
@@ -1520,7 +1715,7 @@
                          showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON.</p>`);
                      }
                  };
-                 reader.onerror = function() { showMessageModal("Upload Error", `<p class='text-red-600'>Error reading the file.</p>`); };
+                 reader.onerror = function() { showMessageModal("Import Error", `<p class='text-red-600'>Error reading the file.</p>`); };
                  reader.readAsText(file);
             }
 
@@ -1692,7 +1887,11 @@
             
             document.getElementById('modal-save-btn').addEventListener('click', saveModal);
             document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
-            DOM_ELEMENTS.fileUploadInput.addEventListener('change', handleFileUpload);
+            // The global file input now handles two jobs: individual subject imports and global imports.
+            // Global file input has its handler attached via the 'onchange' attribute in HTML: onchange="importAllData(event)"
+            // The individual subject import buttons now trigger click() on this global input and set the data-targetSubject attribute.
+            // The old DOM_ELEMENTS.fileUploadInput listener is effectively replaced by the 'onchange' attribute.
+            
             document.getElementById('message-modal-close-btn')?.addEventListener('click', closeMessageModal);
         };
     </script>
