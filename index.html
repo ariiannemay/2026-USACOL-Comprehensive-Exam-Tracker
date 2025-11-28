@@ -703,14 +703,14 @@
                 if (window[`create${subjectName.toUpperCase()}_LOGIC`]) {
                     const logic = window[`create${subjectName.toUpperCase()}_LOGIC`]();
                     SUBJECT_LOGIC_MAP[subjectName] = logic;
-                    // Initial render/injection is now handled by the module's DOMContentLoaded listener,
-                    // but we call render explicitly if the panel doesn't exist yet, as a fallback.
-                    if (!document.getElementById(`subject-tracker-panel-${subjectName}`)) {
-                        const container = document.getElementById('subject-trackers-container');
-                        if (container) {
-                             container.innerHTML += logic.getPanelHtml(logic.SUBJECT_NAME, logic.SUBJECT_TITLE, logic.SUBJECT_ICON);
-                        }
-                    }
+                    
+                    // --- STABILIZED INJECTION LOGIC ---
+                    const panelId = `subject-tracker-panel-${subjectName}`;
+                    const targetDiv = document.getElementById(panelId);
+
+                    // The logic.render() function inside the factory will handle injecting the content 
+                    // by replacing the placeholder div's outerHTML with the actual content.
+                    
                     logic.render();
                     // Attach event listeners for buttons that are now in the DOM
                     document.getElementById(`export-progress-btn-${subjectName}`)?.addEventListener('click', logic.exportProgress);
