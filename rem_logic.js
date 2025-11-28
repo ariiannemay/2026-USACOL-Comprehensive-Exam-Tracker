@@ -9,7 +9,7 @@ const REM_ETHICS_SYLLABUS = [{id:1,topic:"I. GENERAL PRINCIPLES",depth:1,trackab
 const SYLLABUS_STORAGE_KEY_REM = 'rem_ethics_progress';
 const SUBJECT_NAME_REM = 'rem';
 const SUBJECT_TITLE_REM = 'REMEDIAL LAW, LEGAL AND JUDICIAL ETHICS, WITH PRACTICAL EXERCISES (25%)';
-const SUBJECT_ICON_REM = 'book-open';
+const SUBJECT_ICON_REM = 'gavel';
 
 
 // 3. Create Logic Instance
