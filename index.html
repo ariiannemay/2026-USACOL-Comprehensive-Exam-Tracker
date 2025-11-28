@@ -757,9 +757,8 @@
 
         // --- GLOBAL SYLLABUS LOGIC FACTORY (This MUST be defined in index.html) ---
         window.createSyllabusLogic = function(subjectName, syllabusData, storageKey, themeIcon, title) {
-            // This is a minimal definition of the factory required by the external scripts.
-            // The full implementation of internal functions is assumed to be available
-            // via closure/window scope access or defined within the factory itself.
+            // Determine the depth of the items that should be tracked/receive checklists
+            const trackingDepth = subjectName === 'comm' ? 3 : 2;
 
             function getProgress() {
                 try {
@@ -779,16 +778,23 @@
             function getTopicStatus(topicId, progressData) {
                 const topic = syllabusData.find(t => t.id === topicId);
                 if (!topic) return 0;
-                if (topic.depth === 1) {
+
+                // Case 1: Topic is a parent (Depth 1 for all, Depth 2 for COMM)
+                if (topic.depth < trackingDepth) {
                     let sectionBoxesTotal = 0;
                     let sectionBoxesChecked = 0;
                     const startIndex = syllabusData.findIndex(t => t.id === topicId);
+
                     for (let i = startIndex; i < syllabusData.length; i++) {
                         const currentItem = syllabusData[i];
+                        // Stop if we hit an item at the same or shallower depth
                         if (i > startIndex && currentItem.depth <= topic.depth) break;
-                        if (currentItem.depth === 2 && currentItem.trackable) {
+
+                        // Only count items at the specific tracking depth that are marked trackable
+                        if (currentItem.depth === trackingDepth && currentItem.trackable) {
                             const prog = progressData[currentItem.id] || {};
                             const boxesTicked = CHECKLIST_COLUMNS.filter(col => prog[col] === true).length;
+                            // Progress is counted if at least 3 boxes are checked
                             if (boxesTicked >= 3) {
                                 sectionBoxesChecked++;
                             }
@@ -796,23 +802,29 @@
                         }
                     }
                     if (sectionBoxesTotal === 0) return 0;
-                    if (sectionBoxesChecked === sectionBoxesTotal) return 2;
-                    if (sectionBoxesChecked > 0) return 1;
-                    return 0;
-                } else if (topic.trackable) {
+                    if (sectionBoxesChecked === sectionBoxesTotal) return 2; // All done
+                    if (sectionBoxesChecked > 0) return 1; // Partial
+                    return 0; // None started
+                
+                // Case 2: Topic is the lowest trackable unit (Depth 2 for all, Depth 3 for COMM)
+                } else if (topic.depth === trackingDepth && topic.trackable) {
                     const topicProgress = progressData[topicId] || {};
                     const checkedCount = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
+                    
                     if (checkedCount === CHECKLIST_COLUMNS.length) return 2;
-                    if (checkedCount >= 3) return 2;
+                    if (checkedCount >= 3) return 2; // Counted as "Done" for overall progress
                     if (checkedCount > 0) return 1;
                     return 0;
                 }
-                return 0;
+                return 0; // Not a trackable item or parent of one
             }
 
             function updateOverallProgress() {
                 const progressData = getProgress();
-                const mainTopics = syllabusData.filter(t => t.depth === 2 && t.trackable);
+                
+                // Filter topics based on the dynamic trackingDepth
+                const mainTopics = syllabusData.filter(t => t.depth === trackingDepth && t.trackable);
+                
                 let topicsDoneCount = 0;
                 let topicsToReadCount = 0;
                 const columnProgress = CHECKLIST_COLUMNS.map(() => 0);
@@ -944,32 +956,39 @@
                     const iconTitle = currentStatus === 2 ? 'Clear All' : (currentStatus === 1 ? 'Clear All' : 'Tick All');
 
                     const isTopLevelTopic = item.depth === 1;
+                    const isTrackableUnit = item.depth === trackingDepth && item.trackable;
+                    const isParentOfTrackable = item.depth < trackingDepth && hasChildren(topicId);
+
 
                     if (isTopLevelTopic) {
+                        // Close any open D2 wrapper before starting a new D1 section
                         if (isDepth2Open) { html += `</div></details></div>`; isDepth2Open = false; }
                         if (currentSectionOpen) { html += `</div></details></div>`; }
                         
                         const sectionId = `${subjectName}-section-${item.id}`;
-                        // This ensures default state is collapsed unless explicitly saved as open
                         const isOpen = openSections[sectionId] === true; 
                         const openAttr = isOpen ? 'open' : '';
                         
                         html += `\n<div class="syllabus-sub-section"><details id="${sectionId}" class="w-full" ${openAttr}><summary class="topic-header"><div class="topic-header-text"><i data-lucide="chevron-right" class="w-4 h-4 mr-2 chevron-icon"></i><span class="font-extrabold text-lg text-black/90">${item.topic}</span></div><i data-lucide="${iconName}" class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></summary><div class="p-2">\n`;
                         currentSectionOpen = true;
-                    } else if (item.depth === 2 && item.trackable) {
+                        
+                    } else if (isTrackableUnit) {
+                        
                         const topicProgress = progress[topicId] || {};
                         const isCollapsible = hasChildren(topicId);
-
-                        if (isDepth2Open && !isCollapsible) { html += `</div></details></div>`; isDepth2Open = false; }
-
+                        
+                        // Close previous D2 wrapper if the previous item was collapsible but this one is not
+                        if (isDepth2Open && !isCollapsible && item.depth === 3) { html += `</div></details></div>`; isDepth2Open = false; }
+                        
                         const checklist = CHECKLIST_COLUMNS.map(col => {
                             const checked = topicProgress[col] === true ? 'checked' : '';
                             return `\n<div class="flex justify-center"><input type="checkbox" data-id="${topicId}" data-column="${col}" ${checked} class="w-4 h-4 border-gray-300 rounded focus:ring-500 ${checkboxClass}" onchange="window.handleCheckboxChange${subjectName.toUpperCase()}(event)"></div>\n`;
                         }).join('');
 
-                        let rowContent = `\n
+                        const indentation = (item.depth - 2) * 1.5; // D2: 0, D3: 1.5rem
+                        const rowContent = `\n
                             <div class="col-span-1 font-trackable-lg depth2-topic-row">
-                                <div class="topic-content-wrapper" style="padding-left: 1.5rem;">
+                                <div class="topic-content-wrapper" style="padding-left: ${indentation}rem;">
                                     ${isCollapsible ? `<i data-lucide="chevron-right" class="w-3 h-3 depth2-chevron"></i>` : `<span class="w-3 h-3 mr-2 inline-block"></span>`}${item.topic}
                                 </div>
                             </div>
@@ -981,24 +1000,58 @@
                             const depth2Id = `${subjectName}-depth2-${item.id}`;
                             const isOpen = openSections[depth2Id] === true;
                             const openAttr = isOpen ? 'open' : '';
-                            html += `<div class="depth2-details"><details id="${depth2Id}" class="w-full" ${openAttr}><summary class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</summary><div class="depth3-content-wrapper pt-1 pb-2">`;
-                            isDepth2Open = true;
+                            
+                            // Check if this item is actually the level 2 or higher item.
+                            if (item.depth === 2) {
+                                // Close previous D2 block if starting a new D2 section (needed if D2 is the trackable depth)
+                                if (isDepth2Open) { html += `</div></details></div>`; isDepth2Open = false; }
+                                html += `<div class="depth2-details"><details id="${depth2Id}" class="w-full" ${openAttr}><summary class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</summary><div class="depth3-content-wrapper pt-1 pb-2">`;
+                                isDepth2Open = true;
+                            } else if (item.depth === 3 && subjectName === 'comm') {
+                                // If COMM, D3 items are the trackable units, and if they have children (D4), they become the collapsible container
+                                html += `<div class="depth2-details"><details id="${depth2Id}" class="w-full" ${openAttr}><summary class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</summary><div class="depth3-content-wrapper pt-1 pb-2">`;
+                                isDepth2Open = true; // Still trackable collapsible unit
+                            }
+                            
                         } else {
-                            html += `<div class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</div>`;
+                            // Non-collapsible trackable item (D2 for most, D3 for COMM)
+                            // If we are in the middle of a D2/D3 collapsible structure, we need to print the checklist row
+                            if (isDepth2Open) {
+                                html += `<div class="p-1 border-b border-black/10 text-black/70 font-medium text-sm" style="padding-left: ${indentation + 1.5}rem;"><div class="checklist-grid hover:bg-gray-50/50 transition" style="grid-template-columns: calc(100% - 370px) repeat(5, 70px) minmax(40px, 50px);">${rowContent}</div></div>`;
+                            } else {
+                                html += `<div class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</div>`;
+                            }
                         }
 
-                    } else if (item.depth >= 3) {
-                        const dynamicPadding = (item.depth - 2) * 1.5 + 1.5;
+                    } else if (item.depth < trackingDepth) {
+                        // This is an organizational topic (Depth 2 for COMM)
+                        if (item.depth === 2 && currentSectionOpen) {
+                             // This is D2, which acts like a subsection header, showing its progress status
+                             const headerRow = `
+                                <div class="checklist-grid hover:bg-gray-100 transition">
+                                    <div class="col-span-1 font-extrabold text-base text-gray-800" style="padding-left: 1.5rem;">
+                                        <i data-lucide="folder-open" class="w-4 h-4 mr-2"></i> ${item.topic}
+                                    </div>
+                                    <div class="col-span-5 text-gray-500 font-semibold text-xs text-left pl-3">
+                                        SUB-TOPIC PROGRESS: ${currentStatus === 2 ? 'DONE' : (currentStatus === 1 ? 'PARTIAL' : 'NOT STARTED')}
+                                    </div>
+                                    <div class="flex items-center justify-center"><i data-lucide="${iconName}" class="tick-all-icon w-4 h-4 ${iconColor} flex-shrink-0" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></div>
+                                </div>`;
+                             html += headerRow;
+                        }
+
+                    } else if (item.depth > trackingDepth) {
+                        // This is a sub-item of a trackable unit (Depth 4 or higher for COMM)
+                        const dynamicPadding = (item.depth - trackingDepth) * 1.5 + 1.5;
                         const fontStyle = item.depth <= 4 ? 'font-medium' : 'font-normal';
                         
                         if (isDepth2Open) {
                              html += `<div class="p-1 border-b border-black/10 text-black/70 italic ${fontStyle} text-sm" style="padding-left: ${dynamicPadding}rem;">${item.topic}</div>`;
-                        } else {
-                            html += `<div class="checklist-grid hover:bg-gray-50/50 transition"><div>${item.topic}</div></div>`;
                         }
                     }
 
-                    if (item.depth >= 3 && isDepth2Open && (!nextItem || nextItem.depth <= 2)) { html += `</div></details></div>`; isDepth2Open = false; }
+                    // Check for ending of a D2 collapsible section
+                    if (isDepth2Open && (!nextItem || nextItem.depth <= trackingDepth)) { html += `</div></details></div>`; isDepth2Open = false; }
                 });
 
                 if (currentSectionOpen) {
@@ -1040,13 +1093,16 @@
                 const startDepth = item.depth;
                 const startIndex = syllabusData.findIndex(t => t.id === topicId);
                 
-                if (startDepth === 2 && item.trackable) {
+                // If it's the trackable unit, just toggle itself
+                if (startDepth === trackingDepth && item.trackable) {
                     topicsToUpdate.push(item);
-                } else if (startDepth === 1) {
+                } else if (startDepth < trackingDepth) { 
+                    // It is a parent (D1 or D2 for COMM), iterate over children to find trackable units
                     for (let i = startIndex; i < syllabusData.length; i++) {
                         const currentItem = syllabusData[i];
                         if (i > startIndex && currentItem.depth <= startDepth) break;
-                        if (currentItem.depth === 2 && currentItem.trackable) {
+                        // Only target the items at the trackable depth
+                        if (currentItem.depth === trackingDepth && currentItem.trackable) {
                             topicsToUpdate.push(currentItem);
                         }
                     }
