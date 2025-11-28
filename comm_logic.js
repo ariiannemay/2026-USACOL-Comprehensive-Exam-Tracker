@@ -1,6 +1,3 @@
-// --- Subject Module: COMMERCIAL AND TAXATION LAW ---
-
-// 1. Syllabus Data
 const COMM_TAX_SYLLABUS = [
     {id: 4001, topic: 'I. BUSINESS ORGANIZATIONS', depth: 1, trackable: false},
     {id: 4002, topic: 'A. Corporations – R.A. No. 11232', depth: 2, trackable: true},
@@ -106,10 +103,10 @@ const COMM_TAX_SYLLABUS = [
     {id: 4102, topic: '3. Property Rights of Partners', depth: 3, trackable: false},
     {id: 4103, topic: '4. Obligations of Partnership; Obligations of Partners to Third Persons', depth: 3, trackable: false},
     {id: 4104, topic: '5. Dissolution and Winding Up', depth: 3, trackable: false},
-    
-    // II. INSURANCE (FIXED for nested display)
+
+    // II. INSURANCE (FIXED: Nested under A. Substantive Principles)
     {id: 4105, topic: 'II. INSURANCE (P.D. No. 612, as amended by R.A. No. 10607)', depth: 1, trackable: true},
-    {id: 4106, topic: 'A. Insurance Contract and Principles', depth: 2, trackable: false},
+    {id: 4106, topic: 'A. Substantive Principles', depth: 2, trackable: false},
     {id: 4107, topic: '1. Concept of Insurance', depth: 3, trackable: false},
     {id: 4108, topic: '2. Insurable Interest', depth: 3, trackable: false},
     {id: 4109, topic: '3. Concealment', depth: 3, trackable: false},
@@ -131,14 +128,14 @@ const COMM_TAX_SYLLABUS = [
     {id: 4123, topic: 'b. Diligence Required', depth: 4, trackable: false},
     {id: 4124, topic: 'c. Transport Network Services', depth: 4, trackable: false},
     {id: 4125, topic: 'd. Defenses Available to a Common Carrier', depth: 4, trackable: false},
-    {id: 4126, topic: '2. Vigilance over Goods', depth: 3, trackable: false},
-    {id: 4127, topic: 'a. Under the Civil Code', depth: 4, trackable: false},
-    {id: 4128, topic: 'b. Under the Montreal Convention', depth: 4, trackable: false},
-    {id: 4129, topic: 'c. Under the Carriage of Goods by Sea Act', depth: 4, trackable: false},
-    {id: 4130, topic: '3. Safety of Passengers', depth: 3, trackable: false},
-    {id: 4131, topic: 'a. Under the Civil Code', depth: 4, trackable: false},
-    {id: 4132, topic: 'b. Under the Montreal Convention', depth: 4, trackable: false},
-    {id: 4133, topic: 'c. Under the Carriage of Goods by Sea Act', depth: 4, trackable: false},
+    {id: 4126, topic: 'B. Vigilance over Goods', depth: 2, trackable: false},
+    {id: 4127, topic: '1. Under the Civil Code', depth: 3, trackable: false},
+    {id: 4128, topic: '2. Under the Montreal Convention', depth: 3, trackable: false},
+    {id: 4129, topic: '3. Under the Carriage of Goods by Sea Act', depth: 3, trackable: false},
+    {id: 4130, topic: 'C. Safety of Passengers', depth: 2, trackable: false},
+    {id: 4131, topic: '1. Under the Civil Code', depth: 3, trackable: false},
+    {id: 4132, topic: '2. Under the Montreal Convention', depth: 3, trackable: false},
+    {id: 4133, topic: '3. Under the Carriage of Goods by Sea Act', depth: 3, trackable: false},
     
     // IV. BANKING
     {id: 4134, topic: 'IV. BANKING', depth: 1, trackable: true},
@@ -177,7 +174,7 @@ const COMM_TAX_SYLLABUS = [
     {id: 4167, topic: 'c. Receivership', depth: 4, trackable: false},
     {id: 4168, topic: 'd. Liquidation', depth: 4, trackable: false},
     
-    // V. INTELLECTUAL PROPERTY (FIXED for nested display)
+    // V. INTELLECTUAL PROPERTY (FIXED: Nested under A, B, C)
     {id: 4169, topic: 'V. INTELLECTUAL PROPERTY – R.A. No. 8293, as amended', depth: 1, trackable: true},
     {id: 4170, topic: 'A. Patents', depth: 2, trackable: false},
     {id: 4171, topic: '1. Patentable v. Non-patentable Inventions', depth: 3, trackable: false},
@@ -254,8 +251,9 @@ const COMM_TAX_SYLLABUS = [
     {id: 4238, topic: '7. Double Taxation', depth: 3, trackable: false},
     {id: 4239, topic: '8. Escape from Taxation', depth: 3, trackable: false},
     {id: 4240, topic: '9. Tax Exemption', depth: 3, trackable: false},
-    {id: 4241, topic: '10. Compromise and Tax Amnesty', depth: 3, trackable: false},
-    {id: 4242, topic: '11. Taxpayer’s Suit: Rationale and Requisites', depth: 3, trackable: false},
+    {id: 4369, topic: '10. Compromise and Tax Amnesty', depth: 3, trackable: false}, // ID changed to free up old IDs
+    {id: 4370, topic: '11. Taxpayer’s Suit: Rationale and Requisites', depth: 3, trackable: false}, // ID changed
+    
     {id: 4243, topic: 'B. National Taxation – NIRC', depth: 2, trackable: true},
     {id: 4244, topic: '1. Jurisdiction, Powers, and Functions of the Bureau of Internal Revenue', depth: 3, trackable: false},
     {id: 4245, topic: '2. Income Tax', depth: 3, trackable: false},
