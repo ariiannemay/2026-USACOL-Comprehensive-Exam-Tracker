@@ -398,15 +398,15 @@ const SUBJECT_ICON_COMM = 'banknote';
 const COMM_LOGIC = window.createSyllabusLogic(SUBJECT_NAME_COMM, COMM_TAX_SYLLABUS, SYLLABUS_STORAGE_KEY_COMM, SUBJECT_ICON_COMM, SUBJECT_TITLE_COMM);
 
 // 4. Inject Panel HTML into the main container in index.html
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('subject-trackers-container');
-    if (container) {
-        // Only inject if the base logic module hasn't already done it (prevents duplication during load)
-        if (!document.getElementById(`subject-tracker-panel-${SUBJECT_NAME_COMM}`)) {
-            container.innerHTML += COMM_LOGIC.getPanelHtml(SUBJECT_NAME_COMM, SUBJECT_TITLE_COMM, SUBJECT_ICON_COMM);
-        }
-    }
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//     const container = document.getElementById('subject-trackers-container');
+//     if (container) {
+//         // Only inject if the base logic module hasn't already done it (prevents duplication during load)
+//         if (!document.getElementById(`subject-tracker-panel-${SUBJECT_NAME_COMM}`)) {
+//             container.innerHTML += COMM_LOGIC.getPanelHtml(SUBJECT_NAME_COMM, SUBJECT_TITLE_COMM, SUBJECT_ICON_COMM);
+//         }
+//     }
+// });
 
 // 5. Expose Logic Globally (needed for index.html onload to attach to map)
 window.createCOMM_LOGIC = () => COMM_LOGIC;
