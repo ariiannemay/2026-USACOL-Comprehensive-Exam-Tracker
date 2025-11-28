@@ -365,10 +365,19 @@
         }
 
         .checklist-grid input[type="checkbox"]:checked {
-             /* Use currentColor property of the checkbox wrapper, which is set by the JS accent color logic */
-             background-color: currentColor; 
-             border-color: currentColor;
+             /* FIX: Removed currentColor and rely on theme's accent-color property (below) */
+             /* We still need the border-color override for the checkmark effect to be visible */
+             border-color: transparent; 
         }
+
+        /* This applies the theme color to the checked box */
+        .syllabus-checkbox-rem:checked { background-color: #8b5cf6; } 
+        .syllabus-checkbox-crim:checked { background-color: #ef4444; }
+        .syllabus-checkbox-lab:checked { background-color: #38761d; }
+        .syllabus-checkbox-civ:checked { background-color: #2563eb; }
+        .syllabus-checkbox-comm:checked { background-color: #eab308; }
+        .syllabus-checkbox-poli:checked { background-color: #795548; }
+
 
         .checklist-grid input[type="checkbox"]:checked::before {
             /* Custom checkmark using border hack for reliability across WebKit (Safari) */
@@ -1829,7 +1838,7 @@
                                 <!-- RELOCATED & SIMPLIFIED COLLAPSE BUTTON -->
                                 <div class="flex items-center justify-center pt-1">
                                     <button id="collapse-all-btn-${subjectName}" class="w-7 h-7 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
-                                        <!-- Icon size adjusted by updateCollapseButtonText -->
+                                        <!-- Icon size adjusted by updateCollapseButtonText (w-4 h-4) -->
                                         <i data-lucide="chevrons-down" class="w-4 h-4"></i>
                                     </button>
                                 </div>
