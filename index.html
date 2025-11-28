@@ -1125,6 +1125,95 @@
             window[`handleTickAll${subjectName.toUpperCase()}`] = handleTickAll;
             window[`handleCheckboxChange${subjectName.toUpperCase()}`] = handleCheckboxChange;
 
+            function getPanelHtml(subjectName, title, icon) {
+                const themeClass = `syllabus-panel-${subjectName}`;
+                const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
+                const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
+                
+                return `
+                <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container ${themeClass}" id="subject-tracker-panel-${subjectName}">
+                    <details class="syllabus-panel" open>
+                        <summary class="syllabus-summary" id="summary-${subjectName}">
+                            <div class="syllabus-summary-title-row">
+                                <div class="flex items-center">
+                                    <i data-lucide="${icon}" class="w-6 h-6 mr-3"></i>${title}
+                                </div>
+                                <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
+                            </div>
+                            <div class="syllabus-progress-metrics text-xs">
+                                <div class="progress-stats">
+                                    <span class="flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>DONE:&nbsp;<span id="progress-done-${subjectName}">0</span>&nbsp;TOPICS</span>
+                                    <span class="flex items-center"><i data-lucide="book-open-text" class="w-4 h-4 mr-1 text-gray-200"></i>TO READ:&nbsp;<span id="progress-toread-${subjectName}">0</span>&nbsp;TOPICS</span>
+                                </div>
+                                <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
+                                    <span class="progress-overall-text flex items-center"><i data-lucide="chart-spline" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:</span>
+                                    <div class="progress-bar-container">
+                                        <div id="progress-bar-${subjectName}" class="progress-bar" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="progress-${subjectName}" class="font-light">(0.0%)</span>
+                                </div>
+                            </div>
+                        </summary>
+                        <div class="syllabus-content">
+                            <div class="w-full flex flex-col md:flex-row justify-between items-start md:items-center gap-2 status-message-row border-b border-gray-200">
+                                <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
+                                <div class="flex flex-wrap gap-2">
+                                    <button id="import-progress-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="upload" class="w-4 h-4 mr-1 inline-block"></i> Upload Progress</button>
+                                    <button id="export-progress-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-gray-700 bg-white rounded-lg border border-gray-300 shadow-sm hover:bg-gray-100 transition duration-150 whitespace-nowrap"><i data-lucide="download" class="w-4 h-4 mr-1 inline-block"></i> Download Progress</button>
+                                    <button id="collapse-all-btn-${subjectName}" class="px-3 py-1 text-xs font-semibold text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap"><i data-lucide="chevrons-up" class="w-4 h-4 mr-1"></i> Collapse All</button>
+                                </div>
+                            </div>
+                            <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
+                                <div>SUBJECTS/TOPICS</div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
+                                <div></div>
+                            </div>
+                            <div class="checklist-grid checklist-grid-micro-progress text-center border-t border-gray-300">
+                                <div></div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div id="syllabus-${subjectName}" class="text-xs"></div>
+                        </div>
+                    </details>
+                </div>
+                `;
+            }
+
+
             return {
                 SUBJECT_NAME: subjectName,
                 SUBJECT_TITLE: title,
@@ -1151,13 +1240,14 @@
                 }
             });
 
-            // 2. Load Subject Panels (This is the load sequence)
+            // 2. Load Subject Panels (This is the load sequence, ensuring the correct order)
+            // Note: The loading order here determines the order they appear on the page.
             loadSubjectPanel('rem', 'rem_logic.js');
             loadSubjectPanel('crim', 'crim_logic.js');
             loadSubjectPanel('lab', 'lab_logic.js');
             loadSubjectPanel('civ', 'civ_logic.js');
             loadSubjectPanel('comm', 'comm_logic.js');
-            loadSubjectPanel('poli', 'poli_logic.js'); // Add POLI loading here
+            loadSubjectPanel('poli', 'poli_logic.js');
             
             // 3. Initialize Lucide Icons for static content
             if (lucide && lucide.createIcons) {
