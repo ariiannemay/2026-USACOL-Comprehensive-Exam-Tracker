@@ -13,6 +13,10 @@
         /* Attempt to import a decorative font for the quote */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,600&display=swap');
 
+        /* -------------------------------------------------------------------------- */
+        /* 1. CORE LAYOUT & TYPOGRAPHY STYLES */
+        /* -------------------------------------------------------------------------- */
+        
         /* Global & Countdown Styles */
         body {
             font-family: 'Inter', sans-serif;
@@ -25,7 +29,6 @@
         .main-content-wrapper {
              flex-grow: 1;
         }
-
 
         .header-font {
             font-family: 'Bebas Neue', sans-serif;
@@ -77,214 +80,6 @@
             letter-spacing: .15em;
             line-height: 1;
         }
-
-        /* NEW CUSTOM DASHBOARD STYLES */
-        .border-custom-yellow {
-            border-color: #fece1b;
-        }
-        .text-custom-yellow {
-            color: #fece1b;
-        }
-        .bg-chart-done {
-            background-color: #38761d;
-            /* Dark Green */
-        }
-        .text-chart-done {
-            color: #38761d;
-        }
-        .bg-chart-toread {
-            background-color: #ef4444; /* Red */
-        }
-        .text-chart-toread {
-             color: #ef4444; /* Red */
-        }
-        .text-chart-title {
-            color: #6d1b1b;
-            /* Deep Maroon */
-            font-size: 1.5rem; /* Reduced for compactness */
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        /* 4. Floating Dashboard Effect */
-        #overall-dashboard {
-            background-color: transparent; /* Make background transparent */
-            box-shadow: none; /* Remove shadow */
-            border: none; /* Remove border */
-            padding: 0;
-        }
-
-        .dashboard-container {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 0; 
-        }
-        .chart-panel {
-            width: 100%;
-            padding: 0.5rem 0.3rem;
-            border-bottom: 1px solid #e5e7eb;
-            background-color: #fff; /* Individual panel background */
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .schedule-panel {
-            width: 100%;
-            padding: 0.5rem 0.3rem;
-            background-color: #fff; /* Individual panel background */
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        
-        /* ---------------------------------------------------- */
-        /* CRITICAL ALIGNMENT CSS (Desktop only) */
-        /* ---------------------------------------------------- */
-        @media (min-width: 1024px) {
-            #overall-dashboard {
-                padding: 0; 
-            }
-
-            .dashboard-container {
-                display: grid;
-                /* 3 columns matching the 3 cards, plus the 2 gaps between them (gap-6 = 1.5rem) */
-                grid-template-columns: 1fr 1.5rem 1fr 1.5rem 1fr;
-                padding: 0;
-            }
-            
-            /* Chart Panel (Day 1 width) */
-            .chart-panel {
-                grid-column: 1 / span 1; /* Align with Card 1 */
-                padding: 0.5rem 1rem;
-                /* No inner border-right needed, rely on spacer column */
-                border-bottom: none;
-            }
-            
-            /* Schedule Panel (Day 2 + Day 3 width) */
-            .schedule-panel {
-                /* Start at column 3 (where Day 2 content starts) and span to column 5 (end of Day 3 content) */
-                grid-column: 3 / span 3;
-                padding: 0.5rem 1rem;
-                border-left: none; 
-            }
-            
-            /* Spacer Column (To replicate the gap-6 between Day 1 and Day 2 cards) */
-            .dashboard-container > div:nth-child(2) {
-                 grid-column: 2 / span 1;
-                 border-right: none;
-            }
-            
-            /* Center the text input and title in the chart column */
-            .chart-panel .flex-col, .chart-panel .text-center {
-                 align-items: center; 
-                 text-align: center;
-                 justify-content: center;
-            }
-
-        }
-        /* ---------------------------------------------------- */
-
-        /* Horizontal Metrics *Side-Aligned* with Pie Chart */
-        .pie-chart-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* Reduced bottom margin */
-            margin: 0.5rem auto 0.1rem; 
-            width: 100%;
-        }
-
-        .metric-pie-side {
-            position: absolute;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 0.7rem; 
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        .metric-pie-side.left {
-            right: 50%;
-            margin-right: 105px; 
-            transform: translateY(-50%);
-            top: 50%;
-        }
-        .metric-pie-side.right {
-            left: 50%;
-            margin-left: 105px; 
-            transform: translateY(-50%);
-            top: 50%;
-        }
-        .metric-pie-side .metric-value {
-             font-size: 1rem;
-             font-weight: 900;
-        }
-        
-        /* Schedule Table */
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-            border: 2px solid #e5e7eb; 
-            border-radius: 0.5rem; /* Rounded table edges */
-            overflow: hidden;
-        }
-        .schedule-table th,
-        .schedule-table td {
-            padding: 0.3rem 0.5rem;
-            vertical-align: middle;
-        }
-        /* New aesthetic for table header */
-        .schedule-header th {
-            background-color: #6d1b1b;
-            color: #FFFFFF;
-            font-weight: 700;
-            text-transform: uppercase;
-            border: 2px solid #fece1b;
-            font-size: 0.75rem;
-        }
-        /* Subject Cell - Target for Uppercase and Smaller Font */
-        .subject-cell {
-            font-weight: 600;
-            color: white;
-            padding: 0.4rem; 
-            text-align: center;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            /* New Styles: Smaller font and uppercase */
-            font-size: 0.7rem; 
-            text-transform: uppercase; 
-        }
-        .progress-bar-sparkline {
-            width: 100%;
-            height: 0.8rem;
-            background-color: #e5e7eb;
-            border-radius: 9999px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-            padding: 2px;
-        }
-        /* Dynamic color classes for sparkline fill (used in JS) */
-        .bg-progress-red { background-color: #ef4444; }
-        .bg-progress-orange { background-color: #f97316; }
-        .bg-progress-yellow { background-color: #facc15; }
-        .bg-progress-green { background-color: #10b981; }
-
-        .sparkline-fill {
-            height: 100%;
-            transition: width 0.5s ease-in-out;
-            border-radius: 9999px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            border: 2px solid white;
-            max-width: 100%;
-        }
-
-        /* Subject Colors for Schedule (used by sparkline-fill) */
-        .bg-poli { background-color: #795548; }
-        .bg-comm { background-color: #eab308; }
-        .bg-civ { background-color: #1e3a8a; }
-        .bg-lab { background-color: #38761d; }
-        .bg-crim { background-color: #b33a3a; }
-        .bg-rem { background-color: #674ea7; }
         
         /* Today Is Text Styles */
         .today-date-text {
@@ -329,12 +124,215 @@
         }
 
 
-        /* END NEW CUSTOM DASHBOARD STYLES */
+        /* -------------------------------------------------------------------------- */
+        /* 2. DASHBOARD & SCHEDULE STYLES (Existing) */
+        /* -------------------------------------------------------------------------- */
 
+        .border-custom-yellow {
+            border-color: #fece1b;
+        }
+        .text-custom-yellow {
+            color: #fece1b;
+        }
+        .bg-chart-done {
+            background-color: #38761d;
+            /* Dark Green */
+        }
+        .text-chart-done {
+            color: #38761d;
+        }
+        .bg-chart-toread {
+            background-color: #ef4444; /* Red */
+        }
+        .text-chart-toread {
+             color: #ef4444; /* Red */
+        }
+        .text-chart-title {
+            color: #6d1b1b;
+            /* Deep Maroon */
+            font-size: 1.5rem; /* Reduced for compactness */
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        #overall-dashboard {
+            background-color: transparent; /* Make background transparent */
+            box-shadow: none; /* Remove shadow */
+            border: none; /* Remove border */
+            padding: 0;
+        }
 
-        /* Syllabus Panel Common Styles (omitted repetitive styles for brevity) */
+        .dashboard-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 0; 
+        }
+        .chart-panel {
+            width: 100%;
+            padding: 0.5rem 0.3rem;
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #fff; /* Individual panel background */
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .schedule-panel {
+            width: 100%;
+            padding: 0.5rem 0.3rem;
+            background-color: #fff; /* Individual panel background */
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        @media (min-width: 1024px) {
+            #overall-dashboard {
+                padding: 0; 
+            }
+
+            .dashboard-container {
+                display: grid;
+                grid-template-columns: 1fr 1.5rem 1fr 1.5rem 1fr;
+                padding: 0;
+            }
+            
+            .chart-panel {
+                grid-column: 1 / span 1; 
+                padding: 0.5rem 1rem;
+                border-bottom: none;
+            }
+            
+            .schedule-panel {
+                grid-column: 3 / span 3;
+                padding: 0.5rem 1rem;
+                border-left: none; 
+            }
+            
+            .dashboard-container > div:nth-child(2) {
+                 grid-column: 2 / span 1;
+                 border-right: none;
+            }
+            
+            .chart-panel .flex-col, .chart-panel .text-center {
+                 align-items: center; 
+                 text-align: center;
+                 justify-content: center;
+            }
+
+        }
+
+        .pie-chart-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0.5rem auto 0.1rem; 
+            width: 100%;
+        }
+
+        .metric-pie-side {
+            position: absolute;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.7rem; 
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .metric-pie-side.left {
+            right: 50%;
+            margin-right: 105px; 
+            transform: translateY(-50%);
+            top: 50%;
+        }
+        .metric-pie-side.right {
+            left: 50%;
+            margin-left: 105px; 
+            transform: translateY(-50%);
+            top: 50%;
+        }
+        .metric-pie-side .metric-value {
+             font-size: 1rem;
+             font-weight: 900;
+        }
+        
+        /* Schedule Table */
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            border: 2px solid #e5e7eb; 
+            border-radius: 0.5rem; 
+            overflow: hidden;
+        }
+        .schedule-table th,
+        .schedule-table td {
+            padding: 0.3rem 0.5rem;
+            vertical-align: middle;
+        }
+        .schedule-header th {
+            background-color: #6d1b1b;
+            color: #FFFFFF;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 2px solid #fece1b;
+            font-size: 0.75rem;
+        }
+        .subject-cell {
+            font-weight: 600;
+            color: white;
+            padding: 0.4rem; 
+            text-align: center;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            font-size: 0.7rem; 
+            text-transform: uppercase; 
+        }
+        .progress-bar-sparkline {
+            width: 100%;
+            height: 0.8rem;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            padding: 2px;
+        }
+        .bg-progress-red { background-color: #ef4444; }
+        .bg-progress-orange { background-color: #f97316; }
+        .bg-progress-yellow { background-color: #facc15; }
+        .bg-progress-green { background-color: #10b981; }
+
+        .sparkline-fill {
+            height: 100%;
+            transition: width 0.5s ease-in-out;
+            border-radius: 9999px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            border: 2px solid white;
+            max-width: 100%;
+        }
+
+        /* Subject Colors for Schedule (used by subject-cell and sparkline-fill) */
+        .bg-poli { background-color: #795548; }
+        .bg-comm { background-color: #eab308; }
+        .bg-civ { background-color: #1e3a8a; }
+        .bg-lab { background-color: #38761d; }
+        .bg-crim { background-color: #b33a3a; }
+        .bg-rem { background-color: #674ea7; }
+        
+        /* -------------------------------------------------------------------------- */
+        /* 3. SUBJECT TRACKER STYLES (RESTORED FROM OLD FILE) */
+        /* -------------------------------------------------------------------------- */
+
+        /* Syllabus Panel Common Styles */
         .syllabus-panel-container { border-radius: .75rem; overflow: hidden; }
-        .syllabus-summary { padding: 1rem; font-size: 1.25rem; font-weight: 700; color: white; cursor: pointer; list-style: none; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: .5rem; }
+
+        .syllabus-summary { 
+            /* This is the base summary style, colors are overridden below */
+            padding: 1rem; font-size: 1.25rem; font-weight: 700; color: white; cursor: pointer; 
+            list-style: none; display: flex; flex-direction: column; align-items: flex-start; 
+            justify-content: space-between; gap: .5rem; 
+            border-top-left-radius: .75rem; 
+            border-top-right-radius: .75rem;
+        }
+        
         .topic-header { padding: .75rem; font-weight: 600; color: #1f2937; display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; }
         .checklist-grid { display: grid; grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px); gap: .2rem; padding: .3rem 0; align-items: center; border-bottom: 1px dashed #e5e7eb; }
         .checklist-grid>div:first-child { padding-left: 1.0rem; font-size: .875rem; color: #374151; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
@@ -384,6 +382,147 @@
         .checklist-grid-micro-progress { padding-top: .25rem; padding-bottom: .5rem; }
         .depth3-content-wrapper .checklist-grid>div:first-child { grid-column: 1 / span 7; padding-left: 2.5rem; }
         .depth2-topic-row { grid-column: 1 / span 1; display: flex; align-items: flex-start; }
+        
+        /* SUBJECT PANEL THEMES (The missing pieces) */
+        
+        /* REMEDIAL Law (Purple Theme) */
+        .syllabus-panel-rem .syllabus-summary {
+            background-color: #674ea7;
+            border-left: 5px solid #8e7cc3;
+        }
+        .syllabus-panel-rem .topic-header {
+            background-color: #ede9fe;
+            border-left: 3px solid #8b5cf6;
+        }
+        .syllabus-checkbox-rem {
+            accent-color: #8b5cf6;
+        }
+        /* REM buttons use Tailwind built-in classes like bg-purple-600 */
+
+
+        /* CRIMINAL Law (Red Theme) */
+        .syllabus-panel-crim .syllabus-summary {
+            background-color: #b33a3a;
+            border-left: 5px solid #d94a4a;
+        }
+        .syllabus-panel-crim .topic-header {
+            background-color: #fee2e2;
+            border-left: 3px solid #ef4444;
+        }
+        .syllabus-checkbox-crim {
+            accent-color: #ef4444;
+        }
+        /* CRIM buttons use Tailwind built-in classes like bg-red-600 */
+
+        /* LABOR Law (Green Theme) */
+        .syllabus-panel-lab {
+            --lab-color: #38761d;
+            --lab-color-dark: #274e13;
+        }
+        .syllabus-panel-lab .syllabus-summary {
+            background-color: var(--lab-color);
+            border-left: 5px solid #6aa84f;
+        }
+        .syllabus-panel-lab .topic-header {
+            background-color: #f6fff6;
+            border-left: 3px solid var(--lab-color);
+        }
+        .syllabus-checkbox-lab {
+            accent-color: var(--lab-color);
+        }
+        /* Button Fixes for LAB */
+        .bg-lab-button {
+            background-color: var(--lab-color);
+        }
+        .hover\:bg-lab-button-dark:hover {
+            background-color: var(--lab-color-dark);
+        }
+
+        /* CIVIL Law (Blue Theme) */
+        .syllabus-panel-civ {
+            --civ-color: #1e3a8a;
+            --civ-color-dark: #142a63;
+        }
+        .syllabus-panel-civ .syllabus-summary {
+            background-color: var(--civ-color);
+            border-left: 5px solid #3b82f6;
+        }
+        .syllabus-panel-civ .topic-header {
+            background-color: #eff6ff;
+            border-left: 3px solid var(--civ-color);
+        }
+        .syllabus-checkbox-civ {
+            accent-color: #2563eb;
+        }
+        /* Button Fixes for CIV */
+        .bg-civ-button {
+            background-color: #2563eb; /* Adjusted to a standard blue for button consistency */
+        }
+        .hover\:bg-civ-button-dark:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* COMMERCIAL Law (Yellow Theme) */
+        .syllabus-panel-comm {
+            --comm-color: #eab308; /* Yellow-600 */
+            --comm-color-dark: #b88f06;
+            --comm-color-light: #fefce8;
+            --comm-checkbox-color: #eab308;
+        }
+        .syllabus-panel-comm .syllabus-summary {
+            background-color: var(--comm-color);
+            border-left: 5px solid #facc15;
+            /* CRITICAL FIX: Ensures text is readable on yellow background */
+            color: #111827 !important; 
+        }
+        .syllabus-panel-comm .syllabus-summary-title-row .flex:first-child,
+        .syllabus-panel-comm .syllabus-progress-metrics span,
+        .syllabus-panel-comm .syllabus-progress-metrics i {
+             color: #111827 !important;
+        }
+        .syllabus-panel-comm .topic-header {
+            background-color: var(--comm-color-light);
+            border-left: 3px solid var(--comm-color);
+        }
+        .syllabus-checkbox-comm {
+            accent-color: var(--comm-checkbox-color);
+        }
+        /* Button Fixes for COMM */
+        .bg-comm-button {
+            background-color: var(--comm-color);
+        }
+        .hover\:bg-comm-button-dark:hover {
+            background-color: var(--comm-color-dark);
+        }
+        
+        /* POLITICAL Law (Brown Theme) */
+        .syllabus-panel-poli {
+            --poli-color: #795548; /* Brown */
+            --poli-color-dark: #553b32;
+            --poli-color-light: #efe9e0;
+        }
+        .syllabus-panel-poli .syllabus-summary {
+            background-color: var(--poli-color);
+            border-left: 5px solid #a1887f;
+        }
+        .syllabus-panel-poli .topic-header {
+            background-color: var(--poli-color-light);
+            border-left: 3px solid var(--poli-color);
+        }
+        .syllabus-checkbox-poli {
+            accent-color: var(--poli-color);
+        }
+        /* Button Fixes for POLI */
+        .bg-poli-button {
+            background-color: var(--poli-color);
+        }
+        .hover\:bg-poli-button-dark:hover {
+            background-color: var(--poli-color-dark);
+        }
+
+
+        /* END SUBJECT PANEL THEMES */
+        /* -------------------------------------------------------------------------- */
     </style>
 </head>
 
@@ -683,7 +822,7 @@
         function downloadFile(data,filename,type){const blob=new Blob([data],{type:type});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=filename;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);}
         function showMessageModal(title,content){
             const modal=DOM_ELEMENTS.messageModal;
-            const titleEl=DOM_ELEMENTS.modalTitle;
+            const titleEl=DOM_ELEMENTS.messageModalTitle;
             const contentEl=DOM_ELEMENTS.messageModalContent;
             if(titleEl)titleEl.textContent=title;
             if(contentEl)contentEl.innerHTML=content;
@@ -706,7 +845,7 @@
         function openModal(id){currentEditingId=id;const data=COUNTDOWN_DATA.find(d=>d.id===id);document.getElementById('modal-title').textContent=`Edit Target Date - Day ${id}`;document.getElementById('new-target-date').value=data.targetDate;document.getElementById('modal-error').classList.add('hidden');document.getElementById('date-edit-modal').classList.remove('hidden');document.getElementById('date-edit-modal').style.display='flex';}
         function closeModal(){document.getElementById('date-edit-modal').classList.add('hidden');document.getElementById('date-edit-modal').style.display='none';currentEditingId=null;}
         
-        // ** FIX 1: Define saveModal explicitly as a function declaration so it's hoisted **
+        // Define saveModal explicitly as a function declaration so it's hoisted
         function saveModal(){
             const newDateString=document.getElementById('new-target-date').value;
             const newDate=new Date(newDateString);
@@ -756,6 +895,7 @@
                     // 2. Inject the panel structure once using outerHTML replacement on the placeholder div
                     const panelPlaceholder = document.getElementById(`subject-tracker-panel-${subjectName}`);
                     if (panelPlaceholder) {
+                        // CRITICAL: Call the getPanelHtmlWrapper method which is defined in the global factory
                         const newPanelHtml = logic.getPanelHtmlWrapper(logic.SUBJECT_NAME, logic.SUBJECT_TITLE, logic.SUBJECT_ICON);
                         panelPlaceholder.outerHTML = newPanelHtml;
                     }
@@ -765,7 +905,6 @@
                     
                     // CRITICAL FIX: Use requestAnimationFrame to ensure DOM reflow finishes 
                     // before attempting to render nested components, fixing the blank panels.
-                    // This is the most reliable way to force the browser to update the DOM tree.
                     window.requestAnimationFrame(() => {
                         // Re-fetch element references after outerHTML replacement
                         const exportBtn = document.getElementById(`export-progress-btn-${subjectName}`);
@@ -1026,7 +1165,7 @@
         // Expose function globally
         window.updateOverallDashboard = updateOverallDashboard;
         
-        // --- GLOBAL SYLLABUS LOGIC FACTORY ---
+        // --- GLOBAL SYLLABUS LOGIC FACTORY (The "createSyllabusLogic" function) ---
         window.createSyllabusLogic = function(subjectName, syllabusData, storageKey, themeIcon, title) {
             
             // EXPOSE self object
@@ -1433,6 +1572,7 @@
 
             function getPanelHtmlWrapper(subjectName, title, icon) {
                 const themeClass = `syllabus-panel-${subjectName}`;
+                // This logic dynamically selects the correct button class based on subjectName
                 const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
                 const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
                 
@@ -1505,7 +1645,6 @@
             });
 
             // Display today's date in local timezone
-            // ERROR FIX: Targetting the correct element ID 'today-date-display'
             document.getElementById('today-date-display').textContent = getLocalDisplayDate();
             // Update today's date every minute (or less frequently)
             setInterval(() => {
