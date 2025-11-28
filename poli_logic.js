@@ -329,7 +329,7 @@ const POLI_SYLLABUS = [
 const SYLLABUS_STORAGE_KEY_POLI = 'poli_progress';
 const SUBJECT_NAME_POLI = 'poli';
 const SUBJECT_TITLE_POLI = 'POLITICAL AND PUBLIC INTERNATIONAL LAW (15%)';
-const SUBJECT_ICON_POLI = 'flag'; // Using 'gavel' as a thematic icon
+const SUBJECT_ICON_POLI = 'landmark'; // Using 'gavel' as a thematic icon
 
 // 3. Create Logic Instance
 // This calls the global factory defined in index.html
