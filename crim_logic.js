@@ -13,12 +13,12 @@ const SUBJECT_ICON_CRIM = 'shield-half';
 const CRIM_LOGIC = window.createSyllabusLogic(SUBJECT_NAME_CRIM, CRIM_SYLLABUS, SYLLABUS_STORAGE_KEY_CRIM, SUBJECT_ICON_CRIM, SUBJECT_TITLE_CRIM);
 
 // 4. Inject Panel HTML into the main container in index.html
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('subject-trackers-container');
-    if (container) {
-        container.innerHTML += CRIM_LOGIC.getPanelHtml(SUBJECT_NAME_CRIM, SUBJECT_TITLE_CRIM, SUBJECT_ICON_CRIM);
-    }
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//     const container = document.getElementById('subject-trackers-container');
+//     if (container) {
+//         container.innerHTML += CRIM_LOGIC.getPanelHtml(SUBJECT_NAME_CRIM, SUBJECT_TITLE_CRIM, SUBJECT_ICON_CRIM);
+//     }
+// });
 
 // 5. Expose Logic Globally (needed for index.html onload to attach to map)
 window.createCRIM_LOGIC = () => CRIM_LOGIC;
