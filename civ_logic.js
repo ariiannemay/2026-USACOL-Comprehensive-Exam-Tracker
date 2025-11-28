@@ -6,8 +6,8 @@ const CIV_SYLLABUS=[{id:3001,topic:"I. EFFECT AND APPLICATION OF LAWS",depth:1,t
 // 2. Storage Key and Subject Details
 const SYLLABUS_STORAGE_KEY_CIV = 'civ_progress';
 const SUBJECT_NAME_CIV = 'civ';
-const SUBJECT_TITLE_CIV = 'CIVIL LAW AND LAND TITLES AND DEEDS';
-const SUBJECT_ICON_CIV = 'scale';
+const SUBJECT_TITLE_CIV = 'CIVIL LAW AND LAND TITLES AND DEEDS (20%)';
+const SUBJECT_ICON_CIV = 'building';
 
 // 3. Create Logic Instance
 const CIV_LOGIC = window.createSyllabusLogic(SUBJECT_NAME_CIV, CIV_SYLLABUS, SYLLABUS_STORAGE_KEY_CIV, SUBJECT_ICON_CIV, SUBJECT_TITLE_CIV);
