@@ -882,7 +882,22 @@
         
         // --- GLOBAL SYLLABUS LOGIC FACTORY (Modified to call updateOverallDashboard) ---
         window.createSyllabusLogic = function(subjectName, syllabusData, storageKey, themeIcon, title) {
-            // ... (rest of factory logic remains the same) ...
+            
+            // EXPOSE SYLLABUS DATA TO LOGIC
+            const self = {
+                SUBJECT_NAME: subjectName,
+                SUBJECT_TITLE: title,
+                SUBJECT_ICON: themeIcon,
+                SYLLABUS_DATA: syllabusData, 
+                getProgress: getProgress,
+                updateOverallProgress: updateOverallProgress,
+                exportProgress: exportProgress,
+                importProgress: triggerImport,
+                processImport: processImport,
+                toggleAllSections: toggleAllSections,
+                getPanelHtml: getPanelHtml,
+                render: renderSyllabusPanel // Expose render method
+            };
 
             function getProgress() {
                 try {
@@ -901,38 +916,148 @@
                 window.updateOverallDashboard(); 
             }
             
-            // ***************************************************************
-            // FIX: Ensure getPanelHtml first injects the placeholder div 
-            //      if it doesn't exist, which should be handled by the external JS
-            //      but we add a fallback for initial stability.
-            // ***************************************************************
+            function getTopicStatus(topicId, progressData) {
+                const topic = syllabusData.find(t => t.id === topicId);
+                if (!topic) return 0;
+                if (topic.depth === 1) {
+                    let sectionBoxesTotal = 0;
+                    let sectionBoxesChecked = 0;
+                    const startIndex = syllabusData.findIndex(t => t.id === topicId);
+                    for (let i = startIndex; i < syllabusData.length; i++) {
+                        const currentItem = syllabusData[i];
+                        if (i > startIndex && currentItem.depth <= topic.depth) break;
+                        if (currentItem.depth === 2 && currentItem.trackable) {
+                            const prog = progressData[currentItem.id] || {};
+                            const boxesTicked = CHECKLIST_COLUMNS.filter(col => prog[col] === true).length;
+                            if (boxesTicked >= 3) {
+                                sectionBoxesChecked++;
+                            }
+                            sectionBoxesTotal++;
+                        }
+                    }
+                    if (sectionBoxesTotal === 0) return 0;
+                    if (sectionBoxesChecked === sectionBoxesTotal) return 2;
+                    if (sectionBoxesChecked > 0) return 1;
+                    return 0;
+                } else if (topic.trackable) {
+                    const topicProgress = progressData[topicId] || {};
+                    const checkedCount = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
+                    if (checkedCount === CHECKLIST_COLUMNS.length) return 2;
+                    if (checkedCount >= 3) return 2;
+                    if (checkedCount > 0) return 1;
+                    return 0;
+                }
+                return 0;
+            }
+
+            function updateOverallProgress() {
+                const progressData = getProgress();
+                const mainTopics = syllabusData.filter(t => t.depth === 2 && t.trackable);
+                let topicsDoneCount = 0;
+                let topicsToReadCount = 0;
+                const columnProgress = CHECKLIST_COLUMNS.map(() => 0);
+                const totalMainTopics = mainTopics.length;
+
+                mainTopics.forEach(topic => {
+                    const topicProgress = progressData[topic.id] || {};
+                    let boxesTicked = 0;
+                    CHECKLIST_COLUMNS.forEach((col, index) => {
+                        if (topicProgress[col] === true) {
+                            boxesTicked++;
+                            columnProgress[index]++;
+                        }
+                    });
+                    
+                    if (boxesTicked >= 3) {
+                        topicsDoneCount++;
+                    } else {
+                        topicsToReadCount++;
+                    }
+                });
+
+                const overallProgressPercentage = totalMainTopics > 0 ? ((topicsDoneCount / totalMainTopics) * 100).toFixed(1) : 0.0;
+                let barColor;
+                if (overallProgressPercentage <= 25) {
+                    barColor = '#ef4444';
+                } else if (overallProgressPercentage <= 50) {
+                    barColor = '#f97316';
+                } else if (overallProgressPercentage <= 75) {
+                    barColor = '#facc15';
+                } else {
+                    barColor = '#10b981';
+                }
+
+                // Update summary metrics
+                document.getElementById(`progress-done-${subjectName}`) && (document.getElementById(`progress-done-${subjectName}`).textContent = topicsDoneCount);
+                document.getElementById(`progress-toread-${subjectName}`) && (document.getElementById(`progress-toread-${subjectName}`).textContent = topicsToReadCount);
+                
+                const progressElement = document.getElementById(`progress-${subjectName}`);
+                if (progressElement) {
+                    // *** FIX: Remove brackets and apply custom bold class ***
+                    progressElement.textContent = `${overallProgressPercentage}%`;
+                    progressElement.classList.remove('font-light'); // Remove tailwind font-light class if present
+                    progressElement.classList.add('progress-percent-bold'); // Apply custom bold style
+                    // *******************************************************
+                }
+                
+                const progressBar = document.getElementById(`progress-bar-${subjectName}`);
+                if (progressBar) {
+                    progressBar.style.width = `${overallProgressPercentage}%`;
+                    progressBar.style.backgroundColor = barColor;
+                }
+
+                // Update column progress metrics
+                const columnHeaderNames = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
+                columnProgress.forEach((tickedCount, index) => {
+                    const elementId = `col-progress-bar-${subjectName}-${columnHeaderNames[index]}`;
+                    const percentElementId = `col-percent-${subjectName}-${columnHeaderNames[index]}`;
+                    const barElement = document.getElementById(elementId);
+                    const percentElement = document.getElementById(percentElementId);
+
+                    if (barElement) {
+                        const colPercentage = totalMainTopics > 0 ? ((tickedCount / totalMainTopics) * 100).toFixed(1) : 0.0;
+                        barElement.style.width = `${colPercentage}%`;
+                        if (percentElement) {
+                            percentElement.textContent = `${colPercentage}%`;
+                        }
+                    }
+                });
+            }
+
+
+            // ******************************************************************************
+            // FIX: This now consistently injects the HTML by replacing the placeholder div.
+            // The logic inside the external JS files calls this function via .render().
+            // ******************************************************************************
             function renderSyllabusPanel() {
                  const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
                  const panelContainer = document.getElementById(`subject-tracker-panel-${subjectName}`);
                  
-                 // FIX START: If the panel container doesn't exist, we must inject the full HTML
-                 // The previous version of this logic was removed from index.html,
-                 // but the external JS files depend on calling getPanelHtml/render 
-                 // to inject content into the *placeholder divs* in the body.
-                 
-                 // Re-add logic to handle initial content injection by the external files.
-                 // This mirrors the logic stripped from the original files which relied on direct document.write/innerHTML.
-
-                 if (!panelContainer || !syllabusContainer) {
-                     const container = document.getElementById('subject-trackers-container');
-                     if (container) {
-                         const existingPlaceholder = document.getElementById(`subject-tracker-panel-${subjectName}`);
-                         if (existingPlaceholder) {
-                            // Inject actual panel content by replacing the placeholder div
-                            existingPlaceholder.outerHTML = getPanelHtml(subjectName, title, themeIcon);
-                            // Rerun render logic after injection to populate the content fully (recursion handles the rest)
-                            return renderSyllabusPanel();
+                 // 1. Inject the full panel structure if only the placeholder div exists
+                 if (panelContainer && !panelContainer.classList.contains('syllabus-panel-container')) {
+                     panelContainer.outerHTML = getPanelHtmlWrapper(subjectName, title, themeIcon);
+                     // Find the newly replaced container elements again
+                     const newPanelContainer = document.getElementById(`subject-tracker-panel-${subjectName}`);
+                     const newSyllabusContainer = document.getElementById(`syllabus-${subjectName}`);
+                     
+                     // If still null, something is fundamentally wrong, but proceed if we found the sub-container
+                     if (!newSyllabusContainer) {
+                         // Fallback check to avoid crash if structure is broken
+                         if (syllabusContainer) {
+                            newSyllabusContainer = syllabusContainer;
+                         } else {
+                            console.error(`Injection failed for ${subjectName}: Could not find final syllabus container.`);
+                            return;
                          }
                      }
+                     // Recurse to populate content and attach listeners
+                     return renderSyllabusPanel();
+                 }
+                 
+                 // If the inner syllabus container (which holds the checklist content) is missing, exit.
+                 if (!syllabusContainer) {
                      return;
                  }
-                // FIX END
-                 
 
 
                  const topicWithChildren = (function() {
@@ -1179,7 +1304,7 @@
             window[`handleTickAll${subjectName.toUpperCase()}`] = handleTickAll;
             window[`handleCheckboxChange${subjectName.toUpperCase()}`] = handleCheckboxChange;
 
-            function getPanelHtml(subjectName, title, icon) {
+            function getPanelHtmlWrapper(subjectName, title, icon) {
                 const themeClass = `syllabus-panel-${subjectName}`;
                 // Using subject-specific theme classes for the expand button
                 const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
@@ -1272,20 +1397,7 @@
             }
 
 
-            return {
-                SUBJECT_NAME: subjectName,
-                SUBJECT_TITLE: title,
-                SUBJECT_ICON: themeIcon,
-                SYLLABUS_DATA: syllabusData, // Expose syllabus data for global calculation
-                getProgress: getProgress, // Expose getProgress for global aggregation
-                render: renderSyllabusPanel,
-                updateOverallProgress: updateOverallProgress,
-                exportProgress: exportProgress,
-                importProgress: triggerImport,
-                processImport: processImport,
-                toggleAllSections: toggleAllSections,
-                getPanelHtml: getPanelHtml
-            };
+            return self;
         }
 
         // --- INITIALIZATION ---
