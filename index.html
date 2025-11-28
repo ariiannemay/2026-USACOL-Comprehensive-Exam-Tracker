@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 Review Tracker</title>
-    <!-- FIX 2: Updated favicon link to the new PNG -->
-    <link rel="icon" href="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/favicon.png">
+    <!-- FIX: Updated favicon link -->
+    <link rel="icon" href="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/favicon.gif">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -502,7 +502,7 @@
                             <!-- To Read Metric (Right of Pie, Red) -->
                             <div class="metric-pie-side right">
                                 <span id="global-progress-toread" class="text-chart-toread metric-value">0.0%</span>
-                                <span class="text-chart-toread block leading-tight">TO READ</span>
+                                <span class="text-chart-toread block leading-tight">TO-READ</span>
                                 <span class="text-gray-600 font-normal block leading-tight"><span id="global-total-toread-count">0</span> TOPICS</span>
                             </div>
                         </div>
@@ -763,8 +763,9 @@
                     // 3. Re-attach event listeners to the new, stable DOM elements
                     const currentLogic = SUBJECT_LOGIC_MAP[subjectName];
                     
-                    // CRITICAL FIX 3: Increased delay (200ms) to ensure DOM is ready
-                    setTimeout(() => {
+                    // CRITICAL FIX: Use requestAnimationFrame to ensure DOM reflow finishes 
+                    // before attempting to render nested components, fixing the blank panels.
+                    window.requestAnimationFrame(() => {
                         // Re-fetch element references after outerHTML replacement
                         const exportBtn = document.getElementById(`export-progress-btn-${subjectName}`);
                         const importBtn = document.getElementById(`import-progress-btn-${subjectName}`);
@@ -776,8 +777,7 @@
                         
                         // 4. Call render to populate content inside the injected structure
                         currentLogic.render();
-
-                    }, 200); 
+                    });
                 } else {
                     console.error(`Failed to find initialization function for ${subjectName}`);
                 }
@@ -795,7 +795,7 @@
             // FIX 2: Implement dynamic color logic for the inner percentage text
             let fillColor;
             if (donePercent <= 25) {
-                fillColor = '#da3e44'; // Red
+                fillColor = '#ef4444'; // Red
             } else if (donePercent <= 50) {
                 fillColor = '#f97316'; // Orange
             } else if (donePercent <= 75) {
@@ -805,10 +805,7 @@
             }
             
             // NEW FIX: Set background circle color to red if progress is less than 100%
-            // If progress is > 0 and < 100, use red. If 0 or 100, use grey.
-            const backgroundCircleColor = (donePercent > 0 && donePercent < 100) ? '#ef4444' : '#e5e7eb';
-            // If progress is 0%, use red as per user request implied by "if there's no complete shouldn't it be red instead of grey?"
-            // Reverting logic based on user's image where 11% is red background: If less than 100%, use red.
+            // If progress is < 100, use red (as seen in the image example).
             const backgroundRingColor = (donePercent < 100) ? '#ef4444' : '#e5e7eb';
 
 
@@ -1433,10 +1430,8 @@
             window[`handleTickAll${subjectName.toUpperCase()}`] = handleTickAll;
             window[`handleCheckboxChange${subjectName.toUpperCase()}`] = handleCheckboxChange;
 
-            // This is the function used to generate the static shell structure in loadSubjectPanel
             function getPanelHtmlWrapper(subjectName, title, icon) {
                 const themeClass = `syllabus-panel-${subjectName}`;
-                // Using subject-specific theme classes for the expand button
                 const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
                 const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
                 
