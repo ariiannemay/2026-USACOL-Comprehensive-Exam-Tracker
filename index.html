@@ -1031,7 +1031,10 @@
                  
                  // 1. Inject the full panel structure if only the placeholder div exists
                  if (panelContainer && !panelContainer.classList.contains('syllabus-panel-container')) {
-                     panelContainer.outerHTML = getPanelHtmlWrapper(subjectName, title, themeIcon);
+                     
+                     // We replace the outer HTML with the full, correctly structured HTML from the wrapper
+                     const newPanelHtml = getPanelHtmlWrapper(subjectName, title, themeIcon);
+                     panelContainer.outerHTML = newPanelHtml;
                      
                      // Rerun the render function shortly to populate content and attach listeners
                      setTimeout(renderSyllabusPanel, 10); 
@@ -1040,7 +1043,7 @@
                  
                  // 2. If the inner syllabus container (which holds the checklist content) is missing, retry (rarely needed now)
                  if (!syllabusContainer) {
-                     // Adding a small delay for the DOM to process outerHTML replacement.
+                     // Wait for the DOM to update after outerHTML replacement
                      setTimeout(renderSyllabusPanel, 10);
                      return;
                  }
@@ -1062,6 +1065,7 @@
                  }
                 
                 // 3. Capture current open states to preserve them across re-render
+                // NOTE: This capture needs to happen *after* the panel has been injected via outerHTML
                 const openSections = {};
                 document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`).forEach(details => {
                     if (details.id) {
@@ -1186,7 +1190,8 @@
                  if (startDepth === 2 && item.trackable) {
                      topicsToUpdate.push(item);
                  } else if (startDepth === 1) {
-                     for (let i = startIndex; i; i++) { // ERROR: Loop condition looks wrong here: i < syllabusData.length
+                     // FIX: Corrected loop condition from 'i' to 'i < syllabusData.length'
+                     for (let i = startIndex; i < syllabusData.length; i++) { 
                          const currentItem = syllabusData[i];
                          if (i > startIndex && currentItem.depth <= startDepth) break;
                          if (currentItem.depth === 2 && currentItem.trackable) {
