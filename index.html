@@ -502,7 +502,7 @@
                             <!-- To Read Metric (Right of Pie, Red) -->
                             <div class="metric-pie-side right">
                                 <span id="global-progress-toread" class="text-chart-toread metric-value">0.0%</span>
-                                <span class="text-chart-toread block leading-tight">TO-READ</span>
+                                <span class="text-chart-toread block leading-tight">TO READ</span>
                                 <span class="text-gray-600 font-normal block leading-tight"><span id="global-total-toread-count">0</span> TOPICS</span>
                             </div>
                         </div>
@@ -795,7 +795,7 @@
             // FIX 2: Implement dynamic color logic for the inner percentage text
             let fillColor;
             if (donePercent <= 25) {
-                fillColor = '#ef4444'; // Red
+                fillColor = '#da3e44'; // Red
             } else if (donePercent <= 50) {
                 fillColor = '#f97316'; // Orange
             } else if (donePercent <= 75) {
@@ -804,8 +804,12 @@
                 fillColor = '#10b981'; // Green
             }
             
-            // NEW FIX: Set background circle color to red if not 100% done
-            const backgroundCircleColor = (donePercent < 100 && donePercent > 0) ? '#ef4444' : '#e5e7eb';
+            // NEW FIX: Set background circle color to red if progress is less than 100%
+            // If progress is > 0 and < 100, use red. If 0 or 100, use grey.
+            const backgroundCircleColor = (donePercent > 0 && donePercent < 100) ? '#ef4444' : '#e5e7eb';
+            // If progress is 0%, use red as per user request implied by "if there's no complete shouldn't it be red instead of grey?"
+            // Reverting logic based on user's image where 11% is red background: If less than 100%, use red.
+            const backgroundRingColor = (donePercent < 100) ? '#ef4444' : '#e5e7eb';
 
 
             // Reduced size for compactness
@@ -828,7 +832,7 @@
                         cy="${center}" 
                         r="${radius - strokeWidth / 2}" 
                         fill="none" 
-                        stroke="${backgroundCircleColor}" 
+                        stroke="${backgroundRingColor}" 
                         stroke-width="${strokeWidth}"
                     />
                     
@@ -1172,8 +1176,8 @@
             function renderSyllabusPanel() {
                  const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
                  
+                 // If the element is somehow missing, the loader should handle the initial injection.
                  if (!syllabusContainer) {
-                     // Abort if container is not ready (loadSubjectPanel handles injection)
                      setTimeout(renderSyllabusPanel, 10);
                      return;
                  }
@@ -1196,6 +1200,7 @@
                 
                 // 1. Capture current open states to preserve them across re-render
                 const openSections = {};
+                // IMPORTANT: Query from the main panel to capture all details tags reliably
                 document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`).forEach(details => {
                     if (details.id) {
                         openSections[details.id] = details.open;
@@ -1209,13 +1214,11 @@
                 
                 const checkboxClass = `syllabus-checkbox-${subjectName}`;
                 
+                // --- START Syllabus Content Generation ---
                 syllabusData.forEach((item, index) => {
                     const topicId = item.id;
                     const nextItem = syllabusData[index + 1];
                     const currentStatus = getTopicStatus(topicId, progress);
-                    // NOTE: The issue where colors/aesthetics were missing in the trackers was likely here:
-                    // The SVG icons need to be created dynamically by Lucide in the final step. 
-                    // This rendering logic looks fine; the problem is likely outside this loop (in the loader timing).
 
                     const iconName = currentStatus === 2 ? 'check-circle-2' : (currentStatus === 1 ? 'circle-half' : 'circle');
                     const iconColor = currentStatus === 2 ? 'checked' : (currentStatus === 1 ? 'partial' : 'empty');
@@ -1273,13 +1276,13 @@
                         if (isDepth2Open) {
                              html += `<div class="p-1 border-b border-black/10 text-black/70 italic ${fontStyle} text-sm" style="padding-left: ${dynamicPadding}rem;">${item.topic}</div>`;
                         } else {
-                            // This path is generally not taken if syllabus structure is correct, but preserved for robustness
                             html += `<div class="checklist-grid hover:bg-gray-50/50 transition"><div>${item.topic}</div></div>`;
                         }
                     }
 
                     if (item.depth >= 3 && isDepth2Open && (!nextItem || nextItem.depth <= 2)) { html += `</div></details></div>`; isDepth2Open = false; }
                 });
+                // --- END Syllabus Content Generation ---
 
                 if (currentSectionOpen) {
                     if (isDepth2Open) { html += `</div></details></div>`; }
@@ -1480,40 +1483,6 @@
                                 <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
                                 <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
                                 <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
-                                <div></div>
-                            </div>
-                            <div class="checklist-grid checklist-grid-micro-progress text-center border-t border-gray-300">
-                                <div></div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
-                                </div>
                                 <div></div>
                             </div>
                             <div id="syllabus-${subjectName}" class="text-xs"></div>
