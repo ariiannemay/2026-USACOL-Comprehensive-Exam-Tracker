@@ -1037,15 +1037,13 @@
                  if (panelContainer && !panelContainer.classList.contains('syllabus-panel-container')) {
                      panelContainer.outerHTML = getPanelHtmlWrapper(subjectName, title, themeIcon);
                      
-                     // Must exit and let the DOM update naturally, relying on the next tick
-                     // of the JS engine (which occurs when loadSubjectPanel calls render()).
+                     // Must exit and rely on the next call to render() to find the new elements.
                      return;
                  }
                  
-                 // If the inner syllabus container (which holds the checklist content) is missing, exit.
-                 // We look for the fully loaded container structure here.
+                 // If the inner syllabus container (which holds the checklist content) is missing, retry after a short delay.
+                 // This handles the async nature of the outerHTML replacement above.
                  if (!syllabusContainer) {
-                     // Try a slight delay if this fails, indicating a race condition, but primarily trust the replacement logic.
                      setTimeout(renderSyllabusPanel, 10);
                      return;
                  }
