@@ -6,7 +6,7 @@ const CRIM_SYLLABUS = [{id:1001,topic:"I. FUNDAMENTAL PRINCIPLES",depth:1,tracka
 // 2. Storage Key and Subject Details
 const SYLLABUS_STORAGE_KEY_CRIM = 'crim_progress';
 const SUBJECT_NAME_CRIM = 'crim';
-const SUBJECT_TITLE_CRIM = 'CRIMINAL LAW (RPC BOOK 1 & 2)';
+const SUBJECT_TITLE_CRIM = 'CRIMINAL LAW (10%)';
 const SUBJECT_ICON_CRIM = 'shield-half';
 
 // 3. Create Logic Instance
