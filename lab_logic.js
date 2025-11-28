@@ -6,8 +6,8 @@ const LAB_SYLLABUS=[{id:2001,topic:"I. BASIC PRINCIPLES AND CONCEPTS",depth:1,tr
 // 2. Storage Key and Subject Details
 const SYLLABUS_STORAGE_KEY_LAB = 'lab_progress';
 const SUBJECT_NAME_LAB = 'lab';
-const SUBJECT_TITLE_LAB = 'LABOR AND SOCIAL LEGISLATION';
-const SUBJECT_ICON_LAB = 'hand-metal';
+const SUBJECT_TITLE_LAB = 'LABOR AND SOCIAL LEGISLATION (10%)';
+const SUBJECT_ICON_LAB = 'handshake';
 
 // 3. Create Logic Instance
 const LAB_LOGIC = window.createSyllabusLogic(SUBJECT_NAME_LAB, LAB_SYLLABUS, SYLLABUS_STORAGE_KEY_LAB, SUBJECT_ICON_LAB, SUBJECT_TITLE_LAB);
