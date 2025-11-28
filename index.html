@@ -1186,7 +1186,7 @@
                  if (startDepth === 2 && item.trackable) {
                      topicsToUpdate.push(item);
                  } else if (startDepth === 1) {
-                     for (let i = startIndex; i < syllabusData.length; i++) {
+                     for (let i = startIndex; i; i++) { // ERROR: Loop condition looks wrong here: i < syllabusData.length
                          const currentItem = syllabusData[i];
                          if (i > startIndex && currentItem.depth <= startDepth) break;
                          if (currentItem.depth === 2 && currentItem.trackable) {
@@ -1298,7 +1298,7 @@
                 const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
                 
                 // CRITICAL: We are now returning the *structure* that holds the content.
-                // The outer div needs the ID so it can be targeted by renderSyllabusPanel.
+                // Note that the ID is on the outer container, which is being replaced.
                 return `
                 <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container ${themeClass}" id="subject-tracker-panel-${subjectName}">
                     <details class="syllabus-panel">
