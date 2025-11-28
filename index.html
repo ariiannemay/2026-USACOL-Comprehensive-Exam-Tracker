@@ -24,7 +24,7 @@
         .header-bg {
             background-color: #6d1b1b;
             /* Deep Maroon */
-            border-bottom: 5px solid #a32a2a;
+            border-bottom: 5px solid #fece1b;
         }
 
         .card-header-bg {
@@ -33,7 +33,7 @@
         }
 
         .time-value {
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 900;
             line-height: 1;
             color: #1a202c;
@@ -523,15 +523,21 @@
             display: flex;
             align-items: flex-start;
         }
+        .border-custom-yellow {
+    border-color: #fece1b;
+        }
+        .text-custom-yellow {
+    color: #fece1b;
+    }
     </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen p-4 sm:p-8">
+<body class="bg-gray-100 min-h-screen p-1 sm:p-2">
 
-    <div class="max-w-6xl mx-auto space-y-4">
+    <div class="max-w-6xl mx-auto space-y-2">
 
         <!-- 1. HEADER PANEL -->
-        <header class="header-bg text-white p-4 sm:p-6 rounded-xl shadow-2xl">
+        <header class="header-bg text-white py-3 px-4 sm:py-4 sm:px-6 rounded-xl shadow-2xl">
             <div class="flex items-center justify-between">
                 <div class="flex-shrink-0 w-16 h-16 flex items-center justify-center rounded-full overflow-hidden">
                     <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/USA.png" alt="USA Logo" class="w-full h-full object-cover" onerror="this.outerHTML = '<i data-lucide=\'graduation-cap\' class=\'w-12 h-12 text-yellow-300\'></i>'">
@@ -549,61 +555,61 @@
         <!-- 2. COUNTDOWN PANELS -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-                <div class="flex items-center justify-between card-header-bg text-white p-3 text-lg font-bold text-center border-b-4 border-black/50">
-                    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 1<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
-                </div>
-                <div class="p-4 text-center">
-                    <div class="mb-4 flex justify-center items-center">
-                        <span id="target-date-display-1" class="date-display-wrapper" data-target-date="2026-06-14"><span class="date-text"></span></span>
-                    </div>
-                    <div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
-                        <div class="flex flex-col"><span id="days-1" class="time-value">000</span><span class="time-label">Days</span></div>
-                        <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-1" class="time-value">00</span><span class="time-label">Hrs</span></div>
-                        <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-1" class="time-value">00</span><span class="time-label">Mins</span></div>
-                        <div class="flex flex-col"><span id="secs-1" class="time-value">00</span><span class="time-label">Secs</span></div>
-                    </div>
-                </div>
-            </div>
-            <div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-                <div class="flex items-center justify-between card-header-bg text-white p-3 text-lg font-bold text-center border-b-4 border-black/50">
-                    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 2<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
-                </div>
-                <div class="p-4 text-center">
-                    <div class="mb-4 flex justify-center items-center">
-                        <span id="target-date-display-2" class="date-display-wrapper" data-target-date="2026-06-21"><span class="date-text"></span></span>
-                    </div>
-                    <div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
-                        <div class="flex flex-col"><span id="days-2" class="time-value">000</span><span class="time-label">Days</span></div>
-                        <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-2" class="time-value">00</span><span class="time-label">Hrs</span></div>
-                        <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-2" class="time-value">00</span><span class="time-label">Mins</span></div>
-                        <div class="flex flex-col"><span id="secs-2" class="time-value">00</span><span class="time-label">Secs</span></div>
-                    </div>
-                </div>
-            </div>
-            <div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-                <div class="flex items-center justify-between card-header-bg text-white p-3 text-lg font-bold text-center border-b-4 border-black/50">
-                    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 3<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
-                </div>
-                <div class="p-4 text-center">
-                    <div class="mb-4 flex justify-center items-center">
-                        <span id="target-date-display-3" class="date-display-wrapper" data-target-date="2026-06-28"><span class="date-text"></span></span>
-                    </div>
-                    <div class="grid grid-cols-4 py-3 border-y-2 border-dashed border-gray-300">
-                        <div class="flex flex-col"><span id="days-3" class="time-value">000</span><span class="time-label">Days</span></div>
-                        <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-3" class="time-value">00</span><span class="time-label">Hrs</span></div>
-                        <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-3" class="time-value">00</span><span class="time-label">Mins</span></div>
-                        <div class="flex flex-col"><span id="secs-3" class="time-value">00</span><span class="time-label">Secs</span></div>
-                    </div>
-                </div>
-            </div>
+<div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
+    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 1<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+</div>
+
+<div class="p-2 text-center">
+        <div class="mb-2 flex justify-center items-center">
+            <span id="target-date-display-1" class="date-display-wrapper" data-target-date="2026-06-14"><span class="date-text"></span></span>
+        </div>
+        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+            <div class="flex flex-col"><span id="days-1" class="time-value">000</span><span class="time-label">Days</span></div>
+            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-1" class="time-value">00</span><span class="time-label">Hrs</span></div>
+            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-1" class="time-value">00</span><span class="time-label">Mins</span></div>
+            <div class="flex flex-col"><span id="secs-1" class="time-value">00</span><span class="time-label">Secs</span></div>
+        </div>
+    </div>
+</div>
+<div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+<div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
+    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 2<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+</div>
+<div class="p-2 text-center">
+        <div class="mb-2 flex justify-center items-center">
+            <span id="target-date-display-2" class="date-display-wrapper" data-target-date="2026-06-21"><span class="date-text"></span></span>
+        </div>
+        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+            <div class="flex flex-col"><span id="days-2" class="time-value">000</span><span class="time-label">Days</span></div>
+            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-2" class="time-value">00</span><span class="time-label">Hrs</span></div>
+            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-2" class="time-value">00</span><span class="time-label">Mins</span></div>
+            <div class="flex flex-col"><span id="secs-2" class="time-value">00</span><span class="time-label">Secs</span></div>
+        </div>
+    </div>
+</div>            
+<div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+<div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
+    <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 3<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+</div>
+<div class="p-2 text-center">
+        <div class="mb-2 flex justify-center items-center">
+            <span id="target-date-display-3" class="date-display-wrapper" data-target-date="2026-06-28"><span class="date-text"></span></span>
+        </div>
+        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+            <div class="flex flex-col"><span id="days-3" class="time-value">000</span><span class="time-label">Days</span></div>
+            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-3" class="time-value">00</span><span class="time-label">Hrs</span></div>
+            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-3" class="time-value">00</span><span class="time-label">Mins</span></div>
+            <div class="flex flex-col"><span id="secs-3" class="time-value">00</span><span class="time-label">Secs</span></div>
+        </div>
+    </div>
+</div>
         </div>
 
         <!-- 3. Overall Progress (Placeholder for future development) -->
-        <div id="overall-dashboard" class="bg-white rounded-xl shadow-lg border border-gray-300 p-4 text-center">
-             <h3 class="text-2xl font-extrabold header-font tracking-wider text-gray-800 mb-2">OVERALL REVIEW STATS</h3>
-             <p class="text-sm text-gray-500">Global progress tracking will be implemented here once all subject trackers are loaded.</p>
-        </div>
-
+<div id="overall-dashboard" class="bg-white rounded-xl shadow-lg border border-gray-300 p-2 text-center">
+     <h3 class="text-xl font-extrabold header-font tracking-wider text-gray-800 mb-1">OVERALL REVIEW STATS</h3>
+     <p class="text-xs text-gray-500">Global progress tracking will be implemented here once all subject trackers are loaded.</p>
+</div>
 
         <!-- 4. SUBJECT TRACKERS (Dynamic Content) -->
         <div id="subject-trackers-container" class="space-y-4">
