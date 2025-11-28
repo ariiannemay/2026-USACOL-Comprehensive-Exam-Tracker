@@ -406,11 +406,29 @@
         .depth2-chevron { transition: transform .2s; transform: rotate(0deg); flex-shrink: 0; margin-right: .5rem; }
         .depth2-details[open] .depth2-chevron { transform: rotate(90deg); }
         .topic-content-wrapper { display: flex; align-items: flex-start; padding-left: .5rem; }
-        .checklist-grid.checklist-grid-header>div:first-child { padding-left: 0; align-items: center; text-align: center; }
+        .checklist-grid.checklist-grid-header>div:first-child { 
+            /* MODIFIED: Ensure column 1 is wide enough to push capsules right */
+            grid-column: 1 / span 1; 
+            padding-left: 0; 
+            align-items: center; 
+            text-align: center; 
+        }
+
+        .checklist-grid.checklist-grid-header {
+            /* MODIFIED: Add grid column for the new button position (column 7) */
+            grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px);
+        }
+        /* NEW: Style for the micro-progress bars div */
+        .checklist-grid-micro-progress {
+            /* Now defined in JS wrapper block to ensure correct grid columns */
+            border-bottom: 1px solid #e5e7eb; 
+        }
+
+
         .depth3-content-wrapper>div { display: block; padding: .25rem .5rem; }
         .checklist-grid>div:nth-child(n+2):nth-child(-n+6) { border-right: 1px dashed #d1d5db; }
         .checklist-grid>div:nth-child(6) { border-right: none; }
-        .checklist-label-capsule { font-size: .65rem; font-weight: 700; text-transform: uppercase; text-align: center; word-break: keep-all; padding: .15rem .35rem; border-radius: 9999px; line-height: 1; color: white; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05); }
+        .checklist-label-capsule { font-size: .65rem; font-weight: 7-00; text-transform: uppercase; text-align: center; word-break: keep-all; padding: .15rem .35rem; border-radius: 9999px; line-height: 1; color: white; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05); }
         .col-progress-codal { background-color: #8b5cf6; }
         .col-progress-lectures { background-color: #facc15; }
         .col-progress-reviewer { background-color: #3b82f6; }
@@ -428,7 +446,7 @@
         .col-progress-bar-container { height: .4rem; background: #e5e7eb; border-radius: 9999px; overflow: hidden; width: 100%; }
         .col-progress-bar { height: 100%; transition: width .3s ease-in-out; }
         .status-message-row { padding-top: .25rem; padding-bottom: .25rem; }
-        .checklist-grid-micro-progress { padding-top: .25rem; padding-bottom: .5rem; }
+        
         .depth3-content-wrapper .checklist-grid>div:first-child { grid-column: 1 / span 7; padding-left: 2.5rem; }
         .depth2-topic-row { grid-column: 1 / span 1; display: flex; align-items: flex-start; }
         
@@ -1088,17 +1106,10 @@
                     // before attempting to render nested components, fixing the blank panels.
                     window.requestAnimationFrame(() => {
                         // Re-fetch element references after outerHTML replacement
-                        const exportBtn = document.getElementById(`export-progress-btn-${subjectName}`);
-                        const importBtn = document.getElementById(`import-progress-btn-${subjectName}`);
                         const collapseBtn = document.getElementById(`collapse-all-btn-${subjectName}`);
 
                         // Attach listeners
-                        exportBtn?.addEventListener('click', currentLogic.exportProgress);
-                        // NOTE: Individual import buttons now trigger the global file input
-                        importBtn?.addEventListener('click', () => { 
-                            DOM_ELEMENTS.globalFileInput.dataset.targetSubject = currentLogic.SUBJECT_NAME;
-                            DOM_ELEMENTS.globalFileInput.click();
-                        });
+                        // Note: Export/Import buttons were removed from individual panels
                         collapseBtn?.addEventListener('click', currentLogic.toggleAllSections);
                         
                         // 4. Call render to populate content inside the injected structure
@@ -1803,27 +1814,64 @@
                             </div>
                         </summary>
                         <div class="syllabus-content">
-                            <!-- MODIFIED LAYOUT START -->
-                            <div class="w-full flex justify-between items-end pb-1 border-b border-gray-200">
-                                <div class="text-xs font-semibold text-gray-700 italic leading-snug flex-grow pt-0 whitespace-nowrap"></div>
-                                <!-- REMOVED UPLOAD/DOWNLOAD BUTTONS -->
-                                <div class="flex flex-wrap gap-2">
-                                    <button id="collapse-all-btn-${subjectName}" class="w-8 h-8 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
-                                        <i data-lucide="chevrons-down" class="w-5 h-5"></i>
-                                    </button>
-                                </div>
-                            </div>
+                            
+                            <!-- 1. COLUMN HEADERS (Now includes the button aligned right) -->
                             <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
-                                <div>SUBJECTS/TOPICS</div>
+                                <div class="text-left">SUBJECTS/TOPICS</div>
                                 <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
                                 <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
                                 <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
                                 <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
                                 <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
-                                <div></div>
+                                
+                                <!-- RELOCATED & SIMPLIFIED COLLAPSE BUTTON -->
+                                <div class="flex items-center justify-center pt-1">
+                                    <button id="collapse-all-btn-${subjectName}" class="w-8 h-8 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
+                                        <!-- Icon is set dynamically by JS, default chevrons-down -->
+                                        <i data-lucide="chevrons-down" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <!-- NEW: Insert the helper message directly after the header -->
-                            <div class="text-xs font-semibold text-gray-700 italic leading-snug pt-2 px-1 mb-1">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
+
+                            <!-- RESTORED: Micro-progress Bars -->
+                            <div class="checklist-grid checklist-grid-micro-progress text-center">
+                                <div></div> <!-- Empty column for SUBJECTS/TOPICS -->
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+                                </div>
+                                <div></div> <!-- Empty column to match grid layout -->
+                            </div>
+                            
+                            <!-- 2. NEW: Centered Help Message -->
+                            <div class="text-xs font-semibold text-gray-700 italic leading-snug pt-2 pb-2 text-center">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div>
+                            
                             <!-- MODIFIED LAYOUT END -->
                             
                             <div id="syllabus-${subjectName}" class="text-xs"></div>
