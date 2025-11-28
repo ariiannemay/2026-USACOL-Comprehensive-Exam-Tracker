@@ -427,7 +427,7 @@
         <!-- 2. COUNTDOWN PANELS (Hourglass color fixed to inherited white) -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-                <!-- Removed text-custom-yellow class from the icons -->
+                <!-- Restored white hourglass (inherits text-white from parent) -->
                 <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
                     <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 1<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
                 </div>
@@ -444,7 +444,7 @@
                 </div>
             </div>
             <div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-                <!-- Removed text-custom-yellow class from the icons -->
+                <!-- Restored white hourglass -->
                 <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
                     <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 2<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
                 </div>
@@ -461,7 +461,7 @@
                 </div>
             </div>
             <div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-                <!-- Removed text-custom-yellow class from the icons -->
+                <!-- Restored white hourglass -->
                 <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow">
                     <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 3<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
                 </div>
@@ -707,9 +707,6 @@
                 if (window[`create${subjectName.toUpperCase()}_LOGIC`]) {
                     const logic = window[`create${subjectName.toUpperCase()}_LOGIC`]();
                     SUBJECT_LOGIC_MAP[subjectName] = logic;
-                    
-                    // The logic.render() function (which calls getPanelHtmlWrapper) 
-                    // is responsible for replacing the placeholder div with the actual panel content.
                     
                     // Call render only after the logic object is stored and the script is fully loaded.
                     logic.render();
@@ -1033,17 +1030,17 @@
                  const panelContainer = document.getElementById(`subject-tracker-panel-${subjectName}`);
                  
                  // 1. Inject the full panel structure if only the placeholder div exists
-                 // This is the core fix to ensure the placeholder is replaced with the full content.
                  if (panelContainer && !panelContainer.classList.contains('syllabus-panel-container')) {
                      panelContainer.outerHTML = getPanelHtmlWrapper(subjectName, title, themeIcon);
                      
-                     // Must exit and rely on the next call to render() to find the new elements.
+                     // Rerun the render function shortly to populate content and attach listeners
+                     setTimeout(renderSyllabusPanel, 10); 
                      return;
                  }
                  
-                 // If the inner syllabus container (which holds the checklist content) is missing, retry after a short delay.
-                 // This handles the async nature of the outerHTML replacement above.
+                 // 2. If the inner syllabus container (which holds the checklist content) is missing, retry (rarely needed now)
                  if (!syllabusContainer) {
+                     // Adding a small delay for the DOM to process outerHTML replacement.
                      setTimeout(renderSyllabusPanel, 10);
                      return;
                  }
@@ -1064,9 +1061,9 @@
                      return topicWithChildren.has(topicId);
                  }
                 
-                // 1. Capture current open states to preserve them across re-render
+                // 3. Capture current open states to preserve them across re-render
                 const openSections = {};
-                document.querySelectorAll(`#syllabus-${subjectName} details`).forEach(details => {
+                document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`).forEach(details => {
                     if (details.id) {
                         openSections[details.id] = details.open;
                     }
@@ -1153,6 +1150,7 @@
 
                 syllabusContainer.innerHTML = html;
                 
+                // CRITICAL: Re-initialize Lucide Icons after injecting inner content
                 if (lucide && lucide.createIcons) {
                     lucide.createIcons();
                 }
@@ -1300,7 +1298,7 @@
                 const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
                 
                 return `
-                <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container ${themeClass}" id="subject-tracker-panel-${subjectName}">
+                <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container ${themeClass}">
                     <details class="syllabus-panel">
                         <summary class="syllabus-summary" id="summary-${subjectName}">
                             <div class="syllabus-summary-title-row">
@@ -1419,7 +1417,7 @@
             setInterval(updateAllCountdowns, 1000);
             
             // Call once initially, and rely on subject logic to call on subsequent changes
-            // Moved to the bottom of the load process to ensure all modules are registered first
+            // Added a slight delay to ensure all subject scripts are fully processed and ready.
             setTimeout(window.updateOverallDashboard, 500); 
             
             document.getElementById('target-date-display-1').addEventListener('click', () => openModal(1));
