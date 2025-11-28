@@ -17,12 +17,12 @@ const REM_LOGIC = window.createSyllabusLogic(SUBJECT_NAME_REM, REM_ETHICS_SYLLAB
 
 
 // 4. Inject Panel HTML into the main container in index.html
-document.addEventListener('DOMContentLoaded', () => {
-   const container = document.getElementById('subject-trackers-container');
-   if (container) {
-       container.innerHTML += REM_LOGIC.getPanelHtml(SUBJECT_NAME_REM, SUBJECT_TITLE_REM, SUBJECT_ICON_REM);
-   }
-});
+// document.addEventListener('DOMContentLoaded', () => {
+//    const container = document.getElementById('subject-trackers-container');
+//    if (container) {
+//        container.innerHTML += REM_LOGIC.getPanelHtml(SUBJECT_NAME_REM, SUBJECT_TITLE_REM, SUBJECT_ICON_REM);
+//    }
+// });
 
 
 // 5. Expose Logic Globally (needed for index.html onload to attach to map)
