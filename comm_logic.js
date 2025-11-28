@@ -1,3 +1,6 @@
+// --- Subject Module: COMMERCIAL AND TAXATION LAW ---
+
+// 1. Syllabus Data
 const COMM_TAX_SYLLABUS = [
     {id: 4001, topic: 'I. BUSINESS ORGANIZATIONS', depth: 1, trackable: false},
     {id: 4002, topic: 'A. Corporations – R.A. No. 11232', depth: 2, trackable: true},
@@ -174,7 +177,7 @@ const COMM_TAX_SYLLABUS = [
     {id: 4167, topic: 'c. Receivership', depth: 4, trackable: false},
     {id: 4168, topic: 'd. Liquidation', depth: 4, trackable: false},
     
-    // V. INTELLECTUAL PROPERTY (FIXED: Nested under A, B, C)
+    // V. INTELLECTUAL PROPERTY
     {id: 4169, topic: 'V. INTELLECTUAL PROPERTY – R.A. No. 8293, as amended', depth: 1, trackable: true},
     {id: 4170, topic: 'A. Patents', depth: 2, trackable: false},
     {id: 4171, topic: '1. Patentable v. Non-patentable Inventions', depth: 3, trackable: false},
@@ -294,11 +297,11 @@ const COMM_TAX_SYLLABUS = [
     {id: 4280, topic: '6. Tax Remedies under the NIRC', depth: 3, trackable: false},
     {id: 4281, topic: 'a. General Concepts', depth: 4, trackable: false},
     {id: 4282, topic: 'i. Tax Deficiency v. Tax Delinquency', depth: 5, trackable: false},
-    {id: 4283, topic: 'ii. Tax Evasion', depth: 5, trackable: false},
+    {id: 4371, topic: 'ii. Tax Evasion', depth: 5, trackable: false},
     {id: 4284, topic: 'b. Civil Penalties', depth: 4, trackable: false},
     {id: 4285, topic: 'i. Deficiency Interest and Delinquency Interest', depth: 5, trackable: false},
-    {id: 4286, topic: 'ii. Surcharge', depth: 5, trackable: false},
-    {id: 4287, topic: 'iii. Compromise Penalty', depth: 5, trackable: false},
+    {id: 4372, topic: 'ii. Surcharge', depth: 5, trackable: false},
+    {id: 4373, topic: 'iii. Compromise Penalty', depth: 5, trackable: false},
     {id: 4288, topic: 'c. Assessment Process', depth: 4, trackable: false},
     {id: 4289, topic: 'i. Letter of Authority', depth: 5, trackable: false},
     {id: 4290, topic: 'ii. Submission of Supporting Documents by Taxpayer', depth: 5, trackable: false},
@@ -388,7 +391,7 @@ const COMM_TAX_SYLLABUS = [
 // 2. Storage Key and Subject Details
 const SYLLABUS_STORAGE_KEY_COMM = 'comm_tax_progress';
 const SUBJECT_NAME_COMM = 'comm';
-const SUBJECT_TITLE_COMM = 'COMMERCIAL AND TAXATION LAWS';
+const SUBJECT_TITLE_COMM = 'COMMERCIAL AND TAXATION LAWS (20%)';
 const SUBJECT_ICON_COMM = 'banknote';
 
 // 3. Create Logic Instance
