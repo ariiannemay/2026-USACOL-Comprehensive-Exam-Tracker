@@ -12,13 +12,6 @@ const SUBJECT_ICON_LAB = 'handshake';
 // 3. Create Logic Instance
 const LAB_LOGIC = window.createSyllabusLogic(SUBJECT_NAME_LAB, LAB_SYLLABUS, SYLLABUS_STORAGE_KEY_LAB, SUBJECT_ICON_LAB, SUBJECT_TITLE_LAB);
 
-// 4. Inject Panel HTML into the main container in index.html
-// document.addEventListener('DOMContentLoaded', () => {
-//     const container = document.getElementById('subject-trackers-container');
-//     if (container) {
-//         container.innerHTML += LAB_LOGIC.getPanelHtml(SUBJECT_NAME_LAB, SUBJECT_TITLE_LAB, SUBJECT_ICON_LAB);
-//     }
-// });
 
 // 5. Expose Logic Globally (needed for index.html onload to attach to map)
 window.createLAB_LOGIC = () => LAB_LOGIC;
