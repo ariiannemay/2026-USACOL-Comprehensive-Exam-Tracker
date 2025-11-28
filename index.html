@@ -708,10 +708,12 @@
                     const logic = window[`create${subjectName.toUpperCase()}_LOGIC`]();
                     SUBJECT_LOGIC_MAP[subjectName] = logic;
                     
-                    // The logic.render() function inside the factory will handle injecting the content 
-                    // by replacing the placeholder div's outerHTML with the actual content.
+                    // The logic.render() function (which calls getPanelHtmlWrapper) 
+                    // is responsible for replacing the placeholder div with the actual panel content.
                     
+                    // Call render only after the logic object is stored and the script is fully loaded.
                     logic.render();
+                    
                     // Attach event listeners for buttons that are now in the DOM
                     document.getElementById(`export-progress-btn-${subjectName}`)?.addEventListener('click', logic.exportProgress);
                     document.getElementById(`import-progress-btn-${subjectName}`)?.addEventListener('click', logic.importProgress);
@@ -883,7 +885,7 @@
         // --- GLOBAL SYLLABUS LOGIC FACTORY (Modified to call updateOverallDashboard) ---
         window.createSyllabusLogic = function(subjectName, syllabusData, storageKey, themeIcon, title) {
             
-            // EXPOSE SYLLABUS DATA TO LOGIC
+            // EXPOSE self object
             const self = {
                 SUBJECT_NAME: subjectName,
                 SUBJECT_TITLE: title,
@@ -895,7 +897,7 @@
                 importProgress: triggerImport,
                 processImport: processImport,
                 toggleAllSections: toggleAllSections,
-                getPanelHtml: getPanelHtml,
+                getPanelHtml: getPanelHtmlWrapper, // Use the wrapper function to generate HTML
                 render: renderSyllabusPanel // Expose render method
             };
 
@@ -1025,37 +1027,26 @@
             }
 
 
-            // ******************************************************************************
-            // FIX: This now consistently injects the HTML by replacing the placeholder div.
-            // The logic inside the external JS files calls this function via .render().
-            // ******************************************************************************
+            // This function now reliably generates the inner HTML content.
             function renderSyllabusPanel() {
                  const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
                  const panelContainer = document.getElementById(`subject-tracker-panel-${subjectName}`);
                  
                  // 1. Inject the full panel structure if only the placeholder div exists
+                 // This is the core fix to ensure the placeholder is replaced with the full content.
                  if (panelContainer && !panelContainer.classList.contains('syllabus-panel-container')) {
                      panelContainer.outerHTML = getPanelHtmlWrapper(subjectName, title, themeIcon);
-                     // Find the newly replaced container elements again
-                     const newPanelContainer = document.getElementById(`subject-tracker-panel-${subjectName}`);
-                     const newSyllabusContainer = document.getElementById(`syllabus-${subjectName}`);
                      
-                     // If still null, something is fundamentally wrong, but proceed if we found the sub-container
-                     if (!newSyllabusContainer) {
-                         // Fallback check to avoid crash if structure is broken
-                         if (syllabusContainer) {
-                            newSyllabusContainer = syllabusContainer;
-                         } else {
-                            console.error(`Injection failed for ${subjectName}: Could not find final syllabus container.`);
-                            return;
-                         }
-                     }
-                     // Recurse to populate content and attach listeners
-                     return renderSyllabusPanel();
+                     // Must exit and let the DOM update naturally, relying on the next tick
+                     // of the JS engine (which occurs when loadSubjectPanel calls render()).
+                     return;
                  }
                  
                  // If the inner syllabus container (which holds the checklist content) is missing, exit.
+                 // We look for the fully loaded container structure here.
                  if (!syllabusContainer) {
+                     // Try a slight delay if this fails, indicating a race condition, but primarily trust the replacement logic.
+                     setTimeout(renderSyllabusPanel, 10);
                      return;
                  }
 
