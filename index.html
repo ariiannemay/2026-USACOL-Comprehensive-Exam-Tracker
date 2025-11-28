@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 Review Tracker</title>
-    <!-- FIX 1: Updated favicon link -->
-    <link rel="icon" href="https://static.vecteezy.com/system/resources/previews/020/324/105/non_2x/law-icon-vector.jpg">
+    <!-- FIX 2: Updated favicon link to the new PNG -->
+    <link rel="icon" href="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -263,6 +263,12 @@
             box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.1);
             padding: 2px;
         }
+        /* Dynamic color classes for sparkline fill (used in JS) */
+        .bg-progress-red { background-color: #ef4444; }
+        .bg-progress-orange { background-color: #f97316; }
+        .bg-progress-yellow { background-color: #facc15; }
+        .bg-progress-green { background-color: #10b981; }
+
         .sparkline-fill {
             height: 100%;
             transition: width 0.5s ease-in-out;
@@ -757,7 +763,8 @@
                     // 3. Re-attach event listeners to the new, stable DOM elements
                     const currentLogic = SUBJECT_LOGIC_MAP[subjectName];
                     
-                    // Use a slight delay to ensure the outerHTML replacement is complete
+                    // CRITICAL FIX 3: Increase delay to ensure DOM is fully ready before rendering complex content
+                    // The repeated rendering failure suggests we need to guarantee all ancestor elements are processed.
                     setTimeout(() => {
                         document.getElementById(`export-progress-btn-${subjectName}`)?.addEventListener('click', currentLogic.exportProgress);
                         document.getElementById(`import-progress-btn-${subjectName}`)?.addEventListener('click', currentLogic.importProgress);
@@ -766,7 +773,7 @@
                         // 4. Call render to populate content inside the injected structure
                         currentLogic.render();
 
-                    }, 50); 
+                    }, 200); // Increased delay to 200ms
                 } else {
                     console.error(`Failed to find initialization function for ${subjectName}`);
                 }
@@ -887,6 +894,8 @@
                 const subjectLogic = SUBJECT_LOGIC_MAP[item.subjectName];
                 
                 let progressPercent = '0.0';
+                let progressFraction = 0;
+                
                 if (subjectLogic) {
                     const progress = subjectLogic.getProgress();
                     const syllabusData = subjectLogic.SYLLABUS_DATA;
@@ -901,8 +910,22 @@
                             currentSubjectDone++;
                         }
                     });
-                    progressPercent = currentSubjectTrackable > 0 ? ((currentSubjectDone / currentSubjectTrackable) * 100).toFixed(1) : '0.0';
+                    progressFraction = currentSubjectTrackable > 0 ? (currentSubjectDone / currentSubjectTrackable) : 0;
+                    progressPercent = (progressFraction * 100).toFixed(1);
                 }
+                
+                // FIX 4: Determine dynamic color class for table sparkline based on progressFraction
+                let progressClass;
+                if (progressFraction <= 0.25) {
+                    progressClass = 'bg-progress-red';
+                } else if (progressFraction <= 0.5) {
+                    progressClass = 'bg-progress-orange';
+                } else if (progressFraction <= 0.75) {
+                    progressClass = 'bg-progress-yellow';
+                } else {
+                    progressClass = 'bg-progress-green';
+                }
+
 
                 let dateCell = '';
                 // Only render the date cell once per day (rowspan 2)
@@ -926,7 +949,7 @@
                         <td>
                             <div class="text-center text-sm font-semibold mb-0.5">${progressPercent}%</div>
                             <div id="sparkline-${item.subjectName}" class="progress-bar-sparkline">
-                                <div class="sparkline-fill bg-${item.subjectName}" style="width: ${progressPercent}%;"></div>
+                                <div class="sparkline-fill ${progressClass}" style="width: ${progressPercent}%;"></div>
                             </div>
                         </td>
                     </tr>
