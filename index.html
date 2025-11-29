@@ -381,19 +381,17 @@
 
         /* CUSTOM CHECKMARK DRAWING (Always white) */
         .checklist-grid input[type="checkbox"]:checked::before {
-            content: '';
-            display: block;
-            width: 0.25rem;
-            height: 0.5rem;
-            border: solid white;
-            border-width: 0 2px 2px 0;
-            /* *** FINAL ADJUSTMENT FOR CENTERING (Vertical + Horizontal fine tune) *** */
-            transform: rotate(45deg) translate(0.33rem, 0.05rem); 
-            /* Ensure the checkmark is positioned relative to the box */
-            position: absolute;
-            left: 0;
-            top: 0;
+        content: '';
+        position: absolute;
+        width: 0.25rem;
+        height: 0.5rem;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -55%) rotate(45deg);
         }
+
 
         /* End Checkbox Fixes */
         
