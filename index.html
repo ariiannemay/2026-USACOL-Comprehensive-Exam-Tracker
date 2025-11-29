@@ -93,7 +93,8 @@
         /* Footer Text */
         .dashboard-footer-text {
              font-size: 0.65rem; /* Smaller font size */
-             margin-top: 0.1rem; /* Reduced space above footer */
+             /* Adjusted to reduce space above the footer globally */
+             margin-top: 0.5rem; 
         }
         /* New custom coloring classes */
         .text-miss { color: #000000; }
@@ -104,7 +105,8 @@
         .global-app-footer {
             text-align: center;
             padding: 1rem 0;
-            margin-top: 1rem;
+            /* Reduced margin-top for the footer itself */
+            margin-top: 0.5rem; 
         }
         /* Font styling for the quote and date (using Cormorant Garamond) */
         .global-app-footer .quote, .global-app-footer .signature .date-text-signature {
@@ -385,8 +387,8 @@
             height: 0.5rem;
             border: solid white;
             border-width: 0 2px 2px 0;
-            /* Transforms the checkmark into a tick and centers it */
-            transform: rotate(45deg) translate(0.33rem, 0.05rem);
+            /* *** FINAL ADJUSTMENT FOR CENTERING (Vertical + Horizontal fine tune) *** */
+            transform: rotate(45deg) translate(0.33rem, 0.05rem); 
             /* Ensure the checkmark is positioned relative to the box */
             position: absolute;
             left: 0;
@@ -763,6 +765,7 @@
             </div>
 
             <!-- 5. GLOBAL DATA MANAGEMENT BUTTONS (UPDATED) -->
+            <!-- ADDED MT-6 (margin-top) for extra spacing -->
             <div class="max-w-3xl mx-auto mt-6 mb-6 flex space-x-3 px-2 sm:px-0">
                 <button onclick="exportAllData()" class="flex-1 px-3 py-2 bg-green-600 text-white font-semibold text-sm rounded-lg shadow-lg hover:bg-green-700 transition duration-150 uppercase flex items-center justify-center">
                     <i data-lucide="download-cloud" class="w-4 h-4 mr-1"></i> Export All Data
@@ -1163,6 +1166,14 @@
             const centerFontFamily = 'Bebas Neue, sans-serif'; 
             // --- END STYLE CHANGES FOR CENTER TEXT (Request 3) ---
 
+            // *** ADDED: Calculate total topics for display ***
+            let totalTopics = 0;
+            Object.values(SUBJECT_LOGIC_MAP).forEach(logic => {
+                const mainTopics = logic.SYLLABUS_DATA.filter(t => t.depth === 2 && t.trackable);
+                totalTopics += mainTopics.length;
+            });
+            const totalTopicsText = `Total Topics: ${totalTopics}`;
+            // **********************************************
 
             // Reduced size for compactness
             const size = 180; 
@@ -1214,7 +1225,7 @@
                     <!-- Inner Percentage Text (Custom styles applied) -->
                     <text 
                         x="${center}" 
-                        y="${center}" 
+                        y="${center - 10}" 
                         text-anchor="middle" 
                         alignment-baseline="central" 
                         font-size="${centerFontSize}"
@@ -1225,6 +1236,22 @@
                     >
                         ${(donePercent).toFixed(0)}%
                     </text>
+                    <!-- *** ADDED: Total Topics Count *** -->
+                     <text 
+                        x="${center}" 
+                        y="${center + 20}" 
+                        text-anchor="middle" 
+                        alignment-baseline="central" 
+                        font-size="0.6rem"
+                        font-weight="bold" 
+                        fill="#4a5568"
+                        font-family="Inter, sans-serif" 
+                        style="text-shadow: none;"
+                    >
+                        ${totalTopicsText}
+                    </text>
+                    <!-- ****************************** -->
+
                 </svg>
             `;
         }
@@ -1780,8 +1807,10 @@
                     btn.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4"></i>`; 
                     
                     // Final button size
-                    btn.classList.remove('w-8', 'h-8');
-                    btn.classList.add('w-7', 'h-7', 'p-0', 'flex', 'items-center', 'justify-center', 'shadow-md'); 
+                    // *** ADJUSTED SIZE HERE: w-6 h-6 (1.5rem square) ***
+                    btn.classList.remove('w-8', 'h-8', 'w-7', 'h-7'); 
+                    btn.classList.add('w-6', 'h-6', 'p-0', 'flex', 'items-center', 'justify-center', 'shadow-md'); 
+                    // ****************************************************
 
                     if (lucide && lucide.createIcons) { lucide.createIcons(); }
                 }
@@ -1797,16 +1826,19 @@
                 const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
                 const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
                 
+                // *** 1. REMOVED WEIGHTED PERCENTAGE DISPLAY FROM TITLE ***
+                const cleanTitle = title.replace(/\s*\([\d\s]*% of Total\)/, '');
+                
                 return `
                 <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container ${themeClass}" id="subject-tracker-panel-${subjectName}">
                     <details class="syllabus-panel">
                         <summary class="syllabus-summary" id="summary-${subjectName}">
                             <div class="syllabus-summary-title-row">
                                 <div class="flex items-center">
-                                    <i data-lucide="${icon}" class="w-6 h-6 mr-3"></i>${title}
+                                    <i data-lucide="${icon}" class="w-6 h-6 mr-3"></i>${cleanTitle}
                                 </div>
                                 <div class="flex items-center text-xs">
-                                    (${title.match(/\((.*?)\)/)?.[1] || '0%'} of Total)
+                                    <!-- REMOVED: (${title.match(/\((.*?)\)/)?.[1] || '0%'} of Total) -->
                                     <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
                                 </div>
                             </div>
@@ -1839,8 +1871,9 @@
                                 
                                 <!-- RELOCATED & SIMPLIFIED COLLAPSE BUTTON -->
                                 <div class="flex items-center justify-center pt-1">
-                                    <button id="collapse-all-btn-${subjectName}" class="w-5 h-5 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
-                                        <!-- Icon size adjusted by updateCollapseButtonText (w-4 h-4) -->
+                                    <!-- This uses the w-6 h-6 size set in updateCollapseButtonText -->
+                                    <button id="collapse-all-btn-${subjectName}" class="w-7 h-7 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
+                                        <!-- Icon size adjusted by updateCollapseButtonText (w-4 h-4 is fine) -->
                                         <i data-lucide="chevrons-down" class="w-4 h-4"></i>
                                     </button>
                                 </div>
