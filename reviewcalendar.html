@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REVIEW CALENDAR</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel-stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        :root {
+            --color-primary-dark: #6D1B1B; 
+            --color-secondary-gold: #FECE1B; 
+            --color-light-bg: #F4F7F9;
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: var(--color-light-bg);
+            color: #1f2937;
+        }
+        .calendar-wrapper {
+            max-width: 1280px; 
+            margin: 0 auto; 
+            padding: 0 1rem; 
+            margin-top: 0; 
+            padding-bottom: 1.9rem;
+            overflow-x: hidden; 
+        }
+        #calendar-grid-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr; 
+            gap: 1.5rem;
+            align-items: start; 
+            padding: 0.25rem 0.5rem 0.5rem 0.5rem;  
+        }
+        #calendar-details {
+            border-radius: 0.75rem; 
+            overflow: hidden; 
+        }
+        #calendar-details summary {
+            background-color: var(--color-primary-dark);
+            color: white;
+            border-bottom: 3px solid var(--color-secondary-gold);
+            padding: 0.75rem 1.5rem; 
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+        .toggle-indicator {
+             transition: transform 0.2s;
+        }
+        
+        #notepad-sidebar {
+            background-color: #FFF;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            padding: 1.5rem;
+            display: flex; 
+            flex-direction: column; 
+            border: 1px solid #e5e7eb;
+            grid-column: 2; 
+        }
+        #calendar-details[data-calendar-ready="true"] #notepad-sidebar {
+            min-height: var(--calendar-height, 450px); 
+        }
+        
+        #notepad-sidebar h3 {
+             background-color: var(--color-primary-dark);
+             color: white;
+             border-radius: 0.375rem 0.375rem 0 0; 
+             padding: 0.4rem 0.75rem; 
+             margin: calc(-1.5rem - 1px) -1.5rem 0.75rem -1.5rem; 
+             text-transform: uppercase;
+             font-weight: 800;
+             font-size: 0.9rem;
+             border-bottom: 3px solid var(--color-secondary-gold);
+        }
+        
+        #review-notes {
+            width: 100%;
+            flex-grow: 1; 
+            padding: 1.5rem 1.0rem 1.0rem 1.0rem; 
+            font-size: 0.95rem;
+            border: none; 
+            border-radius: 0.5rem;
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+            resize: none;
+            
+            font-family: 'Dancing Script', cursive; 
+            font-weight: 600; 
+            line-height: 1.95; 
+            color: #333; 
+            overflow-y: auto;
+            
+            background-color: #f7f7f7; 
+            background-image: url('https://img.freepik.com/free-vector/blank-cream-notepaper-design_53876-97377.jpg?semt=ais_hybrid&w=740&q=80');
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        #review-notes::placeholder {
+            font-family: 'Dancing Script', cursive; 
+            font-weight: 700;
+            color: #b33a3a; 
+            opacity: 0.8;
+            transform: translateY(-5px); 
+            display: block;
+        }
+        /* Calendar Content */
+        #calendar-content {
+            grid-column: 1; 
+            padding: 0; 
+        }
+        /* Calendar Card Container */
+        #calendar-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 0; 
+        }
+        /* FullCalendar Toolbar Styling */
+        .fc-toolbar { 
+            padding: 0.1rem 0.75rem; 
+            background-color: var(--color-primary-dark); 
+            margin-bottom: 0; 
+            border: 0px solid var(--color-secondary-gold);
+            color: white;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem; 
+        }
+        
+        #customMonthTitle {
+            color: white; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            font-size: 1.4em; 
+            padding: 0.3em 0.6em; 
+            margin-right: 0.5rem;
+            font-family: inherit; 
+        }
+        
+        .fc-widget-header {
+            background-color: var(--color-primary-dark) !important; 
+            color: white !important;
+            text-transform: uppercase !important;
+            font-weight: 700 !important;
+            padding: 0.05rem 0; 
+            height: 100%; 
+        }
+        
+        .fc-view-container .fc-view > table {
+            border-top: none !important;
+        }
+        .fc-toolbar + div { 
+            border-top: none !important;
+        }
+        .fc-head {
+            border-top: none !important;
+            border-bottom: 3px solid var(--color-secondary-gold) !important;
+        }
+        #calendar {
+             padding: 0 !important;
+        }
+        .fc-view-container {
+             border-top: none !important;
+        }
+        .fc-unthemed, .fc-unthemed table {
+             border-top: none !important;
+             border-color: transparent !important;
+        }
+        .fc-unthemed td, .fc-unthemed th {
+             border-color: #e5e7eb; 
+        }
+        
+        
+        #dateJump {
+            display: none !important;
+            visibility: hidden !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #dateJump.temp-visible {
+             display: block !important;
+             visibility: visible !important;
+             position: fixed !important; 
+             z-index: 9999;
+             width: 200px;
+             height: 40px;
+             opacity: 0.01; 
+             pointer-events: auto;
+        }
+        
+        .fc-toolbar .fc-right {
+             flex-grow: 1; 
+             display: flex;
+             justify-content: flex-end; 
+             margin: 0 !important;
+             width: auto !important; 
+        }
+        .fc-toolbar .fc-button-group:last-child {
+            margin-left: 0.5rem;
+        }
+        .fc-toolbar .fc-button, #jumpToDateButton {
+            padding: 0.3em 0.6em !important;
+            line-height: 1.2 !important;
+            font-size: 0.75rem !important; 
+            
+            background-color: white !important;
+            color: var(--color-primary-dark) !important;
+            border-color: var(--color-primary-dark) !important; 
+            box-shadow: none; 
+            text-transform: uppercase;
+            font-weight: 700;
+            border-radius: 0.25rem;
+            margin-left: 0.5rem; 
+        }
+        #jumpToDateButton {
+            background-color: var(--color-secondary-gold) !important;
+            color: var(--color-primary-dark) !important;
+            border-color: var(--color-primary-dark) !important;
+        }
+        
+        .fc-toolbar .fc-button:hover:not(.fc-state-active), #jumpToDateButton:hover {
+            background-color: #f0f0f0 !important;
+            color: var(--color-primary-dark) !important;
+        }
+        #jumpToDateButton:hover {
+            filter: brightness(0.9);
+        }
+        .fc-toolbar .fc-state-active, 
+        .fc-toolbar .fc-state-active:hover {
+            background-color: var(--color-secondary-gold) !important; 
+            color: var(--color-primary-dark) !important; 
+            border-color: var(--color-primary-dark) !important; 
+        }
+        .fc-toolbar .fc-today-button.fc-state-active {
+            background-color: var(--color-secondary-gold) !important; 
+            color: var(--color-primary-dark) !important; 
+        }
+        
+        .fc-day-number {
+            display: inline-block;
+            background-color: transparent;
+            color: #4b5563; 
+            font-weight: 700;
+            padding: 2px 4px;
+            margin-right: 0; 
+            float: right; 
+            line-height: 1.2;
+            font-size: 0.9rem; 
+        }
+        
+        .fc-other-month .fc-day-number {
+             color: #9ca3af; 
+             background-color: transparent;
+        }
+        .fc-event { 
+            border-radius: 0.25rem !important;
+            border: 1px solid rgba(0,0,0,0.1);
+            font-size: 0.7rem; 
+            font-weight: 600;
+            padding: 2px 5px;
+            white-space: normal;
+            text-transform: uppercase; 
+        }
+        .fc-event-title-wrap {
+            display: flex;
+            align-items: center;
+        }
+        .event-status-icon {
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            width: 1.25rem;
+            text-align: center;
+        }
+        .event-icon-book { color: white; } 
+        
+        @media (max-width: 1024px) {
+            #calendar-grid-container {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+            }
+            #notepad-sidebar {
+                order: 2; 
+                grid-column: 1;
+                min-height: 400px;
+            }
+            #calendar-content {
+                grid-column: 1;
+                order: 1;
+            }
+            .fc-toolbar {
+                font-size: 0.75rem;
+                flex-wrap: wrap; 
+                justify-content: center;
+            }
+            .fc-toolbar .fc-left, .fc-toolbar .fc-right {
+                flex-basis: 100%;
+                justify-content: center;
+                margin-bottom: 0.5rem;
+            }
+            .fc-toolbar .fc-right {
+                order: 3; 
+            }
+        }
+        
+        .modal { z-index: 1000; background-color: rgba(0, 0, 0, 0.75); }
+        .modal-content { 
+            background-color: white !important; 
+            padding: 1.5rem; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); 
+            min-width: 300px; 
+            width: 90%; 
+            max-width: 500px; 
+        }
+        .syllabus-select-wrapper select { 
+            min-height: 200px; 
+        }
+        
+    </style>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+</head>
+<body class="min-h-screen">
+    <div id="app-container" class=""> 
+        <div class="calendar-wrapper">
+            <details id="calendar-details" class="m-4 bg-white rounded-xl shadow-lg border border-gray-300" open>
+                <summary class="flex justify-between items-center p-4 font-bold text-lg cursor-pointer select-none">
+<div class="summary-title-content flex-grow text-center flex items-center justify-center gap-2">
+    <i class="fa-solid fa-calendar-days"></i>
+    <span>REVIEW CALENDAR</span>
+    <i class="fa-solid fa-calendar-days"></i>
+</div>
+                    <span class="text-white text-sm toggle-indicator">
+                        <i class="fa-solid fa-chevron-down"></i> </span>
+                </summary>
+                
+                <div id="calendar-grid-container"> 
+                    
+                    <div id="calendar-content">
+                        <div id='calendar-card'>
+                            <div class="fc-toolbar fc-header-toolbar flex justify-between items-center bg-primary-dark p-2 rounded-lg border-1 border-secondary-gold">
+                                <div class="fc-left flex items-center">
+                                    <span id="customMonthTitle" class="text-secondary-gold font-extrabold text-lg"></span>
+                                    <div class="fc-button-group ml-4">
+                                        <button type="button" class="fc-today-button fc-button fc-state-default fc-corner-left fc-corner-right" onclick="setActiveButton(this, 'today'); $('#calendar').fullCalendar('today')">today</button>
+                                    </div>
+                                    <div class="fc-button-group ml-1">
+                                        <button type="button" class="fc-month-button fc-button fc-state-default fc-corner-left" onclick="setActiveButton(this); $('#calendar').fullCalendar('changeView', 'month')">month</button>
+                                        <button type="button" class="fc-basicWeek-button fc-button fc-state-default" onclick="setActiveButton(this); $('#calendar').fullCalendar('changeView', 'basicWeek')">week</button>
+                                        <button type="button" class="fc-basicDay-button fc-button fc-state-default fc-corner-right" onclick="setActiveButton(this); $('#calendar').fullCalendar('changeView', 'basicDay')">day</button>
+                                    </div>
+                                    <button id="jumpToDateButton" type="button" onclick="toggleDateJumpPicker()" class="fc-button fc-state-default font-inter ml-4">JUMP TO DATE</button>
+                                </div>
+                                <div class="fc-right flex items-center">
+                                    <div class="fc-button-group">
+                                        <button type="button" class="fc-prev-button fc-button fc-state-default fc-corner-left" onclick="$('#calendar').fullCalendar('prev')"><i class="fa-solid fa-chevron-left"></i></button>
+                                        <button type="button" class="fc-next-button fc-button fc-state-default fc-corner-right" onclick="$('#calendar').fullCalendar('next')"><i class="fa-solid fa-chevron-right"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id='calendar'></div>
+                        </div>
+                    </div>
+                    <div id="notepad-sidebar">
+                        <h3 class="text-xl font-bold uppercase">
+                            <i class="fa-solid fas fa-pencil-alt mr-2"></i>NOTES
+                        </h3>
+                        
+                        <div class="flex space-x-2 mb-3">
+                             <button onclick="undoNotes()" class="text-xs px-2 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-150 flex items-center" title="Undo Last Change">
+                                <i class="fa-solid fa-undo mr-1"></i> Undo
+                            </button>
+                            <button onclick="redoNotes()" class="text-xs px-2 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-150 flex items-center" title="Redo Last Undo">
+                                <i class="fa-solid fa-redo mr-1"></i> Redo
+                            </button>
+                            <button onclick="clearNotes()" class="text-xs px-2 py-1 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition duration-150 flex items-center" title="Clear All Notes">
+                                <i class="fa-solid fa-eraser mr-1"></i> Clear
+                            </button>
+                             <button onclick="copyNotes()" class="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded-md hover:bg-blue-200 transition duration-150 flex items-center" title="Copy Notes to Clipboard">
+                                <i class="fa-solid fa-copy mr-1"></i> Copy
+                            </button>
+                            </div>
+                        <textarea 
+                            id="review-notes" 
+                            placeholder="Start writing your review thoughts, deadlines, or checklists here..."
+                            oninput="saveNotes()"
+                        ></textarea>
+                    </div>
+                    
+                </div>
+            </details>
+        </div>
+        
+        <div id="topicModal" class="modal fixed inset-0 flex items-center justify-center hidden">
+            <div class="modal-content">
+                <h2 id="modalTitle" class="text-xl font-bold mb-4 text-gray-800">SCHEDULE NEW EVENT OR TOPIC</h2>
+                <input type="hidden" id="topicEventId">
+                <input type="hidden" id="originalStart">
+                <input type="hidden" id="originalEnd">
+                
+                <div class="mb-4">
+                    <label for="eventNameInput" class="block text-sm font-medium text-gray-700">1. EVENT NAME (FOR REST DAYS, BIRTHDAYS, ETC.)</label>
+                    <input type="text" id="eventNameInput" placeholder="Optional: Enter a custom event name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-green-600 focus:ring focus:ring-green-600 focus:ring-opacity-50">
+                </div>
+
+                <div class="mb-4">
+                    <label for="subjectSelect" class="block text-sm font-medium text-gray-700">2. OR: SELECT SUBJECT (FOR STUDY TASKS)</label>
+                    <select id="subjectSelect" onchange="populateTopics()" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-600 focus:ring focus:ring-red-600 focus:ring-opacity-50 p-2 border">
+                        <option value="">-- SELECT A SUBJECT --</option>
+                        </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="topicSelect" class="block text-sm font-medium text-gray-700">3. SELECT TOPIC/TASK (DEPTH 1)</label>
+                    <div class="syllabus-select-wrapper">
+                        <select id="topicSelect" size="8" class="block w-full border-gray-300 focus:border-red-600 focus:ring focus:ring-red-600 focus:ring-red-600 focus:ring-opacity-50 text-sm p-2 border">
+                            <option value="">-- SELECT A TOPIC --</option>
+                            </select>
+                    </div>
+                    <p class="text-xs text-red-500 mt-1" id="topic-error" hidden>PLEASE SELECT A SPECIFIC TOPIC.</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="topicStart" class="block text-sm font-medium text-gray-700">START DATE</label>
+                        <input type="date" id="topicStart" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                    </div>
+                    <div>
+                        <label for="topicEnd" class="block text-sm font-medium text-gray-700">END DATE (OPTIONAL)</label>
+                        <input type="date" id="topicEnd" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                    </div>
+                </div>
+                <div class="flex justify-between items-center mt-6">
+                    <button onclick="closeTopicModal()" class="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-150">CANCEL</button>
+                    <div class="flex space-x-2">
+                        <button id="deleteTopicBtn" onclick="deleteTopicTask()" class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 transition duration-150 hidden">DELETE</button>
+                        <button id="saveTopicBtn" onclick="saveTopicTask()" class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition duration-150">SCHEDULE TASK</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div id="custom-alert-modal" class="modal fixed inset-0 flex items-center justify-center hidden">
+            <div class="modal-content max-w-sm p-6 rounded-xl text-center">
+                <h3 id="alertTitle" class="text-lg font-bold mb-3 text-gray-800">ALERT</h3>
+                <p id="alertMessage" class="text-sm text-gray-700 mb-4"></p>
+                <div class="flex justify-end">
+                    <button onclick="closeCustomAlert()" class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition duration-150">OK</button>
+                </div>
+            </div>
+        </div>
+        <input type="date" id="dateJump" onchange="jumpToDate(this.value)"> 
+        
+    </div>
+    
+    <script>
+        const CONSOLIDATED_SYLLABUS = {
+            poli: {
+                title: 'POLITICAL AND PUBLIC INTERNATIONAL LAW',
+                shortTitle: 'POLI LAW',
+                color: '#795548', 
+                data: [
+                    {id: 5001, topic: "I. BASIC CONCEPTS", depth: 1, trackable: true},
+                    {id: 5014, topic: "II. NATIONAL TERRITORY", depth: 1, trackable: true},
+                    {id: 5018, topic: "III. CITIZENSHIP", depth: 1, trackable: true},
+                    {id: 5025, topic: "IV. LEGISLATIVE DEPARTMENT", depth: 1, trackable: true},
+                    {id: 5047, topic: "V. EXECUTIVE DEPARTMENT", depth: 1, trackable: true},
+                    {id: 5081, topic: "VI. JUDICIAL DEPARTMENT", depth: 1, trackable: true},
+                    {id: 5100, topic: "VII. CONSTITUTIONAL COMMISSIONS", depth: 1, trackable: true},
+                    {id: 5106, topic: "VIII. CONSTITUTIONAL RIGHTS", depth: 1, trackable: true},
+                    {id: 5161, topic: "IX. NATIONAL ECONOMY AND PATRIMONY", depth: 1, trackable: true},
+                    {id: 5168, topic: "X. ADMINISTRATIVE LAW", depth: 1, trackable: true},
+                    {id: 5184, topic: "XI. LAW ON PUBLIC OFFICERS", depth: 1, trackable: true},
+                    {id: 5212, topic: "XII. ELECTION LAW", depth: 1, trackable: true},
+                    {id: 5247, topic: "XIII. LOCAL GOVERNMENTS", depth: 1, trackable: true},
+                    {id: 5266, topic: "XIV. PUBLIC INTERNATIONAL LAW", depth: 1, trackable: true},
+                ]
+            },
+            comm: {
+                title: 'COMMERCIAL AND TAXATION LAWS',
+                shortTitle: 'COMM & TAX',
+                color: '#eab308', 
+                data: [
+                    {id: 4001, topic: 'I. BUSINESS ORGANIZATIONS', depth: 1, trackable: true},
+                    {id: 4105, topic: 'II. INSURANCE (P.D. NO. 612, AS AMENDED BY R.A. NO. 10607)', depth: 1, trackable: true},
+                    {id: 4118, topic: 'III. TRANSPORTATION', depth: 1, trackable: true},
+                    {id: 4133, topic: 'IV. BANKING', depth: 1, trackable: true},
+                    {id: 4168, topic: 'V. INTELLECTUAL PROPERTY – R.A. NO. 8293, AS AMENDED', depth: 1, trackable: true},
+                    {id: 4199, topic: 'VI. SPECIAL COMMERCIAL LAWS', depth: 1, trackable: true},
+                    {id: 4229, topic: 'VII. TAXATION LAW', depth: 1, trackable: true},
+                ]
+            },
+            civ: {
+                title: 'CIVIL LAW AND LAND TITLES AND DEEDS',
+                shortTitle: 'CIVIL LAW',
+                color: '#1e3a8a', 
+                data: [
+                    {id:3001,topic:"I. EFFECT AND APPLICATION OF LAWS",depth:1, trackable:true},
+                    {id:3022,topic:"II. PERSONS",depth:1, trackable:true},
+                    {id:3035,topic:"III. FAMILY RELATIONS",depth:1, trackable:true},
+                    {id:3068,topic:"IV. CIVIL REGISTER",depth:1, trackable:true},
+                    {id:3076,topic:"V. PROPERTY, OWNERSHIP, AND ITS MODIFICATIONS",depth:1, trackable:true},
+                    {id:3121,topic:"VI. LAND TITLES AND DEEDS",depth:1, trackable:true},
+                    {id:3143,topic:"VII. SUCCESSION",depth:1, trackable:true},
+                    {id:3154,topic:"VIII. OBLIGATIONS AND CONTRACTS",depth:1, trackable:true},
+                    {id:3201,topic:"IX. SPECIAL CONTRACTS",depth:1, trackable:true},
+                    {id:3253,topic:"X. QUASI-CONTRACTS",depth:1, trackable:true},
+                    {id:3262,topic:"XI. TORTS AND QUASI-DELICTS",depth:1, trackable:true},
+                    {id:3314,topic:"XII. DAMAGES",depth:1, trackable:true},
+                ]
+            },
+            lab: {
+                title: 'LABOR AND SOCIAL LEGISLATION',
+                shortTitle: 'LABOR LAW',
+                color: '#38761d', 
+                data: [
+                    {id:2001,topic:"I. BASIC PRINCIPLES AND CONCEPTS",depth:1, trackable:true},
+                    {id:2016,topic:"II. RECRUITMENT AND PLACEMENT",depth:1, trackable:true},
+                    {id:2037,topic:"III. EMPLOYMENT RELATIONSHIP",depth:1, trackable:true},
+                    {id:2055,topic:"V. LABOR STANDARDS",depth:1, trackable:true},
+                    {id:2097,topic:"V. LABOR RELATIONS",depth:1, trackable:true},
+                    {id:2118,topic:"VI. SUSPENSION AND TERMINATION OF EMPLOYMENT",depth:1, trackable:true},
+                    {id:2131,topic:"VII. SOCIAL LEGISLATION",depth:1, trackable:true},
+                    {id:2141,topic:"VIII. LABOR ADJUDICATION: JURISDICTION & REMEDIES",depth:1, trackable:true},
+                ]
+            },
+            crim: {
+                title: 'CRIMINAL LAW',
+                shortTitle: 'CRIM LAW',
+                color: '#b33a3a', 
+                data: [
+                    {id:1001,topic:"I. FUNDAMENTAL PRINCIPLES",depth:1, trackable:true},
+                    {id:1019,topic:"II. FELONIES AND CRIMINAL LIABILITY (RPC BOOK 1 AND RELATED LAWS)",depth:1, trackable:true},
+                    {id:1109,topic:"III. CRIMES AND THEIR PENALTIES (RPC BOOK 2 AND RELATED SPECIAL LAWS)",depth:1, trackable:true},
+                ]
+            },
+            rem: {
+                title: 'REMEDIAL LAW, LEGAL ETHICS, & LEGAL FORMS',
+                shortTitle: 'REM LAW',
+                color: '#674ea7', 
+                data: [
+                    {id:1,topic:"I. GENERAL PRINCIPLES",depth:1, trackable:true},
+                    {id:9,topic:"II. JURISDICTION",depth:1, trackable:true},
+                    {id:41,topic:"III. CIVIL PROCEDURE (RULES OF COURT, AS AMENDED BY A.M. NO. 19-10-20-SC)",depth:1, trackable:true},
+                    {id:156,topic:"V. PROVISIONAL REMEDIES",depth:1, trackable:true},
+                    {id:172,topic:"V. SPECIAL CIVIL ACTIONS",depth:1, trackable:true},
+                    {id:188,topic:"VI. SPECIAL PROCEEDINGS AND WRITS",depth:1, trackable:true},
+                    {id:215,topic:"VII. CRIMINAL PROCEDURE",depth:1, trackable:true},
+                    {id:333,topic:"VIII. EVIDENCE",depth:1, trackable:true},
+                    {id:412,topic:"IX. LEGAL AND JUDICIAL ETHICS",depth:1, trackable:true},
+                    {id:581,topic:"X. PRACTICAL EXERCISES",depth:1, trackable:true},
+                ]
+            }
+        };
+        let calendarInstance = null;
+        const CALENDAR_STORAGE_KEY = 'review_calendar_events';
+        const NOTEPAD_STORAGE_KEY = 'review_notepad_content'; 
+        const SUBJECT_KEYS = Object.keys(CONSOLIDATED_SYLLABUS);
+        const history = { stack: [], current: 0 };
+        const MAX_HISTORY = 30;
+        
+        function pushHistory(content) {
+            if (history.current < history.stack.length - 1) {
+                history.stack = history.stack.slice(0, history.current + 1);
+            }
+            history.stack.push(content);
+            if (history.stack.length > MAX_HISTORY) {
+                history.stack.shift(); 
+            }
+            history.current = history.stack.length - 1;
+        }
+        function loadNotes() {
+            const notes = localStorage.getItem(NOTEPAD_STORAGE_KEY);
+            $('#review-notes').val(notes || '');
+            if (notes) {
+                pushHistory(notes);
+            } else {
+                 pushHistory('');
+            }
+            history.current = history.stack.length - 1;
+        }
+        function saveNotes() {
+            const notes = $('#review-notes').val();
+            localStorage.setItem(NOTEPAD_STORAGE_KEY, notes);
+            
+            if (notes !== history.stack[history.current]) {
+                pushHistory(notes);
+            }
+        }
+        
+        function applyNotesContent(content) {
+            $('#review-notes').val(content);
+            localStorage.setItem(NOTEPAD_STORAGE_KEY, content);
+        }
+        window.undoNotes = function() {
+            if (history.current > 0) {
+                history.current--;
+                applyNotesContent(history.stack[history.current]);
+            } else {
+                 showCustomAlert("NO UNDO", "NO EARLIER HISTORY FOUND.");
+            }
+        }
+        window.redoNotes = function() {
+            if (history.current < history.stack.length - 1) {
+                history.current++;
+                applyNotesContent(history.stack[history.current]);
+            } else {
+                 showCustomAlert("NO REDO", "NO FUTURE HISTORY FOUND.");
+            }
+        }
+        window.clearNotes = function() {
+            if (confirm("ARE YOU SURE YOU WANT TO CLEAR ALL NOTES? THIS ACTION CAN BE UNDONE.")) {
+                applyNotesContent("");
+                pushHistory("");
+            }
+        }
+        window.copyNotes = function() {
+             const notes = $('#review-notes').val();
+             if (!notes) {
+                 showCustomAlert("COPY FAILED", "NO CONTENT TO COPY.");
+                 return;
+             }
+             const textarea = document.getElementById('review-notes');
+             textarea.select();
+             
+             try {
+                document.execCommand('copy');
+                showCustomAlert("COPY COMPLETE", "NOTES COPIED TO CLIPBOARD.");
+             } catch (err) {
+                showCustomAlert("COPY FAILED", "UNABLE TO COPY NOTES TO CLIPBOARD.");
+             }
+        }
+        function getExamDates() {
+            return [
+                { id: 1, dateKey: 'comp_exam_date_1', title: 'EXAM - DAY 1', color: 'var(--color-primary-dark)' },
+                { id: 2, dateKey: 'comp_exam_date_2', title: 'EXAM - DAY 2', color: 'var(--color-primary-dark)' },
+                { id: 3, dateKey: 'comp_exam_date_3', title: 'EXAM - DAY 3', color: 'var(--color-primary-dark)' }
+            ].map(exam => {
+                const defaultDate = moment().add(3, 'months').startOf('month').add(10 + exam.id, 'days').format('YYYY-MM-DD');
+                const dateString = localStorage.getItem(exam.dateKey) || defaultDate; 
+                return { 
+                    id: `exam-${exam.id}`, 
+                    title: exam.title.toUpperCase(), 
+                    start: dateString, 
+                    end: dateString, 
+                    allDay: true,
+                    backgroundColor: exam.color, 
+                    textColor: 'var(--color-secondary-gold)',
+                    borderColor: 'var(--color-secondary-gold)',
+                    className: 'exam-day-marker',
+                    editable: false 
+                };
+            });
+        }
+        
+        function showCustomAlert(title, message) {
+            $('#alertTitle').text(title.toUpperCase());
+            const formattedMessage = message.toUpperCase().replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            $('#alertMessage').html(formattedMessage);
+            $('#custom-alert-modal').removeClass('hidden').css('display', 'flex');
+        }
+        function closeCustomAlert() {
+            $('#custom-alert-modal').addClass('hidden').css('display', 'none');
+        }
+        function getEventsFromLocalStorage() {
+            try {
+                const data = localStorage.getItem(CALENDAR_STORAGE_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.error("ERROR READING CALENDAR FROM LOCAL STORAGE:", e);
+                return [];
+            }
+        }
+        function saveEventsToLocalStorage(events) {
+            try {
+                localStorage.setItem(CALENDAR_STORAGE_KEY, JSON.stringify(events));
+            } catch (e) {
+                console.error("ERROR SAVING CALENDAR TO LOCAL STORAGE:", e);
+                showCustomAlert("STORAGE ERROR", "COULD NOT SAVE EVENTS. LOCAL STORAGE MIGHT BE FULL.");
+            }
+        }
+        
+        function formatEventTitle(subjectKey, topicId) {
+            const subjectData = CONSOLIDATED_SYLLABUS[subjectKey];
+            if (!subjectData) return "INVALID SUBJECT";
+            const topic = subjectData.data.find(t => t.id == topicId);
+            if (!topic) return (subjectData.shortTitle || subjectData.title).toUpperCase();
+            
+            const topicText = topic.topic.toUpperCase(); 
+            const title = `${subjectData.shortTitle.toUpperCase()} - ${topicText}`;
+            
+            return title;
+        }
+        function generateUniqueId() {
+            return 'event-' + Date.now() + Math.random().toString(36).substring(2, 9);
+        }
+        function populateSubjectSelect() {
+            const select = $('#subjectSelect');
+            select.empty();
+            select.append('<option value="">-- SELECT A SUBJECT --</option>');
+            SUBJECT_KEYS.forEach(key => {
+                select.append(`<option value="${key}">${CONSOLIDATED_SYLLABUS[key].title.toUpperCase()}</option>`);
+            });
+            populateTopics(); 
+        }
+        function populateTopics(selectedTopicId = null) {
+            const subjectKey = $('#subjectSelect').val();
+            const select = $('#topicSelect');
+            select.empty();
+            $('#topic-error').attr('hidden', true);
+            
+            if (!subjectKey) {
+                select.append('<option value="">-- SELECT A SUBJECT FIRST --</option>');
+                select.prop('disabled', true);
+                return;
+            }
+            select.prop('disabled', false);
+            select.append('<option value="">-- SELECT A TOPIC --</option>');
+            const data = CONSOLIDATED_SYLLABUS[subjectKey].data;
+            const depth1Topics = data.filter(item => item.depth === 1 && item.trackable);
+            depth1Topics.forEach(item => {
+                const topicText = item.topic.toUpperCase();
+                const optionValue = `${item.id}|${topicText}`; 
+                const isSelected = item.id == selectedTopicId ? 'selected' : '';
+                
+                select.append(`<option value="${optionValue}" data-topic-id="${item.id}" ${isSelected}>${topicText}</option>`);
+            });
+            
+            if (selectedTopicId) {
+                const correctValue = select.find(`option[data-topic-id="${selectedTopicId}"]`).val();
+                if (correctValue) {
+                   select.val(correctValue);
+                }
+            }
+        }
+        window.openTopicModal = function(dateStr = null, event = null) {
+            $('#topicEventId').val('');
+            $('#topicStart').val(dateStr || moment().format('YYYY-MM-DD'));
+            $('#topicEnd').val('');
+            $('#subjectSelect').val('');
+            $('#eventNameInput').val(''); // NEW: Clear custom event name
+            $('#deleteTopicBtn').addClass('hidden');
+            $('#modalTitle').text('SCHEDULE NEW EVENT OR TOPIC');
+            $('#saveTopicBtn').text('SCHEDULE TASK');
+            $('#topic-error').attr('hidden', true);
+            
+            populateSubjectSelect(); 
+            if (event) {
+                $('#topicEventId').val(event.id);
+                $('#topicStart').val(event.start.format('YYYY-MM-DD'));
+                $('#topicEnd').val(event.end ? event.end.clone().subtract(1, 'days').format('YYYY-MM-DD') : '');
+                
+                // Load based on type
+                if (event.subjectKey === 'CUSTOM') {
+                    $('#eventNameInput').val(event.title); 
+                    $('#subjectSelect').val(''); 
+                    populateTopics();
+                } else {
+                    $('#subjectSelect').val(event.subjectKey);
+                    populateTopics(event.topicId); 
+                }
+
+                $('#modalTitle').text('EDIT SCHEDULED ITEM');
+                $('#saveTopicBtn').text('UPDATE ITEM');
+                $('#deleteTopicBtn').removeClass('hidden');
+            }
+            $('#topicModal').removeClass('hidden').css('display', 'flex');
+        };
+        window.closeTopicModal = function() {
+            $('#topicModal').addClass('hidden').css('display', 'none');
+            $('#calendar').fullCalendar('refetchEvents');
+        };
+        window.saveTopicTask = async function() {
+            const eventId = $('#topicEventId').val();
+            const eventName = $('#eventNameInput').val().trim(); // NEW: Custom event name
+            const subjectKey = $('#subjectSelect').val();
+            const selectedTopicValue = $('#topicSelect').val(); 
+            const start = $('#topicStart').val();
+            const end = $('#topicEnd').val();
+            
+            if (!start) {
+                showCustomAlert('MISSING DATE', 'PLEASE SELECT A START DATE.');
+                return;
+            }
+            
+            if (end && end < start) {
+                showCustomAlert('INVALID DATES', 'END DATE CANNOT BE BEFORE THE START DATE.');
+                return;
+            }
+            
+            let eventData;
+            let isSyllabusTask = subjectKey && selectedTopicValue && selectedTopicValue !== "";
+
+            if (!eventName && !isSyllabusTask) {
+                showCustomAlert('MISSING DETAILS', 'PLEASE ENTER AN EVENT NAME OR SELECT BOTH A SUBJECT AND A TOPIC FOR SCHEDULING.');
+                return;
+            }
+
+            // SCENARIO 1: Custom Event (If eventName is provided AND no subject is selected)
+            if (eventName && !isSyllabusTask) {
+                eventData = {
+                    id: eventId || generateUniqueId(),
+                    subjectKey: 'CUSTOM', // Unique identifier for custom events
+                    topicId: null,
+                    title: eventName.toUpperCase(),
+                    start: start,
+                    end: end ? moment(end).add(1, 'days').format('YYYY-MM-DD') : null,
+                    color: '#10b981', // Emerald green for non-syllabus events
+                    borderColor: '#059669',
+                    allDay: true
+                };
+            } 
+            // SCENARIO 2: Syllabus Topic
+            else if (isSyllabusTask) {
+                const [topicId, topicText] = selectedTopicValue.split('|');
+                const subjectInfo = CONSOLIDATED_SYLLABUS[subjectKey];
+                
+                eventData = {
+                    id: eventId || generateUniqueId(),
+                    subjectKey: subjectKey,
+                    topicId: topicId,
+                    title: formatEventTitle(subjectKey, topicId),
+                    start: start,
+                    end: end ? moment(end).add(1, 'days').format('YYYY-MM-DD') : null,
+                    color: subjectInfo.color,
+                    borderColor: subjectInfo.color,
+                    allDay: true
+                };
+            } else {
+                // Should be caught by the initial validation, but safety check
+                showCustomAlert('INVALID COMBINATION', 'PLEASE CHOOSE EITHER A CUSTOM EVENT NAME OR A SUBJECT/TOPIC, BUT NOT BOTH.');
+                return;
+            }
+            
+            let events = getEventsFromLocalStorage();
+            
+            if (eventId) {
+                const index = events.findIndex(e => e.id === eventId);
+                if (index !== -1) {
+                    events[index] = eventData;
+                }
+            } else {
+                events.push(eventData);
+            }
+            
+            saveEventsToLocalStorage(events);
+            closeTopicModal();
+            $('#calendar').fullCalendar('refetchEvents');
+        };
+        window.deleteTopicTask = function() {
+            const eventId = $('#topicEventId').val();
+            if (!eventId) return;
+            if (confirm("ARE YOU SURE YOU WANT TO DELETE THIS SCHEDULED TASK?")) {
+                let events = getEventsFromLocalStorage();
+                events = events.filter(e => e.id !== eventId);
+                
+                saveEventsToLocalStorage(events);
+                closeTopicModal();
+                $('#calendar').fullCalendar('refetchEvents');
+            }
+        };
+        
+        window.toggleDateJumpPicker = function() {
+            const input = document.getElementById('dateJump');
+            const button = document.getElementById('jumpToDateButton');
+            if (input && button) {
+                const rect = button.getBoundingClientRect();
+                
+                // Position the hidden input exactly over the button
+                input.style.position = 'fixed';
+                input.style.top = `${rect.top}px`;
+                input.style.left = `${rect.left}px`;
+                input.style.width = `${rect.width}px`;
+                input.style.height = `${rect.height}px`;
+
+                input.value = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
+                
+                input.classList.add('temp-visible');
+                
+                input.focus();
+                
+                // Add blur handler to hide it once interaction is over
+                input.onblur = function() {
+                    input.classList.remove('temp-visible');
+                    input.style.position = 'absolute'; 
+                }
+                
+                if (typeof input.showPicker === 'function') {
+                    // Slight delay to ensure positioning is stable before showing the native picker
+                    setTimeout(() => {
+                        input.showPicker();
+                    }, 50);
+                } else {
+                    input.click();
+                }
+                            }
+        };
+        
+        window.jumpToDate = function(dateString) {
+            document.getElementById('dateJump').classList.remove('temp-visible');
+            document.getElementById('dateJump').style.position = 'absolute';
+            if (dateString) {
+                $('#calendar').fullCalendar('gotoDate', dateString);
+            }
+        };
+        
+        function setActiveButton(targetButton, viewName) {
+            if (viewName !== 'today') {
+                $('.fc-month-button, .fc-basicWeek-button, .fc-basicDay-button').removeClass('fc-state-active');
+                $(targetButton).addClass('fc-state-active');
+            }
+        }
+        function initializeCalendar() {
+            
+            calendarInstance = $('#calendar').fullCalendar({
+                header: {
+                    left: '', 
+                    center: '', 
+                    right: '' 
+                },
+                defaultView: 'month',
+                defaultDate: moment().format('YYYY-MM-DD'),
+                navLinks: true, 
+                editable: true,
+                contentHeight: 450, 
+                timeFormat: 'H:mm', 
+                
+                viewRender: function(view, element) {
+                    const titleText = view.title.toUpperCase();
+                    $('#customMonthTitle').text(titleText);
+                    $('.fc-button').removeClass('fc-state-active');
+                    
+                    $(`.fc-${view.name}-button`).addClass('fc-state-active');
+                    
+                    const now = moment();
+                    const isTodayVisible = view.intervalStart.isSameOrBefore(now, 'day') && view.intervalEnd.isSameOrAfter(now, 'day');
+                    if (isTodayVisible) {
+                        if (view.name === 'month' && view.intervalStart.isSame(now, 'month')) {
+                            $('.fc-today-button').addClass('fc-state-active');
+                        } else if (view.name === 'basicWeek' || view.name === 'basicDay') {
+                            $('.fc-today-button').addClass('fc-state-active');
+                        }
+                    }
+                    $('.fc-head th').addClass('fc-widget-header');
+                    syncHeight();
+                },
+                
+                dayClick: function(date, jsEvent, view) {
+                    if ($(jsEvent.target).closest('.exam-day-marker').length) return;
+                    window.openTopicModal(date.format('YYYY-MM-DD'));
+                },
+                eventClick: function(calEvent, jsEvent, view) {
+                    jsEvent.preventDefault(); 
+                    if (calEvent.className && calEvent.className.includes('exam-day-marker')) {
+                         showCustomAlert("EXAM DAY", `THIS DATE IS MARKED AS **${calEvent.title}**. YOU CANNOT EDIT EXAM MARKERS.`);
+                         return;
+                    }
+                    window.openTopicModal(null, calEvent); 
+                },
+                events: function(start, end, timezone, callback) {
+                    const storedEvents = getEventsFromLocalStorage();
+                    
+                    const formattedEvents = storedEvents.map(e => ({
+                        id: e.id,
+                        title: e.title,
+                        start: e.start,
+                        end: e.end,
+                        allDay: true,
+                        backgroundColor: e.color,
+                        borderColor: e.borderColor,
+                        subjectKey: e.subjectKey,
+                        topicId: e.topicId,
+                    }));
+                    
+                    const examMarkers = getExamDates();
+                    const allEvents = formattedEvents.concat(examMarkers);
+                    callback(allEvents);
+                },
+                
+                eventDrop: function(event, delta, revertFunc) {
+                    if (event.editable === false || event.className.includes('exam-day-marker')) {
+                        revertFunc();
+                        return;
+                    }
+                    let events = getEventsFromLocalStorage();
+                    const index = events.findIndex(e => e.id === event.id);
+                    if (index !== -1) {
+                        events[index].start = event.start.format('YYYY-MM-DD');
+                        events[index].end = event.end ? event.end.format('YYYY-MM-DD') : null;
+                        saveEventsToLocalStorage(events);
+                        showCustomAlert("UPDATE SUCCESS", `TASK "**${event.title}**" MOVED TO ${event.start.format('MMM D, YYYY')}.`);
+                    } else {
+                        revertFunc();
+                        showCustomAlert("ERROR", "COULD NOT FIND EVENT TO UPDATE.");
+                    }
+                },
+                
+                eventResize: function(event, delta, revertFunc) {
+                    if (event.editable === false || event.className.includes('exam-day-marker')) {
+                        revertFunc();
+                    }
+                    let events = getEventsFromLocalStorage();
+                    const index = events.findIndex(e => e.id === event.id);
+                    if (index !== -1) {
+                         events[index].end = event.end ? event.end.format('YYYY-MM-DD') : null;
+                        saveEventsToLocalStorage(events);
+                        const endDisplay = event.end ? event.end.clone().subtract(1, 'days').format('MMM D, YYYY') : event.start.format('MMM D, YYYY');
+                        showCustomAlert("UPDATE SUCCESS", `TASK "**${event.title}**" RESIZED. NEW END DATE: ${endDisplay}.`);
+                    } else {
+                        revertFunc();
+                        showCustomAlert("ERROR", "COULD NOT FIND EVENT TO UPDATE.");
+                    }
+                },
+                
+                eventRender: function(event, element) {
+                    element.find('.fc-time').remove();
+                    if (event.className && event.className.includes('exam-day-marker')) {
+                        element.find('.fc-title').prepend(`<i class="fa-solid fa-graduation-cap mr-2"></i>`);
+                        return;
+                    }
+                    let iconClass = 'fa-book';
+                    if (event.subjectKey === 'CUSTOM') {
+                        iconClass = 'fa-calendar-check'; // Icon for custom/rest events
+                    }
+
+                    const iconHtml = `<span class="event-status-icon"><i class="fa-solid ${iconClass} event-icon-book"></i></span>`;
+                    element.find('.fc-title').wrap('<div class="fc-event-title-wrap"></div>').before(iconHtml);
+                },
+            });
+        }
+        function syncHeight() {
+            const calendarCard = document.getElementById('calendar-card');
+            const detailsElement = document.getElementById('calendar-details');
+            
+            if (calendarCard && detailsElement) {
+                const cardHeight = calendarCard.offsetHeight;
+                
+                detailsElement.style.setProperty('--calendar-height', `${cardHeight}px`);
+                detailsElement.setAttribute('data-calendar-ready', 'true');
+            }
+        }
+        
+        $(document).ready(function() {
+            loadNotes(); 
+            initializeCalendar();
+            
+            $(window).on('resize', syncHeight);
+            
+            $('#calendar-details').on('toggle', function() {
+                const indicator = $('.toggle-indicator i');
+                if ($(this).prop('open')) {
+                    indicator.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                    syncHeight(); 
+                } else {
+                    indicator.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                }
+            }).trigger('toggle'); 
+        });
+        
+    </script>
+</body>
+</html>
