@@ -21,8 +21,8 @@
     <style>
         /* Attempt to import a decorative font for the quote */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,600&display=swap');
-        
-        /* Calendar Specific Styles (Copied from module to ensure they are available globally) */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap');
+
         /* --- CORE AESTHETIC VARIABLES (FIXED MAROON) --- */
         :root {
             --color-primary-dark: #6D1B1B; 
@@ -30,47 +30,8 @@
             --color-light-bg: #F4F7F9;
         }
         /* Calendar Stylesheet START */
-        .calendar-wrapper { max-width: 1280px; margin: 0 auto; padding: 0 1rem; margin-top: 0; padding-bottom: 1.9rem; overflow-x: hidden; }
-        #calendar-grid-container { display: grid; grid-template-columns: 3fr 1fr; gap: 1.5rem; align-items: start; padding: 0.25rem 0.5rem 0.5rem 0.5rem; }
-        #calendar-details { border-radius: 0.75rem; overflow: hidden; }
-        #calendar-details summary { background-color: var(--color-primary-dark); color: white; border-bottom: 3px solid var(--color-secondary-gold); padding: 0.75rem 1.5rem; font-size: 1.125rem; font-weight: 700; }
-        .toggle-indicator { transition: transform 0.2s; }
-        #notepad-sidebar { background-color: #FFF; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 1.5rem; display: flex; flex-direction: column; border: 1px solid #e5e7eb; grid-column: 2; }
-        #calendar-details[data-calendar-ready="true"] #notepad-sidebar { min-height: var(--calendar-height, 450px); }
-        #notepad-sidebar h3 { background-color: var(--color-primary-dark); color: white; border-radius: 0.375rem 0.375rem 0 0; padding: 0.4rem 0.75rem; margin: calc(-1.5rem - 1px) -1.5rem 0.75rem -1.5rem; text-transform: uppercase; font-weight: 800; font-size: 0.9rem; border-bottom: 3px solid var(--color-secondary-gold); }
-        #review-notes { width: 100%; flex-grow: 1; padding: 1.5rem 1.0rem 1.0rem 1.0rem; font-size: 0.95rem; border: none; border-radius: 0.5rem; box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); resize: none; font-family: 'Dancing Script', cursive; font-weight: 600; line-height: 1.95; color: #333; overflow-y: auto; background-color: #f7f7f7; background-image: url('https://img.freepik.com/free-vector/blank-cream-notepaper-design_53876-97377.jpg?semt=ais_hybrid&w=740&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat; }
-        #review-notes::placeholder { font-family: 'Dancing Script', cursive; font-weight: 700; color: #b33a3a; opacity: 0.8; transform: translateY(-5px); display: block; }
-        #calendar-content { grid-column: 1; padding: 0; }
-        #calendar-card { background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 0; }
-        .fc-toolbar { padding: 0.1rem 0.75rem; background-color: var(--color-primary-dark); margin-bottom: 0; border: 0px solid var(--color-secondary-gold); color: white; border-radius: 0.5rem; display: flex; align-items: center; font-size: 0.85rem; }
-        #customMonthTitle { color: white; font-weight: 800; text-transform: uppercase; font-size: 1.4em; padding: 0.3em 0.6em; margin-right: 0.5rem; font-family: inherit; }
-        .fc-widget-header { background-color: var(--color-primary-dark) !important; color: white !important; text-transform: uppercase !important; font-weight: 700 !important; padding: 0.05rem 0; height: 100%; }
-        .fc-view-container .fc-view > table { border-top: none !important; }
-        .fc-toolbar + div { border-top: none !important; }
-        .fc-head { border-top: none !important; border-bottom: 3px solid var(--color-secondary-gold) !important; }
-        #calendar { padding: 0 !important; }
-        .fc-view-container { border-top: none !important; }
-        .fc-unthemed, .fc-unthemed table { border-top: none !important; border-color: transparent !important; }
-        .fc-unthemed td, .fc-unthemed th { border-color: #e5e7eb; }
-        #dateJump { display: none !important; visibility: hidden !important; position: absolute; top: 0; left: 0; }
-        #dateJump.temp-visible { display: block !important; visibility: visible !important; position: fixed !important; z-index: 9999; width: 200px; height: 40px; opacity: 0.01; pointer-events: auto; }
-        .fc-toolbar .fc-right { flex-grow: 1; display: flex; justify-content: flex-end; margin: 0 !important; width: auto !important; }
-        .fc-toolbar .fc-button-group:last-child { margin-left: 0.5rem; }
-        .fc-toolbar .fc-button, #jumpToDateButton { padding: 0.3em 0.6em !important; line-height: 1.2 !important; font-size: 0.75rem !important; background-color: white !important; color: var(--color-primary-dark) !important; border-color: var(--color-primary-dark) !important; box-shadow: none; text-transform: uppercase; font-weight: 700; border-radius: 0.25rem; margin-left: 0.5rem; }
-        #jumpToDateButton { background-color: var(--color-secondary-gold) !important; color: var(--color-primary-dark) !important; border-color: var(--color-primary-dark) !important; }
-        .fc-toolbar .fc-button:hover:not(.fc-state-active), #jumpToDateButton:hover { background-color: #f0f0f0 !important; color: var(--color-primary-dark) !important; }
-        #jumpToDateButton:hover { filter: brightness(0.9); }
-        .fc-toolbar .fc-state-active, .fc-toolbar .fc-state-active:hover { background-color: var(--color-secondary-gold) !important; color: var(--color-primary-dark) !important; border-color: var(--color-primary-dark) !important; }
-        .fc-toolbar .fc-today-button.fc-state-active { background-color: var(--color-secondary-gold) !important; color: var(--color-primary-dark) !important; }
-        .fc-day-number { display: inline-block; background-color: transparent; color: #4b5563; font-weight: 700; padding: 2px 4px; margin-right: 0; float: right; line-height: 1.2; font-size: 0.9rem; }
-        .fc-other-month .fc-day-number { color: #9ca3af; background-color: transparent; }
-        .fc-event { border-radius: 0.25rem !important; border: 1px solid rgba(0,0,0,0.1); font-size: 0.7rem; font-weight: 600; padding: 2px 5px; white-space: normal; text-transform: uppercase; }
-        .fc-event-title-wrap { display: flex; align-items: center; }
-        .event-status-icon { font-size: 0.8rem; margin-right: 0.5rem; width: 1.25rem; text-align: center; }
-        .event-icon-book { color: white; } 
-        .modal { z-index: 1000; background-color: rgba(0, 0, 0, 0.75); }
-        .modal-content { background-color: white !important; padding: 1.5rem; border-radius: 0.75rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); min-width: 300px; width: 90%; max-width: 500px; }
-        .syllabus-select-wrapper select { min-height: 200px; }
+        /* Minified/Consolidated Styles */
+        .calendar-wrapper{max-width:1280px;margin:0 auto;padding:0 1rem;margin-top:0;padding-bottom:1.9rem;overflow-x:hidden}.calendar-wrapper.mx-auto{max-width:1280px;padding:0}.calendar-wrapper.p-0{padding:0}#calendar-grid-container{display:grid;grid-template-columns:3fr 1fr;gap:1.5rem;align-items:start;padding:.25rem .5rem .5rem .5rem}#calendar-details{border-radius:.75rem;overflow:hidden}#calendar-details summary{background-color:var(--color-primary-dark);color:#fff;border-bottom:3px solid var(--color-secondary-gold);padding:.75rem 1.5rem;font-size:1.125rem;font-weight:700}.toggle-indicator{transition:transform .2s}#notepad-sidebar{background-color:#fff;border-radius:.75rem;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:1.5rem;display:flex;flex-direction:column;border:1px solid #e5e7eb;grid-column:2}#calendar-details[data-calendar-ready=true] #notepad-sidebar{min-height:var(--calendar-height,450px)}#notepad-sidebar h3{background-color:var(--color-primary-dark);color:#fff;border-radius:.375rem .375rem 0 0;padding:.4rem .75rem;margin:calc(-1.5rem - 1px) -1.5rem .75rem -1.5rem;text-transform:uppercase;font-weight:800;font-size:.9rem;border-bottom:3px solid var(--color-secondary-gold)}#review-notes{width:100%;flex-grow:1;padding:1.5rem 1rem 1rem 1rem;font-size:.95rem;border:none;border-radius:.5rem;box-shadow:inset 0 1px 4px rgba(0,0,0,.1);resize:none;font-family:'Dancing Script',cursive;font-weight:600;line-height:1.95;color:#333;overflow-y:auto;background-color:#f7f7f7;background-image:url(https://img.freepik.com/free-vector/blank-cream-notepaper-design_53876-97377.jpg?semt=ais_hybrid&w=740&q=80);background-size:cover;background-position:center;background-repeat:no-repeat}#review-notes::placeholder{font-family:'Dancing Script',cursive;font-weight:700;color:#b33a3a;opacity:.8;transform:translateY(-5px);display:block}#calendar-content{grid-column:1;padding:0}#calendar-card{background-color:#fff;border-radius:.75rem;box-shadow:0 4px 12px rgba(0,0,0,.1);padding:0}.fc-toolbar{padding:.1rem .75rem;background-color:var(--color-primary-dark);margin-bottom:0;border:0 solid var(--color-secondary-gold);color:#fff;border-radius:.5rem;display:flex;align-items:center;font-size:.85rem}#customMonthTitle{color:#fff;font-weight:800;text-transform:uppercase;font-size:1.4em;padding:.3em .6em;margin-right:.5rem;font-family:inherit}.fc-widget-header{background-color:var(--color-primary-dark) !important;color:#fff !important;text-transform:uppercase !important;font-weight:700 !important;padding:.05rem 0;height:100%}.fc-view-container .fc-view>table{border-top:none !important}.fc-toolbar + div{border-top:none !important}.fc-head{border-top:none !important;border-bottom:3px solid var(--color-secondary-gold) !important}#calendar{padding:0 !important}.fc-view-container{border-top:none !important}.fc-unthemed,.fc-unthemed table{border-top:none !important;border-color:transparent !important}.fc-unthemed td,.fc-unthemed th{border-color:#e5e7eb}#dateJump{display:none !important;visibility:hidden !important;position:absolute;top:0;left:0}#dateJump.temp-visible{display:block !important;visibility:visible !important;position:fixed !important;z-index:9999;width:200px;height:40px;opacity:.01;pointer-events:auto}.fc-toolbar .fc-right{flex-grow:1;display:flex;justify-content:flex-end;margin:0 !important;width:auto !important}.fc-toolbar .fc-button-group:last-child{margin-left:.5rem}.fc-toolbar .fc-button,#jumpToDateButton{padding:.3em .6em !important;line-height:1.2 !important;font-size:.75rem !important;background-color:#fff !important;color:var(--color-primary-dark) !important;border-color:var(--color-primary-dark) !important;box-shadow:none;text-transform:uppercase;font-weight:700;border-radius:.25rem;margin-left:.5rem}#jumpToDateButton{background-color:var(--color-secondary-gold) !important;color:var(--color-primary-dark) !important;border-color:var(--color-primary-dark) !important}.fc-toolbar .fc-button:hover:not(.fc-state-active),#jumpToDateButton:hover{background-color:#f0f0f0 !important;color:var(--color-primary-dark) !important}#jumpToDateButton:hover{filter:brightness(.9)}.fc-toolbar .fc-state-active,.fc-toolbar .fc-state-active:hover{background-color:var(--color-secondary-gold) !important;color:var(--color-primary-dark) !important;border-color:var(--color-primary-dark) !important}.fc-toolbar .fc-today-button.fc-state-active{background-color:var(--color-secondary-gold) !important;color:var(--color-primary-dark) !important}.fc-day-number{display:inline-block;background-color:transparent;color:#4b5563;font-weight:700;padding:2px 4px;margin-right:0;float:right;line-height:1.2;font-size:.9rem}.fc-other-month .fc-day-number{color:#9ca3af;background-color:transparent}.fc-event{border-radius:.25rem !important;border:1px solid rgba(0,0,0,.1);font-size:.6rem;font-weight:600;padding:2px 5px;white-space:normal;text-transform:uppercase}.fc-event-title-wrap{display:flex;align-items:center}.event-status-icon{font-size:.8rem;margin-right:.5rem;width:1.25rem;text-align:center}.event-icon-book{color:#fff}.modal{z-index:1000;background-color:rgba(0,0,0,.75)}.modal-content{background-color:#fff !important;padding:1.5rem;border-radius:.75rem;box-shadow:0 25px 50px -12px rgba(0,0,0,.5);min-width:300px;width:90%;max-width:500px}.syllabus-select-wrapper select{min-height:200px}
         /* Calendar Stylesheet END */
 
         /* -------------------------------------------------------------------------- */
@@ -80,298 +41,73 @@
         /* Global & Countdown Styles */
         body {
             font-family: 'Inter', sans-serif;
-            /* Ensure the body expands to push the footer down */
             display: flex; 
             flex-direction: column;
         }
         
-        /* Main content wrapper flex-grow pushes footer to bottom */
-        .main-content-wrapper {
-             flex-grow: 1;
-        }
-
-        .header-font {
-            font-family: 'Bebas Neue', sans-serif;
-            letter-spacing: .1em;
-        }
-
-        .header-bg {
-            background-color: #6d1b1b;
-            /* Deep Maroon (Unified Color) */
-            border-bottom: 5px solid #fece1b;
-        }
-
-        .card-header-bg {
-            background-color: #6d1b1b;
-            /* Deep Maroon (Unified Color) */
-        }
-
-        .time-value {
-            font-size: 1.75rem;
-            font-weight: 900;
-            line-height: 1;
-            color: #1a202c;
-        }
-
-        .time-label {
-            font-size: .875rem;
-            font-weight: 700;
-            color: #4a5568;
-            text-transform: uppercase;
-        }
-
-        .date-display-wrapper {
-            display: inline-block;
-            padding-bottom: 0;
-            cursor: pointer;
-            transition: color .2s;
-        }
-
-        .date-display-wrapper:hover .date-text {
-            color: #1d4ed8;
-        }
-
-        .date-text {
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 2.25rem;
-            font-weight: 800;
-            color: #000000;
-            text-transform: uppercase;
-            letter-spacing: .15em;
-            line-height: 1;
-        }
-        
-        /* Today Is Text Styles */
-        .today-date-text {
-            /* Force to one line, reduce font */
-            font-size: 0.9rem; 
-            white-space: nowrap; 
-            font-weight: 700;
-            line-height: 1;
-        }
-        
-        /* Footer Text */
-        .dashboard-footer-text {
-             font-size: 0.65rem; /* Smaller font size */
-             /* Adjusted to reduce space above the footer globally */
-             margin-top: 0.5rem; 
-        }
-        /* New custom coloring classes */
+        .main-content-wrapper { flex-grow: 1; }
+        .header-font { font-family: 'Bebas Neue', sans-serif; letter-spacing: .1em; }
+        .header-bg { background-color: #6d1b1b; border-bottom: 5px solid #fece1b; }
+        .card-header-bg { background-color: #6d1b1b; }
+        .time-value { font-size: 1.75rem; font-weight: 900; line-height: 1; color: #1a202c; }
+        .time-label { font-size: .875rem; font-weight: 700; color: #4a5568; text-transform: uppercase; }
+        .date-display-wrapper { display: inline-block; padding-bottom: 0; cursor: pointer; transition: color .2s; }
+        .date-display-wrapper:hover .date-text { color: #1d4ed8; }
+        .date-text { font-family: 'Bebas Neue', sans-serif; font-size: 2.25rem; font-weight: 800; color: #000000; text-transform: uppercase; letter-spacing: .15em; line-height: 1; }
+        .today-date-text { font-size: 0.9rem; white-space: nowrap; font-weight: 700; line-height: 1; }
+        .dashboard-footer-text { font-size: 0.65rem; margin-top: 0.5rem; }
         .text-miss { color: #000000; }
-        .text-atty { color: #674ea7; } /* Purple */
-        .text-cpa { color: #f472b6; } /* Pink */
-        
-        /* Global Footer Styling */
-        .global-app-footer {
-            text-align: center;
-            padding: 1rem 0;
-            /* Reduced margin-top for the footer itself */
-            margin-top: 0.5rem; 
-        }
-        /* Font styling for the quote and date (using Cormorant Garamond) */
-        .global-app-footer .quote, .global-app-footer .signature .date-text-signature {
-            font-family: 'Cormorant Garamond', 'Times New Roman', serif; 
-            font-style: italic;
-            font-weight: 600;
-            font-size: 1rem;
-            color: #4a5568;
-        }
-        /* Signature font style remains Inter italic/semibold, EXCEPT for date */
-        .global-app-footer .signature {
-            font-family: 'Inter', sans-serif;
-            font-style: italic;
-            font-weight: 600;
-            font-size: 0.75rem;
-            color: #4a5568;
-        }
+        .text-atty { color: #674ea7; }
+        .text-cpa { color: #f472b6; }
+        .global-app-footer { text-align: center; padding: 1rem 0; margin-top: 0.5rem; }
+        .global-app-footer .quote, .global-app-footer .signature .date-text-signature { font-family: 'Cormorant Garamond', 'Times New Roman', serif; font-style: italic; font-weight: 600; font-size: 1rem; color: #4a5568; }
+        .global-app-footer .signature { font-family: 'Inter', sans-serif; font-style: italic; font-weight: 600; font-size: 0.75rem; color: #4a5568; }
 
 
         /* -------------------------------------------------------------------------- */
         /* 2. DASHBOARD & SCHEDULE STYLES (Existing) */
         /* -------------------------------------------------------------------------- */
 
-        .border-custom-yellow {
-            border-color: #fece1b;
-        }
-        .text-custom-yellow {
-            color: #fece1b;
-        }
-        .bg-chart-done {
-            background-color: #38761d;
-            /* Dark Green */
-        }
-        .text-chart-done {
-            color: #38761d;
-        }
-        .bg-chart-toread {
-            background-color: #ef4444; /* Red */
-        }
-        .text-chart-toread {
-             color: #ef4444; /* Red */
-        }
-        .text-chart-title {
-            color: #6d1b1b;
-            /* Deep Maroon */
-            font-size: 1.5rem; /* Reduced for compactness */
-            margin-top: 0.5rem;
-            margin-bottom: 0.5rem;
-        }
+        .border-custom-yellow { border-color: #fece1b; }
+        .text-custom-yellow { color: #fece1b; }
+        .bg-chart-done { background-color: #38761d; }
+        .text-chart-done { color: #38761d; }
+        .bg-chart-toread { background-color: #ef4444; }
+        .text-chart-toread { color: #ef4444; }
+        .text-chart-title { color: #6d1b1b; font-size: 1.5rem; margin-top: 0.5rem; margin-bottom: 0.5rem; }
         
-        #overall-dashboard {
-            background-color: transparent; /* Make background transparent */
-            box-shadow: none; /* Remove shadow */
-            border: none; /* Remove border */
-            padding: 0;
-        }
-
-        .dashboard-container {
-            display: flex;
-            flex-wrap: wrap;
-            padding: 0; 
-        }
-        .chart-panel {
-            width: 100%;
-            padding: 0.5rem 0.3rem;
-            border-bottom: 1px solid #e5e7eb;
-            background-color: #fff; /* Individual panel background */
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        .schedule-panel {
-            width: 100%;
-            padding: 0.5rem 0.3rem;
-            background-color: #fff; /* Individual panel background */
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
+        #overall-dashboard { background-color: transparent; box-shadow: none; border: none; padding: 0; }
+        .dashboard-container { display: flex; flex-wrap: wrap; padding: 0; }
+        .chart-panel { width: 100%; padding: 0.5rem 0.3rem; border-bottom: 1px solid #e5e7eb; background-color: #fff; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .schedule-panel { width: 100%; padding: 0.5rem 0.3rem; background-color: #fff; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
         
         @media (min-width: 1024px) {
-            #overall-dashboard {
-                padding: 0; 
-            }
-
-            .dashboard-container {
-                display: grid;
-                grid-template-columns: 1fr 1.5rem 1fr 1.5rem 1fr;
-                padding: 0;
-            }
-            
-            .chart-panel {
-                grid-column: 1 / span 1; 
-                padding: 0.5rem 1rem;
-                border-bottom: none;
-            }
-            
-            .schedule-panel {
-                grid-column: 3 / span 3;
-                padding: 0.5rem 1rem;
-                border-left: none; 
-            }
-            
-            .dashboard-container > div:nth-child(2) {
-                 grid-column: 2 / span 1;
-                 border-right: none;
-            }
-            
-            .chart-panel .flex-col, .chart-panel .text-center {
-                 align-items: center; 
-                 text-align: center;
-                 justify-content: center;
-            }
-
+            #overall-dashboard { padding: 0; }
+            .dashboard-container { display: grid; grid-template-columns: 1fr 1.5rem 1fr 1.5rem 1fr; padding: 0; }
+            .chart-panel { grid-column: 1 / span 1; padding: 0.5rem 1rem; border-bottom: none; }
+            .schedule-panel { grid-column: 3 / span 3; padding: 0.5rem 1rem; border-left: none; }
+            .dashboard-container > div:nth-child(2) { grid-column: 2 / span 1; border-right: none; }
+            .chart-panel .flex-col, .chart-panel .text-center { align-items: center; text-align: center; justify-content: center; }
         }
 
-        .pie-chart-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0.5rem auto 0.1rem; 
-            width: 100%;
-        }
-
-        .metric-pie-side {
-            position: absolute;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 0.7rem; 
-            text-align: center;
-            line-height: 1.2;
-        }
-
-        .metric-pie-side.left {
-            right: 50%;
-            margin-right: 105px; 
-            transform: translateY(-50%);
-            top: 50%;
-        }
-        .metric-pie-side.right {
-            left: 50%;
-            margin-left: 105px; 
-            transform: translateY(-50%);
-            top: 50%;
-        }
-        .metric-pie-side .metric-value {
-             font-size: 1rem;
-             font-weight: 900;
-        }
+        .pie-chart-wrapper { position: relative; display: flex; align-items: center; justify-content: center; margin: 0.5rem auto 0.1rem; width: 100%; }
+        .metric-pie-side { position: absolute; font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.7rem; text-align: center; line-height: 1.2; }
+        .metric-pie-side.left { right: 50%; margin-right: 105px; transform: translateY(-50%); top: 50%; }
+        .metric-pie-side.right { left: 50%; margin-left: 105px; transform: translateY(-50%); top: 50%; }
+        .metric-pie-side .metric-value { font-size: 1rem; font-weight: 900; }
         
-        /* Schedule Table */
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.8rem;
-            border: 2px solid #e5e7eb; 
-            border-radius: 0.5rem; 
-            overflow: hidden;
-        }
-        .schedule-table th,
-        .schedule-table td {
-            padding: 0.3rem 0.5rem;
-            vertical-align: middle;
-        }
-        .schedule-header th {
-            background-color: #6d1b1b;
-            color: #FFFFFF;
-            font-weight: 700;
-            text-transform: uppercase;
-            border: 2px solid #fece1b;
-            font-size: 0.75rem;
-        }
-        .subject-cell {
-            font-weight: 600;
-            color: white;
-            padding: 0.4rem; 
-            text-align: center;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-            font-size: 0.7rem; 
-            text-transform: uppercase; 
-        }
-        .progress-bar-sparkline {
-            width: 100%;
-            height: 0.8rem;
-            background-color: #e5e7eb;
-            border-radius: 9999px;
-            overflow: hidden;
-            box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-            padding: 2px;
-        }
+        .schedule-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; overflow: hidden; }
+        .schedule-table th, .schedule-table td { padding: 0.3rem 0.5rem; vertical-align: middle; }
+        .schedule-header th { background-color: #6d1b1b; color: #FFFFFF; font-weight: 700; text-transform: uppercase; border: 2px solid #fece1b; font-size: 0.75rem; }
+        .subject-cell { font-weight: 600; color: white; padding: 0.4rem; text-align: center; border-radius: 0.5rem; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); font-size: 0.7rem; text-transform: uppercase; }
+        .progress-bar-sparkline { width: 100%; height: 0.8rem; background-color: #e5e7eb; border-radius: 9999px; overflow: hidden; box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.1); padding: 2px; }
         .bg-progress-red { background-color: #ef4444; }
         .bg-progress-orange { background-color: #f97316; }
         .bg-progress-yellow { background-color: #facc15; }
         .bg-progress-green { background-color: #10b981; }
 
-        .sparkline-fill {
-            height: 100%;
-            transition: width 0.5s ease-in-out;
-            border-radius: 9999px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            border: 2px solid white;
-            max-width: 100%;
-        }
+        .sparkline-fill { height: 100%; transition: width 0.5s ease-in-out; border-radius: 9999px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); border: 2px solid white; max-width: 100%; }
 
-        /* Subject Colors for Schedule (used by subject-cell and sparkline-fill) */
         .bg-poli { background-color: #795548; }
         .bg-comm { background-color: #eab308; }
         .bg-civ { background-color: #1e3a8a; }
@@ -383,21 +119,10 @@
         /* 3. SUBJECT TRACKER STYLES (Checklist Fix Applied) */
         /* -------------------------------------------------------------------------- */
 
-        /* Syllabus Panel Common Styles */
         .syllabus-panel-container { border-radius: .75rem; overflow: hidden; }
-
-        .syllabus-summary { 
-            /* This is the base summary style, colors are overridden below */
-            padding: 1rem; font-size: 1.25rem; font-weight: 700; color: white; cursor: pointer; 
-            list-style: none; display: flex; flex-direction: column; align-items: flex-start; 
-            justify-content: space-between; gap: .5rem; 
-            border-top-left-radius: .75rem; 
-            border-top-right-radius: .75rem;
-        }
-        
+        .syllabus-summary { padding: 1rem; font-size: 1.25rem; font-weight: 700; color: white; cursor: pointer; list-style: none; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: .5rem; border-top-left-radius: .75rem; border-top-right-radius: .75rem; }
         .topic-header { padding: .75rem; font-weight: 600; color: #1f2937; display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; }
         
-        /* Checklist Grid */
         .checklist-grid { 
             display: grid; 
             grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px); 
@@ -409,28 +134,14 @@
         
         /* CRITICAL CHECKBOX STYLING OVERRIDE */
         .checklist-grid input[type="checkbox"] {
-            /* Reset default appearance - CRITICAL */
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-            /* Explicit size to match w-4 h-4 (1rem) */
-            width: 1rem; 
-            height: 1rem;
-            border: 1px solid #d1d5db; /* border-gray-300 */
-            border-radius: 0.25rem; /* rounded */
-            cursor: pointer;
-            transition: background-color 0.2s, border-color 0.2s;
-            background-color: #ffffff;
-            align-self: center;
-            position: relative; /* Needed for ::before checkmark */
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+            width: 1rem; height: 1rem; border: 1px solid #d1d5db; border-radius: 0.25rem;
+            cursor: pointer; transition: background-color 0.2s, border-color 0.2s;
+            background-color: #ffffff; align-self: center; position: relative;
         }
 
-        /* Default checked state style */
-        .checklist-grid input[type="checkbox"]:checked {
-             border-color: transparent !important; /* Force border to disappear */
-        }
+        .checklist-grid input[type="checkbox"]:checked { border-color: transparent !important; }
 
-        /* THEME-SPECIFIC CHECKED BACKGROUND COLOR (with !important override) */
         .syllabus-checkbox-rem:checked { background-color: #8b5cf6 !important; } 
         .syllabus-checkbox-crim:checked { background-color: #ef4444 !important; }
         .syllabus-checkbox-lab:checked { background-color: #38761d !important; }
@@ -438,22 +149,11 @@
         .syllabus-checkbox-comm:checked { background-color: #eab308 !important; }
         .syllabus-checkbox-poli:checked { background-color: #795548 !important; }
 
-
-        /* CUSTOM CHECKMARK DRAWING (Always white) */
         .checklist-grid input[type="checkbox"]:checked::before {
-        content: '';
-        position: absolute;
-        width: 0.25rem;
-        height: 0.5rem;
-        border: solid white;
-        border-width: 0 2px 2px 0;
-        top: 50%;
-        left: 50%;
+        content: ''; position: absolute; width: 0.25rem; height: 0.5rem;
+        border: solid white; border-width: 0 2px 2px 0; top: 50%; left: 50%;
         transform: translate(-50%, -55%) rotate(45deg);
         }
-
-
-        /* End Checkbox Fixes */
         
         .checklist-grid>div:first-child { padding-left: 1.0rem; font-size: .875rem; color: #374151; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; }
         .font-trackable-lg { font-size: 1rem; font-weight: 600; }
@@ -477,24 +177,9 @@
         .depth2-chevron { transition: transform .2s; transform: rotate(0deg); flex-shrink: 0; margin-right: .5rem; }
         .depth2-details[open] .depth2-chevron { transform: rotate(90deg); }
         .topic-content-wrapper { display: flex; align-items: flex-start; padding-left: .5rem; }
-        .checklist-grid.checklist-grid-header>div:first-child { 
-            /* MODIFIED: Ensure column 1 is wide enough to push capsules right */
-            grid-column: 1 / span 1; 
-            padding-left: 0; 
-            align-items: center; 
-            text-align: center; 
-        }
-
-        .checklist-grid.checklist-grid-header {
-            /* MODIFIED: Add grid column for the new button position (column 7) */
-            grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px);
-        }
-        /* NEW: Style for the micro-progress bars div */
-        .checklist-grid-micro-progress {
-            /* Now defined in JS wrapper block to ensure correct grid columns */
-            border-bottom: 1px solid #e5e7eb; 
-        }
-
+        .checklist-grid.checklist-grid-header>div:first-child { grid-column: 1 / span 1; padding-left: 0; align-items: center; text-align: center; }
+        .checklist-grid.checklist-grid-header { grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px); }
+        .checklist-grid-micro-progress { border-bottom: 1px solid #e5e7eb; }
 
         .depth3-content-wrapper>div { display: block; padding: .25rem .5rem; }
         .checklist-grid>div:nth-child(n+2):nth-child(-n+6) { border-right: 1px dashed #d1d5db; }
@@ -518,111 +203,52 @@
         .col-progress-bar { height: 100%; transition: width .3s ease-in-out; }
         .status-message-row { padding-top: .25rem; padding-bottom: .25rem; }
         
-        .depth3-content-wrapper .checklist-grid>div:first-child { grid-column: 1 / span 7; padding-left: 2.5rem; }
+        .depth3-content-wrapper>div:first-child { grid-column: 1 / span 7; padding-left: 2.5rem; }
         .depth2-topic-row { grid-column: 1 / span 1; display: flex; align-items: flex-start; }
         
-        /* SUBJECT PANEL THEMES (The missing pieces) */
-        
-        /* REMEDIAL Law (Purple Theme) */
-        .syllabus-panel-rem .syllabus-summary {
-            background-color: #674ea7;
-            border-left: 5px solid #8e7cc3;
-        }
-        .syllabus-panel-rem .topic-header {
-            background-color: #ede9fe;
-            border-left: 3px solid #8b5cf6;
-        }
-        .syllabus-checkbox-rem:checked { background-color: #8b5cf6 !important; } 
+        /* SUBJECT PANEL THEMES */
+        .syllabus-panel-rem .syllabus-summary { background-color: #674ea7; border-left: 5px solid #8e7cc3; }
+        .syllabus-panel-rem .topic-header { background-color: #ede9fe; border-left: 3px solid #8b5cf6; }
+        .syllabus-checkbox-rem { accent-color: #8b5cf6; }
 
-        /* CRIMINAL Law (Red Theme) */
-        .syllabus-panel-crim .syllabus-summary {
-            background-color: #b33a3a;
-            border-left: 5px solid #d94a4a;
-        }
-        .syllabus-panel-crim .topic-header {
-            background-color: #fee2e2;
-            border-left: 3px solid #ef4444;
-        }
-        .syllabus-checkbox-crim:checked { background-color: #ef4444 !important; }
+        .syllabus-panel-crim .syllabus-summary { background-color: #b33a3a; border-left: 5px solid #d94a4a; }
+        .syllabus-panel-crim .topic-header { background-color: #fee2e2; border-left: 3px solid #ef4444; }
+        .syllabus-checkbox-crim { accent-color: #ef4444; }
 
-        /* LABOR Law (Green Theme) */
-        .syllabus-panel-lab {
-            --lab-color: #38761d;
-            --lab-color-dark: #274e13;
-        }
-        .syllabus-panel-lab .syllabus-summary {
-            background-color: var(--lab-color);
-            border-left: 5px solid #6aa84f;
-        }
-        .syllabus-panel-lab .topic-header {
-            background-color: #f6fff6;
-            border-left: 3px solid var(--lab-color);
-        }
-        .syllabus-checkbox-lab:checked { background-color: var(--lab-color) !important; }
+        .syllabus-panel-lab { --lab-color: #38761d; --lab-color-dark: #274e13; }
+        .syllabus-panel-lab .syllabus-summary { background-color: var(--lab-color); border-left: 5px solid #6aa84f; }
+        .syllabus-panel-lab .topic-header { background-color: #f6fff6; border-left: 3px solid var(--lab-color); }
+        .syllabus-checkbox-lab { accent-color: var(--lab-color); }
         .bg-lab-button { background-color: var(--lab-color); }
         .hover\:bg-lab-button-dark:hover { background-color: var(--lab-color-dark); }
 
-        /* CIVIL Law (Blue Theme) */
-        .syllabus-panel-civ {
-            --civ-color: #1e3a8a;
-            --civ-color-dark: #142a63;
-        }
-        .syllabus-panel-civ .syllabus-summary {
-            background-color: var(--civ-color);
-            border-left: 5px solid #3b82f6;
-        }
-        .syllabus-panel-civ .topic-header {
-            background-color: #eff6ff;
-            border-left: 3px solid var(--civ-color);
-        }
-        .syllabus-checkbox-civ:checked { background-color: #2563eb !important; }
+        .syllabus-panel-civ { --civ-color: #1e3a8a; --civ-color-dark: #142a63; }
+        .syllabus-panel-civ .syllabus-summary { background-color: var(--civ-color); border-left: 5px solid #3b82f6; }
+        .syllabus-panel-civ .topic-header { background-color: #eff6ff; border-left: 3px solid var(--civ-color); }
+        .syllabus-checkbox-civ { accent-color: #2563eb; }
         .bg-civ-button { background-color: #2563eb; }
         .hover\:bg-civ-button-dark:hover { background-color: #1d4ed8; }
 
-        /* COMMERCIAL Law (Yellow Theme) */
-        .syllabus-panel-comm {
-            --comm-color: #eab308; /* Yellow-600 */
-            --comm-color-dark: #b88f06;
-            --comm-color-light: #fefce8;
-            --comm-checkbox-color: #eab308;
-        }
-        .syllabus-panel-comm .syllabus-summary {
-            background-color: var(--comm-color);
-            border-left: 5px solid #facc15;
-            color: #111827 !important; 
-        }
-        .syllabus-panel-comm .syllabus-summary-title-row .flex:first-child,
-        .syllabus-panel-comm .syllabus-progress-metrics span,
-        .syllabus-panel-comm .syllabus-progress-metrics i {
-             color: #111827 !important;
-        }
-        .syllabus-panel-comm .topic-header {
-            background-color: var(--comm-color-light);
-            border-left: 3px solid var(--comm-color);
-        }
-        .syllabus-checkbox-comm:checked { accent-color: var(--comm-checkbox-color); }
+        .syllabus-panel-comm { --comm-color: #eab308; --comm-color-dark: #b88f06; --comm-color-light: #fefce8; --comm-checkbox-color: #eab308; }
+        .syllabus-panel-comm .syllabus-summary { background-color: var(--comm-color); border-left: 5px solid #facc15; color: #111827 !important; }
+        .syllabus-panel-comm .syllabus-summary i {
+            color: #111827 !important; }
+        .syllabus-panel-comm .syllabus-summary-title-row .flex:first-child, .syllabus-panel-comm .syllabus-progress-metrics span, .syllabus-panel-comm .syllabus-progress-metrics i { color: #111827 !important; }
+        .syllabus-panel-comm .topic-header { background-color: var(--comm-color-light); border-left: 3px solid var(--comm-color); }
+        .syllabus-checkbox-comm { accent-color: var(--comm-checkbox-color); }
         .bg-comm-button { background-color: var(--comm-color); }
         .hover\:bg-comm-button-dark:hover { background-color: var(--comm-color-dark); }
         
-        /* POLITICAL Law (Brown Theme) */
-        .syllabus-panel-poli {
-            --poli-color: #795548; /* Brown */
-            --poli-color-dark: #553b32;
-            --poli-color-light: #efe9e0;
-        }
-        .syllabus-panel-poli .syllabus-summary {
-            background-color: var(--poli-color);
-            border-left: 5px solid #a1887f;
-        }
-        .syllabus-panel-poli .topic-header {
-            background-color: var(--poli-color-light);
-            border-left: 3px solid var(--poli-color);
-        }
-        .syllabus-checkbox-poli:checked { accent-color: var(--poli-color); }
+        .syllabus-panel-comm .syllabus-progress-metrics .text-gray-200 {
+            color: #000000 !important;}
+        
+        .syllabus-panel-poli { --poli-color: #795548; --poli-color-dark: #553b32; --poli-color-light: #efe9e0; }
+        .syllabus-panel-poli .syllabus-summary { background-color: var(--poli-color); border-left: 5px solid #a1887f; }
+        .syllabus-panel-poli .topic-header { background-color: var(--poli-color-light); border-left: 3px solid var(--poli-color); }
+        .syllabus-checkbox-poli { accent-color: var(--poli-color); }
         .bg-poli-button { background-color: var(--poli-color); }
         .hover\:bg-poli-button-dark:hover { background-color: var(--poli-color-dark); }
         /* END SUBJECT PANEL THEMES */
-        
     </style>
 </head>
 
@@ -650,7 +276,6 @@
             <!-- 2. COUNTDOWN PANELS (Hourglass color fixed to inherited white) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-                    <!-- Applied UPPERCASE to header -->
                     <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
                         <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 1<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
                     </div>
@@ -667,7 +292,6 @@
                     </div>
                 </div>
                 <div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-                    <!-- Applied UPPERCASE to header -->
                     <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
                         <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 2<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
                     </div>
@@ -684,7 +308,6 @@
                     </div>
                 </div>
                 <div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
-                    <!-- Applied UPPERCASE to header -->
                     <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
                         <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 3<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
                     </div>
@@ -709,7 +332,6 @@
                     <!-- LEFT SIDE: CHART & METRICS - Aligns with Day 1 Card -->
                     <div class="chart-panel">
                         
-                        <!-- Today Is (Border reduced to 2px) -->
                         <div class="header-bg p-1.5 rounded-lg mb-2 text-center header-font flex flex-col items-center justify-center border-b-2 border-custom-yellow">
                             <span id="today-date-display" class="text-white today-date-text block font-extrabold" style="text-shadow: none;"></span>
                         </div>
@@ -748,10 +370,10 @@
                         
                     </div>
 
-                    <!-- Spacer Column (To replicate the gap-6 between Day 1 and Day 2 cards) -->
+                    <!-- Spacer Column -->
                     <div class="hidden lg:block border-r border-gray-300"></div>
 
-                    <!-- RIGHT SIDE: SCHEDULE TABLE - Aligns with Day 2 and Day 3 Cards -->
+                    <!-- RIGHT SIDE: SCHEDULE TABLE -->
                     <div class="schedule-panel">
                         <table class="schedule-table">
                             <thead>
@@ -765,7 +387,6 @@
                                 <!-- Rows dynamically populated by JS -->
                             </tbody>
                         </table>
-                        
                     </div>
 
                 </div>
@@ -777,7 +398,7 @@
                 <!-- CALENDAR MODULE INJECTION POINT (Before REM Tracker) -->
                 <div id="calendar-module-placeholder"></div>
                 
-                <!-- Subject panels will be dynamically injected here by the JS modules in this order: rem, crim, lab, civ, comm, poli -->
+                <!-- Subject panels will be dynamically injected here -->
                 <div id="subject-tracker-panel-rem"></div>
                 <div id="subject-tracker-panel-crim"></div>
                 <div id="subject-tracker-panel-lab"></div>
@@ -796,7 +417,7 @@
                 </button>
             </div>
             
-            <!-- START: AESTHETIC CLOUD NOTE BLOCK (Inserted here) -->
+            <!-- START: AESTHETIC CLOUD NOTE BLOCK -->
             <div class="max-w-6xl mx-auto mt-8 mb-6 px-4 sm:px-0">
                 <div class="bg-blue-50/70 backdrop-blur-sm border border-blue-200 shadow-xl p-5 rounded-xl transition duration-300 hover:shadow-2xl hover:border-blue-300">
                     <p class="font-bold text-sm text-blue-800 mb-2 flex items-center">
@@ -804,11 +425,9 @@
                         TRACKER LIMITATIONS
                     </p>
                     <ul class="list-disc list-outside ml-5 text-sm text-gray-700 space-y-2">
-                        <!-- Progress Calculation Logic -->
                         <li class="pl-1">
                             <strong style="color: #6d1c1c;">Progress Metric:</strong> Overall progress updates and a topic counts as “done” only once <strong>3 out of 5 boxes</strong> per topic row are checked.
                         </li>
-                        <!-- Data Portability Limitation (Rephrased) -->
                         <li class="pl-1">
                             <strong style="color: #6d1c1c;">Data Portability:</strong> Your review progress is saved <strong>only within your current browser</strong> (Local Storage). Your data will not be synchronized automatically if you clear your browsing data or switch devices. To transfer your progress to a new device or browser, please use the <strong>Export All Data</strong> and <strong>Import Existing Data</strong> functions.
                         </li>
@@ -820,13 +439,12 @@
         </div>
     </div>
     
-    <!-- GLOBAL FOOTER (Moved outside max-w-6xl container) -->
+    <!-- GLOBAL FOOTER -->
     <footer class="global-app-footer">
         <p class="quote">
             Trust that your hard work will never betray you. You did not come this far to only come this far.
         </p>
         <p class="signature mt-1">
-            <!-- Updated signature to use image URL -->
             <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/missattycpa.PNG" 
                  alt="missattycpa signature" 
                  class="inline-block h-3.5"
@@ -864,6 +482,147 @@
 
     <!-- Dynamic JavaScript Loader and Core Logic -->
     <script>
+        // --- INLINED CALENDAR MODULE HTML CONTENT ---
+        const CALENDAR_MODULE_HTML = `
+            <div id="calendar-module-container" class="mt-4">
+                <div class="calendar-wrapper mx-auto max-w-6xl p-0">
+                    <details id="calendar-details" class="bg-white rounded-xl shadow-lg border border-gray-300">
+                        <summary class="flex justify-between items-center p-4 font-bold text-lg cursor-pointer select-none" style="background-color: #6D1B1B; color: white; border-bottom: 3px solid #FECE1B;">
+                            <div class="summary-title-content flex-grow text-center flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>REVIEW CALENDAR</span>
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </div>
+                            <span class="text-white text-sm toggle-indicator">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </span>
+                        </summary>
+                         
+                        <div id="calendar-grid-container" style="display: grid; grid-template-columns: 3fr 1fr; gap: 1.5rem; align-items: start; padding: 0.25rem 0.5rem 0.5rem 0.5rem;"> 
+                             
+                            <div id="calendar-content" style="grid-column: 1; padding: 0;">
+                                <div id='calendar-card' style="background-color: white; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 0;">
+                                    <div class="fc-toolbar fc-header-toolbar flex justify-between items-center p-2 rounded-lg border-1 border-secondary-gold" style="background-color: #6D1B1B;">
+                                        <div class="fc-left flex items-center">
+                                            <span id="customMonthTitle" class="text-secondary-gold font-extrabold text-lg" style="color: #fff;"></span>
+                                            <div class="fc-button-group ml-4">
+                                                <button type="button" class="fc-today-button fc-button fc-state-default fc-corner-left fc-corner-right" onclick="window.CALENDAR_APP.setActiveButton(this, 'today'); $('#calendar').fullCalendar('today')">today</button>
+                                            </div>
+                                            <div class="fc-button-group ml-1">
+                                                <button type="button" class="fc-month-button fc-button fc-state-default fc-corner-left" onclick="window.CALENDAR_APP.setActiveButton(this); $('#calendar').fullCalendar('changeView', 'month')">month</button>
+                                                <button type="button" class="fc-basicWeek-button fc-button fc-state-default" onclick="window.CALENDAR_APP.setActiveButton(this); $('#calendar').fullCalendar('changeView', 'basicWeek')">week</button>
+                                                <button type="button" class="fc-basicDay-button fc-button fc-state-default fc-corner-right" onclick="window.CALENDAR_APP.setActiveButton(this); $('#calendar').fullCalendar('changeView', 'basicDay')">day</button>
+                                            </div>
+                                            <button id="jumpToDateButton" type="button" onclick="window.CALENDAR_APP.toggleDateJumpPicker()" class="fc-button fc-state-default font-inter ml-4" style="background-color: #FECE1B !important; color: #6D1B1B !important; border-color: #6D1B1B !important;">JUMP TO DATE</button>
+                                        </div>
+                                        <div class="fc-right flex items-center">
+                                            <div class="fc-button-group">
+                                                <button type="button" class="fc-prev-button fc-button fc-state-default fc-corner-left" onclick="$('#calendar').fullCalendar('prev')"><i class="fa-solid fa-chevron-left"></i></button>
+                                                <button type="button" class="fc-next-button fc-button fc-state-default fc-corner-right" onclick="$('#calendar').fullCalendar('next')"><i class="fa-solid fa-chevron-right"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id='calendar'></div>
+                                </div>
+                            </div>
+                            <div id="notepad-sidebar" style="background-color: #FFF; border-radius: 0.75rem; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); padding: 1.5rem; display: flex; flex-direction: column; border: 1px solid #e5e7eb; grid-column: 2;">
+                                <h3 class="text-xl font-bold uppercase" style="background-color: #6D1B1B; color: white; border-bottom: 3px solid #FECE1B;">
+                                    <i class="fa-solid fas fa-pencil-alt mr-2"></i>NOTES
+                                </h3>
+                                 
+                                <div class="flex space-x-2 mb-3">
+                                    <button onclick="window.CALENDAR_APP.undoNotes()" class="text-xs px-2 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-150 flex items-center" title="Undo Last Change">
+                                        <i class="fa-solid fa-undo mr-1"></i> Undo
+                                    </button>
+                                    <button onclick="window.CALENDAR_APP.redoNotes()" class="text-xs px-2 py-1 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition duration-150 flex items-center" title="Redo Last Undo">
+                                        <i class="fa-solid fa-redo mr-1"></i> Redo
+                                    </button>
+                                    <button onclick="window.CALENDAR_APP.clearNotes()" class="text-xs px-2 py-1 bg-red-100 text-red-600 rounded-md hover:bg-red-200 transition duration-150 flex items-center" title="Clear All Notes">
+                                        <i class="fa-solid fa-eraser mr-1"></i> Clear
+                                    </button>
+                                    <button onclick="window.CALENDAR_APP.copyNotes()" class="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded-md hover:bg-blue-200 transition duration-150 flex items-center" title="Copy Notes to Clipboard">
+                                        <i class="fa-solid fa-copy mr-1"></i> Copy
+                                    </button>
+                                </div>
+                                <textarea 
+                                    id="review-notes" 
+                                    placeholder="Start writing your review thoughts, deadlines, or checklists here..."
+                                    oninput="window.CALENDAR_APP.saveNotes()"
+                                    style="font-family: 'Dancing Script', cursive; font-weight: 600; line-height: 1.95; padding: 1.5rem 1.0rem 1.0rem 1.0rem; flex-grow: 1; resize: none;"
+                                ></textarea>
+                            </div>
+                             
+                        </div>
+                    </details>
+                </div>
+                 
+                <div id="topicModal" class="modal fixed inset-0 flex items-center justify-center hidden">
+                    <div class="modal-content" style="background-color: white; border-radius: 0.75rem; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); width: 90%; max-width: 500px; padding: 1.5rem;">
+                        <h2 id="modalTitle" class="text-xl font-bold mb-4 text-gray-800">SCHEDULE NEW EVENT OR TOPIC</h2>
+                        <input type="hidden" id="topicEventId">
+                        <input type="hidden" id="originalStart">
+                        <input type="hidden" id="originalEnd">
+                        
+                        <div class="mb-4">
+                            <label for="eventNameInput" class="block text-sm font-medium text-gray-700">1. EVENT NAME (FOR REST DAYS, BIRTHDAYS, ETC.)</label>
+                            <input type="text" id="eventNameInput" placeholder="Optional: Enter a custom event name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-green-600 focus:ring focus:ring-green-600 focus:ring-opacity-50">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="subjectSelect" class="block text-sm font-medium text-gray-700">2. OR: SELECT SUBJECT (FOR STUDY TASKS)</label>
+                            <select id="subjectSelect" onchange="window.CALENDAR_APP.populateTopics()" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-600 focus:ring focus:ring-red-600 focus:ring-opacity-50 p-2 border">
+                                <option value="">-- SELECT A SUBJECT --</option>
+                            </select>
+                        </div>
+                         
+                        <div class="mb-4">
+                            <label for="topicSelect" class="block text-sm font-medium text-gray-700">3. SELECT TOPIC/TASK (DEPTH 1)</label>
+                            <div class="syllabus-select-wrapper">
+                                <select id="topicSelect" size="8" class="block w-full border-gray-300 focus:border-red-600 focus:ring focus:ring-red-600 focus:ring-red-600 focus:ring-opacity-50 text-sm p-2 border">
+                                    <option value="">-- SELECT A TOPIC --</option>
+                                </select>
+                            </div>
+                            <p class="text-xs text-red-500 mt-1" id="topic-error" hidden>PLEASE SELECT A SPECIFIC TOPIC.</p>
+                        </div>
+                         
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label for="topicStart" class="block text-sm font-medium text-gray-700">START DATE</label>
+                                <input type="date" id="topicStart" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                            </div>
+                            <div>
+                                <label for="topicEnd" class="block text-sm font-medium text-gray-700">END DATE (OPTIONAL)</label>
+                                <input type="date" id="topicEnd" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center mt-6">
+                            <button onclick="window.CALENDAR_APP.closeTopicModal()" class="px-4 py-2 text-gray-600 bg-gray-200 rounded-lg hover:bg-gray-300 transition duration-150">CANCEL</button>
+                            <div class="flex space-x-2">
+                                <button id="deleteTopicBtn" onclick="window.CALENDAR_APP.deleteTopicTask()" class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 transition duration-150 hidden">DELETE</button>
+                                <button id="saveTopicBtn" onclick="window.CALENDAR_APP.saveTopicTask()" class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition duration-150">SCHEDULE TASK</button>
+                            </div>
+                        </div>
+                    </div>
+                     
+                </div>
+                 
+                <div id="custom-alert-modal" class="modal fixed inset-0 flex items-center justify-center hidden">
+                    <div class="modal-content max-w-sm p-6 rounded-xl text-center">
+                        <h3 id="alertTitle" class="text-lg font-bold mb-3 text-gray-800">ALERT</h3>
+                        <p id="alertMessage" class="text-sm text-gray-700 mb-4"></p>
+                        <div class="flex justify-end">
+                            <button onclick="window.CALENDAR_APP.closeCustomAlert()" class="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition duration-150">OK</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Hidden input to trigger native date picker, positioned absolutely initially -->
+                <input type="date" id="dateJump" onchange="window.CALENDAR_APP.jumpToDate(this.value)"> 
+                 
+            </div>
+        `;
+        // --- END INLINED CALENDAR MODULE HTML CONTENT ---
+
+        
         // --- CORE UTILITY AND COUNTDOWN LOGIC (REMAINS IN INDEX) ---
         
         const CHECKLIST_COLUMNS = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
@@ -880,7 +639,7 @@
             saveBtn: document.getElementById('modal-save-btn'),
             cancelBtn: document.getElementById('modal-cancel-btn'),
             errorMsg: document.getElementById('modal-error'),
-            globalFileInput: document.getElementById('global-file-input'), // Renamed to be global
+            globalFileInput: document.getElementById('global-file-input'),
             messageModal: document.getElementById('message-modal'),
             messageModalTitle: document.getElementById('message-modal-title'),
             messageModalContent: document.getElementById('message-modal-content'),
@@ -889,11 +648,12 @@
         };
         
         let currentEditingId = null;
-        const SUBJECT_LOGIC_MAP = {}; 
+        const SUBJECT_LOGIC_MAP = {};
         const ALL_SUBJECT_STORAGE_KEYS = [
             'rem_ethics_progress', 'crim_progress', 'lab_progress', 
             'civ_progress', 'comm_tax_progress', 'poli_progress'
         ];
+
 
         // --- Schedule Data (Central source of truth for table) ---
         const SCHEDULE_DATA = [
@@ -991,17 +751,16 @@
                 localStorage.setItem(`comp_exam_date_${currentEditingId}`,newDateString);
                 updateAllCountdowns();
                 
-                // NEW: Trigger calendar refresh if the module is loaded
+                // Trigger calendar refresh if the module is loaded
                 if (window.CALENDAR_APP && typeof window.CALENDAR_APP.refreshCalendar === 'function') {
                     window.CALENDAR_APP.refreshCalendar();
                 }
             }
             closeModal();
-            // Re-render schedule table after a countdown date is changed
-            updateScheduleTable();
+            // Note: updateScheduleTable is monkey-patched in window.onload
         }
 
-        // Global File Upload Handler (Used by all subject modules)
+        // Global File Upload Handler
         function handleFileUpload(event){
             const file = event.target.files[0];
             const targetSubject = event.target.dataset.targetSubject;
@@ -1042,7 +801,7 @@
                  }
             });
 
-            // 3. Gather Calendar and Notepad data (if module is loaded)
+            // 3. Gather Calendar and Notepad data
             if (window.CALENDAR_APP) {
                 data.calendar_events = localStorage.getItem(window.CALENDAR_APP.CALENDAR_EVENTS_KEY);
                 data.notepad_content = localStorage.getItem(window.CALENDAR_APP.NOTEPAD_CONTENT_KEY);
@@ -1093,11 +852,9 @@
                         }
                         if (importedData.notepad_content) {
                              localStorage.setItem(window.CALENDAR_APP.NOTEPAD_CONTENT_KEY, importedData.notepad_content);
-                             // Directly update the notepad content via the module's exposed method
                              window.CALENDAR_APP.setNotes(importedData.notepad_content);
                         }
                     }
-
 
                     // 3. Import User Name
                     if (importedData.user_name) {
@@ -1151,53 +908,36 @@
         // --- END GLOBAL EXPORT/IMPORT FUNCTIONS ---
 
 
-        // Subject Logic Loader (Functionality remains the same)
-        function loadSubjectPanel(subjectName, filePath) {
-            const script = document.createElement('script');
-            script.src = filePath;
-            script.type = 'text/javascript';
-            script.onload = () => {
-                if (window[`create${subjectName.toUpperCase()}_LOGIC`]) {
-                    const logic = window[`create${subjectName.toUpperCase()}_LOGIC`]();
-                    SUBJECT_LOGIC_MAP[subjectName] = logic;
-                    
-                    const panelPlaceholder = document.getElementById(`subject-tracker-panel-${subjectName}`);
-                    if (panelPlaceholder) {
-                        const newPanelHtml = logic.getPanelHtmlWrapper(logic.SUBJECT_NAME, logic.SUBJECT_TITLE, logic.SUBJECT_ICON);
-                        panelPlaceholder.outerHTML = newPanelHtml;
-                    }
-                    
-                    const currentLogic = SUBJECT_LOGIC_MAP[subjectName];
-                    
-                    window.requestAnimationFrame(() => {
-                        const collapseBtn = document.getElementById(`collapse-all-btn-${subjectName}`);
-
-                        collapseBtn?.addEventListener('click', currentLogic.toggleAllSections);
-                        
-                        currentLogic.render();
-                    });
-                } else {
-                    console.error(`Failed to find initialization function for ${subjectName}`);
-                }
-            };
-            document.head.appendChild(script);
+        // Subject Logic Loader
+        function loadSubjectPanel(subjectName, syllabusData, storageKey, themeIcon, title) {
+            const logic = window.createSyllabusLogic(subjectName, syllabusData, storageKey, themeIcon, title);
+            SUBJECT_LOGIC_MAP[subjectName] = logic;
+            
+            const panelPlaceholder = document.getElementById(`subject-tracker-panel-${subjectName}`);
+            if (panelPlaceholder) {
+                const newPanelHtml = logic.getPanelHtmlWrapper(logic.SUBJECT_NAME, logic.SUBJECT_TITLE, logic.SUBJECT_ICON);
+                panelPlaceholder.outerHTML = newPanelHtml;
+            }
+            
+            const currentLogic = SUBJECT_LOGIC_MAP[subjectName];
+            
+            window.requestAnimationFrame(() => {
+                const collapseBtn = document.getElementById(`collapse-all-btn-${subjectName}`);
+                collapseBtn?.addEventListener('click', currentLogic.toggleAllSections);
+                currentLogic.render();
+            });
         }
 
-        // --- GLOBAL DASHBOARD LOGIC (Functionality remains the same) ---
+        // --- GLOBAL DASHBOARD LOGIC ---
         function drawPieChart(donePercent) {
             const chartEl = document.getElementById('global-pie-chart');
             if (!chartEl) return;
 
             let fillColor;
-            if (donePercent <= 25) {
-                fillColor = '#ef4444'; 
-            } else if (donePercent <= 50) {
-                fillColor = '#f97316';
-            } else if (donePercent <= 75) {
-                fillColor = '#facc15';
-            } else {
-                fillColor = '#10b981';
-            }
+            if (donePercent <= 25) { fillColor = '#ef4444'; } 
+            else if (donePercent <= 50) { fillColor = '#f97316'; } 
+            else if (donePercent <= 75) { fillColor = '#facc15'; } 
+            else { fillColor = '#10b981'; }
             
             const backgroundRingColor = (donePercent < 100) ? '#ef4444' : '#e5e7eb';
             const centerTextColor = fillColor; 
@@ -1224,63 +964,22 @@
 
             chartEl.innerHTML = `
                 <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-                    <circle 
-                        cx="${center}" 
-                        cy="${center}" 
-                        r="${radius - strokeWidth / 2}" 
-                        fill="none" 
-                        stroke="${backgroundRingColor}" 
-                        stroke-width="${strokeWidth}"
-                    />
-                    
+                    <circle cx="${center}" cy="${center}" r="${radius - strokeWidth / 2}" fill="none" stroke="${backgroundRingColor}" stroke-width="${strokeWidth}"/>
                     <circle
-                        class="ring-done"
-                        cx="${center}"
-                        cy="${center}"
-                        r="${radius - strokeWidth / 2}"
-                        fill="none"
-                        stroke="#38761d" 
-                        stroke-width="${strokeWidth}"
-                        stroke-dasharray="${circumference}"
-                        stroke-dashoffset="${doneOffset}"
-                        transform="rotate(-90 ${center} ${center})"
-                        stroke-linecap="round"
+                        class="ring-done" cx="${center}" cy="${center}" r="${radius - strokeWidth / 2}"
+                        fill="none" stroke="#38761d" stroke-width="${strokeWidth}" stroke-dasharray="${circumference}"
+                        stroke-dashoffset="${doneOffset}" transform="rotate(-90 ${center} ${center})" stroke-linecap="round"
                     />
-
-                    <circle 
-                        cx="${center}" 
-                        cy="${center}" 
-                        r="${radius - strokeWidth}" 
-                        fill="white"
-                    />
-                    
-                    <text 
-                        x="${center}" 
-                        y="${center - 10}" 
-                        text-anchor="middle" 
-                        alignment-baseline="central" 
-                        font-size="${centerFontSize}"
-                        font-weight="900" 
-                        fill="${centerTextColor}"
-                        font-family="${centerFontFamily}" 
-                        style="text-shadow: 1px 1px 0 #cccccc; letter-spacing: 1px;"
-                    >
+                    <circle cx="${center}" cy="${center}" r="${radius - strokeWidth}" fill="white"/>
+                    <text x="${center}" y="${center - 10}" text-anchor="middle" alignment-baseline="central" font-size="${centerFontSize}"
+                        font-weight="900" fill="${centerTextColor}" font-family="${centerFontFamily}" 
+                        style="text-shadow: 1px 1px 0 #cccccc; letter-spacing: 1px;">
                         ${(donePercent).toFixed(0)}%
                     </text>
-                     <text 
-                        x="${center}" 
-                        y="${center + 20}" 
-                        text-anchor="middle" 
-                        alignment-baseline="central" 
-                        font-size="0.6rem"
-                        font-weight="bold" 
-                        fill="#4a5568"
-                        font-family="Inter, sans-serif" 
-                        style="text-shadow: none;"
-                    >
+                     <text x="${center}" y="${center + 20}" text-anchor="middle" alignment-baseline="central" font-size="0.6rem"
+                        font-weight="bold" fill="#4a5568" font-family="Inter, sans-serif" style="text-shadow: none;">
                         ${totalTopicsText}
                     </text>
-
                 </svg>
             `;
         }
@@ -1294,7 +993,6 @@
 
             SCHEDULE_DATA.forEach((item, index) => {
                 const countdownData = COUNTDOWN_DATA.find(d => d.id === item.dateId);
-                
                 const dateString = countdownData ? countdownData.targetDate : 'N/A';
                 
                 let dayOfWeek = item.day;
@@ -1331,15 +1029,10 @@
                 }
                 
                 let progressClass;
-                if (progressFraction <= 0.25) {
-                    progressClass = 'bg-progress-red';
-                } else if (progressFraction <= 0.5) {
-                    progressClass = 'bg-progress-orange';
-                } else if (progressFraction <= 0.75) {
-                    progressClass = 'bg-progress-yellow';
-                } else {
-                    progressClass = 'bg-progress-green';
-                }
+                if (progressFraction <= 0.25) { progressClass = 'bg-progress-red'; } 
+                else if (progressFraction <= 0.5) { progressClass = 'bg-progress-orange'; } 
+                else if (progressFraction <= 0.75) { progressClass = 'bg-progress-yellow'; } 
+                else { progressClass = 'bg-progress-green'; }
 
 
                 let dateCell = '';
@@ -1418,39 +1111,996 @@
 
         window.updateOverallDashboard = updateOverallDashboard;
         
-        // Subject Logic Factory (Assumed to be defined in separate files like rem_logic.js)
-        // ... (window.createSyllabusLogic and related helper functions omitted for brevity, assumed to be loaded by external scripts)
+        // --- CALENDAR LOGIC (INLINED) ---
 
-        // --- CALENDAR MODULE LOADER ---
-        async function loadCalendarModule(url, targetElementId) {
+        const CONSOLIDATED_SYLLABUS = {
+            poli: { title: 'POLITICAL AND PUBLIC INTERNATIONAL LAW', shortTitle: 'POLI LAW', color: '#795548', data: [{id: 5001, topic: "I. BASIC CONCEPTS", depth: 1, trackable: true},{id: 5014, topic: "II. NATIONAL TERRITORY", depth: 1, trackable: true},{id: 5018, topic: "III. CITIZENSHIP", depth: 1, trackable: true},{id: 5025, topic: "IV. LEGISLATIVE DEPARTMENT", depth: 1, trackable: true},{id: 5047, topic: "V. EXECUTIVE DEPARTMENT", depth: 1, trackable: true},{id: 5081, topic: "VI. JUDICIAL DEPARTMENT", depth: 1, trackable: true},{id: 5100, topic: "VII. CONSTITUTIONAL COMMISSIONS", depth: 1, trackable: true},{id: 5106, topic: "VIII. CONSTITUTIONAL RIGHTS", depth: 1, trackable: true},{id: 5161, topic: "IX. NATIONAL ECONOMY AND PATRIMONY", depth: 1, trackable: true},{id: 5168, topic: "X. ADMINISTRATIVE LAW", depth: 1, trackable: true},{id: 5184, topic: "XI. LAW ON PUBLIC OFFICERS", depth: 1, trackable: true},{id: 5212, topic: "XII. ELECTION LAW", depth: 1, trackable: true},{id: 5247, topic: "XIII. LOCAL GOVERNMENTS", depth: 1, trackable: true},{id: 5266, topic: "XIV. PUBLIC INTERNATIONAL LAW", depth: 1, trackable: true},]},
+            comm: { title: 'COMMERCIAL AND TAXATION LAWS', shortTitle: 'COMM & TAX', color: '#eab308', data: [{id: 4001, topic: 'I. BUSINESS ORGANIZATIONS', depth: 1, trackable: true},{id: 4105, topic: 'II. INSURANCE (P.D. NO. 612, AS AMENDED BY R.A. NO. 10607)', depth: 1, trackable: true},{id: 4118, topic: 'III. TRANSPORTATION', depth: 1, trackable: true},{id: 4133, topic: 'IV. BANKING', depth: 1, trackable: true},{id: 4168, topic: 'V. INTELLECTUAL PROPERTY – R.A. NO. 8293, AS AMENDED', depth: 1, trackable: true},{id: 4199, topic: 'VI. SPECIAL COMMERCIAL LAWS', depth: 1, trackable: true},{id: 4229, topic: 'VII. TAXATION LAW', depth: 1, trackable: true},]},
+            civ: { title: 'CIVIL LAW AND LAND TITLES AND DEEDS', shortTitle: 'CIVIL LAW', color: '#1e3a8a', data: [{id:3001,topic:"I. EFFECT AND APPLICATION OF LAWS",depth:1, trackable:true},{id:3022,topic:"II. PERSONS",depth:1, trackable:true},{id:3035,topic:"III. FAMILY RELATIONS",depth:1, trackable:true},{id:3068,topic:"IV. CIVIL REGISTER",depth:1, trackable:true},{id:3076,topic:"V. PROPERTY, OWNERSHIP, AND ITS MODIFICATIONS",depth:1, trackable:true},{id:3121,topic:"VI. LAND TITLES AND DEEDS",depth:1, trackable:true},{id:3143,topic:"VII. SUCCESSION",depth:1, trackable:true},{id:3154,topic:"VIII. OBLIGATIONS AND CONTRACTS",depth:1, trackable:true},{id:3201,topic:"IX. SPECIAL CONTRACTS",depth:1, trackable:true},{id:3253,topic:"X. QUASI-CONTRACTS",depth:1, trackable:true},{id:3262,topic:"XI. TORTS AND QUASI-DELICTS",depth:1, trackable:true},{id:3314,topic:"XII. DAMAGES",depth:1, trackable:true},]},
+            lab: { title: 'LABOR AND SOCIAL LEGISLATION', shortTitle: 'LABOR LAW', color: '#38761d', data: [{id:2001,topic:"I. BASIC PRINCIPLES AND CONCEPTS",depth:1, trackable:true},{id:2016,topic:"II. RECRUITMENT AND PLACEMENT",depth:1, trackable:true},{id:2037,topic:"III. EMPLOYMENT RELATIONSHIP",depth:1, trackable:true},{id:2055,topic:"V. LABOR STANDARDS",depth:1, trackable:true},{id:2097,topic:"V. LABOR RELATIONS",depth:1, trackable:true},{id:2118,topic:"VI. SUSPENSION AND TERMINATION OF EMPLOYMENT",depth:1, trackable:true},{id:2131,topic:"VII. SOCIAL LEGISLATION",depth:1, trackable:true},{id:2141,topic:"VIII. LABOR ADJUDICATION: JURISDICTION & REMEDIES",depth:1, trackable:true},]},
+            crim: { title: 'CRIMINAL LAW', shortTitle: 'CRIM LAW', color: '#b33a3a', data: [{id:1001,topic:"I. FUNDAMENTAL PRINCIPLES",depth:1, trackable:true},{id:1019,topic:"II. FELONIES AND CRIMINAL LIABILITY (RPC BOOK 1 AND RELATED LAWS)",depth:1, trackable:true},{id:1109,topic:"III. CRIMES AND THEIR PENALTIES (RPC BOOK 2 AND RELATED SPECIAL LAWS)",depth:1, trackable:true},]},
+            rem: { title: 'REMEDIAL LAW, LEGAL ETHICS, & LEGAL FORMS', shortTitle: 'REM LAW', color: '#674ea7', data: [{id:1,topic:"I. GENERAL PRINCIPLES",depth:1, trackable:true},{id:9,topic:"II. JURISDICTION",depth:1, trackable:true},{id:41,topic:"III. CIVIL PROCEDURE (RULES OF COURT, AS AMENDED BY A.M. NO. 19-10-20-SC)",depth:1, trackable:true},{id:156,topic:"V. PROVISIONAL REMEDIES",depth:1, trackable:true},{id:172,topic:"V. SPECIAL CIVIL ACTIONS",depth:1, trackable:true},{id:188,topic:"VI. SPECIAL PROCEEDINGS AND WRITS",depth:1, trackable:true},{id:215,topic:"VII. CRIMINAL PROCEDURE",depth:1, trackable:true},{id:333,topic:"VIII. EVIDENCE",depth:1, trackable:true},{id:412,topic:"IX. LEGAL AND JUDICIAL ETHICS",depth:1, trackable:true},{id:581,topic:"X. PRACTICAL EXERCISES",depth:1, trackable:true},]},
+        };
+        const CALENDAR_EVENTS_KEY = 'review_calendar_events';
+        const NOTEPAD_CONTENT_KEY = 'review_notepad_content'; 
+        const CALENDAR_SUBJECT_KEYS = Object.keys(CONSOLIDATED_SYLLABUS);
+        const history = { stack: [], current: 0 };
+        const MAX_HISTORY = 30;
+        
+        let calendarInstance = null;
+
+        function pushHistory(content) {
+            if (history.current < history.stack.length - 1) {
+                history.stack = history.stack.slice(0, history.current + 1);
+            }
+            history.stack.push(content);
+            if (history.stack.length > MAX_HISTORY) {
+                history.stack.shift(); 
+            }
+            history.current = history.stack.length - 1;
+        }
+
+        function loadNotes() {
+            const notes = localStorage.getItem(NOTEPAD_CONTENT_KEY);
+            $('#review-notes').val(notes || '');
+            if (notes) {
+                pushHistory(notes);
+            } else {
+                pushHistory('');
+            }
+            history.current = history.stack.length - 1;
+        }
+
+        function saveNotes() {
+            const notes = $('#review-notes').val();
+            localStorage.setItem(NOTEPAD_CONTENT_KEY, notes);
+            
+            if (notes !== history.stack[history.current]) {
+                pushHistory(notes);
+            }
+        }
+        
+        function applyNotesContent(content) {
+            $('#review-notes').val(content);
+            localStorage.setItem(NOTEPAD_CONTENT_KEY, content);
+        }
+
+        function undoNotes() {
+            if (history.current > 0) {
+                history.current--;
+                applyNotesContent(history.stack[history.current]);
+            } else {
+                CALENDAR_APP.showCustomAlert("NO UNDO", "NO EARLIER HISTORY FOUND.");
+            }
+        }
+        function redoNotes() {
+            if (history.current < history.stack.length - 1) {
+                history.current++;
+                applyNotesContent(history.stack[history.current]);
+            } else {
+                CALENDAR_APP.showCustomAlert("NO REDO", "NO FUTURE HISTORY FOUND.");
+            }
+        }
+        function clearNotes() {
+            if (confirm("ARE YOU SURE YOU WANT TO CLEAR ALL NOTES? THIS ACTION CAN BE UNDONE.")) {
+                applyNotesContent("");
+                pushHistory("");
+            }
+        }
+        function copyNotes() {
+            const notes = $('#review-notes').val();
+            if (!notes) {
+                CALENDAR_APP.showCustomAlert("COPY FAILED", "NO CONTENT TO COPY.");
+                return;
+            }
+            const textarea = document.getElementById('review-notes');
+            textarea.select();
+            
             try {
-                // In a real deployed environment, this would fetch the external file.
-                // In this simulated environment, we assume the content is locally available
-                // or use a mock fetch if necessary. Since the user uploaded the file
-                // I will simulate its loading by fetching it by name.
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`Failed to load ${url}: ${response.statusText}`);
-                }
-                const htmlContent = await response.text();
-                
-                const target = document.getElementById(targetElementId);
-                if (target) {
-                    target.innerHTML = htmlContent;
+                document.execCommand('copy');
+                CALENDAR_APP.showCustomAlert("COPY COMPLETE", "NOTES COPIED TO CLIPBOARD.");
+            } catch (err) {
+                CALENDAR_APP.showCustomAlert("COPY FAILED", "UNABLE TO COPY NOTES TO CLIPBOARD.");
+            }
+        }
 
-                    // Execute the embedded script inside the module content
-                    const scriptTag = target.querySelector('script');
-                    if (scriptTag && scriptTag.textContent) {
-                        eval(scriptTag.textContent);
-                    }
-                }
-            } catch (error) {
-                console.error("Error loading calendar module:", error);
-                const target = document.getElementById(targetElementId);
-                if (target) {
-                    target.innerHTML = `<p class="text-red-500 p-4 bg-red-100 rounded-lg">Error loading calendar module: ${error.message}. Please ensure ${url} is accessible.</p>`;
+        function getExamDates() {
+            // Accessing global COUNTDOWN_DATA defined in the main script
+            return COUNTDOWN_DATA.map(examData => {
+                const dateString = localStorage.getItem(`comp_exam_date_${examData.id}`) || examData.targetDate;
+                const examTitle = `EXAM - DAY ${examData.id}`;
+                return { 
+                    id: `exam-${examData.id}`, 
+                    title: examTitle.toUpperCase(), 
+                    start: dateString, 
+                    end: dateString, 
+                    allDay: true,
+                    backgroundColor: '#6D1B1B', 
+                    textColor: '#FECE1B',
+                    borderColor: '#FECE1B',
+                    className: 'exam-day-marker',
+                    editable: false 
+                };
+            });
+        }
+        
+        function showCustomAlert(title, message) {
+            // Uses elements defined within the CALENDAR_MODULE_HTML template
+            $('#custom-alert-modal #alertTitle').text(title.toUpperCase());
+            const formattedMessage = message.toUpperCase().replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            $('#custom-alert-modal #alertMessage').html(formattedMessage);
+            $('#custom-alert-modal').removeClass('hidden').css('display', 'flex');
+        }
+        function closeCustomAlert() {
+            $('#custom-alert-modal').addClass('hidden').css('display', 'none');
+        }
+
+        function getEventsFromLocalStorage() {
+            try {
+                const data = localStorage.getItem(CALENDAR_EVENTS_KEY);
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                console.error("ERROR READING CALENDAR FROM LOCAL STORAGE:", e);
+                return [];
+            }
+        }
+        function saveEventsToLocalStorage(events) {
+            try {
+                localStorage.setItem(CALENDAR_EVENTS_KEY, JSON.stringify(events));
+            } catch (e) {
+                console.error("ERROR SAVING CALENDAR TO LOCAL STORAGE:", e);
+                CALENDAR_APP.showCustomAlert("STORAGE ERROR", "COULD NOT SAVE EVENTS. LOCAL STORAGE MIGHT BE FULL.");
+            }
+        }
+        
+        function formatEventTitle(subjectKey, topicId) {
+            if (subjectKey === 'CUSTOM') {
+                return "CUSTOM EVENT";
+            }
+            const subjectData = CONSOLIDATED_SYLLABUS[subjectKey];
+            if (!subjectData) return "INVALID SUBJECT";
+            const topic = subjectData.data.find(t => t.id == topicId);
+            if (!topic) return (subjectData.shortTitle || subjectData.title).toUpperCase();
+            
+            const topicText = topic.topic.toUpperCase(); 
+            const title = `${subjectData.shortTitle.toUpperCase()} - ${topicText}`;
+            
+            return title;
+        }
+        function generateUniqueId() {
+            return 'event-' + Date.now() + Math.random().toString(36).substring(2, 9);
+        }
+        function populateSubjectSelect() {
+            const select = $('#subjectSelect');
+            select.empty();
+            select.append('<option value="">-- SELECT A SUBJECT --</option>');
+            CALENDAR_SUBJECT_KEYS.forEach(key => {
+                select.append(`<option value="${key}">${CONSOLIDATED_SYLLABUS[key].title.toUpperCase()}</option>`);
+            });
+            populateTopics(); 
+        }
+        function populateTopics(selectedTopicId = null) {
+            const subjectKey = $('#subjectSelect').val();
+            const select = $('#topicSelect');
+            select.empty();
+            $('#topic-error').attr('hidden', true);
+            
+            if (!subjectKey) {
+                select.append('<option value="">-- SELECT A SUBJECT FIRST --</option>');
+                select.prop('disabled', true);
+                return;
+            }
+            select.prop('disabled', false);
+            select.append('<option value="">-- SELECT A TOPIC --</option>');
+            const data = CONSOLIDATED_SYLLABUS[subjectKey].data;
+            const depth1Topics = data.filter(item => item.depth === 1 && item.trackable);
+            depth1Topics.forEach(item => {
+                const topicText = item.topic.toUpperCase();
+                const optionValue = `${item.id}|${topicText}`; 
+                const isSelected = item.id == selectedTopicId ? 'selected' : '';
+                
+                select.append(`<option value="${optionValue}" data-topic-id="${item.id}" ${isSelected}>${topicText}</option>`);
+            });
+            
+            if (selectedTopicId) {
+                const correctValue = select.find(`option[data-topic-id="${selectedTopicId}"]`).val();
+                if (correctValue) {
+                   select.val(correctValue);
                 }
             }
+        }
+
+        function openTopicModal(dateStr = null, event = null) {
+            $('#topicEventId').val('');
+            $('#topicStart').val(dateStr || moment().format('YYYY-MM-DD'));
+            $('#topicEnd').val('');
+            $('#subjectSelect').val('');
+            $('#eventNameInput').val('');
+            $('#deleteTopicBtn').addClass('hidden');
+            $('#modalTitle').text('SCHEDULE NEW EVENT OR TOPIC');
+            $('#saveTopicBtn').text('SCHEDULE TASK');
+            $('#topic-error').attr('hidden', true);
+            
+            populateSubjectSelect(); 
+            if (event) {
+                $('#topicEventId').val(event.id);
+                $('#topicStart').val(event.start.format('YYYY-MM-DD'));
+                $('#topicEnd').val(event.end ? event.end.clone().subtract(1, 'days').format('YYYY-MM-DD') : '');
+                
+                if (event.subjectKey === 'CUSTOM') {
+                    $('#eventNameInput').val(event.title); 
+                    $('#subjectSelect').val(''); 
+                    populateTopics();
+                } else {
+                    $('#subjectSelect').val(event.subjectKey);
+                    populateTopics(event.topicId); 
+                }
+
+                $('#modalTitle').text('EDIT SCHEDULED ITEM');
+                $('#saveTopicBtn').text('UPDATE ITEM');
+                $('#deleteTopicBtn').removeClass('hidden');
+            }
+            $('#topicModal').removeClass('hidden').css('display', 'flex');
+        }
+
+        function closeTopicModal() {
+            $('#topicModal').addClass('hidden').css('display', 'none');
+            if (calendarInstance) {
+                calendarInstance.fullCalendar('refetchEvents');
+            }
+        }
+
+        function saveTopicTask() {
+            const eventId = $('#topicEventId').val();
+            const eventName = $('#eventNameInput').val().trim();
+            const subjectKey = $('#subjectSelect').val();
+            const selectedTopicValue = $('#topicSelect').val(); 
+            const start = $('#topicStart').val();
+            const end = $('#topicEnd').val();
+            
+            if (!start) {
+                CALENDAR_APP.showCustomAlert('MISSING DATE', 'PLEASE SELECT A START DATE.');
+                return;
+            }
+            
+            if (end && end < start) {
+                CALENDAR_APP.showCustomAlert('INVALID DATES', 'END DATE CANNOT BE BEFORE THE START DATE.');
+                return;
+            }
+            
+            let eventData;
+            let isSyllabusTask = subjectKey && selectedTopicValue && selectedTopicValue !== "";
+
+            if (!eventName && !isSyllabusTask) {
+                CALENDAR_APP.showCustomAlert('MISSING DETAILS', 'PLEASE ENTER AN EVENT NAME OR SELECT BOTH A SUBJECT AND A TOPIC FOR SCHEDULING.');
+                return;
+            }
+
+            if (eventName && !isSyllabusTask) {
+                eventData = {
+                    id: eventId || generateUniqueId(),
+                    subjectKey: 'CUSTOM',
+                    topicId: null,
+                    title: eventName.toUpperCase(),
+                    start: start,
+                    end: end ? moment(end).add(1, 'days').format('YYYY-MM-DD') : null,
+                    color: '#10b981',
+                    borderColor: '#059669',
+                    allDay: true
+                };
+            } 
+            else if (isSyllabusTask) {
+                const [topicId, topicText] = selectedTopicValue.split('|');
+                const subjectInfo = CONSOLIDATED_SYLLABUS[subjectKey];
+                
+                eventData = {
+                    id: eventId || generateUniqueId(),
+                    subjectKey: subjectKey,
+                    topicId: topicId,
+                    title: formatEventTitle(subjectKey, topicId),
+                    start: start,
+                    end: end ? moment(end).add(1, 'days').format('YYYY-MM-DD') : null,
+                    color: subjectInfo.color,
+                    borderColor: subjectInfo.color,
+                    allDay: true
+                };
+            } else {
+                CALENDAR_APP.showCustomAlert('INVALID COMBINATION', 'PLEASE CHOOSE EITHER A CUSTOM EVENT NAME OR A SUBJECT/TOPIC, BUT NOT BOTH.');
+                return;
+            }
+            
+            let events = getEventsFromLocalStorage();
+            
+            if (eventId) {
+                const index = events.findIndex(e => e.id === eventId);
+                if (index !== -1) {
+                    events[index] = eventData;
+                }
+            } else {
+                events.push(eventData);
+            }
+            
+            saveEventsToLocalStorage(events);
+            closeTopicModal();
+        }
+
+        function deleteTopicTask() {
+            const eventId = $('#topicEventId').val();
+            if (!eventId) return;
+            if (confirm("ARE YOU SURE YOU WANT TO DELETE THIS SCHEDULED TASK?")) {
+                let events = getEventsFromLocalStorage();
+                events = events.filter(e => e.id !== eventId);
+                
+                saveEventsToLocalStorage(events);
+                closeTopicModal();
+            }
+        }
+        
+        function toggleDateJumpPicker() {
+            const input = document.getElementById('dateJump');
+            const button = document.getElementById('jumpToDateButton');
+            if (input && button) {
+                const rect = button.getBoundingClientRect();
+                
+                // Position the hidden input exactly over the button
+                input.style.position = 'fixed';
+                input.style.top = `${rect.top}px`;
+                input.style.left = `${rect.left}px`;
+                input.style.width = `${rect.width}px`;
+                input.style.height = `${rect.height}px`;
+
+                input.value = $('#calendar').fullCalendar('getDate').format('YYYY-MM-DD');
+                
+                // Add class to make it temporarily visible (opacity 0.01) and clickable
+                input.classList.add('temp-visible');
+                
+                input.focus();
+                
+                input.onblur = function() {
+                    input.classList.remove('temp-visible');
+                    input.style.position = 'absolute'; 
+                }
+                
+                if (typeof input.showPicker === 'function') {
+                    setTimeout(() => {
+                        input.showPicker();
+                    }, 50);
+                } else {
+                    input.click();
+                }
+            }
+        }
+        
+        function jumpToDate(dateString) {
+            document.getElementById('dateJump').classList.remove('temp-visible');
+            document.getElementById('dateJump').style.position = 'absolute';
+            if (dateString && calendarInstance) {
+                calendarInstance.fullCalendar('gotoDate', dateString);
+            }
+        }
+        
+        function setActiveButton(targetButton, viewName) {
+            if (viewName !== 'today') {
+                $('.fc-month-button, .fc-basicWeek-button, .fc-basicDay-button').removeClass('fc-state-active');
+                $(targetButton).addClass('fc-state-active');
+            }
+        }
+
+        function initializeCalendar() {
+            calendarInstance = $('#calendar').fullCalendar({
+                header: { left: '', center: '', right: '' },
+                defaultView: 'month',
+                defaultDate: moment().format('YYYY-MM-DD'),
+                navLinks: true, editable: true, contentHeight: 450, timeFormat: 'H:mm', 
+                
+                viewRender: function(view, element) {
+                    const titleText = view.title.toUpperCase();
+                    $('#customMonthTitle').text(titleText);
+                    $('.fc-button').removeClass('fc-state-active');
+                    $(`.fc-${view.name}-button`).addClass('fc-state-active');
+                    
+                    const now = moment();
+                    const isTodayVisible = view.intervalStart.isSameOrBefore(now, 'day') && view.intervalEnd.isSameOrAfter(now, 'day');
+                    if (isTodayVisible) {
+                        if (view.name === 'month' && view.intervalStart.isSame(now, 'month')) {
+                            $('.fc-today-button').addClass('fc-state-active');
+                        } else if (view.name === 'basicWeek' || view.name === 'basicDay') {
+                            $('.fc-today-button').addClass('fc-state-active');
+                        }
+                    }
+                    $('.fc-head th').addClass('fc-widget-header');
+                    syncHeight();
+                },
+                
+                dayClick: function(date, jsEvent, view) {
+                    if ($(jsEvent.target).closest('.exam-day-marker').length) return;
+                    openTopicModal(date.format('YYYY-MM-DD'));
+                },
+                eventClick: function(calEvent, jsEvent, view) {
+                    jsEvent.preventDefault(); 
+                    if (calEvent.className && calEvent.className.includes('exam-day-marker')) {
+                        CALENDAR_APP.showCustomAlert("EXAM DAY", `THIS DATE IS MARKED AS **${calEvent.title}**. YOU CANNOT EDIT EXAM MARKERS.`);
+                        return;
+                    }
+                    openTopicModal(null, calEvent); 
+                },
+                events: function(start, end, timezone, callback) {
+                    const storedEvents = getEventsFromLocalStorage();
+                    
+                    const formattedEvents = storedEvents.map(e => ({
+                        id: e.id, title: e.title, start: e.start, end: e.end, allDay: true,
+                        backgroundColor: e.color, borderColor: e.borderColor,
+                        subjectKey: e.subjectKey, topicId: e.topicId,
+                    }));
+                    
+                    const examMarkers = getExamDates();
+                    const allEvents = formattedEvents.concat(examMarkers);
+                    callback(allEvents);
+                },
+                
+                eventDrop: function(event, delta, revertFunc) {
+                    if (event.editable === false || event.className.includes('exam-day-marker')) { revertFunc(); return; }
+                    let events = getEventsFromLocalStorage();
+                    const index = events.findIndex(e => e.id === event.id);
+                    if (index !== -1) {
+                        events[index].start = event.start.format('YYYY-MM-DD');
+                        events[index].end = event.end ? event.end.format('YYYY-MM-DD') : null;
+                        saveEventsToLocalStorage(events);
+                        CALENDAR_APP.showCustomAlert("UPDATE SUCCESS", `TASK "**${event.title}**" MOVED TO ${event.start.format('MMM D, YYYY')}.`);
+                    } else { revertFunc(); CALENDAR_APP.showCustomAlert("ERROR", "COULD NOT FIND EVENT TO UPDATE."); }
+                },
+                
+                eventResize: function(event, delta, revertFunc) {
+                    if (event.editable === false || event.className.includes('exam-day-marker')) { revertFunc(); }
+                    let events = getEventsFromLocalStorage();
+                    const index = events.findIndex(e => e.id === event.id);
+                    if (index !== -1) {
+                        events[index].end = event.end ? event.end.format('YYYY-MM-DD') : null;
+                        saveEventsToLocalStorage(events);
+                        const endDisplay = event.end ? event.end.clone().subtract(1, 'days').format('MMM D, YYYY') : event.start.format('MMM D, YYYY');
+                        CALENDAR_APP.showCustomAlert("UPDATE SUCCESS", `TASK "**${event.title}**" RESIZED. NEW END DATE: ${endDisplay}.`);
+                    } else { revertFunc(); CALENDAR_APP.showCustomAlert("ERROR", "COULD NOT FIND EVENT TO UPDATE."); }
+                },
+                
+                eventRender: function(event, element) {
+                    element.find('.fc-time').remove();
+                    if (event.className && event.className.includes('exam-day-marker')) {
+                        element.find('.fc-title').prepend(`<i class="fa-solid fa-graduation-cap mr-2"></i>`);
+                        return;
+                    }
+                    let iconClass = event.subjectKey === 'CUSTOM' ? 'fa-calendar-check' : 'fa-book';
+                    const iconHtml = `<span class="event-status-icon"><i class="fa-solid ${iconClass} event-icon-book"></i></span>`;
+                    element.find('.fc-title').wrap('<div class="fc-event-title-wrap"></div>').before(iconHtml);
+                },
+            });
+        }
+        function syncHeight() {
+            const calendarCard = document.getElementById('calendar-card');
+            const detailsElement = document.getElementById('calendar-details');
+            if (calendarCard && detailsElement) {
+                const cardHeight = calendarCard.offsetHeight;
+                detailsElement.style.setProperty('--calendar-height', `${cardHeight}px`);
+                detailsElement.setAttribute('data-calendar-ready', 'true');
+            }
+        }
+        function refreshCalendar() {
+            if (calendarInstance) {
+                calendarInstance.fullCalendar('refetchEvents');
+            }
+        }
+
+        // Expose Calendar API globally for main tracker
+        window.CALENDAR_APP = {
+            CALENDAR_EVENTS_KEY: CALENDAR_EVENTS_KEY,
+            NOTEPAD_CONTENT_KEY: NOTEPAD_CONTENT_KEY,
+            refreshCalendar: refreshCalendar,
+            setNotes: applyNotesContent,
+            showCustomAlert: showCustomAlert,
+            closeCustomAlert: closeCustomAlert,
+            openTopicModal: openTopicModal,
+            closeTopicModal: closeTopicModal,
+            saveTopicTask: saveTopicTask,
+            deleteTopicTask: deleteTopicTask,
+            populateTopics: populateTopics,
+            setActiveButton: setActiveButton,
+            toggleDateJumpPicker: toggleDateJumpPicker,
+            jumpToDate: jumpToDate,
+            undoNotes: undoNotes,
+            redoNotes: redoNotes,
+            clearNotes: clearNotes,
+            copyNotes: copyNotes,
+            getExamDates: getExamDates,
+            // FIX: EXPOSE necessary functions for the main script to call
+            loadNotes: loadNotes,
+            initializeCalendar: initializeCalendar,
+            syncHeight: syncHeight
+            // END FIX
+        };
+
+        // --- GLOBAL SYLLABUS DATA ---
+        const REM_ETHICS_SYLLABUS = [{id: 1, topic: "I. GENERAL PRINCIPLES (20 TOPICS)", depth: 1, trackable: true}, {id: 2, topic: "Rules of Court, as amended, and pertinent laws", depth: 2, trackable: false}, {id: 3, topic: "Scope and Applicability of the Rules", depth: 2, trackable: false}, {id: 4, topic: "Substantive Law vs. Remedial Law", depth: 2, trackable: false}, {id: 5, topic: "Power of the Supreme Court to Promulgate Rules of Procedure", depth: 2, trackable: false}, {id: 6, topic: "Hierarchy of Courts", depth: 2, trackable: false}, {id: 7, topic: "Rule-making Power of Inferior Courts", depth: 2, trackable: false}, {id: 8, topic: "Procedural vs. Substantive Due Process", depth: 2, trackable: false}, {id: 9, topic: "II. JURISDICTION (32 TOPICS)", depth: 1, trackable: true}, {id: 10, topic: "Definition and Nature of Jurisdiction", depth: 2, trackable: false}, {id: 11, topic: "Kinds of Jurisdiction", depth: 2, trackable: false}, {id: 12, topic: "Jurisdiction of the Supreme Court", depth: 2, trackable: false}, {id: 13, topic: "Jurisdiction of the Court of Appeals", depth: 2, trackable: false}, {id: 14, topic: "Jurisdiction of the Sandiganbayan", depth: 2, trackable: false}, {id: 15, topic: "Jurisdiction of the Court of Tax Appeals", depth: 2, trackable: false}, {id: 16, topic: "Jurisdiction of the Regional Trial Court (RTC)", depth: 2, trackable: false}, {id: 17, topic: "Jurisdiction of the Metropolitan Trial Courts (MeTC), Municipal Trial Courts in Cities (MTCC), Municipal Trial Courts (MTC), and Municipal Circuit Trial Courts (MCTC)", depth: 2, trackable: false}, {id: 18, topic: "Jurisdiction over Election Matters", depth: 2, trackable: false}, {id: 19, topic: "Jurisdiction over Cases involving Intellectual Property Rights", depth: 2, trackable: false}, {id: 20, topic: "Jurisdiction over Cases involving Family Matters", depth: 2, trackable: false}, {id: 21, topic: "Jurisdiction over Cases involving Juvenile and Domestic Relations", depth: 2, trackable: false}, {id: 22, topic: "Jurisdiction over Cases involving Commercial and Corporate Controversies", depth: 2, trackable: false}, {id: 23, topic: "Jurisdiction over Cases involving Agrarian Matters", depth: 2, trackable: false}, {id: 24, topic: "Jurisdiction over Cases involving Small Claims", depth: 2, trackable: false}, {id: 25, topic: "Jurisdiction over Cases involving Summary Procedure", depth: 2, trackable: false}, {id: 26, topic: "Jurisdiction over Cases involving Traffic Violations", depth: 2, trackable: false}, {id: 27, topic: "Jurisdiction over Cases involving Environmental Matters", depth: 2, trackable: false}, {id: 28, topic: "Jurisdiction over Cases involving Drug-related Offenses", depth: 2, trackable: false}, {id: 29, topic: "Jurisdiction over Cases involving Cybercrime", depth: 2, trackable: false}, {id: 30, topic: "Jurisdiction over Cases involving Anti-Money Laundering", depth: 2, trackable: false}, {id: 31, topic: "Jurisdiction over Cases involving Terrorism", depth: 2, trackable: false}, {id: 32, topic: "Jurisdiction over Cases involving Violence Against Women and Their Children (VAWC)", depth: 2, trackable: false}, {id: 33, topic: "Jurisdiction over Cases involving Anti-Photo and Video Voyeurism Act", depth: 2, trackable: false}, {id: 34, topic: "Jurisdiction over Cases involving Anti-Wiretapping Act", depth: 2, trackable: false}, {id: 35, topic: "Jurisdiction over Cases involving Anti-Trafficking in Persons Act", depth: 2, trackable: false}, {id: 36, topic: "Jurisdiction over Cases involving Human Security Act", depth: 2, trackable: false}, {id: 37, topic: "Jurisdiction over Cases involving Expanded Anti-Trafficking in Persons Act", depth: 2, trackable: false}, {id: 38, topic: "Jurisdiction over Cases involving Comprehensive Dangerous Drugs Act", depth: 2, trackable: false}, {id: 39, topic: "Jurisdiction over Cases involving Anti-Torture Act", depth: 2, trackable: false}, {id: 40, topic: "Jurisdiction over Cases involving Anti-Hazing Law", depth: 2, trackable: false}, {id: 41, topic: "III. CIVIL PROCEDURE (RULES OF COURT, AS AMENDED BY A.M. NO. 19-10-20-SC) (115 TOPICS)", depth: 1, trackable: true}, {id: 42, topic: "A. Rules 1-5 (General Provisions)", depth: 2, trackable: true}, {id: 43, topic: "Rule 1: Title and Construction", depth: 3, trackable: false}, {id: 44, topic: "Rule 2: Cause of Action", depth: 3, trackable: false}, {id: 45, topic: "Rule 3: Parties to Civil Actions", depth: 3, trackable: false}, {id: 46, topic: "Rule 4: Venue of Actions", depth: 3, trackable: false}, {id: 47, topic: "Rule 5: Uniform Procedure in Trial Courts", depth: 3, trackable: false}, {id: 48, topic: "B. Rules 6-12 (Pleadings)", depth: 2, trackable: true}, {id: 49, topic: "Rule 6: Kinds of Pleadings", depth: 3, trackable: false}, {id: 50, topic: "Rule 7: Parts of a Pleading", depth: 3, trackable: false}, {id: 51, topic: "Rule 8: Manner of Making Allegations in Pleadings", depth: 3, trackable: false}, {id: 52, topic: "Rule 9: Effect of Failure to Plead", depth: 3, trackable: false}, {id: 53, topic: "Rule 10: Amended and Supplemental Pleadings", depth: 3, trackable: false}, {id: 54, topic: "Rule 11: When to File Responsive Pleadings", depth: 3, trackable: false}, {id: 55, topic: "Rule 12: Bill of Particulars", depth: 3, trackable: false}, {id: 56, topic: "C. Rules 13-17 (Service and Filing of Pleadings and Other Papers)", depth: 2, trackable: true}, {id: 57, topic: "Rule 13: Filing and Service of Pleadings and Other Papers", depth: 3, trackable: false}, {id: 58, topic: "Rule 14: Summons", depth: 3, trackable: false}, {id: 59, topic: "Rule 15: Motions", depth: 3, trackable: false}, {id: 60, topic: "Rule 16: Pre-Trial", depth: 3, trackable: false}, {id: 61, topic: "Rule 17: Dismissal of Actions", depth: 3, trackable: false}, {id: 62, topic: "D. Rules 18-20 (Setting and Trial)", depth: 2, trackable: true}, {id: 63, topic: "Rule 18: Pre-Trial", depth: 3, trackable: false}, {id: 64, topic: "Rule 19: Intervention", depth: 3, trackable: false}, {id: 65, topic: "Rule 20: Calendar", depth: 3, trackable: false}, {id: 66, topic: "E. Rules 21-26 (Subpoena, Modes of Discovery, and Trial)", depth: 2, trackable: true}, {id: 67, topic: "Rule 21: Subpoena", depth: 3, trackable: false}, {id: 68, topic: "Rule 22: Computation of Time", depth: 3, trackable: false}, {id: 69, topic: "Rule 23: Depositions Pending Action", depth: 3, trackable: false}, {id: 70, topic: "Rule 24: Depositions Upon Oral Examination", depth: 3, trackable: false}, {id: 71, topic: "Rule 25: Interrogatories to Parties", depth: 3, trackable: false}, {id: 72, topic: "Rule 26: Admission by Adverse Party", depth: 3, trackable: false}, {id: 73, topic: "F. Rules 27-29 (Modes of Discovery and Trial)", depth: 2, trackable: true}, {id: 74, topic: "Rule 27: Production or Inspection of Documents or Things", depth: 3, trackable: false}, {id: 75, topic: "Rule 28: Physical and Mental Examination of Persons", depth: 3, trackable: false}, {id: 76, topic: "Rule 29: Refusal to Comply with Modes of Discovery", depth: 3, trackable: false}, {id: 77, topic: "G. Rules 30-33 (Trial)", depth: 2, trackable: true}, {id: 78, topic: "Rule 30: Trial by Commissioners", depth: 3, trackable: false}, {id: 79, topic: "Rule 31: Consolidation or Severance of Hearing or Trial", depth: 3, trackable: false}, {id: 80, topic: "Rule 32: Effect of Consolidation", depth: 3, trackable: false}, {id: 81, topic: "Rule 33: Judgment on the Pleadings", depth: 3, trackable: false}, {id: 82, topic: "H. Rules 34-37 (Judgment and Remedies)", depth: 2, trackable: true}, {id: 83, topic: "Rule 34: Judgment on the Pleadings", depth: 3, trackable: false}, {id: 84, topic: "Rule 35: Summary Judgments", depth: 3, trackable: false}, {id: 85, topic: "Rule 36: Judgment and Final Orders", depth: 3, trackable: false}, {id: 86, topic: "Rule 37: New Trial or Reconsideration", depth: 3, trackable: false}, {id: 87, topic: "I. Rules 38-40 (Reliefs from Judgment and Execution)", depth: 2, trackable: true}, {id: 88, topic: "Rule 38: Relief from Judgment, Orders, or Other Proceedings", depth: 3, trackable: false}, {id: 89, topic: "Rule 39: Execution, Satisfaction, and Effect of Judgments", depth: 3, trackable: false}, {id: 90, topic: "Rule 40: Appeal from Municipal Trial Courts to the Regional Trial Courts", depth: 3, trackable: false}, {id: 91, topic: "J. Rules 41-56 (Appeals and Supreme Court Proceedings)", depth: 2, trackable: true}, {id: 92, topic: "Rule 41: Appeal from the Regional Trial Courts", depth: 3, trackable: false}, {id: 93, topic: "Rule 42: Petition for Review from the Regional Trial Courts to the Court of Appeals", depth: 3, trackable: false}, {id: 94, topic: "Rule 43: Appeals from the Court of Tax Appeals and Quasi-Judicial Agencies to the Court of Appeals", depth: 3, trackable: false}, {id: 95, topic: "Rule 44: Ordinary Appealed Cases", depth: 3, trackable: false}, {id: 96, topic: "Rule 45: Appeal by Certiorari to the Supreme Court", depth: 3, trackable: false}, {id: 97, topic: "Rule 46: Original Cases in the Court of Appeals", depth: 3, trackable: false}, {id: 98, topic: "Rule 47: Annulment of Judgments or Final Orders and Resolutions", depth: 3, trackable: false}, {id: 99, topic: "Rule 48: Preliminary Conference", depth: 3, trackable: false}, {id: 100, topic: "Rule 49: Hearing", depth: 3, trackable: false}, {id: 101, topic: "Rule 50: Motion for Reconsideration", depth: 3, trackable: false}, {id: 102, topic: "Rule 51: Judgment", depth: 3, trackable: false}, {id: 103, topic: "Rule 52: New Trial or Reconsideration", depth: 3, trackable: false}, {id: 104, topic: "Rule 53: Motion for New Trial", depth: 3, trackable: false}, {id: 105, topic: "Rule 54: Judgment", depth: 3, trackable: false}, {id: 106, topic: "Rule 55: Original Cases in the Supreme Court", depth: 3, trackable: false}, {id: 107, topic: "Rule 56: Procedure in the Supreme Court", depth: 3, trackable: false}, {id: 108, topic: "K. Rules 57-61 (Provisional Remedies)", depth: 2, trackable: true}, {id: 109, topic: "Rule 57: Preliminary Attachment", depth: 3, trackable: false}, {id: 110, topic: "Rule 58: Preliminary Injunction", depth: 3, trackable: false}, {id: 111, topic: "Rule 59: Receivership", depth: 3, trackable: false}, {id: 112, topic: "Rule 60: Replevin", depth: 3, trackable: false}, {id: 113, topic: "Rule 61: Support Pendente Lite", depth: 3, trackable: false}, {id: 114, topic: "L. Rules 62-67 (Special Civil Actions)", depth: 2, trackable: true}, {id: 115, topic: "Rule 62: Interpleader", depth: 3, trackable: false}, {id: 116, topic: "Rule 63: Declaratory Relief and Similar Remedies", depth: 3, trackable: false}, {id: 117, topic: "Rule 64: Review of Judgments and Final Orders or Resolutions of the Commission on Audit and the Commission on Elections", depth: 3, trackable: false}, {id: 118, topic: "Rule 65: Certiorari, Prohibition and Mandamus", depth: 3, trackable: false}, {id: 119, topic: "Rule 66: Quo Warranto", depth: 3, trackable: false}, {id: 120, topic: "Rule 67: Expropriation", depth: 3, trackable: false}, {id: 121, topic: "M. Rules 68-71 (Special Civil Actions and Writ)", depth: 2, trackable: true}, {id: 122, topic: "Rule 68: Foreclosure of Real Estate Mortgage", depth: 3, trackable: false}, {id: 123, topic: "Rule 69: Partition", depth: 3, trackable: false}, {id: 124, topic: "Rule 70: Forcible Entry and Unlawful Detainer", depth: 3, trackable: false}, {id: 125, topic: "Rule 71: Contempt", depth: 3, trackable: false}, {id: 126, topic: "IV. SPECIAL PROCEEDINGS AND WRITS (32 TOPICS)", depth: 1, trackable: true}, {id: 127, topic: "Rule 72: Subject Matter and Applicability of General Rules", depth: 2, trackable: true}, {id: 128, topic: "Rule 73: Venue and Process", depth: 3, trackable: false}, {id: 129, topic: "Rule 74: Summary Settlement of Estates", depth: 3, trackable: false}, {id: 130, topic: "Rule 75: Production of Will", depth: 3, trackable: false}, {id: 131, topic: "Rule 76: Allowance or Disallowance of Will", depth: 3, trackable: false}, {id: 132, topic: "Rule 77: Allowance of Will Proved Outside", depth: 3, trackable: false}, {id: 133, topic: "Rule 78: Letters Testamentary", depth: 3, trackable: false}, {id: 134, topic: "Rule 79: Opposing Issuance of Letters", depth: 3, trackable: false}, {id: 135, topic: "Rule 80: Administration", depth: 3, trackable: false}, {id: 136, topic: "Rule 81: Bonds of Executors and Administrators", depth: 3, trackable: false}, {id: 137, topic: "Rule 82: Revocation of Administration", depth: 3, trackable: false}, {id: 138, topic: "Rule 83: Inventory and Appraisal", depth: 3, trackable: false}, {id: 139, topic: "Rule 84: General Powers and Duties", depth: 3, trackable: false}, {id: 140, topic: "Rule 85: Accountability and Compensation", depth: 3, trackable: false}, {id: 141, topic: "Rule 86: Claims Against Estate", depth: 3, trackable: false}, {id: 142, topic: "Rule 87: Actions By and Against Executors", depth: 3, trackable: false}, {id: 143, topic: "Rule 88: Sale, Mortgage, or Other Encumbrance", depth: 3, trackable: false}, {id: 144, topic: "Rule 89: Power to Take", depth: 3, trackable: false}, {id: 145, topic: "Rule 90: Distribution and Partition", depth: 3, trackable: false}, {id: 146, topic: "Rule 91: Trustees", depth: 3, trackable: false}, {id: 147, topic: "Rule 92: Guardianship", depth: 3, trackable: false}, {id: 148, topic: "Rule 93: Appointment of Guardians", depth: 3, trackable: false}, {id: 149, topic: "Rule 94: Bonds of Guardians", depth: 3, trackable: false}, {id: 150, topic: "Rule 95: Selling or Encumbering Property", depth: 3, trackable: false}, {id: 151, topic: "Rule 96: Judicial Approval", depth: 3, trackable: false}, {id: 152, topic: "Rule 97: Discharge of Guardians", depth: 3, trackable: false}, {id: 153, topic: "Rule 98: Adoption", depth: 3, trackable: false}, {id: 154, topic: "Rule 99: Rescission of Adoption", depth: 3, trackable: false}, {id: 155, topic: "Rule 100: Hospitalization of Insane Persons", depth: 3, trackable: false}, {id: 156, topic: "Rule 101: Habeas Corpus", depth: 3, trackable: false}, {id: 157, topic: "Rule 102: Change of Name", depth: 3, trackable: false}, {id: 158, topic: "Rule 103: Voluntary Dissolution of Corporations", depth: 3, trackable: false}, {id: 159, topic: "Writ of Amparo", depth: 2, trackable: true}, {id: 160, topic: "Writ of Habeas Data", depth: 2, trackable: true}, {id: 161, topic: "Writ of Kalikasan", depth: 2, trackable: true}, {id: 162, topic: "V. CRIMINAL PROCEDURE (52 TOPICS)", depth: 1, trackable: true}, {id: 163, topic: "Rule 110: Prosecution of Offenses", depth: 2, trackable: true}, {id: 164, topic: "Rule 111: Prosecution of Civil Action", depth: 2, trackable: true}, {id: 165, topic: "Rule 112: Preliminary Investigation", depth: 2, trackable: true}, {id: 166, topic: "Rule 113: Arrest", depth: 2, trackable: true}, {id: 167, topic: "Rule 114: Bail", depth: 2, trackable: true}, {id: 168, topic: "Rule 115: Rights of the Accused", depth: 2, trackable: true}, {id: 169, topic: "Rule 116: Arraignment and Plea", depth: 2, trackable: true}, {id: 170, topic: "Rule 117: Motion to Quash", depth: 2, trackable: true}, {id: 171, topic: "Rule 118: Pre-Trial", depth: 2, trackable: true}, {id: 172, topic: "Rule 119: Trial", depth: 2, trackable: true}, {id: 173, topic: "Rule 120: Judgment", depth: 2, trackable: true}, {id: 174, topic: "Rule 121: New Trial or Reconsideration", depth: 2, trackable: true}, {id: 175, topic: "Rule 122: Appeal", depth: 2, trackable: true}, {id: 176, topic: "Rule 123: Procedure in the Municipal Trial Courts", depth: 2, trackable: true}, {id: 177, topic: "Rule 124: Procedure in the Court of Appeals", depth: 2, trackable: true}, {id: 178, topic: "Rule 125: Procedure in the Supreme Court", depth: 2, trackable: true}, {id: 179, topic: "VI. EVIDENCE (78 TOPICS)", depth: 1, trackable: true}, {id: 180, topic: "Rule 128: General Provisions", depth: 2, trackable: true}, {id: 181, topic: "Rule 129: What Need Not Be Proved", depth: 2, trackable: true}, {id: 182, topic: "Rule 130: Rules of Admissibility", depth: 2, trackable: true}, {id: 183, topic: "Rule 131: Burden of Proof and Presumptions", depth: 2, trackable: true}, {id: 184, topic: "Rule 132: Presentation of Evidence", depth: 2, trackable: true}, {id: 185, topic: "Rule 133: Weight and Sufficiency of Evidence", depth: 2, trackable: true}, {id: 186, topic: "Rule 134: Perpetuation of Testimony", depth: 2, trackable: true}, {id: 187, topic: "VII. LEGAL AND JUDICIAL ETHICS (169 TOPICS)", depth: 1, trackable: true}, {id: 188, topic: "A. The Law Profession and Practice", depth: 2, trackable: true}, {id: 189, topic: "Nature of the Office of the Lawyer", depth: 3, trackable: false}, {id: 190, topic: "Requirements for Admission to the Bar", depth: 3, trackable: false}, {id: 191, topic: "Continuing Requirements for Membership", depth: 3, trackable: false}, {id: 192, topic: "B. The Code of Professional Responsibility and Accountability (CPRA)", depth: 2, trackable: true}, {id: 193, topic: "Canon I: Independence", depth: 3, trackable: false}, {id: 194, topic: "Canon II: Propriety", depth: 3, trackable: false}, {id: 195, topic: "Canon III: Competence and Diligence", depth: 3, trackable: false}, {id: 196, topic: "Canon IV: Fidelity", depth: 3, trackable: false}, {id: 197, topic: "Canon V: Confidentiality", depth: 3, trackable: false}, {id: 198, topic: "Canon VI: Conflict of Interest", depth: 3, trackable: false}, {id: 199, topic: "Canon VII: Fairness and Candor", depth: 3, trackable: false}, {id: 200, topic: "Canon VIII: Responsibility and Accountability", depth: 3, trackable: false}, {id: 201, topic: "C. Judicial Ethics (Code of Judicial Conduct)", depth: 2, trackable: true}, {id: 202, topic: "Canon 1: Judicial Independence", depth: 3, trackable: false}, {id: 203, topic: "Canon 2: Judicial Integrity", depth: 3, trackable: false}, {id: 204, topic: "Canon 3: Judicial Impartiality", depth: 3, trackable: false}, {id: 205, topic: "Canon 4: Equality", depth: 3, trackable: false}, {id: 206, topic: "Canon 5: Judicial Propriety", depth: 3, trackable: false}, {id: 207, topic: "Canon 6: Judicial Competence and Diligence", depth: 3, trackable: false}, {id: 208, topic: "VIII. PRACTICAL EXERCISES (85 TOPICS)", depth: 1, trackable: true}, {id: 209, topic: "Civil Pleadings (Complaint, Answer, Motion)", depth: 2, trackable: true}, {id: 210, topic: "Criminal Pleadings (Information, Motion to Quash, Plea)", depth: 2, trackable: true}, {id: 211, topic: "Appellate Pleadings (Notice of Appeal, Petition for Review, Petition for Certiorari)", depth: 2, trackable: true}, {id: 212, topic: "Judicial Affidavit", depth: 2, trackable: true}, {id: 213, topic: "Legal Opinion/Memorandum", depth: 2, trackable: true}, {id: 214, topic: "Deed of Sale/Mortgage", depth: 2, trackable: true}, {id: 215, topic: "Affidavits (Waiver, Loss, etc.)", depth: 2, trackable: true}, ];
+        const CRIM_SYLLABUS = [{id: 1001, topic: "I. FUNDAMENTAL PRINCIPLES (18 TOPICS)", depth: 1, trackable: true}, {id: 1002, topic: "A. Basic Maxims in Criminal Law", depth: 2, trackable: true}, {id: 1003, topic: "B. Mala in Se vs. Mala Prohibita", depth: 2, trackable: true}, {id: 1004, topic: "C. Construction of Penal Laws", depth: 2, trackable: true}, {id: 1005, topic: "D. Sources of Criminal Law", depth: 2, trackable: true}, {id: 1006, topic: "E. Effects of Repeal of Penal Laws", depth: 2, trackable: true}, {id: 1007, topic: "F. Territoriality Principle", depth: 2, trackable: true}, {id: 1008, topic: "G. Generality Principle", depth: 2, trackable: true}, {id: 1009, topic: "H. Prospectivity Principle (Exception to Prospectivity)", depth: 2, trackable: true}, {id: 1010, topic: "I. Constitutional Guarantees", depth: 2, trackable: true}, {id: 1011, topic: "J. Limitations on the Power of Congress to Enact Penal Laws", depth: 2, trackable: true}, {id: 1012, topic: "K. RPC Arts. 1-10", depth: 2, trackable: true}, {id: 1013, topic: "II. FELONIES AND CRIMINAL LIABILITY (RPC BOOK 1 AND RELATED LAWS) (90 TOPICS)", depth: 1, trackable: true}, {id: 1014, topic: "A. Felonies (Dolo and Culpa)", depth: 2, trackable: true}, {id: 1015, topic: "B. Impossible Crime", depth: 2, trackable: true}, {id: 1016, topic: "C. Stages of Execution (RPC Art. 6)", depth: 2, trackable: true}, {id: 1017, topic: "D. Conspiracy and Proposal", depth: 2, trackable: true}, {id: 1018, topic: "E. Circumstances Affecting Criminal Liability", depth: 2, trackable: true}, {id: 1019, topic: "1. Justifying Circumstances (Art. 11)", depth: 3, trackable: false}, {id: 1020, topic: "2. Exempting Circumstances (Art. 12)", depth: 3, trackable: false}, {id: 1021, topic: "3. Mitigating Circumstances (Art. 13)", depth: 3, trackable: false}, {id: 1022, topic: "4. Aggravating Circumstances (Art. 14)", depth: 3, trackable: false}, {id: 1023, topic: "5. Alternative Circumstances (Art. 15)", depth: 3, trackable: false}, {id: 1024, topic: "F. Persons Criminally Liable (RPC Art. 16-20)", depth: 2, trackable: true}, {id: 1025, topic: "G. Penalties (RPC Art. 21-88)", depth: 2, trackable: true}, {id: 1026, topic: "H. Extinction of Criminal Liability (RPC Art. 89-98)", depth: 2, trackable: true}, {id: 1027, topic: "I. Civil Liability (RPC Art. 100-113)", depth: 2, trackable: true}, {id: 1028, topic: "J. Indeterminate Sentence Law (Act No. 4103)", depth: 2, trackable: true}, {id: 1029, topic: "K. Probation Law (PD 968)", depth: 2, trackable: true}, {id: 1030, topic: "L. Juvenile Justice and Welfare Act (RA 9344 as amended by RA 10630)", depth: 2, trackable: true}, {id: 1031, topic: "M. Plea Bargaining", depth: 2, trackable: true}, {id: 1032, topic: "III. CRIMES AND THEIR PENALTIES (RPC BOOK 2 AND RELATED SPECIAL LAWS) (105 TOPICS)", depth: 1, trackable: true}, {id: 1033, topic: "A. Crimes Against National Security (Art. 114-123)", depth: 2, trackable: true}, {id: 1034, topic: "B. Crimes Against the Fundamental Laws of the State (Art. 124-133)", depth: 2, trackable: true}, {id: 1035, topic: "C. Crimes Against Public Order (Art. 134-160)", depth: 2, trackable: true}, {id: 1036, topic: "D. Crimes Against Public Interest (Art. 161-189)", depth: 2, trackable: true}, {id: 1037, topic: "E. Crimes Relative to Opium and Other Prohibited Drugs", depth: 2, trackable: true}, {id: 1038, topic: "F. Crimes Against Public Morals", depth: 2, trackable: true}, {id: 1039, topic: "G. Crimes Committed by Public Officers (Art. 203-245)", depth: 2, trackable: true}, {id: 1040, topic: "H. Crimes Against Persons (Art. 246-266)", depth: 2, trackable: true}, {id: 1041, topic: "I. Crimes Against Honor (Art. 353-364)", depth: 2, trackable: true}, {id: 1042, topic: "J. Crimes Against Liberty and Security (Art. 267-292)", depth: 2, trackable: true}, {id: 1043, topic: "K. Crimes Against Property (Art. 293-346)", depth: 2, trackable: true}, {id: 1044, topic: "L. Crimes Against Chastity (Art. 333-346)", depth: 2, trackable: true}, {id: 1045, topic: "M. Crimes Against the Civil Status of Persons (Art. 347-352)", depth: 2, trackable: true}, {id: 1046, topic: "N. Crimes Against Public Decency and Morals (Art. 353-364)", depth: 2, trackable: true}, {id: 1047, topic: "O. Quasi-Offenses (Art. 365)", depth: 2, trackable: true}, {id: 1048, topic: "P. Selected Special Penal Laws", depth: 2, trackable: true}, ];
+        const LABOR_SYLLABUS = [{id: 2001, topic: "I. BASIC PRINCIPLES AND CONCEPTS (15 TOPICS)", depth: 1, trackable: true}, {id: 2002, topic: "A. Constitutional Mandate on Labor", depth: 2, trackable: true}, {id: 2003, topic: "B. Social Justice", depth: 2, trackable: true}, {id: 2004, topic: "C. Construction in Favor of Labor", depth: 2, trackable: true}, {id: 2005, topic: "D. Labor Code Policy", depth: 2, trackable: true}, {id: 2006, topic: "E. Management Prerogative", depth: 2, trackable: true}, {id: 2007, topic: "F. Labor Law vs. Civil Law/Common Law", depth: 2, trackable: true}, {id: 2008, topic: "II. RECRUITMENT AND PLACEMENT (20 TOPICS)", depth: 1, trackable: true}, {id: 2009, topic: "A. Regulation of Recruitment and Placement", depth: 2, trackable: true}, {id: 2010, topic: "B. Illegal Recruitment", depth: 2, trackable: true}, {id: 2011, topic: "C. Employment of Foreign Nationals", depth: 2, trackable: true}, {id: 2012, topic: "D. Anti-Trafficking in Persons Act (RA 9208 as amended)", depth: 2, trackable: true}, {id: 2013, topic: "E. Overseas Filipino Workers (OFWs)", depth: 2, trackable: true}, {id: 2014, topic: "III. EMPLOYMENT RELATIONSHIP (17 TOPICS)", depth: 1, trackable: true}, {id: 2015, topic: "A. Employer-Employee Relationship", depth: 2, trackable: true}, {id: 2016, topic: "B. Kinds of Employment", depth: 2, trackable: true}, {id: 2017, topic: "C. Independent Contractors vs. Labor-Only Contracting", depth: 2, trackable: true}, {id: 2018, topic: "D. Solidary Liability in Contracting", depth: 2, trackable: true}, {id: 2019, topic: "IV. LABOR STANDARDS (40 TOPICS)", depth: 1, trackable: true}, {id: 2020, topic: "A. Working Conditions", depth: 2, trackable: true}, {id: 2021, topic: "B. Wages and Money Claims", depth: 2, trackable: true}, {id: 2022, topic: "C. Female and Child Labor Laws", depth: 2, trackable: true}, {id: 2023, topic: "D. Leaves and Benefits", depth: 2, trackable: true}, {id: 2024, topic: "E. Occupational Safety and Health Standards (OSHS)", depth: 2, trackable: true}, {id: 2025, topic: "V. LABOR RELATIONS (30 TOPICS)", depth: 1, trackable: true}, {id: 2026, topic: "A. Right to Self-Organization", depth: 2, trackable: true}, {id: 2027, topic: "B. Bargaining Representative", depth: 2, trackable: true}, {id: 2028, topic: "C. Collective Bargaining Agreement (CBA)", depth: 2, trackable: true}, {id: 2029, topic: "D. Strikes, Picketing, and Lockouts", depth: 2, trackable: true}, {id: 2030, topic: "E. Unfair Labor Practices (ULP)", depth: 2, trackable: true}, {id: 2031, topic: "VI. SUSPENSION AND TERMINATION OF EMPLOYMENT (13 TOPICS)", depth: 1, trackable: true}, {id: 2032, topic: "A. Floating Status", depth: 2, trackable: true}, {id: 2033, topic: "B. Just Causes", depth: 2, trackable: true}, {id: 2034, topic: "C. Authorized Causes", depth: 2, trackable: true}, {id: 2035, topic: "D. Due Process Requirements", depth: 2, trackable: true}, {id: 2036, topic: "E. Illegal Dismissal and Reinstatement", depth: 2, trackable: true}, {id: 2037, topic: "VII. SOCIAL LEGISLATION (10 TOPICS)", depth: 1, trackable: true}, {id: 2038, topic: "A. SSS Law (RA 11199)", depth: 2, trackable: true}, {id: 2039, topic: "B. GSIS Law (RA 8291)", depth: 2, trackable: true}, {id: 2040, topic: "C. PhilHealth Law (RA 7875 as amended)", depth: 2, trackable: true}, {id: 2041, topic: "D. Employees' Compensation Commission (ECC)", depth: 2, trackable: true}, {id: 2042, topic: "VIII. LABOR ADJUDICATION: JURISDICTION & REMEDIES (10 TOPICS)", depth: 1, trackable: true}, {id: 2043, topic: "A. NLRC and Labor Arbiter Jurisdiction", depth: 2, trackable: true}, {id: 2044, topic: "B. DOLE Secretary Jurisdiction", depth: 2, trackable: true}, {id: 2045, topic: "C. Jurisdiction of Regular Courts and DOLE Regional Directors", depth: 2, trackable: true}, {id: 2046, topic: "D. Appeals and Remedies", depth: 2, trackable: true}, ];
+        const CIVIL_SYLLABUS = [{id: 3001, topic: "I. EFFECT AND APPLICATION OF LAWS (21 TOPICS)", depth: 1, trackable: true}, {id: 3002, topic: "A. When laws take effect (Art. 2)", depth: 2, trackable: true}, {id: 3003, topic: "B. Ignorance of the law (Art. 3)", depth: 2, trackable: true}, {id: 3004, topic: "C. Retroactivity (Art. 4)", depth: 2, trackable: true}, {id: 3005, topic: "D. Waiver of rights (Art. 6)", depth: 2, trackable: true}, {id: 3006, topic: "E. Repeal of laws (Art. 7)", depth: 2, trackable: true}, {id: 3007, topic: "F. Judicial Decisions (Art. 8)", depth: 2, trackable: true}, {id: 3008, topic: "G. Duty of judge (Art. 9)", depth: 2, trackable: true}, {id: 3009, topic: "H. Custom (Art. 11)", depth: 2, trackable: true}, {id: 3010, topic: "I. Conflict of Laws (Art. 15-17)", depth: 2, trackable: true}, {id: 3011, topic: "II. PERSONS AND FAMILY RELATIONS (67 TOPICS)", depth: 1, trackable: true}, {id: 3012, topic: "A. Persons (Arts. 37-70)", depth: 2, trackable: true}, {id: 3013, topic: "B. Marriage (Arts. 1-80, Family Code)", depth: 2, trackable: true}, {id: 3014, topic: "C. Legal Separation (Arts. 55-66, FC)", depth: 2, trackable: true}, {id: 3015, topic: "D. Annulment and Declaration of Nullity of Marriage (Arts. 35- FC)", depth: 2, trackable: true}, {id: 3016, topic: "E. Rights and Obligations between Husband and Wife (Arts. 68-73, FC)", depth: 2, trackable: true}, {id: 3017, topic: "F. Property Relations between Husband and Wife (Arts. 74-148, FC)", depth: 2, trackable: true}, {id: 3018, topic: "G. Paternity and Filiation (Arts. 163-182, FC)", depth: 2, trackable: true}, {id: 3019, topic: "H. Adoption (RA 8552, RA 9523, RA 11222)", depth: 2, trackable: true}, {id: 3020, topic: "I. Support (Arts. 194-208, FC)", depth: 2, trackable: true}, {id: 3021, topic: "J. Parental Authority (Arts. 209-233, FC)", depth: 2, trackable: true}, {id: 3022, topic: "K. Emancipation and Age of Majority (Arts. 234-237, FC)", depth: 2, trackable: true}, {id: 3023, topic: "L. Civil Register (Arts. 407-413)", depth: 2, trackable: true}, {id: 3024, topic: "III. PROPERTY, OWNERSHIP, AND ITS MODIFICATIONS (45 TOPICS)", depth: 1, trackable: true}, {id: 3025, topic: "A. Classification of Property (Arts. 414-426)", depth: 2, trackable: true}, {id: 3026, topic: "B. Ownership (Arts. 427-440)", depth: 2, trackable: true}, {id: 3027, topic: "C. Accession (Arts. 441-475)", depth: 2, trackable: true}, {id: 3028, topic: "D. Quieting of Title (Arts. 476-480)", depth: 2, trackable: true}, {id: 3029, topic: "E. Co-ownership (Arts. 484-501)", depth: 2, trackable: true}, {id: 3030, topic: "F. Possession (Arts. 523-561)", depth: 2, trackable: true}, {id: 3031, topic: "G. Usufruct (Arts. 562-612)", depth: 2, trackable: true}, {id: 3032, topic: "H. Easement (Arts. 613-693)", depth: 2, trackable: true}, {id: 3033, topic: "I. Nuisance (Arts. 694-707)", depth: 2, trackable: true}, {id: 3034, topic: "J. Land Titles and Deeds (PD 1529, RA 11573)", depth: 2, trackable: true}, {id: 3035, topic: "IV. SUCCESSION (11 TOPICS)", depth: 1, trackable: true}, {id: 3036, topic: "A. General Provisions (Arts. 774-781)", depth: 2, trackable: true}, {id: 3037, topic: "B. Testamentary Succession (Arts. 783-818)", depth: 2, trackable: true}, {id: 3038, topic: "C. Legal or Intestate Succession (Arts. 960-1014)", depth: 2, trackable: true}, {id: 3039, topic: "D. Reserva Troncal (Art. 891)", depth: 2, trackable: true}, {id: 3040, topic: "E. Disinheritance (Arts. 915-923)", depth: 2, trackable: true}, {id: 3041, topic: "V. OBLIGATIONS AND CONTRACTS (75 TOPICS)", depth: 1, trackable: true}, {id: 3042, topic: "A. Obligations (Arts. 1156-1304)", depth: 2, trackable: true}, {id: 3043, topic: "B. Contracts (Arts. 1305-1422)", depth: 2, trackable: true}, {id: 3044, topic: "C. Quasi-Contracts (Arts. 2142-2175)", depth: 2, trackable: true}, {id: 3045, topic: "D. Natural Obligations (Arts. 1423-1430)", depth: 2, trackable: true}, {id: 3046, topic: "VI. SPECIAL CONTRACTS (52 TOPICS)", depth: 1, trackable: true}, {id: 3047, topic: "A. Sale (Arts. 1458-1637)", depth: 2, trackable: true}, {id: 3048, topic: "B. Agency (Arts. 1868-1932)", depth: 2, trackable: true}, {id: 3049, topic: "C. Partnership (Arts. 1767-1867)", depth: 2, trackable: true}, {id: 3050, topic: "D. Deposit (Arts. 1962-2009)", depth: 2, trackable: true}, {id: 3051, topic: "E. Loan (Arts. 1933-1961)", depth: 2, trackable: true}, {id: 3052, topic: "F. Chattel Mortgage Law (Act 1508)", depth: 2, trackable: true}, {id: 3053, topic: "VII. TORTS AND QUASI-DELICTS (48 TOPICS)", depth: 1, trackable: true}, {id: 3054, topic: "A. Requisites (Arts. 2176-2191)", depth: 2, trackable: true}, {id: 3055, topic: "B. Persons Liable", depth: 2, trackable: true}, {id: 3056, topic: "C. Defenses", depth: 2, trackable: true}, {id: 3057, topic: "D. Damages (Arts. 2195-2235)", depth: 2, trackable: true}, ];
+        const COMM_TAX_SYLLABUS = [{id: 4001, topic: "I. BUSINESS ORGANIZATIONS (104 TOPICS)", depth: 1, trackable: true}, {id: 4002, topic: "A. Corporation Law (RA 11232, Revised Corporation Code)", depth: 2, trackable: true}, {id: 4003, topic: "B. Securities Regulation Code (RA 8799)", depth: 2, trackable: true}, {id: 4004, topic: "C. Financial Rehabilitation and Insolvency Act (FRIA) (RA 10142)", depth: 2, trackable: true}, {id: 4005, topic: "II. INSURANCE (P.D. NO. 612, AS AMENDED BY R.A. NO. 10607) (13 TOPICS)", depth: 1, trackable: true}, {id: 4006, topic: "A. Concept and Nature of Insurance", depth: 2, trackable: true}, {id: 4007, topic: "B. Insurable Interest", depth: 2, trackable: true}, {id: 4008, topic: "C. Premiums", depth: 2, trackable: true}, {id: 4009, topic: "D. Claims and Loss", depth: 2, trackable: true}, {id: 4010, topic: "III. TRANSPORTATION (15 TOPICS)", depth: 1, trackable: true}, {id: 4011, topic: "A. Common Carriers", depth: 2, trackable: true}, {id: 4012, topic: "B. Maritime Law", depth: 2, trackable: true}, {id: 4013, topic: "C. Aviation Law", depth: 2, trackable: true}, {id: 4014, topic: "IV. BANKING (35 TOPICS)", depth: 1, trackable: true}, {id: 4015, topic: "A. General Banking Law (RA 8791)", depth: 2, trackable: true}, {id: 4016, topic: "B. Philippine Deposit Insurance Corporation (PDIC) Law (RA 3591 as amended)", depth: 2, trackable: true}, {id: 4017, topic: "C. Secrecy of Bank Deposits (RA 1405)", depth: 2, trackable: true}, {id: 4018, topic: "D. Anti-Money Laundering Act (AMLA) (RA 9160 as amended)", depth: 2, trackable: true}, {id: 4019, topic: "V. INTELLECTUAL PROPERTY – R.A. NO. 8293, AS AMENDED (31 TOPICS)", depth: 1, trackable: true}, {id: 4020, topic: "A. Patents", depth: 2, trackable: true}, {id: 4021, topic: "B. Trademarks, Service Marks, and Trade Names", depth: 2, trackable: true}, {id: 4022, topic: "C. Copyright and Related Rights", depth: 2, trackable: true}, {id: 4023, topic: "VI. SPECIAL COMMERCIAL LAWS (30 TOPICS)", depth: 1, trackable: true}, {id: 4024, topic: "A. Electronic Commerce Act (RA 8792)", depth: 2, trackable: true}, {id: 4025, topic: "B. Ease of Doing Business Act (RA 11032)", depth: 2, trackable: true}, {id: 4026, topic: "C. Data Privacy Act (RA 10173)", depth: 2, trackable: true}, {id: 4027, topic: "VII. TAXATION LAW (100 TOPICS)", depth: 1, trackable: true}, {id: 4028, topic: "A. General Principles of Taxation", depth: 2, trackable: true}, {id: 4029, topic: "B. National Internal Revenue Code (NIRC) of 1997, as amended (RA 8424)", depth: 2, trackable: true}, {id: 4030, topic: "C. Local Government Code (LGC) provisions on Local Taxation", depth: 2, trackable: true}, {id: 4031, topic: "D. Remedies under the NIRC and LGC", depth: 2, trackable: true}, ];
+        const POLI_LAW_SYLLABUS = [{id: 5001, topic: "I. BASIC CONCEPTS (13 TOPICS)", depth: 1, trackable: true}, {id: 5002, topic: "A. Definition and Nature of Political Law", depth: 2, trackable: true}, {id: 5003, topic: "B. Constitutional Supremacy", depth: 2, trackable: true}, {id: 5004, topic: "C. Separation of Powers", depth: 2, trackable: true}, {id: 5005, topic: "D. Checks and Balances", depth: 2, trackable: true}, {id: 5006, topic: "E. Judicial Review", depth: 2, trackable: true}, {id: 5007, topic: "II. NATIONAL TERRITORY (4 TOPICS)", depth: 1, trackable: true}, {id: 5008, topic: "A. Archipelagic Doctrine", depth: 2, trackable: true}, {id: 5009, topic: "B. Territorial Sea, Seabed, Subsoil", depth: 2, trackable: true}, {id: 5010, topic: "C. Inland and Internal Waters", depth: 2, trackable: true}, {id: 5011, topic: "D. Kalayaan Island Group / Scarborough Shoal", depth: 2, trackable: true}, {id: 5012, topic: "III. CITIZENSHIP (7 TOPICS)", depth: 1, trackable: true}, {id: 5013, topic: "A. Modes of Acquiring Citizenship", depth: 2, trackable: true}, {id: 5014, topic: "B. Dual Citizenship vs. Dual Allegiance", depth: 2, trackable: true}, {id: 5015, topic: "C. Loss and Reacquisition of Citizenship", depth: 2, trackable: true}, {id: 5016, topic: "IV. LEGISLATIVE DEPARTMENT (22 TOPICS)", depth: 1, trackable: true}, {id: 5017, topic: "A. Composition and Term Limits", depth: 2, trackable: true}, {id: 5018, topic: "B. Qualifications and Disabilities", depth: 2, trackable: true}, {id: 5019, topic: "C. Legislative Privileges and Immunities", depth: 2, trackable: true}, {id: 5020, topic: "D. Procedure for Enacting Laws", depth: 2, trackable: true}, {id: 5021, topic: "E. Scope of Legislative Power", depth: 2, trackable: true}, {id: 5022, topic: "V. EXECUTIVE DEPARTMENT (34 TOPICS)", depth: 1, trackable: true}, {id: 5023, topic: "A. Qualifications, Election, Term", depth: 2, trackable: true}, {id: 5024, topic: "B. Powers of the President", depth: 2, trackable: true}, {id: 5025, topic: "C. Rule of Succession", depth: 2, trackable: true}, {id: 5026, topic: "D. Immunity from Suit", depth: 2, trackable: true}, {id: 5027, topic: "E. The Cabinet and Executive Offices", depth: 2, trackable: true}, {id: 5028, topic: "VI. JUDICIAL DEPARTMENT (19 TOPICS)", depth: 1, trackable: true}, {id: 5029, topic: "A. Judicial Power and Scope", depth: 2, trackable: true}, {id: 5030, topic: "B. Judicial Review and Political Question", depth: 2, trackable: true}, {id: 5031, topic: "C. Supreme Court Composition and Powers", depth: 2, trackable: true}, {id: 5032, topic: "D. Doctrine of Operative Fact", depth: 2, trackable: true}, {id: 5033, topic: "VII. CONSTITUTIONAL COMMISSIONS (6 TOPICS)", depth: 1, trackable: true}, {id: 5034, topic: "A. Common Provisions (COA, COMELEC, CSC)", depth: 2, trackable: true}, {id: 5035, topic: "B. Powers and Jurisdiction", depth: 2, trackable: true}, {id: 5036, topic: "VIII. CONSTITUTIONAL RIGHTS (55 TOPICS)", depth: 1, trackable: true}, {id: 5037, topic: "A. Due Process and Equal Protection", depth: 2, trackable: true}, {id: 5038, topic: "B. Search and Seizure", depth: 2, trackable: true}, {id: 5039, topic: "C. Freedom of Expression/Assembly", depth: 2, trackable: true}, {id: 5040, topic: "D. Religious Freedom", depth: 2, trackable: true}, {id: 5041, topic: "E. Liberty of Abode and Travel", depth: 2, trackable: true}, {id: 5042, topic: "F. Right to Information", depth: 2, trackable: true}, {id: 5043, topic: "G. Non-Impairment Clause", depth: 2, trackable: true}, {id: 5044, topic: "H. Miranda Rights/Bail/Writ of Habeas Corpus", depth: 2, trackable: true}, {id: 5045, topic: "IX. NATIONAL ECONOMY AND PATRIMONY (7 TOPICS)", depth: 1, trackable: true}, {id: 5046, topic: "A. Lands of the Public Domain", depth: 2, trackable: true}, {id: 5047, topic: "B. Foreign Ownership Restrictions", depth: 2, trackable: true}, {id: 5048, topic: "X. ADMINISTRATIVE LAW (16 TOPICS)", depth: 1, trackable: true}, {id: 5049, topic: "A. Quasi-Legislative (Rule-Making) Power", depth: 2, trackable: true}, {id: 5050, topic: "B. Quasi-Judicial Power", depth: 2, trackable: true}, {id: 5051, topic: "C. Doctrine of Primary Jurisdiction/Exhaustion of Administrative Remedies", depth: 2, trackable: true}, {id: 5052, topic: "XI. LAW ON PUBLIC OFFICERS (28 TOPICS)", depth: 1, trackable: true}, {id: 5053, topic: "A. Grounds for Removal and Discipline", depth: 2, trackable: true}, {id: 5054, topic: "B. Accountability of Public Officers", depth: 2, trackable: true}, {id: 5055, topic: "C. Sandiganbayan and Ombudsman", depth: 2, trackable: true}, {id: 5056, topic: "XII. ELECTION LAW (35 TOPICS)", depth: 1, trackable: true}, {id: 5057, topic: "A. Coverage of COMELEC Jurisdiction", depth: 2, trackable: true}, {id: 5058, topic: "B. Pre-Proclamation and Post-Election Remedies", depth: 2, trackable: true}, {id: 5059, topic: "C. Campaign Finance and Expenditures", depth: 2, trackable: true}, {id: 5060, topic: "XIII. LOCAL GOVERNMENTS (19 TOPICS)", depth: 1, trackable: true}, {id: 5061, topic: "A. Powers of LGUs (General Welfare Clause)", depth: 2, trackable: true}, {id: 5062, topic: "B. Doctrine of Local Autonomy", depth: 2, trackable: true}, {id: 5063, topic: "C. Recall and Initiative/Referendum", depth: 2, trackable: true}, {id: 5064, topic: "XIV. PUBLIC INTERNATIONAL LAW (21 TOPICS)", depth: 1, trackable: true}, {id: 5065, topic: "A. Relationship between International and Domestic Law", depth: 2, trackable: true}, {id: 5066, topic: "B. Subject of International Law (States, NGOs, etc.)", depth: 2, trackable: true}, {id: 5067, topic: "C. Law of Treaties (Vienna Convention)", depth: 2, trackable: true}, {id: 5068, topic: "D. Diplomatic and Consular Relations", depth: 2, trackable: true}, ];
+
+        // --- GLOBAL SYLLABUS LOGIC FACTORY (The "createSyllabusLogic" function) ---
+        window.createSyllabusLogic = function(subjectName, syllabusData, storageKey, themeIcon, title) {
+            
+            const self = {
+                SUBJECT_NAME: subjectName,
+                SUBJECT_TITLE: title,
+                SUBJECT_ICON: themeIcon,
+                SYLLABUS_DATA: syllabusData, 
+                getProgress: getProgress,
+                updateOverallProgress: updateOverallProgress,
+                exportProgress: exportProgress,
+                importProgress: triggerImport,
+                processImport: processImport,
+                toggleAllSections: toggleAllSections,
+                getPanelHtmlWrapper: getPanelHtmlWrapper,
+                render: renderSyllabusPanel
+            };
+
+            function getProgress() {
+                try {
+                    const saved = localStorage.getItem(storageKey);
+                    return saved ? JSON.parse(saved) : {};
+                } catch (e) {
+                    console.error(`Error loading ${subjectName} progress:`, e);
+                    return {};
+                }
+            }
+
+            function saveProgress(progressData) {
+                localStorage.setItem(storageKey, JSON.stringify(progressData));
+                updateOverallProgress();
+                window.updateOverallDashboard(); 
+            }
+            
+            function getTopicStatus(topicId, progressData) {
+                const topic = syllabusData.find(t => t.id === topicId);
+                if (!topic) return 0;
+                
+                if (topic.depth === 1) {
+                    let sectionBoxesTotal = 0;
+                    let sectionBoxesChecked = 0;
+                    const startIndex = syllabusData.findIndex(t => t.id === topicId);
+                    for (let i = startIndex; i < syllabusData.length; i++) {
+                        const currentItem = syllabusData[i];
+                        if (i > startIndex && currentItem.depth <= topic.depth) break;
+                        if (currentItem.depth === 2 && currentItem.trackable) {
+                            const prog = progressData[currentItem.id] || {};
+                            const boxesTicked = CHECKLIST_COLUMNS.filter(col => prog[col] === true).length;
+                            if (boxesTicked >= 3) {
+                                sectionBoxesChecked++;
+                            }
+                            sectionBoxesTotal++;
+                        }
+                    }
+                    if (sectionBoxesTotal === 0) return 0;
+                    if (sectionBoxesChecked === sectionBoxesTotal) return 2;
+                    if (sectionBoxesChecked > 0) return 1;
+                    return 0;
+                } else if (topic.trackable) {
+                    const topicProgress = progressData[topicId] || {};
+                    const checkedCount = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
+                    if (checkedCount === CHECKLIST_COLUMNS.length) return 2;
+                    if (checkedCount >= 3) return 2;
+                    if (checkedCount > 0) return 1;
+                    return 0;
+                }
+                return 0;
+            }
+
+            function updateOverallProgress() {
+                const progressData = getProgress();
+                const mainTopics = syllabusData.filter(t => t.depth === 2 && t.trackable);
+                let topicsDoneCount = 0;
+                let topicsToReadCount = 0;
+                const columnProgress = CHECKLIST_COLUMNS.map(() => 0);
+                const totalMainTopics = mainTopics.length;
+
+                mainTopics.forEach(topic => {
+                    const topicProgress = progressData[topic.id] || {};
+                    let boxesTicked = 0;
+                    CHECKLIST_COLUMNS.forEach((col, index) => {
+                        if (topicProgress[col] === true) {
+                            boxesTicked++;
+                            columnProgress[index]++;
+                        }
+                    });
+                    
+                    if (boxesTicked >= 3) {
+                        topicsDoneCount++;
+                    } else {
+                        topicsToReadCount++;
+                    }
+                });
+
+                const overallProgressPercentage = totalMainTopics > 0 ? ((topicsDoneCount / totalMainTopics) * 100).toFixed(1) : 0.0;
+                let barColor;
+                if (overallProgressPercentage <= 25) { barColor = '#ef4444'; } 
+                else if (overallProgressPercentage <= 50) { barColor = '#f97316'; } 
+                else if (overallProgressPercentage <= 75) { barColor = '#facc15'; } 
+                else { barColor = '#10b981'; }
+
+                document.getElementById(`progress-done-${subjectName}`) && (document.getElementById(`progress-done-${subjectName}`).textContent = topicsDoneCount);
+                document.getElementById(`progress-toread-${subjectName}`) && (document.getElementById(`progress-toread-${subjectName}`).textContent = topicsToReadCount);
+                
+                const progressElement = document.getElementById(`progress-${subjectName}`);
+                if (progressElement) {
+                    progressElement.textContent = `${overallProgressPercentage}%`;
+                    progressElement.classList.remove('font-light');
+                    progressElement.classList.add('progress-percent-bold');
+                }
+                
+                const progressBar = document.getElementById(`progress-bar-${subjectName}`);
+                if (progressBar) {
+                    progressBar.style.width = `${overallProgressPercentage}%`;
+                    progressBar.style.backgroundColor = barColor;
+                }
+
+                const columnHeaderNames = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
+                columnProgress.forEach((tickedCount, index) => {
+                    const elementId = `col-progress-bar-${subjectName}-${columnHeaderNames[index]}`;
+                    const percentElementId = `col-percent-${subjectName}-${columnHeaderNames[index]}`;
+                    const barElement = document.getElementById(elementId);
+                    const percentElement = document.getElementById(percentElementId);
+
+                    if (barElement) {
+                        const colPercentage = totalMainTopics > 0 ? ((tickedCount / totalMainTopics) * 100).toFixed(1) : 0.0;
+                        barElement.style.width = `${colPercentage}%`;
+                        if (percentElement) {
+                            percentElement.textContent = `${colPercentage}%`;
+                        }
+                    }
+                });
+            }
+
+            function renderSyllabusPanel() {
+                 const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
+                 if (!syllabusContainer) { setTimeout(renderSyllabusPanel, 10); return; }
+
+                 const topicWithChildren = (function() {
+                     const children = new Set();
+                     syllabusData.forEach((item, index) => {
+                         const nextItem = syllabusData[index + 1];
+                         if (nextItem && nextItem.depth > item.depth) {
+                             children.add(item.id);
+                         }
+                     });
+                     return children;
+                 })();
+
+                 function hasChildren(topicId) { return topicWithChildren.has(topicId); }
+                
+                const openSections = {};
+                document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`).forEach(details => {
+                    if (details.id) { openSections[details.id] = details.open; }
+                });
+
+                const progress = getProgress();
+                let html = '';
+                let currentSectionOpen = false;
+                let isDepth2Open = false;
+                const checkboxClass = `syllabus-checkbox-${subjectName}`;
+                
+                syllabusData.forEach((item, index) => {
+                    const topicId = item.id;
+                    const nextItem = syllabusData[index + 1];
+                    const currentStatus = getTopicStatus(topicId, progress);
+
+                    const iconName = currentStatus === 2 ? 'check-circle-2' : (currentStatus === 1 ? 'circle-half' : 'circle');
+                    const iconColor = currentStatus === 2 ? 'checked' : (currentStatus === 1 ? 'partial' : 'empty');
+                    const iconSize = item.depth === 1 ? 'w-5 h-5' : 'w-4 h-4';
+                    const iconTitle = currentStatus === 2 ? 'Clear All' : (currentStatus === 1 ? 'Clear All' : 'Tick All');
+                    const isTopLevelTopic = item.depth === 1;
+
+                    if (isTopLevelTopic) {
+                        if (isDepth2Open) { html += `</div></details></div>`; isDepth2Open = false; }
+                        if (currentSectionOpen) { html += `</div></details></div>`; }
+                        
+                        const sectionId = `${subjectName}-section-${item.id}`;
+                        const isOpen = openSections[sectionId] === true; 
+                        const openAttr = isOpen ? 'open' : '';
+                        
+                        html += `\n<div class="syllabus-sub-section"><details id="${sectionId}" class="w-full" ${openAttr}><summary class="topic-header"><div class="topic-header-text"><i data-lucide="chevron-right" class="w-4 h-4 mr-2 chevron-icon"></i><span class="font-extrabold text-lg text-black/90">${item.topic}</span></div><i data-lucide="${iconName}" class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></summary><div class="p-2">\n`;
+                        currentSectionOpen = true;
+                    } else if (item.depth === 2 && item.trackable) {
+                        const topicProgress = progress[topicId] || {};
+                        const isCollapsible = hasChildren(topicId);
+
+                        if (isDepth2Open && !isCollapsible) { html += `</div></details></div>`; isDepth2Open = false; }
+
+                        const checklist = CHECKLIST_COLUMNS.map(col => {
+                            const checked = topicProgress[col] === true ? 'checked' : '';
+                            return `\n<div class="flex justify-center"><input type="checkbox" data-id="${topicId}" data-column="${col}" ${checked} class="w-4 h-4 border-gray-300 rounded focus:ring-500 ${checkboxClass}" onchange="window.handleCheckboxChange${subjectName.toUpperCase()}(event)"></div>\n`;
+                        }).join('');
+
+                        let rowContent = `\n
+                            <div class="col-span-1 font-trackable-lg depth2-topic-row">
+                                <div class="topic-content-wrapper" style="padding-left: 1.5rem;">
+                                    ${isCollapsible ? `<i data-lucide="chevron-right" class="w-3 h-3 depth2-chevron"></i>` : `<span class="w-3 h-3 mr-2 inline-block"></span>`}${item.topic}
+                                </div>
+                            </div>
+                            ${checklist}
+                            <div class="flex items-center justify-center space-x-1 pl-2"><i data-lucide="${iconName}" class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></div>\n
+                        `;
+
+                        if (isCollapsible) {
+                            const depth2Id = `${subjectName}-depth2-${item.id}`;
+                            const isOpen = openSections[depth2Id] === true;
+                            const openAttr = isOpen ? 'open' : '';
+                            html += `<div class="depth2-details"><details id="${depth2Id}" class="w-full" ${openAttr}><summary class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</summary><div class="depth3-content-wrapper pt-1 pb-2">`;
+                            isDepth2Open = true;
+                        } else {
+                            html += `<div class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</div>`;
+                        }
+
+                    } else if (item.depth >= 3) {
+                        const dynamicPadding = (item.depth - 2) * 1.5 + 1.5;
+                        const fontStyle = item.depth <= 4 ? 'font-medium' : 'font-normal';
+                        
+                        if (isDepth2Open) {
+                             html += `<div class="p-1 border-b border-black/10 text-black/70 italic ${fontStyle} text-sm" style="padding-left: ${dynamicPadding}rem;">${item.topic}</div>`;
+                        } else {
+                            html += `<div class="checklist-grid hover:bg-gray-50/50 transition"><div>${item.topic}</div></div>`;
+                        }
+                    }
+
+                    if (item.depth >= 3 && isDepth2Open && (!nextItem || nextItem.depth <= 2)) { html += `</div></details></div>`; isDepth2Open = false; }
+                });
+
+                if (currentSectionOpen) {
+                    if (isDepth2Open) { html += `</div></details></div>`; }
+                    html += `</div></details></div>`;
+                }
+
+                syllabusContainer.innerHTML = html;
+                
+                if (lucide && lucide.createIcons) { lucide.createIcons(); }
+                updateOverallProgress();
+                updateCollapseButtonText();
+            }
+
+            function handleCheckboxChange(event) {
+                 const checkbox = event.target;
+                 const id = checkbox.dataset.id;
+                 const column = checkbox.dataset.column;
+                 const isChecked = checkbox.checked;
+                 const progressData = getProgress();
+                 if (!progressData[id]) { progressData[id] = {}; }
+                 progressData[id][column] = isChecked;
+                 saveProgress(progressData);
+                 renderSyllabusPanel(); 
+            }
+            
+            function handleTickAll(topicId) {
+                 const progressData = getProgress();
+                 let topicsToUpdate = [];
+                 const currentStatus = getTopicStatus(topicId, progressData);
+                 const targetState = currentStatus === 2 ? false : true; 
+                 const item = syllabusData.find(t => t.id === topicId);
+                 if (!item) return;
+                 
+                 const startDepth = item.depth;
+                 const startIndex = syllabusData.findIndex(t => t.id === topicId);
+                 
+                 if (startDepth === 2 && item.trackable) {
+                     topicsToUpdate.push(item);
+                 } else if (startDepth === 1) {
+                     for (let i = startIndex; i < syllabusData.length; i++) { 
+                         const currentItem = syllabusData[i];
+                         if (i > startIndex && currentItem.depth <= startDepth) break;
+                         if (currentItem.depth === 2 && currentItem.trackable) {
+                             topicsToUpdate.push(currentItem);
+                         }
+                     }
+                 }
+                 
+                 topicsToUpdate.forEach(topic => {
+                     const id = topic.id;
+                     if (!progressData[id]) { progressData[id] = {}; }
+                     CHECKLIST_COLUMNS.forEach(col => {
+                         progressData[id][col] = targetState;
+                     });
+                 });
+                 saveProgress(progressData);
+                 renderSyllabusPanel();
+            }
+
+            function exportProgress() {
+                const progressData = localStorage.getItem(storageKey);
+                if (!progressData || '{}' === progressData) {
+                    showMessageModal("Download Failed", `<p class='text-red-600'>No ${title} progress data found to download.</p>`);
+                    return;
+                }
+                downloadFile(progressData, `${subjectName}-progress.json`, 'application/json');
+                showMessageModal("Download Complete", `<p class='text-green-600'>Your ${title} progress has been downloaded as **${subjectName}-progress.json**</p>`);
+            }
+
+            function triggerImport() {
+                 DOM_ELEMENTS.globalFileInput.dataset.targetSubject = subjectName;
+                 DOM_ELEMENTS.globalFileInput.click();
+            }
+
+            function processImport(file) {
+                 if (!file) { showMessageModal("Upload Canceled", "No file was selected for upload."); return; }
+                 if ('application/json' !== file.type && !file.name.endsWith('.json')) { showMessageModal("Upload Error", `<p class='text-red-600'>Invalid file type. Please upload a **.json** file.</p>`); return; }
+                 
+                 const reader = new FileReader();
+                 reader.onload = function(e) {
+                     const jsonString = e.target.result;
+                     try {
+                         const importedData = JSON.parse(jsonString);
+                         if ('object' !== typeof importedData || null === importedData) { throw new Error("Invalid JSON structure."); }
+                         saveProgress(importedData);
+                         renderSyllabusPanel();
+                         showMessageModal("Success!", `<p class='text-green-600'>${title} progress successfully uploaded and applied.</p>`);
+                     } catch (e) {
+                         console.error("Import error:", e);
+                         showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON.</p>`);
+                     }
+                 };
+                 reader.onerror = function() { showMessageModal("Import Error", `<p class='text-red-600'>Error reading the file.</p>`); };
+                 reader.readAsText(file);
+            }
+
+            function toggleAllSections() {
+                const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
+                let shouldOpen = false;
+                for (const details of allDetails) {
+                    if (!details.open) {
+                        shouldOpen = true;
+                        break;
+                    }
+                }
+                allDetails.forEach(details => { details.open = shouldOpen; });
+                if (lucide && lucide.createIcons) { lucide.createIcons(); }
+                updateCollapseButtonText(shouldOpen);
+            }
+
+            function updateCollapseButtonText(isOpen) {
+                const btn = document.getElementById(`collapse-all-btn-${subjectName}`);
+                if (btn) {
+                    if (typeof isOpen === 'undefined') {
+                        const allDetails = document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`);
+                        let allOpen = true;
+                        for (const details of allDetails) { if (!details.open) { allOpen = false; break; } }
+                        isOpen = allOpen;
+                    }
+                    const iconName = isOpen ? 'chevrons-up' : 'chevrons-down';
+                    btn.innerHTML = `<i data-lucide="${iconName}" class="w-4 h-4"></i>`; 
+                    btn.classList.remove('w-8', 'h-8', 'w-7', 'h-7'); 
+                    btn.classList.add('w-6', 'h-6', 'p-0', 'flex', 'items-center', 'justify-center', 'shadow-md'); 
+                    if (lucide && lucide.createIcons) { lucide.createIcons(); }
+                }
+            }
+            
+            window[`handleTickAll${subjectName.toUpperCase()}`] = handleTickAll;
+            window[`handleCheckboxChange${subjectName.toUpperCase()}`] = handleCheckboxChange;
+
+            function getPanelHtmlWrapper(subjectName, title, icon) {
+                const themeClass = `syllabus-panel-${subjectName}`;
+                const bgButton = subjectName === 'rem' ? 'bg-purple-600' : (subjectName === 'crim' ? 'bg-red-600' : (subjectName === 'lab' ? 'bg-lab-button' : (subjectName === 'civ' ? 'bg-civ-button' : (subjectName === 'comm' ? 'bg-comm-button' : 'bg-poli-button'))));
+                const hoverButton = subjectName === 'rem' ? 'hover:bg-purple-700' : (subjectName === 'crim' ? 'hover:bg-red-700' : (subjectName === 'lab' ? 'hover:bg-lab-button-dark' : (subjectName === 'civ' ? 'hover:bg-civ-button-dark' : (subjectName === 'comm' ? 'hover:bg-comm-button-dark' : 'hover:bg-poli-button-dark'))));
+                
+                const cleanTitle = title.replace(/\s*\([\d\s]*% of Total\)/, '');
+                
+                return `
+                <div class="bg-white rounded-xl shadow-lg border border-gray-300 mt-4 syllabus-panel-container ${themeClass}" id="subject-tracker-panel-${subjectName}">
+                    <details class="syllabus-panel">
+                        <summary class="syllabus-summary" id="summary-${subjectName}">
+                            <div class="syllabus-summary-title-row">
+                                <div class="flex items-center">
+                                    <i data-lucide="${icon}" class="w-6 h-6 mr-3"></i>${cleanTitle}
+                                </div>
+                                <div class="flex items-center text-xs">
+                                    <i data-lucide="chevron-right" class="w-6 h-6 ml-2 main-summary-chevron"></i>
+                                </div>
+                            </div>
+                            <div class="syllabus-progress-metrics text-xs">
+                                <div class="progress-stats">
+                                    <span class="flex items-center"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>DONE:&nbsp;<span id="progress-done-${subjectName}">0</span>&nbsp;TOPICS</span>
+                                    <span class="flex items-center"><i data-lucide="book-open-text" class="w-4 h-4 mr-1 text-gray-200"></i>TO READ:&nbsp;<span id="progress-toread-${subjectName}">0</span>&nbsp;TOPICS</span>
+                                </div>
+                                <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
+                                    <span class="progress-overall-text flex items-center"><i data-lucide="chart-spline" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:</span>
+                                    <div class="progress-bar-container">
+                                        <div id="progress-bar-${subjectName}" class="progress-bar" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="progress-${subjectName}" class="progress-percent-bold">0.0%</span>
+                                </div>
+                            </div>
+                        </summary>
+                        <div class="syllabus-content">
+                            
+                            <!-- 1. COLUMN HEADERS -->
+                            <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
+                                <div class="text-left">SUBJECTS/TOPICS</div> 
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
+                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
+                                <div class="flex items-center justify-center pt-1">
+                                    <button id="collapse-all-btn-${subjectName}" class="w-7 h-7 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
+                                        <i data-lucide="chevrons-down" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Micro-progress Bars -->
+                            <div class="checklist-grid checklist-grid-micro-progress text-center">
+                                <div class="text-left italic text-gray-700 col-span-1 pl-1 text-[0.68rem] self-start leading-tight pt-1">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div> 
+                                
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+                                </div>
+                                <div></div>
+                            </div>
+                            
+                            <div id="syllabus-${subjectName}" class="text-xs"></div>
+                        </div>
+                    </details>
+                </div>
+                `;
+            }
+
+            return self;
+        }
+
+        // --- GLOBAL SUBJECT SYLLABUS DATA (Declarations for loading) ---
+        
+        // These calls run the logic defined above, instantiate the subject trackers, and inject their HTML into the placeholders.
+        // NOTE: The loadSubjectPanel function is synchronous now, directly calling the createSyllabusLogic factory.
+        function initializeSubjectTrackers() {
+            // REMEDIAL LAW
+            loadSubjectPanel('rem', REM_ETHICS_SYLLABUS, 'rem_ethics_progress', 'graduation-cap', 'REMEDIAL LAW, LEGAL ETHICS, & LEGAL FORMS (25% of Total)');
+            
+            // CRIMINAL LAW
+            loadSubjectPanel('crim', CRIM_SYLLABUS, 'crim_progress', 'gavel', 'CRIMINAL LAW (10% of Total)');
+            
+            // LABOR LAW
+            loadSubjectPanel('lab', LABOR_SYLLABUS, 'lab_progress', 'wrench', 'LABOR AND SOCIAL LEGISLATION (10% of Total)');
+
+            // CIVIL LAW
+            loadSubjectPanel('civ', CIVIL_SYLLABUS, 'civ_progress', 'briefcase', 'CIVIL LAW AND LAND TITLES AND DEEDS (20% of Total)');
+            
+            // COMMERCIAL LAW
+            loadSubjectPanel('comm', COMM_TAX_SYLLABUS, 'comm_tax_progress', 'banknote', 'COMMERCIAL AND TAXATION LAWS (20% of Total)');
+            
+            // POLITICAL LAW
+            loadSubjectPanel('poli', POLI_LAW_SYLLABUS, 'poli_progress', 'flag', 'POLITICAL AND PUBLIC INTERNATIONAL LAW (15% of Total)');
         }
 
 
@@ -1471,26 +2121,38 @@
             setInterval(() => {
                 document.getElementById('today-date-display').textContent = getLocalDisplayDate();
             }, 60000); 
+            
+            // 2. Load Calendar Module HTML and initialize its logic (now inline)
+            document.getElementById('calendar-module-placeholder').innerHTML = CALENDAR_MODULE_HTML;
+            
+            // 3. Initialize Calendar and Notepad Logic (from the inline module)
+            window.CALENDAR_APP.loadNotes();
+            window.CALENDAR_APP.initializeCalendar();
+            
+            // Initial sync/toggle check for calendar panel (needed to set notepad height)
+            const detailsElement = document.getElementById('calendar-details');
+            if(detailsElement) {
+                $(detailsElement).on('toggle', function() {
+                    const indicator = $('.toggle-indicator i');
+                    if ($(this).prop('open')) {
+                        indicator.removeClass('fa-chevron-right').addClass('fa-chevron-down');
+                        window.CALENDAR_APP.syncHeight();
+                    } else {
+                        indicator.removeClass('fa-chevron-down').addClass('fa-chevron-right');
+                    }
+                }).trigger('toggle');
+            }
 
-            // 2. Load Calendar Module (This must be awaited before starting subject loaders for proper flow)
-            loadCalendarModule('reviewcalendar_module.html', 'calendar-module-placeholder');
+
+            // 4. Load Subject Panels
+            initializeSubjectTrackers();
             
-            // 3. Load Subject Panels (Triggered after the Calendar is initialized)
-            // Note: The subject logic files (e.g., 'rem_logic.js') are assumed to be present in the GitHub repository.
-            // I've kept the original loader calls here:
-            loadSubjectPanel('rem', 'rem_logic.js');
-            loadSubjectPanel('crim', 'crim_logic.js');
-            loadSubjectPanel('lab', 'lab_logic.js');
-            loadSubjectPanel('civ', 'civ_logic.js');
-            loadSubjectPanel('comm', 'comm_logic.js');
-            loadSubjectPanel('poli', 'poli_logic.js');
-            
-            // 4. Initialize Lucide Icons for static content
+            // 5. Initialize Lucide Icons for static content
             if (lucide && lucide.createIcons) {
                 lucide.createIcons();
             }
 
-            // 5. Attach General Event Listeners and load user name
+            // 6. Attach General Event Listeners and load user name
             updateAllCountdowns();
             setInterval(updateAllCountdowns, 1000);
             
@@ -1501,6 +2163,15 @@
             document.getElementById('target-date-display-1').addEventListener('click', () => openModal(1));
             document.getElementById('target-date-display-2').addEventListener('click', () => openModal(2));
             document.getElementById('target-date-display-3').addEventListener('click', () => openModal(3));
+            
+            // Monkey patch saveModal to update schedule table AFTER countdown is saved
+            if (typeof saveModal === 'function' && typeof updateScheduleTable === 'function') {
+                const originalSaveModal = saveModal;
+                saveModal = function() {
+                    originalSaveModal();
+                    updateScheduleTable();
+                };
+            }
             
             document.getElementById('modal-save-btn').addEventListener('click', saveModal);
             document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
