@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,10 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>2026 Review Tracker</title>
+    <!-- FIX: Updated favicon link -->
     <link rel="icon" href="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/usacol%20logo.png">
-
-    <link rel="manifest" href="/manifest.json">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
@@ -2317,14 +2314,6 @@
             document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
             
             document.getElementById('message-modal-close-btn')?.addEventListener('click', closeMessageModal);
-if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    // NOTE: Ensure your sw.js file is in the root directory!
-                    navigator.serviceWorker.register('/sw.js')
-                        .then(reg => console.log('Service Worker registered with scope:', reg.scope))
-                        .catch(err => console.error('Service Worker registration failed:', err));
-                });
-            }
         };
     </script>
 </body>
