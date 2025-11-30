@@ -142,12 +142,12 @@
 
         .checklist-grid input[type="checkbox"]:checked { border-color: transparent !important; }
 
-        .syllabus-checkbox-rem:checked { background-color: #8b5cf6 !important; } 
-        .syllabus-checkbox-crim:checked { background-color: #ef4444 !important; }
-        .syllabus-checkbox-lab:checked { background-color: #38761d !important; }
-        .syllabus-checkbox-civ:checked { background-color: #2563eb !important; }
-        .syllabus-checkbox-comm:checked { background-color: #eab308 !important; }
-        .syllabus-checkbox-poli:checked { background-color: #795548 !important; }
+/* NEW: Column-specific colors for CHECKED state */
+        .checkbox-codal:checked { background-color: #8b5cf6 !important; } /* Violet/Rem */
+        .checkbox-books:checked { background-color: #eab308 !important; } /* Yellow/Comm */
+        .checkbox-reviewer:checked { background-color: #3b82f6 !important; } /* Blue/Civ */
+        .checkbox-barqas:checked { background-color: #10b981 !important; } /* Green */
+        .checkbox-cases:checked { background-color: #f97316 !important; } /* Orange */
 
         .checklist-grid input[type="checkbox"]:checked::before {
         content: ''; position: absolute; width: 0.25rem; height: 0.5rem;
@@ -1765,10 +1765,15 @@
 
                         if (isDepth2Open && !isCollapsible) { html += `</div></details></div>`; isDepth2Open = false; }
 
-                        const checklist = CHECKLIST_COLUMNS.map(col => {
+const checklist = CHECKLIST_COLUMNS.map(col => {
+                            // NEW CLASS: Use 'checkbox-' prefix plus the column name (codal, books, etc.)
+                            const columnCheckboxClass = `checkbox-${col}`;
                             const checked = topicProgress[col] === true ? 'checked' : '';
-                            return `\n<div class="flex justify-center"><input type="checkbox" data-id="${topicId}" data-column="${col}" ${checked} class="w-4 h-4 border-gray-300 rounded focus:ring-500 ${checkboxClass}" onchange="window.handleCheckboxChange${subjectName.toUpperCase()}(event)"></div>\n`;
+                            
+                            // Inject the columnCheckboxClass instead of the subject-specific one
+                            return `\n<div class="flex justify-center"><input type="checkbox" data-id="${topicId}" data-column="${col}" ${checked} class="w-4 h-4 border-gray-300 rounded focus:ring-500 ${columnCheckboxClass}" onchange="window.handleCheckboxChange${subjectName.toUpperCase()}(event)"></div>\n`;
                         }).join('');
+
 
                         let rowContent = `\n
                             <div class="col-span-1 font-trackable-lg depth2-topic-row">
