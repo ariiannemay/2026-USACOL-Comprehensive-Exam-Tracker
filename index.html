@@ -1189,25 +1189,6 @@
             }
         }
         
-        function formatEventTitle(subjectKey, topicId) {
-            if (subjectKey === 'CUSTOM') {
-                return "CUSTOM EVENT";
-            }
-            // CRITICAL: We now rely on CONSOLIDATED_SYLLABUS which only contains Depth 1 topics
-            const subjectData = CONSOLIDATED_SYLLABUS[subjectKey];
-            if (!subjectData) return "INVALID SUBJECT";
-            
-            // Find the topic using the ID
-            const topic = subjectData.data.find(t => t.id == topicId); 
-            
-            // Fallback for scheduled topics that might be depth 2/3 but were scheduled using a parent's ID
-            if (!topic) return (subjectData.shortTitle || subjectData.title).toUpperCase();
-            
-            const topicText = topic.topic.toUpperCase(); 
-            const title = `${subjectData.shortTitle.toUpperCase()} - ${topicText}`;
-            
-            return title;
-        }
         function generateUniqueId() {
             return 'event-' + Date.now() + Math.random().toString(36).substring(2, 9);
         }
@@ -1347,22 +1328,28 @@
                 };
             } 
             else if (isSyllabusTask) {
-                const [topicId, topicText] = selectedTopicValue.split('|');
-                const subjectInfo = CONSOLIDATED_SYLLABUS[subjectKey];
-                
-                eventData = {
-                    id: eventId || generateUniqueId(),
-                    subjectKey: subjectKey,
-                    topicId: topicId,
-                    // Title must be generated using the external function logic
-                    title: formatEventTitle(subjectKey, topicId), 
-                    start: start,
-                    end: end ? moment(end).add(1, 'days').format('YYYY-MM-DD') : null,
-                    color: subjectInfo.color,
-                    borderColor: subjectInfo.color,
-                    allDay: true
-                };
-            } else {
+                    const [topicId, topicText] = selectedTopicValue.split('|');
+                    const subjectInfo = CONSOLIDATED_SYLLABUS[subjectKey];
+                    
+                    // 🚨 FIX: Construct the full title directly using the topicText extracted
+                    // from the selection, ensuring it is accurate.
+                    const fullEventTitle = `${subjectInfo.shortTitle.toUpperCase()} - ${topicText}`;
+                    
+                    eventData = {
+                        id: eventId || generateUniqueId(),
+                        subjectKey: subjectKey,
+                        topicId: topicId,
+                        
+                        // 🎯 FIXED: We store the fully constructed title directly.
+                        title: fullEventTitle,
+                        
+                        start: start,
+                        end: end ? moment(end).add(1, 'days').format('YYYY-MM-DD') : null,
+                        color: subjectInfo.color,
+                        borderColor: subjectInfo.color,
+                        allDay: true
+                    };
+        } else {
                 CALENDAR_APP.showCustomAlert('INVALID COMBINATION', 'PLEASE CHOOSE EITHER A CUSTOM EVENT NAME OR A SUBJECT/TOPIC, BUT NOT BOTH.');
                 return;
             }
