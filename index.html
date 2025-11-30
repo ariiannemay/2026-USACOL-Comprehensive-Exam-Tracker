@@ -260,7 +260,35 @@
         .syllabus-checkbox-poli { accent-color: var(--poli-color); }
         .bg-poli-button { background-color: var(--poli-color); }
         .hover\:bg-poli-button-dark:hover { background-color: var(--poli-color-dark); }
-        /* END SUBJECT PANEL THEMES */
+/* END SUBJECT PANEL THEMES */
+/* --- NEW STICKY STYLES FOR PANELS --- */
+
+/* 1. Make the Summary Panel Sticky */
+.syllabus-panel[open] > .syllabus-summary {
+    position: sticky;
+    top: 0; /* Sticks right to the top of the viewport */
+    z-index: 10; /* Ensures it floats over the content of OTHER panels */
+    /* Add a slight border to hide seams when scrolling over other elements */
+    border-bottom: 1px solid #6d1b1b; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 2. Make the Checklist Header Wrapper Sticky */
+.syllabus-panel[open] > .syllabus-content .sticky-header-wrapper {
+    position: sticky;
+    top: 130px; /* This value must match the height of the summary bar */
+    background-color: white; 
+    z-index: 9; /* Ensure it floats just below the summary */
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* 3. Ensure the Summary's Title row is visible over other sticky elements */
+.syllabus-summary-title-row { 
+    position: relative; /* Necessary to prevent Z-index issues */
+    z-index: 11;
+}
+/* --- END NEW STICKY STYLES --- */
+
     </style>
 </head>
 
@@ -1967,62 +1995,65 @@
                                 </div>
                             </div>
                         </summary>
-                        <div class="syllabus-content">
-                            
-                            <!-- 1. COLUMN HEADERS -->
-                            <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
-                                <div class="text-left">SUBJECTS/TOPICS</div> 
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
-                                <div class="flex items-center justify-center pt-1">
-                                    <button id="collapse-all-btn-${subjectName}" class="w-7 h-7 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
-                                        <i data-lucide="chevrons-down" class="w-4 h-4"></i>
-                                    </button>
-                                </div>
-                            </div>
 
-                            <!-- Micro-progress Bars -->
-                            <div class="checklist-grid checklist-grid-micro-progress text-center">
-                                <div class="text-left italic text-gray-700 col-span-1 pl-1 text-[0.68rem] self-start leading-tight pt-1">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div> 
-                                
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
-                                </div>
-                                <div class="px-1 flex flex-col items-center justify-start">
-                                    <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
-                                    </div>
-                                    <span id="col-percent-${subjectName}-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
-                                </div>
-                                <div></div>
-                            </div>
-                            
-                            <div id="syllabus-${subjectName}" class="text-xs"></div>
-                        </div>
+
+<div class="syllabus-content">
+    
+    <div class="sticky-header-wrapper">
+        <div class="checklist-grid checklist-grid-header font-bold text-xs text-center border-b-2 border-black/50">
+            <div class="text-left">SUBJECTS/TOPICS</div> 
+            <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
+            <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
+            <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
+            <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
+            <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
+            <div class="flex items-center justify-center pt-1">
+                <button id="collapse-all-btn-${subjectName}" class="w-7 h-7 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
+                    <i data-lucide="chevrons-down" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="checklist-grid checklist-grid-micro-progress text-center">
+            <div class="text-left italic text-gray-700 col-span-1 pl-1 text-[0.68rem] self-start leading-tight pt-1">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div> 
+            
+            <div class="px-1 flex flex-col items-center justify-start">
+                <div class="col-progress-bar-container">
+                    <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
+                </div>
+                <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
+            </div>
+            <div class="px-1 flex flex-col items-center justify-start">
+                <div class="col-progress-bar-container">
+                    <div id="col-progress-bar-${subjectName}-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
+                </div>
+                <span id="col-percent-${subjectName}-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
+            </div>
+            <div class="px-1 flex flex-col items-center justify-start">
+                <div class="col-progress-bar-container">
+                    <div id="col-progress-bar-${subjectName}-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
+                </div>
+                <span id="col-percent-${subjectName}-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
+            </div>
+            <div class="px-1 flex flex-col items-center justify-start">
+                <div class="col-progress-bar-container">
+                    <div id="col-progress-bar-${subjectName}-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
+                </div>
+                <span id="col-percent-${subjectName}-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
+            </div>
+            <div class="px-1 flex flex-col items-center justify-start">
+                <div class="col-progress-bar-container">
+                    <div id="col-progress-bar-${subjectName}-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
+                </div>
+                <span id="col-percent-${subjectName}-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+            </div>
+            <div></div>
+        </div>
+    </div>
+    
+    <div id="syllabus-${subjectName}" class="text-xs"></div>
+</div>
+
                     </details>
                 </div>
                 `;
