@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 Review Tracker</title>
+    <title>2026 Comprehensive Exam Review Tracker</title>
     <!-- FIX: Updated favicon link -->
     <link rel="icon" href="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/usacol.png">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -494,6 +494,24 @@
 
     <!-- Dynamic JavaScript Loader and Core Logic -->
     <script>
+
+        const SECRET_PASSWORD = "missattycpa";
+    
+        const userPassword = prompt("🔐 Enter the password to access the 2026 Comprehensive Exam Review Tracker:");
+        
+        if (userPassword === SECRET_PASSWORD) {
+            // Correct password: Execution continues to the rest of the script.
+        } else {
+            // 🚨 FINAL FIX: Redirect to the dedicated denial page.
+            // The browser executes this line immediately:
+            window.location.href = 'denied.html'; 
+            
+            // CRITICAL: Force the script to stop right here.
+            // This prevents the rest of your application's logic (like loading CALENDAR_MODULE_HTML) from running.
+            throw new Error("Access Denied: Redirecting to denial page.");
+        }
+        // --- END CLIENT-SIDE AUTH GATE (CORRECTED) ---
+        
         // --- INLINED CALENDAR MODULE HTML CONTENT ---
         const CALENDAR_MODULE_HTML = `
             <div id="calendar-module-container" class="mt-4">
