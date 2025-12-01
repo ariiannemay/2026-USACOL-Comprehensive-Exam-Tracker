@@ -493,35 +493,7 @@
     </div>
 
     <!-- Dynamic JavaScript Loader and Core Logic -->
-    <script>
-
-        const SECRET_PASSWORD = [
-            "happyaral", 
-            "missattycpa", 
-            "camille", 
-            "ruffa", 
-            "angelie", 
-            "rhaemond", 
-            "rhaemond", 
-            "secret", 
-            "awesambar" // Add any number of valid passwords here
-        ];
-    
-        const userPassword = prompt("🔐 Enter the password to access the 2026 Comprehensive Exam Review Tracker:");
-        
-        if (userPassword === SECRET_PASSWORD) {
-            // Correct password: Execution continues to the rest of the script.
-        } else {
-            // 🚨 FINAL FIX: Redirect to the dedicated denial page.
-            // The browser executes this line immediately:
-            window.location.href = 'denied.html'; 
-            
-            // CRITICAL: Force the script to stop right here.
-            // This prevents the rest of your application's logic (like loading CALENDAR_MODULE_HTML) from running.
-            throw new Error("Access Denied: Redirecting to denial page.");
-        }
-        // --- END CLIENT-SIDE AUTH GATE (CORRECTED) ---
-        
+    <script>        
         // --- INLINED CALENDAR MODULE HTML CONTENT ---
         const CALENDAR_MODULE_HTML = `
             <div id="calendar-module-container" class="mt-4">
