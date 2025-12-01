@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied - 2026 COMPREHENSIVE EXAM REVIEW TRACKER</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Bebas+Neue&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap'); 
+        
+        /* --- CORE AESTHETIC VARIABLES (FROM COMPREHENSIVE EXAM TRACKER) --- */
+        :root {
+            --color-primary-dark: #6D1B1B; /* Maroon */
+            --color-secondary-gold: #FECE1B; /* Gold */
+            --color-text: #1a202c;
+            --color-time-label: #4a5568;
+            --color-error: #cc0000;
+        }
+
+        /* --- Custom Styles Replicated from index (1).html CSS --- */
+        .header-bg { 
+            background-color: var(--color-primary-dark); 
+            border-bottom: 5px solid var(--color-secondary-gold); 
+        }
+        .card-header-bg { 
+            background-color: var(--color-primary-dark); 
+        }
+        .border-custom-yellow { 
+            border-color: var(--color-secondary-gold); 
+        }
+        .header-font { 
+            font-family: 'Bebas Neue', sans-serif; 
+            letter-spacing: .1em; 
+        }
+        
+        /* Direct replication of countdown component styling */
+        .time-value { 
+            font-size: 1.75rem; 
+            font-weight: 900; 
+            line-height: 1; 
+            color: #1a202c; 
+        }
+        .time-label { 
+            font-size: .875rem; 
+            font-weight: 700; 
+            color: #4a5568; 
+            text-transform: uppercase; 
+        }
+        .date-text { 
+            font-family: 'Bebas Neue', sans-serif; 
+            font-size: 2.25rem; 
+            font-weight: 800; 
+            color: #000000; 
+            letter-spacing: .15em; 
+            line-height: 1; 
+        }
+
+        /* --- DENIAL PAGE BASE STYLES --- */
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; 
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0; 
+            overflow: hidden; 
+
+            background-color: #1f2937;
+            font-family: 'Inter', sans-serif;
+            color: #e5e7eb;
+            text-align: center;
+        }
+        .denial-content-container {
+            width: 100%; 
+            max-width: 1152px; 
+            margin: 5px auto 0 auto; 
+            padding: 0 10px;
+        }
+        
+        header {
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        .denial-message-box {
+            width: 100%; 
+            margin: 5px auto 0 auto; 
+            
+            background-color: #f7f7f7; 
+            color: var(--color-text);
+            
+            border: 4px solid var(--color-error); 
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            
+            margin-bottom: -10px; 
+            
+            padding: 20px 10px 10px 10px; 
+        }
+        
+        .denial-message-box h1 {
+            color: var(--color-error); 
+            font-size: 3.5em; 
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5); 
+            margin: 0 0 10px 0; 
+            font-family: 'Bebas Neue', sans-serif; 
+            letter-spacing: 0.1em;
+        }
+        .denial-message-box p {
+            color: #4a5568;
+            font-weight: 700;
+            margin: 5px 0 20px 0;
+        }
+        .try-again-btn {
+            display: inline-block;
+            padding: 15px 40px; 
+            background-color: #1d4ed8; 
+            color: white;
+            font-weight: 900; 
+            text-decoration: none;
+            border-radius: 8px;
+            box-shadow: 0 5px #0f34a0; 
+            transition: all 0.1s ease;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            margin-top: 5px; 
+            margin-bottom: 5px;
+        }
+        .try-again-btn:active {
+            box-shadow: 0 2px #0f34a0;
+            transform: translateY(3px);
+        }
+        
+        /* FOOTER STYLES */
+        .global-app-footer { 
+            text-align: center; 
+            padding: 1rem 0; 
+            width: 100%;
+        }
+        .global-app-footer .quote { 
+            font-family: 'Cormorant Garamond', serif; 
+            font-style: italic; 
+            font-weight: 600; 
+            font-size: 1.0rem; 
+            color: #000000; 
+            text-shadow: 1px 1px 1px #888;
+        }
+        .global-app-footer .signature {
+            font-family: 'Inter', sans-serif; 
+            font-style: italic; 
+            font-weight: 600; 
+            font-size: 0.75rem; 
+            color: #000000;
+        }
+        .global-app-footer .date-quote-style {
+             font-family: 'Cormorant Garamond', cursive;
+             font-style: italic;
+             font-weight: 700;
+             font-size: 1.0rem;
+             color: #000000;
+             text-shadow: 1px 1px 1px #888;
+             vertical-align: middle;
+             margin-left: 5px;
+        }
+        
+        /* Mobile optimization: */
+        @media (max-width: 768px) {
+            .denial-content-container {
+                 padding: 0 5px;
+            }
+            .denial-message-box h1 {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="denial-content-container">
+
+        <header class="header-bg text-white py-1 px-4 sm:py-2 sm:px-6 rounded-xl shadow-2xl">
+            <div class="flex items-center justify-between">
+                
+                <div class="flex-shrink-0 w-24 h-24 flex items-center justify-center rounded-full overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/USA.png" 
+                         alt="USA Logo" class="w-24 h-24 object-cover">
+                </div>
+                
+                <div class="text-center mx-4 flex-grow">
+                    <h1 class="text-xl sm:text-3xl font-extrabold header-font tracking-wider mb-2 underline" style="text-shadow: 2px 2px 0 #000000;">
+                        UNIVERSITY OF SAN AGUSTIN
+                    </h1>
+                    <h2 class="text-2xl sm:text-4xl italic font-extrabold header-font tracking-widest" style="text-shadow: 2px 2px 0 #000000; line-height: 1.1; font-size: 2.75em;">
+                        2026 COMPREHENSIVE EXAM REVIEW TRACKER
+                    </h2>
+                </div>
+        
+                <div class="flex-shrink-0 w-32 h-32 flex items-center justify-center rounded-full overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/usacol.png" 
+                         alt="USACoL Icon" class="w-32 h-32 object-cover">
+                </div>
+            </div>
+        </header>
+
+        <div class="denial-message-box">
+            <h1 class="header-font">ACCESS DENIED</h1>
+            
+            <p class="text-lg text-gray-700">Your password was incorrect.</p>
+
+            <a href="index.html" class="try-again-btn">
+                CLICK HERE TO TRY AGAIN
+            </a>
+            
+            <input type="hidden" id="target-date-1" value="2026-06-14">
+            <input type="hidden" id="target-date-2" value="2026-06-21">
+            <input type="hidden" id="target-date-3" value="2026-06-28">
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                
+                <div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                    <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
+                        <i data-lucide="hourglass" class="w-6 h-6 mr-2" style="color: var(--color-secondary-gold);"></i>COMP EXAM DAY 1<i data-lucide="hourglass" class="w-6 h-6 ml-2" style="color: var(--color-secondary-gold);"></i>
+                    </div>
+                    <div class="p-2 text-center">
+                        <div class="mb-2 flex justify-center items-center">
+                            <span class="date-display-wrapper" data-target-date="2026-06-14"><span class="date-text">JUNE 14, 2026</span></span>
+                        </div>
+                        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+                            <div class="flex flex-col"><span id="days-1" class="time-value">---</span><span class="time-label">Days</span></div>
+                            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-1" class="time-value">--</span><span class="time-label">Hrs</span></div>
+                            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-1" class="time-value">--</span><span class="time-label">Mins</span></div>
+                            <div class="flex flex-col"><span id="secs-1" class="time-value">--</span><span class="time-label">Secs</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                    <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
+                        <i data-lucide="hourglass" class="w-6 h-6 mr-2" style="color: var(--color-secondary-gold);"></i>COMP EXAM DAY 2<i data-lucide="hourglass" class="w-6 h-6 ml-2" style="color: var(--color-secondary-gold);"></i>
+                    </div>
+                    <div class="p-2 text-center">
+                        <div class="mb-2 flex justify-center items-center">
+                            <span class="date-display-wrapper" data-target-date="2026-06-21"><span class="date-text">JUNE 21, 2026</span></span>
+                        </div>
+                        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+                            <div class="flex flex-col"><span id="days-2" class="time-value">---</span><span class="time-label">Days</span></div>
+                            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-2" class="time-value">--</span><span class="time-label">Hrs</span></div>
+                            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-2" class="time-value">--</span><span class="time-label">Mins</span></div>
+                            <div class="flex flex-col"><span id="secs-2" class="time-value">--</span><span class="time-label">Secs</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                    <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
+                        <i data-lucide="hourglass" class="w-6 h-6 mr-2" style="color: var(--color-secondary-gold);"></i>COMP EXAM DAY 3<i data-lucide="hourglass" class="w-6 h-6 ml-2" style="color: var(--color-secondary-gold);"></i>
+                    </div>
+                    <div class="p-2 text-center">
+                        <div class="mb-2 flex justify-center items-center">
+                            <span class="date-display-wrapper" data-target-date="2026-06-28"><span class="date-text">JUNE 28, 2026</span></span>
+                        </div>
+                        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+                            <div class="flex flex-col"><span id="days-3" class="time-value">---</span><span class="time-label">Days</span></div>
+                            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="hrs-3" class="time-value">--</span><span class="time-label">Hrs</span></div>
+                            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="mins-3" class="time-value">--</span><span class="time-label">Mins</span></div>
+                            <div class="flex flex-col"><span id="secs-3" class="time-value">--</span><span class="time-label">Secs</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+    
+    <footer class="global-app-footer">
+        <p class="quote">
+            Trust that your hard work will never betray you. You did not come this far to only come this far.
+        </p>
+        <p class="signature mt-1">
+            <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/missattycpa.PNG"
+                 alt="missattycpa signature" 
+                 class="inline-block h-4" 
+                 style="vertical-align: middle;">
+            <span class="date-quote-style">| november 2025</span>
+        </p>
+    </footer>
+
+    <script>
+        // --- Countdown Logic for Live Effect ---
+        function formatNumber(num) { 
+            return num.toString().padStart(num >= 100 ? 3 : 2, '0'); 
+        }
+
+        function calculateCountdown(targetDateString, id) {
+            const now = new Date();
+            const target = new Date(targetDateString + 'T00:00:00Z'); 
+            
+            if (target <= now) {
+                document.getElementById(`days-${id}`).textContent = '000';
+                document.getElementById(`hrs-${id}`).textContent = '00';
+                document.getElementById(`mins-${id}`).textContent = '00';
+                document.getElementById(`secs-${id}`).textContent = '00';
+                return;
+            }
+
+            const diffInMilliseconds = target - now;
+            const days = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diffInMilliseconds % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diffInMilliseconds % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diffInMilliseconds % (1000 * 60)) / 1000);
+
+            // Update DOM elements
+            document.getElementById(`days-${id}`).textContent = formatNumber(days);
+            document.getElementById(`hrs-${id}`).textContent = formatNumber(hours);
+            document.getElementById(`mins-${id}`).textContent = formatNumber(minutes);
+            document.getElementById(`secs-${id}`).textContent = formatNumber(seconds);
+        }
+
+        function updateAllCountdowns() {
+            const dates = [
+                {id: 1, date: document.querySelector('#card-day-1 .date-display-wrapper').dataset.targetDate},
+                {id: 2, date: document.querySelector('#card-day-2 .date-display-wrapper').dataset.targetDate},
+                {id: 3, date: document.querySelector('#card-day-3 .date-display-wrapper').dataset.targetDate}
+            ];
+            dates.forEach(data => {
+                calculateCountdown(data.date, data.id);
+            });
+        }
+
+        // --- Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Initialize Lucide Icons (for the hourglasses)
+            if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+                lucide.createIcons();
+            }
+
+            // 2. Start the Live Countdown
+            updateAllCountdowns();
+            setInterval(updateAllCountdowns, 1000);
+        });
+    </script>
+</body>
+</html>
