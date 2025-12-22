@@ -140,19 +140,21 @@
             background-color: #ffffff; align-self: center; position: relative;
         }
 
-        .checklist-grid input[type="checkbox"]:checked { border-color: transparent !important; }
+.checklist-grid input[type="checkbox"]:checked { border-color: transparent !important; }
 
-/* NEW: Column-specific colors for CHECKED state */
-        .checkbox-codal:checked { background-color: #8b5cf6 !important; } /* Violet/Rem */
-        .checkbox-books:checked { background-color: #eab308 !important; } /* Yellow/Comm */
-        .checkbox-reviewer:checked { background-color: #3b82f6 !important; } /* Blue/Civ */
-        .checkbox-barqas:checked { background-color: #10b981 !important; } /* Green */
-        .checkbox-cases:checked { background-color: #f97316 !important; } /* Orange */
+        /* restored specific designs for 6 columns */
+        .checkbox-codal:checked { background-color: #8b5cf6 !important; }
+        .checkbox-first_reading:checked { background-color: #eab308 !important; }
+        .checkbox-second_reading:checked { background-color: #3b82f6 !important; }
+        .checkbox-pre_bar_notes:checked { background-color: #10b981 !important; }
+        .checkbox-pre_week:checked { background-color: #f97316 !important; }
+        .checkbox-lmts:checked { background-color: #ef4444 !important; }
 
+        /* ensure white checkmark appears */
         .checklist-grid input[type="checkbox"]:checked::before {
-        content: ''; position: absolute; width: 0.25rem; height: 0.5rem;
-        border: solid white; border-width: 0 2px 2px 0; top: 50%; left: 50%;
-        transform: translate(-50%, -55%) rotate(45deg);
+            content: ''; position: absolute; width: 0.25rem; height: 0.5rem;
+            border: solid white; border-width: 0 2px 2px 0; top: 50%; left: 50%;
+            transform: translate(-50%, -55%) rotate(45deg);
         }
         
         .checklist-grid>div:first-child { 
