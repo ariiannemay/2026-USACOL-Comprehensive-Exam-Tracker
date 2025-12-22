@@ -1804,7 +1804,7 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                         }
 
                     } else if (item.depth >= 3) {
-                        const dynamicPadding = (item.depth - 2) * 0.8 + 0.8;
+                        const dynamicPadding = (item.depth - 2) * 1.0 + 1.0;
                         const fontStyle = item.depth <= 4 ? 'font-medium' : 'font-normal';
                         
                         if (isDepth2Open) {
