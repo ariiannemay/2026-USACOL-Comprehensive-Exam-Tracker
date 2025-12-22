@@ -123,9 +123,9 @@
         .syllabus-summary { padding: 1rem; font-size: 1.25rem; font-weight: 700; color: white; cursor: pointer; list-style: none; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: .5rem; border-top-left-radius: .75rem; border-top-right-radius: .75rem; }
         .topic-header { padding: .75rem; font-weight: 600; color: #1f2937; display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; }
         
-        .checklist-grid { 
+.checklist-grid { 
             display: grid; 
-            grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px); 
+            grid-template-columns: 1.5fr repeat(6, 100px) minmax(40px, 50px); 
             gap: .2rem; 
             padding: .3rem 0; 
             align-items: center; 
@@ -190,7 +190,7 @@
         .depth2-details[open] .depth2-chevron { transform: rotate(90deg); }
         .topic-content-wrapper { display: flex; align-items: flex-start; padding-left: .5rem; }
         .checklist-grid.checklist-grid-header>div:first-child { grid-column: 1 / span 1; padding-left: 0; align-items: center; text-align: center; }
-        .checklist-grid.checklist-grid-header { grid-template-columns: 2fr repeat(5, 70px) minmax(40px, 50px); }
+.checklist-grid.checklist-grid-header { grid-template-columns: 1.5fr repeat(6, 100px) minmax(40px, 50px); }
         .checklist-grid-micro-progress { border-bottom: 1px solid #e5e7eb; }
 
         .depth3-content-wrapper>div { display: block; padding: .25rem .5rem; }
@@ -293,7 +293,7 @@
                     </div>
                     <div class="p-2 text-center">
                         <div class="mb-2 flex justify-center items-center">
-                            <span id="target-date-display-1" class="date-display-wrapper" data-target-date="2026-06-14"><span class="date-text"></span></span>
+                            <span id="target-date-display-1" class="date-display-wrapper" data-target-date="2026-07-12"><span class="date-text"></span></span>
                         </div>
                         <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
                             <div class="flex flex-col"><span id="days-1" class="time-value">000</span><span class="time-label">Days</span></div>
@@ -309,7 +309,7 @@
                     </div>
                     <div class="p-2 text-center">
                         <div class="mb-2 flex justify-center items-center">
-                            <span id="target-date-display-2" class="date-display-wrapper" data-target-date="2026-06-21"><span class="date-text"></span></span>
+                            <span id="target-date-display-2" class="date-display-wrapper" data-target-date="2026-07-19"><span class="date-text"></span></span>
                         </div>
                         <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
                             <div class="flex flex-col"><span id="days-2" class="time-value">000</span><span class="time-label">Days</span></div>
@@ -325,7 +325,7 @@
                     </div>
                     <div class="p-2 text-center">
                         <div class="mb-2 flex justify-center items-center">
-                            <span id="target-date-display-3" class="date-display-wrapper" data-target-date="2026-06-28"><span class="date-text"></span></span>
+                            <span id="target-date-display-3" class="date-display-wrapper" data-target-date="2026-07-26"><span class="date-text"></span></span>
                         </div>
                         <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
                             <div class="flex flex-col"><span id="days-3" class="time-value">000</span><span class="time-label">Days</span></div>
@@ -438,7 +438,7 @@
                     </p>
                     <ul class="list-disc list-outside ml-5 text-sm text-gray-700 space-y-2">
                         <li class="pl-1">
-                            <strong style="color: #6d1c1c;">Progress Metric:</strong> Overall progress updates and a topic counts as “done” only once <strong>3 out of 5 boxes</strong> per topic row are checked.
+                            <strong style="color: #6d1c1c;">Progress Metric:</strong> Overall progress updates and a topic counts as “done” only once <strong>4 out of 6 boxes</strong> per topic row are checked.
                         </li>
                         <li class="pl-1">
                             <strong style="color: #6d1c1c;">Data Portability:</strong> Your review progress is saved <strong>only within your current browser</strong> (Local Storage). Your data will not be synchronized automatically if you clear your browsing data or switch devices. To transfer your progress to a new device or browser, please use the <strong>Export All Data</strong> and <strong>Import Existing Data</strong> functions.
@@ -495,7 +495,7 @@
     <!-- Dynamic JavaScript Loader and Core Logic -->
     <script>       
 
-        const SECRET_PASSWORD = "secret";
+        const SECRET_PASSWORD = "ama";
 
 const userPassword = prompt("🔐 Enter the password to access the 2026 Comprehensive Exam Review Tracker:");
 
@@ -669,7 +669,7 @@ if (userPassword === SECRET_PASSWORD) {
         
         // --- CORE UTILITY AND COUNTDOWN LOGIC (REMAINS IN INDEX) ---
         
-        const CHECKLIST_COLUMNS = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
+const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'pre_bar_notes', 'pre_week', 'lmts'];
         const COUNTDOWN_DATA = [
             {id:1,targetDate:localStorage.getItem('comp_exam_date_1')||'2026-06-14'},
             {id:2,targetDate:localStorage.getItem('comp_exam_date_2')||'2026-06-21'},
@@ -1619,6 +1619,8 @@ if (userPassword === SECRET_PASSWORD) {
                 const topic = syllabusData.find(t => t.id === topicId);
                 if (!topic) return 0;
                 
+                const DONE_THRESHOLD = 4;
+                
                 if (topic.depth === 1) {
                     let sectionBoxesTotal = 0;
                     let sectionBoxesChecked = 0;
@@ -1629,7 +1631,7 @@ if (userPassword === SECRET_PASSWORD) {
                         if (currentItem.depth === 2 && currentItem.trackable) {
                             const prog = progressData[currentItem.id] || {};
                             const boxesTicked = CHECKLIST_COLUMNS.filter(col => prog[col] === true).length;
-                            if (boxesTicked >= 3) {
+                            if (boxesTicked >= DONE_THRESHOLD) {
                                 sectionBoxesChecked++;
                             }
                             sectionBoxesTotal++;
@@ -1643,20 +1645,21 @@ if (userPassword === SECRET_PASSWORD) {
                     const topicProgress = progressData[topicId] || {};
                     const checkedCount = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
                     if (checkedCount === CHECKLIST_COLUMNS.length) return 2;
-                    if (checkedCount >= 3) return 2;
+                    if (checkedCount >= DONE_THRESHOLD) return 2;
                     if (checkedCount > 0) return 1;
                     return 0;
                 }
                 return 0;
             }
 
-            function updateOverallProgress() {
+function updateOverallProgress() {
                 const progressData = getProgress();
                 const mainTopics = syllabusData.filter(t => t.depth === 2 && t.trackable);
                 let topicsDoneCount = 0;
                 let topicsToReadCount = 0;
                 const columnProgress = CHECKLIST_COLUMNS.map(() => 0);
                 const totalMainTopics = mainTopics.length;
+                const DONE_THRESHOLD = 4;
 
                 mainTopics.forEach(topic => {
                     const topicProgress = progressData[topic.id] || {};
@@ -1668,7 +1671,7 @@ if (userPassword === SECRET_PASSWORD) {
                         }
                     });
                     
-                    if (boxesTicked >= 3) {
+                    if (boxesTicked >= DONE_THRESHOLD) {
                         topicsDoneCount++;
                     } else {
                         topicsToReadCount++;
@@ -1698,7 +1701,7 @@ if (userPassword === SECRET_PASSWORD) {
                     progressBar.style.backgroundColor = barColor;
                 }
 
-                const columnHeaderNames = ['codal', 'books', 'reviewer', 'barqas', 'cases'];
+                const columnHeaderNames = ['codal', 'first_reading', 'second_reading', 'pre_bar_notes', 'pre_week', 'lmts'];
                 columnProgress.forEach((tickedCount, index) => {
                     const elementId = `col-progress-bar-${subjectName}-${columnHeaderNames[index]}`;
                     const percentElementId = `col-percent-${subjectName}-${columnHeaderNames[index]}`;
@@ -1977,60 +1980,65 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                                 </div>
                             </div>
                         </summary>
-                        <div class="syllabus-content">
+<div class="syllabus-content">
                             
-                            <!-- 1. COLUMN HEADERS -->
                             <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
                                 <div class="text-left">SUBJECTS/TOPICS</div> 
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-codal">Codal</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-books">Books</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-reviewer">Reviewer</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-barqas">Bar QAs</span></div>
-                                <div class="flex items-center justify-center"><span class="checklist-label-capsule capsule-cases">Cases</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#8b5cf6;"><span class="font-bold text-[0.65rem]">Codal</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#eab308;"><span class="font-bold text-[0.65rem]">First Reading (Textbook)</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#3b82f6;"><span class="font-bold text-[0.65rem]">Second Reading (Bar-Based)</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#10b981;"><span class="font-bold text-[0.65rem]">Pre-Bar Review Notes & Lecture</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#f97316;"><span class="font-bold text-[0.65rem]">Pre-Week</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#ef4444;"><span class="font-bold text-[0.65rem]">LMTs</span></div>
                                 <div class="flex items-center justify-center pt-1">
-                                    <button id="collapse-all-btn-${subjectName}" class="w-7 h-7 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
+                                    <button id="collapse-all-btn-${subjectName}" class="w-6 h-6 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
                                         <i data-lucide="chevrons-down" class="w-4 h-4"></i>
                                     </button>
                                 </div>
                             </div>
 
-                            <!-- Micro-progress Bars -->
                             <div class="checklist-grid checklist-grid-micro-progress text-center">
-                                <div class="text-left italic text-gray-700 col-span-1 pl-1 text-[0.68rem] self-start leading-tight pt-1">Overall progress only counts if at least 3 checklist boxes are marked for each topic row.</div> 
+                                <div class="text-left italic text-gray-700 col-span-1 pl-1 text-[0.38rem] self-start leading-tight pt-1">Overall progress only counts if at least 4 checklist boxes are marked for each topic row.</div> 
                                 
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar col-progress-codal" style="width: 0%;"></div>
+                                        <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar" style="background-color: #8b5cf6; width: 0%;"></div>
                                     </div>
                                     <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
                                 </div>
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-books" class="col-progress-bar col-progress-lectures" style="width: 0%;"></div>
+                                        <div id="col-progress-bar-${subjectName}-first_reading" class="col-progress-bar" style="background-color: #eab308; width: 0%;"></div>
                                     </div>
-                                    <span id="col-percent-${subjectName}-books" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
+                                    <span id="col-percent-${subjectName}-first_reading" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
                                 </div>
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-reviewer" class="col-progress-bar col-progress-reviewer" style="width: 0%;"></div>
+                                        <div id="col-progress-bar-${subjectName}-second_reading" class="col-progress-bar" style="background-color: #3b82f6; width: 0%;"></div>
                                     </div>
-                                    <span id="col-percent-${subjectName}-reviewer" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
+                                    <span id="col-percent-${subjectName}-second_reading" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
                                 </div>
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-barqas" class="col-progress-bar col-progress-barqas" style="width: 0%;"></div>
+                                        <div id="col-progress-bar-${subjectName}-pre_bar_notes" class="col-progress-bar" style="background-color: #10b981; width: 0%;"></div>
                                     </div>
-                                    <span id="col-percent-${subjectName}-barqas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
+                                    <span id="col-percent-${subjectName}-pre_bar_notes" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
                                 </div>
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-cases" class="col-progress-bar col-progress-cases" style="width: 0%;"></div>
+                                        <div id="col-progress-bar-${subjectName}-pre_week" class="col-progress-bar" style="background-color: #f97316; width: 0%;"></div>
                                     </div>
-                                    <span id="col-percent-${subjectName}-cases" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+                                    <span id="col-percent-${subjectName}-pre_week" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+                                </div>
+                                <div class="px-1 flex flex-col items-center justify-start">
+                                    <div class="col-progress-bar-container">
+                                        <div id="col-progress-bar-${subjectName}-lmts" class="col-progress-bar" style="background-color: #ef4444; width: 0%;"></div>
+                                    </div>
+                                    <span id="col-percent-${subjectName}-lmts" class="text-xs font-semibold mt-1 text-red-700">0.0%</span>
                                 </div>
                                 <div></div>
                             </div>
-                            
+
                             <div id="syllabus-${subjectName}" class="text-xs"></div>
                         </div>
                     </details>
@@ -2158,7 +2166,7 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                     mainTopics.forEach(topic => {
                         const topicProgress = progress[topic.id] || {};
                         const boxesTicked = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
-                        if (boxesTicked >= 3) {
+                        if (boxesTicked >= 4) {
                             currentSubjectDone++;
                         }
                     });
@@ -2223,7 +2231,7 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                     const topicProgress = progress[topic.id] || {};
                     const boxesTicked = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
                     
-                    if (boxesTicked >= 3) {
+                    if (boxesTicked >= 4) {
                         currentSubjectDone++;
                     }
                 });
