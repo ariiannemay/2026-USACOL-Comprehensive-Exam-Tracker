@@ -669,7 +669,7 @@ if (userPassword === SECRET_PASSWORD) {
         
         // --- CORE UTILITY AND COUNTDOWN LOGIC (REMAINS IN INDEX) ---
         
-const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'pre_bar_notes', 'pre_week', 'lmts'];
+const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'bar_qas', 'sample_exams', 'lmts'];
         const COUNTDOWN_DATA = [
             {id:1,targetDate:localStorage.getItem('comp_exam_date_1')||'2026-06-14'},
             {id:2,targetDate:localStorage.getItem('comp_exam_date_2')||'2026-06-21'},
@@ -1701,7 +1701,7 @@ function updateOverallProgress() {
                     progressBar.style.backgroundColor = barColor;
                 }
 
-                const columnHeaderNames = ['codal', 'first_reading', 'second_reading', 'pre_bar_notes', 'pre_week', 'lmts'];
+                const columnHeaderNames = ['codal', 'first_reading', 'second_reading', 'bar_qas', 'sample_exams', 'lmts'];
                 columnProgress.forEach((tickedCount, index) => {
                     const elementId = `col-progress-bar-${subjectName}-${columnHeaderNames[index]}`;
                     const percentElementId = `col-percent-${subjectName}-${columnHeaderNames[index]}`;
@@ -1987,8 +1987,8 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                                 <div class="flex items-center justify-center text-center leading-tight" style="color:#8b5cf6;"><span class="font-bold text-[0.65rem]">Codal</span></div>
                                 <div class="flex items-center justify-center text-center leading-tight" style="color:#eab308;"><span class="font-bold text-[0.65rem]">First Reading (Textbook)</span></div>
                                 <div class="flex items-center justify-center text-center leading-tight" style="color:#3b82f6;"><span class="font-bold text-[0.65rem]">Second Reading (Bar-Based)</span></div>
-                                <div class="flex items-center justify-center text-center leading-tight" style="color:#10b981;"><span class="font-bold text-[0.65rem]">Pre-Bar Review Notes & Lecture</span></div>
-                                <div class="flex items-center justify-center text-center leading-tight" style="color:#f97316;"><span class="font-bold text-[0.65rem]">Pre-Week</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#10b981;"><span class="font-bold text-[0.65rem]">Bar QAs</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#f97316;"><span class="font-bold text-[0.65rem]">Sample Exams</span></div>
                                 <div class="flex items-center justify-center text-center leading-tight" style="color:#ef4444;"><span class="font-bold text-[0.65rem]">LMTs</span></div>
                                 <div class="flex items-center justify-center pt-1">
                                     <button id="collapse-all-btn-${subjectName}" class="w-6 h-6 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
@@ -2020,15 +2020,15 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                                 </div>
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-pre_bar_notes" class="col-progress-bar" style="background-color: #10b981; width: 0%;"></div>
+                                        <div id="col-progress-bar-${subjectName}-bar_qas" class="col-progress-bar" style="background-color: #10b981; width: 0%;"></div>
                                     </div>
-                                    <span id="col-percent-${subjectName}-pre_bar_notes" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
+                                    <span id="col-percent-${subjectName}-bar_qas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
                                 </div>
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-pre_week" class="col-progress-bar" style="background-color: #f97316; width: 0%;"></div>
+                                        <div id="col-progress-bar-${subjectName}-sample_exams" class="col-progress-bar" style="background-color: #f97316; width: 0%;"></div>
                                     </div>
-                                    <span id="col-percent-${subjectName}-pre_week" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+                                    <span id="col-percent-${subjectName}-sample_exams" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
                                 </div>
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
