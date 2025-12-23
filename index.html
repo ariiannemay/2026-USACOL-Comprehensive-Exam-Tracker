@@ -18,6 +18,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- END: Calendar Dependencies -->
     
+    <!-- ADDED: Case Tracker Dependencies -->
+    <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <!-- END: Case Tracker Dependencies -->
+    
     <style>
         /* Attempt to import a decorative font for the quote */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@1,600&display=swap');
@@ -44,7 +49,6 @@
             display: flex; 
             flex-direction: column;
         }
-        
         .main-content-wrapper { flex-grow: 1; }
         .header-font { font-family: 'Bebas Neue', sans-serif; letter-spacing: .1em; }
         .header-bg { background-color: #6d1b1b; border-bottom: 5px solid #fece1b; }
@@ -123,9 +127,10 @@
         .syllabus-summary { padding: 1rem; font-size: 1.25rem; font-weight: 700; color: white; cursor: pointer; list-style: none; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; gap: .5rem; border-top-left-radius: .75rem; border-top-right-radius: .75rem; }
         .topic-header { padding: .75rem; font-weight: 600; color: #1f2937; display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; }
         
-.checklist-grid { 
+        /* 🚨 MODIFIED: Increased width for 6 columns (1.5fr for topic text, 6x 100px for material, 1x 50px for final checkmark) */
+        .checklist-grid { 
             display: grid; 
-grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
+            grid-template-columns: 1.5fr repeat(6, 100px) minmax(40px, 50px); 
             gap: .2rem; 
             padding: .3rem 0; 
             align-items: center; 
@@ -140,21 +145,21 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
             background-color: #ffffff; align-self: center; position: relative;
         }
 
-.checklist-grid input[type="checkbox"]:checked { border-color: transparent !important; }
+        .checklist-grid input[type="checkbox"]:checked { border-color: transparent !important; }
 
-        /* restored specific designs for 6 columns */
-        .checkbox-codal:checked { background-color: #8b5cf6 !important; }
-        .checkbox-first_reading:checked { background-color: #eab308 !important; }
-        .checkbox-second_reading:checked { background-color: #3b82f6 !important; }
-        .checkbox-bar_qas:checked { background-color: #10b981 !important; }
-        .checkbox-sample_exams:checked { background-color: #f97316 !important; }
-        .checkbox-lmts:checked { background-color: #ef4444 !important; }
+/* NEW: Column-specific colors for CHECKED state */
+        .checkbox-codal:checked { background-color: #8b5cf6 !important; } /* Violet/Rem */
+        /* NEW COLUMNS */
+        .checkbox-first_reading:checked { background-color: #eab308 !important; } /* Yellow/Comm */
+        .checkbox-second_reading:checked { background-color: #3b82f6 !important; } /* Blue/Civ */
+        .checkbox-pre_bar_notes:checked { background-color: #10b981 !important; } /* Green */
+        .checkbox-pre_week:checked { background-color: #f97316 !important; } /* Orange */
+        .checkbox-lmts:checked { background-color: #ef4444 !important; } /* Red */
 
-        /* ensure white checkmark appears */
         .checklist-grid input[type="checkbox"]:checked::before {
-            content: ''; position: absolute; width: 0.25rem; height: 0.5rem;
-            border: solid white; border-width: 0 2px 2px 0; top: 50%; left: 50%;
-            transform: translate(-50%, -55%) rotate(45deg);
+        content: ''; position: absolute; width: 0.25rem; height: 0.5rem;
+        border: solid white; border-width: 0 2px 2px 0; top: 50%; left: 50%;
+        transform: translate(-50%, -55%) rotate(45deg);
         }
         
         .checklist-grid>div:first-child { 
@@ -191,33 +196,22 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
         .depth2-chevron { transition: transform .2s; transform: rotate(0deg); flex-shrink: 0; margin-right: .5rem; }
         .depth2-details[open] .depth2-chevron { transform: rotate(90deg); }
         .topic-content-wrapper { display: flex; align-items: flex-start; padding-left: .5rem; }
+        /* 🚨 MODIFIED: Matched grid template to 6 columns */
         .checklist-grid.checklist-grid-header>div:first-child { grid-column: 1 / span 1; padding-left: 0; align-items: center; text-align: center; }
-.checklist-grid.checklist-grid-header { grid-template-columns: 1.5fr repeat(6, 100px) minmax(40px, 50px); }
+        .checklist-grid.checklist-grid-header { grid-template-columns: 1.5fr repeat(6, 100px) minmax(40px, 50px); }
         .checklist-grid-micro-progress { border-bottom: 1px solid #e5e7eb; }
 
         .depth3-content-wrapper>div { display: block; padding: .25rem .5rem; }
-        .checklist-grid>div:nth-child(n+2):nth-child(-n+6) { border-right: 1px dashed #d1d5db; }
-        .checklist-grid>div:nth-child(6) { border-right: none; }
-        .checklist-label-capsule { font-size: .65rem; font-weight: 7-00; text-transform: uppercase; text-align: center; word-break: keep-all; padding: .15rem .35rem; border-radius: 9999px; line-height: 1; color: white; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05); }
-        .col-progress-codal { background-color: #8b5cf6; }
-        .col-progress-lectures { background-color: #facc15; }
-        .col-progress-reviewer { background-color: #3b82f6; }
-        .col-progress-barqas { background-color: #10b981; }
-        .col-progress-cases { background-color: #f97316; }
-        .capsule-codal { background-color: #8b5cf6; }
-        .capsule-books { background-color: #eab308; }
-        .capsule-reviewer { background-color: #3b82f6; }
-        .capsule-barqas { background-color: #10b981; }
-        .capsule-cases { background-color: #f97316; }
-        .tick-all-icon { cursor: pointer; transition: color .2s, transform .2s; color: #9ca3af; }
-        .tick-all-icon.checked { color: #10b981; }
-        .tick-all-icon.partial { color: #f59e0b; }
-        .tick-all-icon:hover { transform: scale(1.1); }
+        /* 🚨 MODIFIED: Border on 6 columns (n+2 through n+7) */
+        .checklist-grid>div:nth-child(n+2):nth-child(-n+7) { border-right: 1px dashed #d1d5db; }
+        /* 🚨 MODIFIED: Remove border on the 7th cell (6th material column) */
+        .checklist-grid>div:nth-child(7) { border-right: none; }
+        .checklist-label-capsule { font-size: .65rem; font-weight: 700; text-transform: uppercase; text-align: center; word-break: keep-all; padding: .15rem .35rem; border-radius: 9999px; line-height: 1; color: white; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05); }
         .col-progress-bar-container { height: .4rem; background: #e5e7eb; border-radius: 9999px; overflow: hidden; width: 100%; }
         .col-progress-bar { height: 100%; transition: width .3s ease-in-out; }
         .status-message-row { padding-top: .25rem; padding-bottom: .25rem; }
         
-        .depth3-content-wrapper>div:first-child { grid-column: 1 / span 7; padding-left: 2.5rem; }
+        .depth3-content-wrapper>div:first-child { grid-column: 1 / span 8; padding-left: 2.5rem; }
         .depth2-topic-row { grid-column: 1 / span 1; display: flex; align-items: flex-start; }
         
         /* SUBJECT PANEL THEMES */
@@ -263,7 +257,64 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
         .bg-poli-button { background-color: var(--poli-color); }
         .hover\:bg-poli-button-dark:hover { background-color: var(--poli-color-dark); }
         /* END SUBJECT PANEL THEMES */
+
+        /* -------------------------------------------------------------------------- */
+        /* MERGED: Case Tracker Styles (Integrated from case_tracker.html) */
+        /* -------------------------------------------------------------------------- */
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Bebas+Neue&family=Dancing+Script:wght@600&display=swap');
+        
+        :root { --maroon: #000000; --gold: #ffffff; --bg-light: #F4F7F9; }
+        body { background-color: var(--bg-light); font-family: 'Inter', sans-serif; }
+        .header-font { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.05em; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
+ 
+        /* Checkbox Styling */
+        .custom-checkbox {
+            appearance: none; background-color: #fff; margin: 0;
+            font: inherit; color: currentColor; width: 1.15em; height: 1.15em;
+            border: 2px solid #cbd5e1; border-radius: 0.25em; display: grid; place-content: center;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .custom-checkbox::before {
+            content: ""; width: 0.65em; height: 0.65em; transform: scale(0);
+            transition: 120ms transform ease-in-out; box-shadow: inset 1em 1em white;
+            transform-origin: center; clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+.custom-checkbox:checked { background-color: #000; border-color: #000; }
+        .custom-checkbox:checked::before { transform: scale(1); }
+        
+        /* Smooth Details Animation */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary ~ * { animation: sweep .3s ease-in-out; }
+        @keyframes sweep {
+            0%    { opacity: 0; transform: translateY(-10px); }
+            100%  { opacity: 1; transform: translateY(0); }
+        }
+ 
+        /* Sortable Headers */
+        th.sortable { cursor: pointer; user-select: none; transition: background-color 0.2s; }
+th.sortable:hover { background-color: #f1f1f1; color: #000; }
+        th.sortable .sort-icon { display: inline-block; margin-left: 4px; opacity: 0.3; }
+        th.sortable:hover .sort-icon { opacity: 1; }
+
+.modal-label {
+    display: inline-block;
+    border-bottom: 2px solid #000;
+    padding-bottom: 2px;
+    margin-bottom: 8px;
+}
+        .text-2xs { font-size: 0.65rem; line-height: 0.75rem; }
     </style>
+    
+    <!-- Vercel Web Analytics -->
+    <script defer src="/_vercel/insights/script.js"></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen p-1 sm:p-2">
@@ -272,30 +323,38 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
         <div class="max-w-6xl mx-auto space-y-2">
 
             <!-- 1. HEADER PANEL -->
-            <header class="header-bg text-white py-3 px-4 sm:py-4 sm:px-6 rounded-xl shadow-2xl">
-                <div class="flex items-center justify-between">
-                    <div class="flex-shrink-0 w-16 h-16 flex items-center justify-center rounded-full overflow-hidden">
-                        <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/Images/USA.png" alt="USA Logo" class="w-full h-full object-cover" onerror="this.outerHTML = '<i data-lucide=\'graduation-cap\' class=\'w-12 h-12 text-yellow-300\'></i>'">
-                    </div>
-                    <div class="text-center mx-4 flex-grow">
-                        <h1 class="text-xl sm:text-3xl font-extrabold header-font tracking-wider mb-2 underline">UNIVERSITY OF SAN AGUSTIN</h1>
-                        <h2 class="text-3xl sm:text-5xl italic font-extrabold header-font tracking-widest" style="text-shadow: 2px 2px 0 #000000;">2026 COMPREHENSIVE EXAM REVIEW TRACKER</h2>
-                    </div>
-                    <div class="flex-shrink-0 w-24 h-24 flex items-center justify-center rounded-full overflow-hidden">
-                        <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/Images/usacol.png" alt="USACoL Logo" class="w-full h-full object-cover" onerror="this.outerHTML = '<i data-lucide=\'shield\' class=\'w-12 h-12 text-yellow-300\'></i>'">
+<header class="header-bg text-white py-1 px-4 sm:py-2 sm:px-6 rounded-xl shadow-2xl">
+            <div class="flex items-center justify-between">
+                
+                                <div class="flex-shrink-0 w-24 h-24 flex items-center justify-center rounded-full overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/Images/usacol.png" alt="USACOL Logo" class="w-full h-full object-cover" onerror="this.outerHTML = '<i data-lucide=\'graduation-cap\' class=\'w-full h-full object-cover\'></i>'">
+                </div>
+                
+                                <div class="text-center mx-4 flex-grow">
+                                                        <h1 class="text-3xl sm:text-6xl italic font-extrabold header-font tracking-widest mb-1" style="text-shadow: 2px 2px 0 #000000;">
+                                2026 COMPREHENSIVE EXAM REVIEW TRACKER
+                            </h1>
+                            
+                                                        <h2 class="text-xl sm:text-3xl font-extrabold tracking-wider mb-0 italic" style="line-height: 1.1;">
+                                #AweSAMCompre2026
+                            </h2>
+                        </div>
+        
+                                        <div class="flex-shrink-0 w-32 h-32 flex items-center justify-center rounded-full overflow-hidden">
+                        <img src="https://raw.githubusercontent.com/ariiannemay/2026-Bar-Exam-Tracker/main/Images/CHECKLIST.png" alt="Checklist Logo" class="w-full h-full object-cover" onerror="this.outerHTML = '<i data-lucide=\'shield\' class=\'w-full h-full object-cover\'></i>'">
                     </div>
                 </div>
-            </header>
-
+        </header>
+        
             <!-- 2. COUNTDOWN PANELS (Hourglass color fixed to inherited white) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
                     <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
-                        <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 1<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+                        <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>COMPRE DAY 1<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
                     </div>
                     <div class="p-2 text-center">
                         <div class="mb-2 flex justify-center items-center">
-                            <span id="target-date-display-1" class="date-display-wrapper" data-target-date="2026-07-12"><span class="date-text"></span></span>
+                            <span id="target-date-display-1" class="date-display-wrapper" data-target-date="2026-02-15"><span class="date-text"></span></span>
                         </div>
                         <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
                             <div class="flex flex-col"><span id="days-1" class="time-value">000</span><span class="time-label">Days</span></div>
@@ -307,11 +366,11 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
                 </div>
                 <div id="card-day-2" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
                     <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
-                        <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 2<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+                        <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>COMPRE DAY 2<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
                     </div>
                     <div class="p-2 text-center">
                         <div class="mb-2 flex justify-center items-center">
-                            <span id="target-date-display-2" class="date-display-wrapper" data-target-date="2026-07-19"><span class="date-text"></span></span>
+                            <span id="target-date-display-2" class="date-display-wrapper" data-target-date="2026-02-22"><span class="date-text"></span></span>
                         </div>
                         <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
                             <div class="flex flex-col"><span id="days-2" class="time-value">000</span><span class="time-label">Days</span></div>
@@ -323,11 +382,11 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
                 </div>
                 <div id="card-day-3" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
                     <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
-                        <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>Comprehensive Exam Day 3<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
+                        <i data-lucide="hourglass" class="w-6 h-6 mr-2"></i>COMPRE DAY 3<i data-lucide="hourglass" class="w-6 h-6 ml-2"></i>
                     </div>
                     <div class="p-2 text-center">
                         <div class="mb-2 flex justify-center items-center">
-                            <span id="target-date-display-3" class="date-display-wrapper" data-target-date="2026-07-26"><span class="date-text"></span></span>
+                            <span id="target-date-display-3" class="date-display-wrapper" data-target-date="2026-02-29"><span class="date-text"></span></span>
                         </div>
                         <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
                             <div class="flex flex-col"><span id="days-3" class="time-value">000</span><span class="time-label">Days</span></div>
@@ -338,42 +397,39 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
                     </div>
                 </div>
             </div>
-
             <!-- 3. Overall Progress (DASHBOARD) - Floating Effect -->
             <div id="overall-dashboard" class="mt-4 p-0">
                 <div class="dashboard-container">
-                    
+                   
                     <!-- LEFT SIDE: CHART & METRICS - Aligns with Day 1 Card -->
                     <div class="chart-panel">
-                        
+                       
                         <div class="header-bg p-1.5 rounded-lg mb-2 text-center header-font flex flex-col items-center justify-center border-b-2 border-custom-yellow">
                             <span id="today-date-display" class="text-white today-date-text block font-extrabold" style="text-shadow: none;"></span>
                         </div>
-                        
+                       
                         <!-- NEW: Welcome/Name Input -->
                         <div class="flex flex-col items-center mb-2">
-                            <input type="text" id="user-name-input" placeholder="Input your name here..." 
-                                   class="w-full text-center text-xl font-bold header-font border-b border-gray-300 
+                            <input type="text" id="user-name-input" placeholder="Input your name here..."
+                                   class="w-full text-center text-xl font-bold header-font border-b border-gray-300
                                           focus:border-blue-500 outline-none p-1 bg-transparent text-gray-800"
                                    maxlength="30">
                         </div>
-
                         <!-- Review Progress Title -->
                         <h3 class="text-xl font-extrabold header-font tracking-wider text-chart-title text-center mt-2 mb-2">YOUR REVIEW PROGRESS</h3>
-                        
+                       
                         <!-- Chart Area (Reduced size) -->
                         <div class="pie-chart-wrapper">
                             <div id="global-pie-chart" class="relative" style="width: 180px; height: 180px;">
                                 <!-- SVG chart will be dynamically injected here -->
                             </div>
-                            
+                           
                             <!-- Done Metric (Left of Pie) -->
                             <div class="metric-pie-side left">
                                 <span id="global-progress-done" class="text-chart-done metric-value">0.0%</span>
                                 <span class="text-chart-done block leading-tight">DONE</span>
                                 <span class="text-gray-600 font-normal block leading-tight"><span id="global-total-done-count">0</span> TOPICS</span>
                             </div>
-
                             <!-- To Read Metric (Right of Pie, Red) -->
                             <div class="metric-pie-side right">
                                 <span id="global-progress-toread" class="text-chart-toread metric-value">0.0%</span>
@@ -381,12 +437,10 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
                                 <span class="text-gray-600 font-normal block leading-tight"><span id="global-total-toread-count">0</span> TOPICS</span>
                             </div>
                         </div>
-                        
+                       
                     </div>
-
                     <!-- Spacer Column -->
                     <div class="hidden lg:block border-r border-gray-300"></div>
-
                     <!-- RIGHT SIDE: SCHEDULE TABLE -->
                     <div class="schedule-panel">
                         <table class="schedule-table">
@@ -402,25 +456,213 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
                             </tbody>
                         </table>
                     </div>
-
                 </div>
             </div>
-
             <!-- 4. SUBJECT TRACKERS (Dynamic Content) -->
             <div id="subject-trackers-container" class="space-y-4">
-                
+               
                 <!-- CALENDAR MODULE INJECTION POINT (Before REM Tracker) -->
                 <div id="calendar-module-placeholder"></div>
-                
+               
                 <!-- Subject panels will be dynamically injected here -->
                 <div id="subject-tracker-panel-rem"></div>
                 <div id="subject-tracker-panel-crim"></div>
                 <div id="subject-tracker-panel-lab"></div>
                 <div id="subject-tracker-panel-civ"></div>
                 <div id="subject-tracker-panel-comm"></div>
-                <div id="subject-tracker-panel-poli"></div> 
+                <div id="subject-tracker-panel-poli"></div>
+            <!-- MERGED: Case Tracker (Placed below all subject trackers, which includes Political Law as the last one) -->
+            <div class="mt-6">
+                <!-- MAIN COLLAPSIBLE CARD FROM case_tracker.html -->
+                <div class="bg-white rounded-xl shadow-lg border border-gray-300 overflow-hidden mb-6">       
+                    <details class="group">
+                        <!-- HEADER (SUMMARY) -->
+<summary class="block p-0 cursor-pointer select-none transition-colors hover:bg-gray-900"
+style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
+    <div class="flex flex-col items-start justify-between py-3 px-6 text-white gap-2">
+        
+        <div class="flex items-center justify-between w-full">
+            <div class="flex items-center">
+                <i data-lucide="pen-tool" class="w-6 h-6 mr-3"></i>
+                <h1 class="text-xl sm:text-2xl font-bold uppercase tracking-tight">GAERLAN PENNED CASES</h1>
+            </div>
+            <div class="flex items-center text-xs">
+                <span class="text-gray-300 mr-2 font-light hidden sm:inline">Press to Expand/Collapse</span>
+                <i data-lucide="chevron-right" class="w-6 h-6 ml-2 transform transition-transform duration-300 group-open:rotate-90"></i>
+            </div>
+        </div>
+
+<div class="flex flex-wrap items-center gap-6 w-full text-[0.7rem]">
+    <div class="flex items-center gap-4 whitespace-nowrap">
+        <span class="flex items-center font-bold tracking-tight uppercase"><i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>DONE:&nbsp;<span id="headerDone">0</span>&nbsp;CASES</span>
+        <span class="flex items-center font-bold tracking-tight uppercase"><i data-lucide="book-open" class="w-4 h-4 mr-1 text-gray-200"></i>TO READ:&nbsp;<span id="headerRemaining">0</span>&nbsp;CASES</span>
+    </div>
+    
+    <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
+        <span class="whitespace-nowrap flex items-center font-bold tracking-tight uppercase"><i data-lucide="bar-chart-3" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:</span>
+                <div class="flex-grow bg-white/20 h-3 rounded-full overflow-hidden relative">
+                    <div id="headerProgressBar" class="bg-white h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+                </div>
+                <span id="headerPercent" class="font-bold">0.0%</span>
+            </div>
+        </div>
+    </div>
+</summary>
+ 
+                        <!-- EXPANDABLE CONTENT -->
+<div class="bg-black border-t border-gray-200">
+                            
+                            <!-- 1. COMPACT TOOLBAR (Search & Filters) -->
+                            <div class="bg-white p-2 border-b border-gray-200 flex flex-col md:flex-row gap-2 items-center justify-between sticky top-0 z-20 shadow-sm">
+                                
+                                <!-- Search + Buttons Row -->
+    <div class="flex flex-col md:flex-row gap-2 w-full md:w-auto items-center">
+        <div class="relative w-full md:w-80 group flex items-center">
+            <i data-lucide="search" class="absolute left-3 z-10 h-4 w-4 text-gray-500 group-focus-within:text-[#B266FF] transition-colors pointer-events-none"></i>
+            <input type="text" id="searchInput" onkeyup="filterTable()"
+                   placeholder="Quick search title, date..."
+                   class="w-full pl-10 pr-3 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-800 text-xs font-semibold focus:outline-none focus:border-black focus:ring-1 focus:ring-black placeholder-gray-400 transition-all">
+        </div>
+        
+        <!-- All three buttons together in one row -->
+        <div class="flex gap-2">
+            <button onclick="exportAllDigests()" class="px-3 py-1.5 bg-emerald-600 text-white text-[10px] font-bold uppercase rounded hover:bg-emerald-700 flex items-center gap-1">
+                <i data-lucide="download" class="w-3 h-3"></i> Export All Digests
+            </button>
+            <button onclick="triggerImport()" class="px-3 py-1.5 bg-blue-600 text-white text-[10px] font-bold uppercase rounded hover:bg-blue-700 flex items-center gap-1">
+                <i data-lucide="upload" class="w-3 h-3"></i> Import All Digests
+            </button>
+            <button onclick="preloadLatestDigests()" class="px-3 py-1.5 bg-purple-600 text-white text-[10px] font-bold uppercase rounded hover:bg-purple-700 flex items-center gap-1" title="Pull the latest pre-written digests from the repo">
+                <i data-lucide="refresh-cw" class="w-3 h-3"></i> Reload Latest
+            </button>
+            <input type="file" id="importInput" class="hidden" accept=".json" onchange="importDigests(event)">
+        </div>
+    </div>
+
+    <!-- Filters (Division + Type + Shown count) -->
+    <div class="flex gap-2 w-full md:w-auto overflow-x-auto no-scrollbar">
+<select id="filterDivision" onchange="filterTable()" class="px-2 py-1.5 bg-gray-50 border border-gray-300 rounded text-[10px] font-bold uppercase text-gray-600 focus:outline-none focus:border-black cursor-pointer hover:bg-gray-100">
+                                        <option value="">All Divisions</option>
+                                        <option value="EN BANC">En Banc</option>
+                                        <option value="1ST DIVISION">1st Division</option>
+                                        <option value="2ND DIVISION">2nd Division</option>
+                                        <option value="3RD DIVISION">3rd Division</option>
+                                    </select>
+                                    
+                                    <select id="filterType" onchange="filterTable()" class="px-2 py-1.5 bg-gray-50 border border-gray-300 rounded text-[10px] font-bold uppercase text-gray-600 focus:outline-none focus:border-[#B266FF] cursor-pointer hover:bg-gray-100">
+                                        <option value="">All Types</option>
+                                        <option value="DECISION">Decision</option>
+                                        <option value="RESOLUTION">Resolution</option>
+                                    </select>
+  
+                                    <div class="px-3 py-1.5 bg-white-50 text-[#330066] border border-white-100 rounded text-[10px] font-bold uppercase whitespace-nowrap flex items-center">
+                                        <span id="visibleCount">0</span>&nbsp;Shown
+                                    </div>
+                                </div>
+                            </div>
+  
+                            <!-- 2. TABLE CONTAINER -->
+<div class="overflow-x-auto" style="max-height: 75vh;">
+    <table class="min-w-full divide-y divide-gray-200 relative" id="mainTable">
+<thead class="bg-gray-50 sticky top-0 z-10 shadow-xs text-xs font-bold text-[#330066] uppercase tracking-wider">
+    <tr>
+        <th onclick="sortTable(0, 'number')" class="sortable px-2 py-1 text-left w-12 border-b border-gray-200 group whitespace-nowrap">
+    <div class="flex items-center gap-1">
+        <span class="text-[10px]">NO.</span>
+        <i data-lucide="arrow-up-down" class="sort-icon w-2.5 h-2.5"></i>
+    </div>
+</th>
+                                        <th onclick="sortTable(1, 'string')" class="sortable px-3 py-2 text-left border-b border-gray-200 min-w-[300px]">
+                                            Case Title <i data-lucide="arrow-up-down" class="sort-icon w-3 h-3 align-middle"></i>
+                                        </th>
+                                        <th onclick="sortTable(2, 'string')" class="sortable px-3 py-2 text-center border-b border-gray-200 w-32">
+                                            Division <i data-lucide="arrow-up-down" class="sort-icon w-3 h-3 align-middle"></i>
+                                        </th>
+                                        <th onclick="sortTable(3, 'date')" class="sortable px-3 py-2 text-center border-b border-gray-200 w-28">
+                                            Date <i data-lucide="arrow-up-down" class="sort-icon w-3 h-3 align-middle"></i>
+                                        </th>
+                                        <th onclick="sortTable(4, 'string')" class="sortable px-3 py-2 text-center border-b border-gray-200 w-24">
+                                            Type <i data-lucide="arrow-up-down" class="sort-icon w-3 h-3 align-middle"></i>
+                                        </th>
+<th class="px-3 py-2 text-center border-b border-gray-200 w-24">Digest</th>
+<th class="px-3 py-2 text-center border-b border-gray-200 w-24">
+    <div class="flex items-center justify-center gap-2">
+        <span class="text-[10px] tracking-tighter">DONE</span>
+        <input type="checkbox" id="checkAll" onclick="toggleAll(this)" class="custom-checkbox w-4 h-4">
+    </div>
+</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="caseTableBody" class="divide-y divide-gray-100 text-xs text-gray-700 bg-white">
+                                    <!-- JS WILL INJECT ROWS HERE -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                    </div>
+                </details>
             </div>
 
+            <!-- NOTEPAD MODAL FROM case_tracker.html -->
+<div id="digestModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-2 transition-opacity duration-300">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-[98vw] max-h-[95vh] flex flex-col overflow-hidden transform transition-all scale-95 duration-300 ease-out" id="digestModalContent">
+        
+        <div class="bg-black p-3 border-b border-gray-700 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <i data-lucide="notebook-pen" class="w-5 h-5 text-white"></i>
+                <div>
+                    <h2 class="text-lg header-font tracking-wide leading-none text-white">CASE DIGEST CARD</h2>
+                    <p id="modalCaseTitle" class="text-[10px] text-gray-400 font-mono truncate max-w-2xl">Select a case...</p>
+                </div>
+            </div>
+            <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+        </div>
+
+        <div class="p-3 overflow-y-auto bg-[#f9fafb] flex-grow space-y-3">
+            <input type="hidden" id="currentCaseId">
+            
+            <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+                <label class="modal-label text-[10px] font-extrabold text-black uppercase tracking-wider">Doctrine / Syllabus</label>
+                <textarea id="noteDoctrine" class="w-full p-1 bg-transparent text-sm text-gray-800 leading-snug focus:outline-none" rows="3" placeholder="Enter doctrine..."></textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+                    <label class="modal-label text-[10px] font-extrabold text-black uppercase tracking-wider">Facts</label>
+                    <textarea id="noteFacts" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none" rows="6" placeholder="Brief facts..."></textarea>
+                </div>
+
+                <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+                    <label class="modal-label text-[10px] font-extrabold text-black uppercase tracking-wider">Issue/s</label>
+                    <textarea id="noteIssue" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none" rows="6" placeholder="Legal issues..."></textarea>
+                </div>
+            </div>
+
+            <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+                <label class="modal-label text-[10px] font-extrabold text-black uppercase tracking-wider">Ruling</label>
+                <textarea id="noteRuling" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none" rows="5" placeholder="Court's ruling..."></textarea>
+            </div>
+        </div>
+
+<div class="bg-white px-4 py-2 border-t border-gray-100 flex justify-between items-center">
+    <span class="text-[10px] text-gray-400 italic">Auto-saves on 'Save'</span>
+    <div class="flex gap-2 items-center">
+        <button onclick="exportSingleDigest()" class="px-3 py-1.5 bg-emerald-600 text-white text-[10px] font-bold uppercase rounded hover:bg-emerald-700 flex items-center gap-1">
+            <i data-lucide="file-text" class="w-3 h-3"></i> Export
+        </button>
+        <!-- Removed: Single digest import not implemented yet -->
+        
+        <button onclick="closeModal()" class="px-3 py-1.5 text-gray-500 font-bold text-[10px] uppercase hover:bg-gray-100 rounded">Cancel</button>
+        
+        <button onclick="saveDigest()" class="px-5 py-2 bg-black text-white font-bold text-[10px] uppercase rounded shadow-md hover:bg-gray-800 border-b-4 border-gray-500 active:border-b-0 active:translate-y-1 transition-all flex items-center gap-2">
+            <i data-lucide="save" class="w-3.5 h-3.5"></i> Save Digest
+        </button>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+            </div> <!-- End Case Tracker -->
             <!-- 5. GLOBAL DATA MANAGEMENT BUTTONS (UPDATED) -->
             <div class="max-w-6xl mx-auto mt-6 mb-6 flex space-x-3 px-2 sm:px-0">
                 <button onclick="exportAllData()" class="flex-1 px-3 py-2 bg-green-600 text-white font-semibold text-sm rounded-lg shadow-lg hover:bg-green-700 transition duration-150 uppercase flex items-center justify-center">
@@ -430,6 +672,8 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
                     <i data-lucide="upload-cloud" class="w-4 h-4 mr-1"></i> Import Existing Data
                 </button>
             </div>
+
+<input type="file" id="global-file-input" class="hidden" accept=".json" onchange="importAllData(event)">
             
             <!-- START: AESTHETIC CLOUD NOTE BLOCK -->
             <div class="max-w-6xl mx-auto mt-8 mb-6 px-4 sm:px-0">
@@ -440,10 +684,10 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
                     </p>
                     <ul class="list-disc list-outside ml-5 text-sm text-gray-700 space-y-2">
                         <li class="pl-1">
-                            <strong style="color: #6d1c1c;">Progress Metric:</strong> Overall progress updates and a topic counts as “done” only once <strong>4 out of 6 boxes</strong> per topic row are checked.
+                            <strong style="color: #330066;">Progress Metric:</strong> Overall progress updates and a topic counts as “done” only once <strong>4 out of 6 boxes</strong> per topic row are checked. (Updated for 6 columns)
                         </li>
                         <li class="pl-1">
-                            <strong style="color: #6d1c1c;">Data Portability:</strong> Your review progress is saved <strong>only within your current browser</strong> (Local Storage). Your data will not be synchronized automatically if you clear your browsing data or switch devices. To transfer your progress to a new device or browser, please use the <strong>Export All Data</strong> and <strong>Import Existing Data</strong> functions.
+                            <strong style="color: #330066;">Data Portability:</strong> Your review progress is saved <strong>only within your current browser</strong> (Local Storage). Your data will not be synchronized automatically if you clear your browsing data or switch devices. To transfer your progress to a new device or browser, please use the <strong>Export All Data</strong> and <strong>Import Existing Data</strong> functions.
                         </li>
                     </ul>
                 </div>
@@ -452,14 +696,17 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
 
         </div>
     </div>
-    
+
+        </div> <!-- end max-w-6xl -->
+    </div> <!-- end main-content-wrapper -->
+
     <!-- GLOBAL FOOTER -->
     <footer class="global-app-footer">
         <p class="quote">
             Trust that your hard work will never betray you. You did not come this far to only come this far.
         </p>
         <p class="signature mt-1">
-            <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/Images/missattycpa.PNG" 
+            <img src="https://raw.githubusercontent.com/ariiannemay/2026-Bar-Exam-Tracker/main/Images/missattycpa.PNG" 
                  alt="missattycpa signature" 
                  class="inline-block h-3.5"
                  onerror="this.outerHTML = '<span class=\'text-miss\'>made by miss</span><span class=\'text-atty\'>atty</span><span class=\'text-cpa\'>cpa</span>'">
@@ -467,53 +714,24 @@ grid-template-columns: 1fr repeat(6, 100px) minmax(40px, 50px);
         </p>
     </footer>
 
-    <!-- Modals (Date Edit & Message) -->
-    <div id="date-edit-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg shadow-xl w-80">
-            <h3 id="modal-title" class="text-xl font-bold text-gray-900 mb-4">Edit Target Date</h3>
-            <label for="new-target-date" class="block text-sm font-medium text-gray-700 mb-2">Select New Date:</label>
-            <input type="date" id="new-target-date" class="w-full p-2 border border-gray-300 rounded-lg mb-4">
-            <p id="modal-error" class="text-sm text-red-600 hidden mb-4">Please select a future date.</p>
-            <div class="flex justify-end space-x-3">
-                <button id="modal-cancel-btn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Cancel</button>
-                <button id="modal-save-btn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Save</button>
-            </div>
-        </div>
-    </div>
+    <script>
+const ALLOWED_PASSWORDS = ["ama", "bar", "2026", "bar2026"];  // Add your extra passwords here
 
-    <!-- Consolidated file input for all import actions -->
-    <input type="file" id="global-file-input" accept=".json" class="hidden" onchange="importAllData(event)"> 
-
-    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
-        <div class="bg-white p-6 rounded-lg shadow-xl w-96 max-w-sm">
-            <h3 id="message-modal-title" class="text-xl font-bold text-gray-900 mb-4">Message</h3>
-            <div id="message-modal-content" class="text-sm text-gray-700 mb-4 break-words"></div>
-            <div id="modal-actions" class="flex justify-end space-x-3 mt-4">
-                <button id="message-modal-close-btn" class="px-3 py-1.5 text-sm font-semibold bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition duration-150">Close</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Dynamic JavaScript Loader and Core Logic -->
-    <script>       
-
-        const SECRET_PASSWORD = "ama";
-
-const userPassword = prompt("🔐 Enter the password to access the 2026 Comprehensive Exam Review Tracker:");
-
-if (userPassword === SECRET_PASSWORD) {
-    // Correct password: Execution continues to the rest of the script.
+let userPassword = prompt("🔐 Enter the password to access the 2026 Bar Exam Review Tracker:");
+if (userPassword) {
+    userPassword = userPassword.trim().toLowerCase();  // Make it forgiving (ignore case/spaces)
+    if (ALLOWED_PASSWORDS.includes(userPassword)) {
+        // Correct password - continue loading the tracker
+    } else {
+        alert("❌ Incorrect password. Access denied.");
+        window.location.href = 'denied.html';
+        throw new Error("Access Denied");
+    }
 } else {
-    // 🚨 FINAL FIX: Redirect to the dedicated denial page.
-    // The browser executes this line immediately:
-    window.location.href = 'denied.html'; 
-    
-    // CRITICAL: Force the script to stop right here.
-    // This prevents the rest of your application's logic (like loading CALENDAR_MODULE_HTML) from running.
-    throw new Error("Access Denied: Redirecting to denial page.");
+    // User clicked Cancel
+    window.location.href = 'denied.html';
+    throw new Error("Access Cancelled");
 }
-// --- END CLIENT-SIDE AUTH GATE (CORRECTED) ---
-
         // --- INLINED CALENDAR MODULE HTML CONTENT ---
         const CALENDAR_MODULE_HTML = `
             <div id="calendar-module-container" class="mt-4">
@@ -671,11 +889,12 @@ if (userPassword === SECRET_PASSWORD) {
         
         // --- CORE UTILITY AND COUNTDOWN LOGIC (REMAINS IN INDEX) ---
         
-const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'bar_qas', 'sample_exams', 'lmts'];
+        // 🚨 MODIFIED: Added two columns, renamed existing columns
+        const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'pre_bar_notes', 'pre_week', 'lmts'];
         const COUNTDOWN_DATA = [
-            {id:1,targetDate:localStorage.getItem('comp_exam_date_1')||'2026-06-14'},
-            {id:2,targetDate:localStorage.getItem('comp_exam_date_2')||'2026-06-21'},
-            {id:3,targetDate:localStorage.getItem('comp_exam_date_3')||'2026-06-28'}
+            {id:1,targetDate:localStorage.getItem('comp_exam_date_1')||'2026-09-06'},
+            {id:2,targetDate:localStorage.getItem('comp_exam_date_2')||'2026-09-09'},
+            {id:3,targetDate:localStorage.getItem('comp_exam_date_3')||'2026-09-13'}
         ];
         
         const DOM_ELEMENTS = {
@@ -1171,9 +1390,9 @@ const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'bar_qas'
                     start: dateString, 
                     end: dateString, 
                     allDay: true,
-                    backgroundColor: '#6D1B1B', 
-                    textColor: '#FECE1B',
-                    borderColor: '#FECE1B',
+                    backgroundColor: 'red', 
+                    textColor: '#FFFFF',
+                    borderColor: '#B266FF',
                     className: 'exam-day-marker',
                     editable: false 
                 };
@@ -1311,8 +1530,11 @@ const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'bar_qas'
         function saveTopicTask() {
             const eventId = $('#topicEventId').val();
             const eventName = $('#eventNameInput').val().trim();
-            const subjectKey = $('#subjectSelect').val();
-            const selectedTopicValue = $('#topicSelect').val(); 
+const subjectKey = $('#subjectSelect').val();
+            // 🚨 DEFINITIVE FIX: Use the native DOM element to ensure we capture the 
+            // value property reliably, as jQuery's :selected selector can fail in size>1 lists.
+            const topicSelectElement = document.getElementById('topicSelect');
+            const selectedTopicValue = topicSelectElement.value; // Gets the full "ID|TOPIC_TEXT" string
             const start = $('#topicStart').val();
             const end = $('#topicEnd').val();
             
@@ -1347,29 +1569,29 @@ const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'bar_qas'
                     allDay: true
                 };
             } 
-            else if (isSyllabusTask) {
-                    const [topicId, topicText] = selectedTopicValue.split('|');
-                    const subjectInfo = CONSOLIDATED_SYLLABUS[subjectKey];
-                    
-                    // 🚨 FIX: Construct the full title directly using the topicText extracted
-                    // from the selection, ensuring it is accurate.
-                    const fullEventTitle = `${subjectInfo.shortTitle.toUpperCase()} - ${topicText}`;
-                    
-                    eventData = {
-                        id: eventId || generateUniqueId(),
-                        subjectKey: subjectKey,
-                        topicId: topicId,
-                        
-                        // 🎯 FIXED: We store the fully constructed title directly.
-                        title: fullEventTitle,
-                        
-                        start: start,
-                        end: end ? moment(end).add(1, 'days').format('YYYY-MM-DD') : null,
-                        color: subjectInfo.color,
-                        borderColor: subjectInfo.color,
-                        allDay: true
-                    };
-        } else {
+else if (isSyllabusTask) {
+        const [topicId, topicText] = selectedTopicValue.split('|');
+        const subjectInfo = CONSOLIDATED_SYLLABUS[subjectKey];
+        
+        // 🚨 FIX: Construct the full title directly using the topicText extracted
+        // from the selection, ensuring it is accurate.
+        const fullEventTitle = `${subjectInfo.shortTitle.toUpperCase()} - ${topicText}`;
+        
+        eventData = {
+            id: eventId || generateUniqueId(),
+            subjectKey: subjectKey,
+            topicId: topicId,
+            
+            // 🎯 FIXED: We store the fully constructed title directly.
+            title: fullEventTitle,
+            
+            start: start,
+            end: end ? moment(end).add(1, 'days').format('YYYY-MM-DD') : null,
+            color: subjectInfo.color,
+            borderColor: subjectInfo.color,
+            allDay: true
+        };
+            } else {
                 CALENDAR_APP.showCustomAlert('INVALID COMBINATION', 'PLEASE CHOOSE EITHER A CUSTOM EVENT NAME OR A SUBJECT/TOPIC, BUT NOT BOTH.');
                 return;
             }
@@ -1621,6 +1843,7 @@ const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'bar_qas'
                 const topic = syllabusData.find(t => t.id === topicId);
                 if (!topic) return 0;
                 
+                // 🚨 MODIFIED: Updated threshold from 3 to 4
                 const DONE_THRESHOLD = 4;
                 
                 if (topic.depth === 1) {
@@ -1633,7 +1856,7 @@ const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'bar_qas'
                         if (currentItem.depth === 2 && currentItem.trackable) {
                             const prog = progressData[currentItem.id] || {};
                             const boxesTicked = CHECKLIST_COLUMNS.filter(col => prog[col] === true).length;
-                            if (boxesTicked >= DONE_THRESHOLD) {
+                            if (boxesTicked >= DONE_THRESHOLD) { // 🚨 MODIFIED: Uses DONE_THRESHOLD
                                 sectionBoxesChecked++;
                             }
                             sectionBoxesTotal++;
@@ -1647,21 +1870,23 @@ const CHECKLIST_COLUMNS = ['codal', 'first_reading', 'second_reading', 'bar_qas'
                     const topicProgress = progressData[topicId] || {};
                     const checkedCount = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
                     if (checkedCount === CHECKLIST_COLUMNS.length) return 2;
-                    if (checkedCount >= DONE_THRESHOLD) return 2;
+                    if (checkedCount >= DONE_THRESHOLD) return 2; // 🚨 MODIFIED: Uses DONE_THRESHOLD
                     if (checkedCount > 0) return 1;
                     return 0;
                 }
                 return 0;
             }
 
-function updateOverallProgress() {
+            function updateOverallProgress() {
                 const progressData = getProgress();
                 const mainTopics = syllabusData.filter(t => t.depth === 2 && t.trackable);
                 let topicsDoneCount = 0;
                 let topicsToReadCount = 0;
+                
+                // 🚨 MODIFIED: 6 columns
+                const DONE_THRESHOLD = 4;
                 const columnProgress = CHECKLIST_COLUMNS.map(() => 0);
                 const totalMainTopics = mainTopics.length;
-                const DONE_THRESHOLD = 4;
 
                 mainTopics.forEach(topic => {
                     const topicProgress = progressData[topic.id] || {};
@@ -1673,7 +1898,7 @@ function updateOverallProgress() {
                         }
                     });
                     
-                    if (boxesTicked >= DONE_THRESHOLD) {
+                    if (boxesTicked >= DONE_THRESHOLD) { // 🚨 MODIFIED: Uses DONE_THRESHOLD
                         topicsDoneCount++;
                     } else {
                         topicsToReadCount++;
@@ -1703,7 +1928,8 @@ function updateOverallProgress() {
                     progressBar.style.backgroundColor = barColor;
                 }
 
-                const columnHeaderNames = ['codal', 'first_reading', 'second_reading', 'bar_qas', 'sample_exams', 'lmts'];
+                // 🚨 MODIFIED: Updated column names for progress bars
+                const columnHeaderNames = ['codal', 'first_reading', 'second_reading', 'pre_bar_notes', 'pre_week', 'lmts'];
                 columnProgress.forEach((tickedCount, index) => {
                     const elementId = `col-progress-bar-${subjectName}-${columnHeaderNames[index]}`;
                     const percentElementId = `col-percent-${subjectName}-${columnHeaderNames[index]}`;
@@ -1775,7 +2001,7 @@ function updateOverallProgress() {
 
                         if (isDepth2Open && !isCollapsible) { html += `</div></details></div>`; isDepth2Open = false; }
 
-const checklist = CHECKLIST_COLUMNS.map(col => {
+                        const checklist = CHECKLIST_COLUMNS.map(col => {
                             // NEW CLASS: Use 'checkbox-' prefix plus the column name (codal, books, etc.)
                             const columnCheckboxClass = `checkbox-${col}`;
                             const checked = topicProgress[col] === true ? 'checked' : '';
@@ -1784,10 +2010,9 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                             return `\n<div class="flex justify-center"><input type="checkbox" data-id="${topicId}" data-column="${col}" ${checked} class="w-4 h-4 border-gray-300 rounded focus:ring-500 ${columnCheckboxClass}" onchange="window.handleCheckboxChange${subjectName.toUpperCase()}(event)"></div>\n`;
                         }).join('');
 
-
                         let rowContent = `\n
                             <div class="col-span-1 font-trackable-lg depth2-topic-row">
-                                <div class="topic-content-wrapper" style="padding-left: 0.5rem;">
+                                <div class="topic-content-wrapper" style="padding-left: 1.5rem;">
                                     ${isCollapsible ? `<i data-lucide="chevron-right" class="w-3 h-3 depth2-chevron"></i>` : `<span class="w-3 h-3 mr-2 inline-block"></span>`}${item.topic}
                                 </div>
                             </div>
@@ -1806,7 +2031,7 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                         }
 
                     } else if (item.depth >= 3) {
-                        const dynamicPadding = (item.depth - 2) * 1.0 + 1.0;
+                        const dynamicPadding = (item.depth - 2) * 1.5 + 1.5;
                         const fontStyle = item.depth <= 4 ? 'font-medium' : 'font-normal';
                         
                         if (isDepth2Open) {
@@ -1907,7 +2132,7 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                          showMessageModal("Success!", `<p class='text-green-600'>${title} progress successfully uploaded and applied.</p>`);
                      } catch (e) {
                          console.error("Import error:", e);
-                         showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON.</p>`);
+                         showMessageModal("Upload Error", `<p class='text-red-600'>Failed to upload. The file content is not valid JSON. Error: ${e.message}</p>`);
                      }
                  };
                  reader.onerror = function() { showMessageModal("Import Error", `<p class='text-red-600'>Error reading the file.</p>`); };
@@ -1982,15 +2207,16 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                                 </div>
                             </div>
                         </summary>
-<div class="syllabus-content">
+                        <div class="syllabus-content">
                             
+                            <!-- 1. COLUMN HEADERS 🚨 MODIFIED for 6 Columns & Multi-line Text -->
                             <div class="checklist-grid checklist-grid-header mt-1 font-bold text-xs text-center border-b-2 border-black/50">
                                 <div class="text-left">SUBJECTS/TOPICS</div> 
                                 <div class="flex items-center justify-center text-center leading-tight" style="color:#8b5cf6;"><span class="font-bold text-[0.65rem]">Codal</span></div>
                                 <div class="flex items-center justify-center text-center leading-tight" style="color:#eab308;"><span class="font-bold text-[0.65rem]">First Reading (Textbook)</span></div>
                                 <div class="flex items-center justify-center text-center leading-tight" style="color:#3b82f6;"><span class="font-bold text-[0.65rem]">Second Reading (Bar-Based)</span></div>
-                                <div class="flex items-center justify-center text-center leading-tight" style="color:#10b981;"><span class="font-bold text-[0.65rem]">Bar QAs</span></div>
-                                <div class="flex items-center justify-center text-center leading-tight" style="color:#f97316;"><span class="font-bold text-[0.65rem]">Sample Exams</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#10b981;"><span class="font-bold text-[0.65rem]">Pre-Bar Review Notes & Lecture</span></div>
+                                <div class="flex items-center justify-center text-center leading-tight" style="color:#f97316;"><span class="font-bold text-[0.65rem]">Pre-Week</span></div>
                                 <div class="flex items-center justify-center text-center leading-tight" style="color:#ef4444;"><span class="font-bold text-[0.65rem]">LMTs</span></div>
                                 <div class="flex items-center justify-center pt-1">
                                     <button id="collapse-all-btn-${subjectName}" class="w-6 h-6 p-0 flex items-center justify-center text-white ${bgButton} rounded-lg shadow-md ${hoverButton} transition duration-150 whitespace-nowrap">
@@ -1999,39 +2225,46 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                                 </div>
                             </div>
 
+                            <!-- Micro-progress Bars 🚨 MODIFIED for 6 Columns & New Threshold -->
                             <div class="checklist-grid checklist-grid-micro-progress text-center">
-                                <div class="text-left italic text-gray-700 col-span-1 pl-1 text-[8px] self-start leading-tight pt-1">Overall progress only counts if at least 4 checklist boxes are marked for each topic row.</div> 
+<div class="text-left italic text-gray-600 col-span-1 pl-1 text-xs self-start leading-tight pt-1">Overall progress counts only when at least 4 boxes per topic are checked.</div> 
                                 
+                                <!-- Column 1: Codal (Purple) -->
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
                                         <div id="col-progress-bar-${subjectName}-codal" class="col-progress-bar" style="background-color: #8b5cf6; width: 0%;"></div>
                                     </div>
                                     <span id="col-percent-${subjectName}-codal" class="text-xs font-semibold mt-1 text-violet-700">0.0%</span>
                                 </div>
+                                <!-- Column 2: 1st Reading (Yellow) -->
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
                                         <div id="col-progress-bar-${subjectName}-first_reading" class="col-progress-bar" style="background-color: #eab308; width: 0%;"></div>
                                     </div>
                                     <span id="col-percent-${subjectName}-first_reading" class="text-xs font-semibold mt-1 text-yellow-700">0.0%</span>
                                 </div>
+                                <!-- Column 3: 2nd Reading (Blue) -->
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
                                         <div id="col-progress-bar-${subjectName}-second_reading" class="col-progress-bar" style="background-color: #3b82f6; width: 0%;"></div>
                                     </div>
                                     <span id="col-percent-${subjectName}-second_reading" class="text-xs font-semibold mt-1 text-blue-700">0.0%</span>
                                 </div>
+                                <!-- Column 4: Pre-Bar Notes (Green) -->
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-bar_qas" class="col-progress-bar" style="background-color: #10b981; width: 0%;"></div>
+                                        <div id="col-progress-bar-${subjectName}-pre_bar_notes" class="col-progress-bar" style="background-color: #10b981; width: 0%;"></div>
                                     </div>
-                                    <span id="col-percent-${subjectName}-bar_qas" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
+                                    <span id="col-percent-${subjectName}-pre_bar_notes" class="text-xs font-semibold mt-1 text-green-700">0.0%</span>
                                 </div>
+                                <!-- Column 5: Pre-Week (Orange) -->
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
-                                        <div id="col-progress-bar-${subjectName}-sample_exams" class="col-progress-bar" style="background-color: #f97316; width: 0%;"></div>
+                                        <div id="col-progress-bar-${subjectName}-pre_week" class="col-progress-bar" style="background-color: #f97316; width: 0%;"></div>
                                     </div>
-                                    <span id="col-percent-${subjectName}-sample_exams" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
+                                    <span id="col-percent-${subjectName}-pre_week" class="text-xs font-semibold mt-1 text-orange-700">0.0%</span>
                                 </div>
+                                <!-- Column 6: LMTs (Red) -->
                                 <div class="px-1 flex flex-col items-center justify-start">
                                     <div class="col-progress-bar-container">
                                         <div id="col-progress-bar-${subjectName}-lmts" class="col-progress-bar" style="background-color: #ef4444; width: 0%;"></div>
@@ -2040,7 +2273,7 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                                 </div>
                                 <div></div>
                             </div>
-
+                            
                             <div id="syllabus-${subjectName}" class="text-xs"></div>
                         </div>
                     </details>
@@ -2137,6 +2370,9 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
 
             let html = '';
             let lastDateId = null;
+            
+            // 🚨 MODIFIED: Updated threshold from 3 to 4
+            const DONE_THRESHOLD = 4;
 
             SCHEDULE_DATA.forEach((item, index) => {
                 const countdownData = COUNTDOWN_DATA.find(d => d.id === item.dateId);
@@ -2168,7 +2404,7 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                     mainTopics.forEach(topic => {
                         const topicProgress = progress[topic.id] || {};
                         const boxesTicked = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
-                        if (boxesTicked >= 4) {
+                        if (boxesTicked >= DONE_THRESHOLD) { // 🚨 MODIFIED: Uses DONE_THRESHOLD
                             currentSubjectDone++;
                         }
                     });
@@ -2220,6 +2456,9 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
             let totalTrackableTopics = 0;
             let totalDoneTopics = 0;
             let totalToReadTopics = 0;
+            
+            // 🚨 MODIFIED: Updated threshold from 3 to 4
+            const DONE_THRESHOLD = 4;
 
             Object.values(SUBJECT_LOGIC_MAP).forEach(logic => {
                 const progress = logic.getProgress();
@@ -2233,7 +2472,7 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
                     const topicProgress = progress[topic.id] || {};
                     const boxesTicked = CHECKLIST_COLUMNS.filter(col => topicProgress[col] === true).length;
                     
-                    if (boxesTicked >= 4) {
+                    if (boxesTicked >= DONE_THRESHOLD) { // 🚨 MODIFIED: Uses DONE_THRESHOLD
                         currentSubjectDone++;
                     }
                 });
@@ -2335,6 +2574,660 @@ const checklist = CHECKLIST_COLUMNS.map(col => {
             
             document.getElementById('message-modal-close-btn')?.addEventListener('click', closeMessageModal);
         };
+
+        // APPENDED: Case Tracker Script from case_tracker.html (at the end of the main script block)
+        // MINIFIED CSV DATA
+       const csvData = `No.,Full Text,Division,Promulgation Date,Type
+001,"=HYPERLINK(""https://docs.google.com/document/d/1Yuci6rUA_2FMRADapPgLMqEsEt8tfQtxFbCQE_RsAgk/export?format=pdf"", ""City Government of Pasay v. Arellano University"")",3RD DIVISION,07 May 2025,DECISION
+002,"=HYPERLINK(""https://docs.google.com/document/d/1zmE9F8NVKWZ8NlBtTpl5AYPsKpV2B6gHwiUpEtCBfoc/export?format=pdf"", ""Antonino v. Banco De Oro"")",3RD DIVISION,23 Apr 2025,DECISION
+003,"=HYPERLINK(""https://docs.google.com/document/d/1LOPMJrd_1ZzekXcmIr4EbE9uFuYrqxelo58WRLKDsOc/export?format=pdf"", ""Mangudadatu v. Comelec"")",EN BANC,22 Apr 2025,DECISION
+004,"=HYPERLINK(""https://docs.google.com/document/d/1JW5qlqt6xINLRETnKRR5D5vGSsL3-gpMMNVssLTvrts/export?format=pdf"", ""Hisanza v. Bright Maritime"")",3RD DIVISION,07 Apr 2025,DECISION
+005,"=HYPERLINK(""https://docs.google.com/document/d/1Sr75lghndZI5vL6TOGbpOHRZojbDs49PuuBKN_VrrbM/export?format=pdf"", ""People v. Akil"")",3RD DIVISION,07 Apr 2025,DECISION
+006,"=HYPERLINK(""https://docs.google.com/document/d/15rT8HCK3_h5rx43tkcEdR5UVN5R8KrY-/export?format=pdf"", ""San Pedro v. Spouses Trinidad"")",3RD DIVISION,07 Apr 2025,DECISION
+007,"=HYPERLINK(""https://docs.google.com/document/d/1Xl_Y43P55i2Nn9iv3XKIs7z5Gn66E6kF/export?format=pdf"", ""Rural Bank of San Mateo Isabela v. Ramales"")",3RD DIVISION,02 Apr 2025,DECISION
+008,"=HYPERLINK(""https://docs.google.com/document/d/1V3u6B0JvY79yTyR3q_V0d-yXjGk-kZ_F/export?format=pdf"", ""Zamora v. Atty. Mahinay"")",3RD DIVISION,02 Apr 2025,DECISION
+009,"=HYPERLINK(""https://docs.google.com/document/d/1T8uE0-Z4Y5oF8x7W_J6pL4vD5m9cQ3q/export?format=pdf"", ""Ocampo v. Batara-Sapad"")",3RD DIVISION,02 Apr 2025,DECISION
+010,"=HYPERLINK(""https://docs.google.com/document/d/1R6oG7-H2Z5xL8tW9_K4vM3nQ2pL1rO5/export?format=pdf"", ""Grand Exploit Builder Development v. Hoegaarden Development Realty"")",3RD DIVISION,02 Apr 2025,DECISION
+011,"=HYPERLINK(""https://docs.google.com/document/d/1Q4pE5-F0Z3yK6uW7_L2tN1mP0qR4sV6/export?format=pdf"", ""Vera Law v. Atty. Hechanova"")",3RD DIVISION,26 Feb 2025,DECISION
+012,"=HYPERLINK(""https://docs.google.com/document/d/1O2nC3-D8X1zI4wU5_J0kM9nQ8oP2rT7/export?format=pdf"", ""Lo v. People"")",3RD DIVISION,26 Feb 2025,DECISION
+013,"=HYPERLINK(""https://docs.google.com/document/d/1M0lA1-B6Y9xG2vS3_H8iK7lO6pQ0tU8/export?format=pdf"", ""Spouses Palaganas v. Atty. Panganiban"")",3RD DIVISION,24 Feb 2025,DECISION
+014,"=HYPERLINK(""https://docs.google.com/document/d/1K8j9-Z4W7vE0tQ1_F6mO4nL2pR8sT9/export?format=pdf"", ""Bonbon v. People"")",3RD DIVISION,24 Feb 2025,DECISION
+015,"=HYPERLINK(""https://docs.google.com/document/d/1I6h7-X2U5tC8rO9_D4kM2nJ0pP6qV7/export?format=pdf"", ""Sillano v. JGC Philippines"")",3RD DIVISION,24 Feb 2025,DECISION
+016,"=HYPERLINK(""https://docs.google.com/document/d/1G4f5-V0S3rA6pM7_B2iK0nL8pQ4sT5/export?format=pdf"", ""Aguiling v. People"")",3RD DIVISION,17 Feb 2025,DECISION
+017,"=HYPERLINK(""https://docs.google.com/document/d/1E2d3-T8Q1pY4nO5_A0jI8nK6pR2qS3/export?format=pdf"", ""People v. Sandiganbayan, Tumang"")",3RD DIVISION,17 Feb 2025,DECISION
+018,"=HYPERLINK(""https://docs.google.com/document/d/1C0b1-R6O9nZ2mL3_y8hG6nI4pP0qQ1/export?format=pdf"", ""Bagbagen v. Perez"")",3RD DIVISION,17 Feb 2025,DECISION
+019,"=HYPERLINK(""https://docs.google.com/document/d/1A8Z9-P4M7lX0kK1_w6fE4nJ2pR8qO9/export?format=pdf"", ""Labastida v. Quires"")",3RD DIVISION,27 Jan 2025,DECISION
+020,"=HYPERLINK(""https://docs.google.com/document/d/186X7-N2K5jV8iI9_u4dC2nJ0pP6qQ7/export?format=pdf"", ""Baguinon, Sr. v. People"")",3RD DIVISION,27 Jan 2025,DECISION
+021,"=HYPERLINK(""https://docs.google.com/document/d/164V5-L0I3hT6gG7_s2bA0nJ8pP4qO5/export?format=pdf"", ""Maitim v. Teknika Skills and Trade Services"")",3RD DIVISION,15 Jan 2025,DECISION
+022,"=HYPERLINK(""https://docs.google.com/document/d/142T3-J8G1fR4eE5_q0zY8nJ6pR2qM3/export?format=pdf"", ""Del Monte Land Transport Bus Company v. Jaranilla"")",3RD DIVISION,27 Nov 2024,DECISION
+023,"=HYPERLINK(""https://docs.google.com/document/d/120R1-H6E9dP2cC3_o8xW6nJ4pQ0qK1/export?format=pdf"", ""People v. Lupoyon"")",3RD DIVISION,11 Nov 2024,DECISION
+024,"=HYPERLINK(""https://docs.google.com/document/d/108P9-F4C7bN0aA1_m6vU4nJ2pQ8qI9/export?format=pdf"", ""Fajardo v. San Miguel Foods"")",3RD DIVISION,11 Nov 2024,DECISION
+025,"=HYPERLINK(""https://docs.google.com/document/d/1y6N7-D2A5_M8_I9_k4tS2nJ0pQ6qG7/export?format=pdf"", ""Noveras v. Comelec"")",EN BANC,22 Oct 2024,DECISION
+026,"=HYPERLINK(""https://docs.google.com/document/d/1w4L5-B0Y3_K6_G7_i2rQ0nJ8pQ4qE5/export?format=pdf"", ""Puguon, Jr. v. People"")",3RD DIVISION,21 Oct 2024,DECISION
+027,"=HYPERLINK(""https://docs.google.com/document/d/1u2J3-Z8W1_I4_E5_g0tO8nJ6pR2qC3/export?format=pdf"", ""Malapit v. Atty. Watin"")",EN BANC,01 Oct 2024,RESOLUTION
+028,"=HYPERLINK(""https://docs.google.com/document/d/1s0H1-X6U9_G2_C3_e8rM6nJ4pQ0qA1/export?format=pdf"", ""Pequero v. People"")",3RD DIVISION,07 Aug 2024,DECISION
+029,"=HYPERLINK(""https://docs.google.com/document/d/1q8F9-V4S7_E0_A1_c6pK4nJ2pR8qY9/export?format=pdf"", ""People v. Batomalaque"")",3RD DIVISION,07 Aug 2024,DECISION
+030,"=HYPERLINK(""https://docs.google.com/document/d/1o6D7-T2Q5_C8_Y9_a4nI2nJ6pR2qW7/export?format=pdf"", ""Davantes v. C.F. Sharp Crew Management"")",3RD DIVISION,07 Aug 2024,DECISION
+031,"=HYPERLINK(""https://docs.google.com/document/d/1m4B5-R0O3_A6_W7_Y2lG0nJ4pQ0qU5/export?format=pdf"", ""Legaspi v. Comelec"")",EN BANC,30 Jul 2024,DECISION
+032,"=HYPERLINK(""https://docs.google.com/document/d/1k2Z3-P8M1_Y4_U5_W0jE8nJ2pR2qS3/export?format=pdf"", ""Re Atty. Divina"")",EN BANC,30 Jul 2024,DECISION
+033,"=HYPERLINK(""https://docs.google.com/document/d/1i0X1-N6K9_W2_S3_U8hC6nJ4pQ0qQ1/export?format=pdf"", ""Gonzales v. Geronimo"")",EN BANC,30 Jul 2024,DECISION
+034,"=HYPERLINK(""https://docs.google.com/document/d/1g8V9-L4I7_U0_Q1_S6fA4nJ4pQ0qO9/export?format=pdf"", ""Stewart v. Atty. Rioflorido"")",3RD DIVISION,17 Jul 2024,DECISION
+035,"=HYPERLINK(""https://docs.google.com/document/d/1e6T7-J2G5_S8_O9_Q4dY2nJ4pQ0qM7/export?format=pdf"", ""OCA v. Judge Villavicencio-Olan"")",EN BANC,25 Jun 2024,DECISION
+036,"=HYPERLINK(""https://docs.google.com/document/d/1c4R5-H0E3_Q6_M7_O2bW0nJ4pQ0qK5/export?format=pdf"", ""People v. Talaue"")",SPECIAL 1ST DIVISION,19 Jun 2024,RESOLUTION
+037,"=HYPERLINK(""https://docs.google.com/document/d/1a2P3-F8C1_O4_K5_M0zU8nJ4pQ0qI3/export?format=pdf"", ""People v. Oh"")",3RD DIVISION,05 Jun 2024,DECISION
+038,"=HYPERLINK(""https://docs.google.com/document/d/1Y0N1-D6A9_M2_I3_K8xS6nJ4pQ0qG1/export?format=pdf"", ""Ampolitod v. Top Ever Marine Management Phils."")",3RD DIVISION,22 May 2024,DECISION
+039,"=HYPERLINK(""https://docs.google.com/document/d/1W8L9-B4Y7_K0_G1_I6vQ4nJ4pQ0qE9/export?format=pdf"", ""Zoleta v. Ombudsman"")",3RD DIVISION,08 Apr 2024,DECISION
+040,"=HYPERLINK(""https://docs.google.com/document/d/1U6J7-Z2W5_I8_E9_G4tO2nJ4pQ0qC7/export?format=pdf"", ""Besmonte v. Napolcom-NCR"")",3RD DIVISION,03 Apr 2024,DECISION
+041,"=HYPERLINK(""https://docs.google.com/document/d/1S4H5-X0U3_G6_C7_E2rM0nJ4pQ0qA5/export?format=pdf"", ""Bayron v. COA"")",EN BANC,27 Feb 2024,RESOLUTION
+042,"=HYPERLINK(""https://docs.google.com/document/d/1Q2F3-V8S1_E4_A5_C0pS8nJ4pQ0qY3/export?format=pdf"", ""Pacheco v. Reyes"")",3RD DIVISION,26 Feb 2024,DECISION
+043,"=HYPERLINK(""https://docs.google.com/document/d/1O0D1-T6Q9_C2_Y3_A8nI6nJ4pQ0qW1/export?format=pdf"", ""Galorio v. People"")",3RD DIVISION,19 Feb 2024,DECISION
+044,"=HYPERLINK(""https://docs.google.com/document/d/1M8B9-R4O7_A0_W1_Y6lG4nJ4pQ0qU9/export?format=pdf"", ""Pagtakhan v. People"")",3RD DIVISION,07 Feb 2024,DECISION
+045,"=HYPERLINK(""https://docs.google.com/document/d/1K6Z7-P2M5_Y8_U9_W4jE2nJ4pQ0qS7/export?format=pdf"", ""DBP v. COA"")",EN BANC,06 Feb 2024,RESOLUTION
+046,"=HYPERLINK(""https://docs.google.com/document/d/1I4X5-N0K3_W6_S7_U2hC0nJ4pQ0qQ5/export?format=pdf"", ""Denusta v. Migrant Workers Manpower Agency"")",3RD DIVISION,31 Jan 2024,DECISION
+047,"=HYPERLINK(""https://docs.google.com/document/d/1G2V3-L8I1_U4_Q5_S0fA8nJ4pQ0qO3/export?format=pdf"", ""Villafuerte v. Atty. Tajanlangit"")",3RD DIVISION,06 Dec 2023,DECISION
+048,"=HYPERLINK(""https://docs.google.com/document/d/1E0T1-J6G9_S2_O3_Q8dY6nJ4pQ0qM1/export?format=pdf"", ""Trinidad v. Trinidad"")",3RD DIVISION,06 Dec 2023,DECISION
+049,"=HYPERLINK(""https://docs.google.com/document/d/1C8R9-H4E7_Q0_M1_O6bW4nJ4pQ0qK9/export?format=pdf"", ""People v. Flores"")",3RD DIVISION,11 Oct 2023,DECISION
+050,"=HYPERLINK(""https://docs.google.com/document/d/1A6P7-F2C5_O8_K9_M4zU2nJ4pQ0qI7/export?format=pdf"", ""People v. Lala"")",3RD DIVISION,11 Oct 2023,DECISION
+051,"=HYPERLINK(""https://docs.google.com/document/d/184N5-D0A3_M6_I7_K2xS0nJ4pQ0qG5/export?format=pdf"", ""People v. Pajarilla"")",3RD DIVISION,30 Aug 2023,DECISION
+052,"=HYPERLINK(""https://docs.google.com/document/d/162L3-B8Y1_K4_G5_I0vQ8nJ4pQ0qE3/export?format=pdf"", ""People v. XXX220145"")",3RD DIVISION,30 Aug 2023,DECISION
+053,"=HYPERLINK(""https://docs.google.com/document/d/140J1-Z6W9_I2_E3_G8tO6nJ4pQ0qC1/export?format=pdf"", ""Republic v. Spouses Tan"")",3RD DIVISION,23 Aug 2023,DECISION
+054,"=HYPERLINK(""https://docs.google.com/document/d/128H9-X4U7_G0_C1_E6rM4nJ4pQ0qA9/export?format=pdf"", ""Bacar v. People"")",3RD DIVISION,23 Aug 2023,DECISION
+055,"=HYPERLINK(""https://docs.google.com/document/d/106F7-V2S5_E8_A9_C4pS2nJ4pQ0qY7/export?format=pdf"", ""Palo v. Spouses Baquirquir"")",3RD DIVISION,23 Aug 2023,RESOLUTION
+056,"=HYPERLINK(""https://docs.google.com/document/d/1y4D5-T0Q3_C6_Y7_A2nI0nJ4pQ0qW5/export?format=pdf"", ""Aguilar v. People"")",3RD DIVISION,09 Aug 2023,DECISION
+057,"=HYPERLINK(""https://docs.google.com/document/d/1w2B3-R8O1_A4_W5_Y0lG8nJ4pQ0qU3/export?format=pdf"", ""Grandspan Development v. Franklin Baker, Inc."")",3RD DIVISION,02 Aug 2023,DECISION
+058,"=HYPERLINK(""https://docs.google.com/document/d/1u0Z1-P6M9_Y2_U3_W8jE6nJ4pQ0qS1/export?format=pdf"", ""Cojuangco-Suntay v. Suntay III"")",3RD DIVISION,02 Aug 2023,DECISION
+059,"=HYPERLINK(""https://docs.google.com/document/d/1s8X9-N4K7_W0_S1_U6hC4nJ4pQ0qQ9/export?format=pdf"", ""DBP v. COA"")",EN BANC,11 Jul 2023,DECISION
+060,"=HYPERLINK(""https://docs.google.com/document/d/1q6V7-L2I5_U8_Q9_S4fA2nJ4pQ0qO7/export?format=pdf"", ""Villanueva v. Comelec"")",EN BANC,11 Jul 2023,DECISION
+061,"=HYPERLINK(""https://docs.google.com/document/d/1o4T5-J0G3_S6_O7_Q2dY0nJ4pQ0qM5/export?format=pdf"", ""Arguilles v. Wilhelmsen Smith Bell Manning, Inc."")",3RD DIVISION,10 Jul 2023,DECISION
+062,"=HYPERLINK(""https://docs.google.com/document/d/1m2R3-H8E1_Q4_M5_O0bW8nJ4pQ0qK3/export?format=pdf"", ""Tijam v. People"")",3RD DIVISION,10 Jul 2023,DECISION
+063,"=HYPERLINK(""https://docs.google.com/document/d/1k0P1-F6C9_O2_K3_M8zU6nJ4pQ0qI1/export?format=pdf"", ""Ocampo v. Macapagal-Arroyo"")",EN BANC,27 Jun 2023,RESOLUTION
+064,"=HYPERLINK(""https://docs.google.com/document/d/1i8N9-D4A7_M0_I1_K6xS4nJ4pQ0qG9/export?format=pdf"", ""Mendoza v. Atty. Santiago, Jr."")",3RD DIVISION,14 Jun 2023,DECISION
+065,"=HYPERLINK(""https://docs.google.com/document/d/1g6L7-B2Y5_K8_G9_I4vQ2nJ4pQ0qE7/export?format=pdf"", ""Gonzaga v. Garcia, Jr."")",3RD DIVISION,26 Apr 2023,DECISION
+066,"=HYPERLINK(""https://docs.google.com/document/d/1e4J5-Z0W3_I6_E7_G2tO0nJ4pQ0qC5/export?format=pdf"", ""Republic v. Espejo"")",3RD DIVISION,26 Apr 2023,DECISION
+067,"=HYPERLINK(""https://docs.google.com/document/d/1c2H3-X8U1_G4_C5_E0rM8nJ4pQ0qA3/export?format=pdf"", ""Bunayog v. Foscon Shipmanagement, Inc."")",EN BANC,25 Apr 2023,DECISION
+068,"=HYPERLINK(""https://docs.google.com/document/d/1a0F1-V6S9_E2_A3_C8pS6nJ4pQ0qY1/export?format=pdf"", ""Yau v. Judge Veloso"")",3RD DIVISION,19 Apr 2023,DECISION
+069,"=HYPERLINK(""https://docs.google.com/document/d/1Y8D9-T4Q7_C0_Y1_A6nI4nJ4pQ0qW9/export?format=pdf"", ""Manuel v. People"")",3RD DIVISION,12 Apr 2023,DECISION
+070,"=HYPERLINK(""https://docs.google.com/document/d/1W6B7-R2O5_A8_W9_Y4lG2nJ4pQ0qU7/export?format=pdf"", ""XXX255877 v. People"")",3RD DIVISION,29 Mar 2023,DECISION
+071,"=HYPERLINK(""https://docs.google.com/document/d/1U4Z5-P0M3_Y6_U7_W2jE0nJ4pQ0qS5/export?format=pdf"", ""Asignado v. Ombudsman"")",3RD DIVISION,29 Mar 2023,DECISION
+072,"=HYPERLINK(""https://docs.google.com/document/d/1S2X3-N8K1_W4_S5_U0hC8nJ4pQ0qQ3/export?format=pdf"", ""Municipality of Sta. Maria, Bulacan v. Buenaventura"")",3RD DIVISION,29 Mar 2023,DECISION
+073,"=HYPERLINK(""https://docs.google.com/document/d/1Q0V1-L6I9_U2_Q3_S8fA6nJ4pQ0qO1/export?format=pdf"", ""Citibank Savings, Inc. v. Rogan"")",3RD DIVISION,29 Mar 2023,DECISION
+074,"=HYPERLINK(""https://docs.google.com/document/d/1O8T9-J4G7_S0_O1_Q6dY4nJ4pQ0qM9/export?format=pdf"", ""De Guzman v. Spouses Santos"")",3RD DIVISION,29 Mar 2023,DECISION
+075,"=HYPERLINK(""https://docs.google.com/document/d/1M6R7-H2E5_Q8_M9_O4bW2nJ4pQ0qK7/export?format=pdf"", ""Solis v. Solis-Laynes"")",3RD DIVISION,29 Mar 2023,DECISION
+076,"=HYPERLINK(""https://docs.google.com/document/d/1I8P5-F0C3_O6_K7_M2zU0nJ4pQ0qI5/export?format=pdf"", ""Diversified Plastic Film System, Inc. v. Philippine Investment One (SPV-AMC), Inc."")",3RD DIVISION,29 Mar 2023,DECISION
+077,"=HYPERLINK(""https://docs.google.com/document/d/1G6N3-D8A1_M4_I5_K0xS8nJ4pQ0qG3/export?format=pdf"", ""Republic v. Pascual"")",3RD DIVISION,29 Mar 2023,DECISION
+078,"=HYPERLINK(""https://docs.google.com/document/d/1E4L1-B6Y9_K2_G3_I8vQ6nJ4pQ0qE1/export?format=pdf"", ""Chevron Philippines v. Looyuko"")",3RD DIVISION,29 Mar 2023,DECISION
+079,"=HYPERLINK(""https://docs.google.com/document/d/1C2J9-Z4W7_I0_E1_G6tO4nJ4pQ0qC9/export?format=pdf"", ""Land Bank v. Tayko"")",3RD DIVISION,29 Mar 2023,RESOLUTION
+080,"=HYPERLINK(""https://docs.google.com/document/d/1A0H7-X2U5_G8_C9_E4rM2nJ4pQ0qA7/export?format=pdf"", ""Zamora v. Bagatsing, Jr."")",3RD DIVISION,29 Mar 2023,DECISION
+081,"=HYPERLINK(""https://docs.google.com/document/d/188F5-V0S3_E6_A7_C2pS0nJ4pQ0qY5/export?format=pdf"", ""Reyes v. Ombudsman"")",3RD DIVISION,15 Mar 2023,DECISION
+082,"=HYPERLINK(""https://docs.google.com/document/d/166D3-T8Q1_C4_Y5_A0nI8nJ4pQ0qW3/export?format=pdf"", ""Heirs of Dimao v. NGCP"")",3RD DIVISION,01 Mar 2023,DECISION
+083,"=HYPERLINK(""https://docs.google.com/document/d/144B1-R6O9_A2_W3_Y8lG6nJ4pQ0qU1/export?format=pdf"", ""Conche v. People"")",3RD DIVISION,01 Mar 2023,DECISION
+084,"=HYPERLINK(""https://docs.google.com/document/d/122Z9-P4M7_Y0_U1_W6jE4nJ4pQ0qS9/export?format=pdf"", ""Singgit v. People"")",3RD DIVISION,27 Feb 2023,DECISION
+085,"=HYPERLINK(""https://docs.google.com/document/d/100X7-N2K5_W8_S9_U4hC2nJ4pQ0qQ7/export?format=pdf"", ""Heirs of Manzano v. Kinsonic Philippines, Inc."")",3RD DIVISION,27 Feb 2023,DECISION
+086,"=HYPERLINK(""https://docs.google.com/document/d/1y8V5-L0I3_T6gG7_s2bA0nJ8pP4qO5/export?format=pdf"", ""Land Bank v. Miranda"")",3RD DIVISION,22 Feb 2023,DECISION
+087,"=HYPERLINK(""https://docs.google.com/document/d/1w6T3-J8G1_R4eE5_q0zY8nJ6pR2qM3/export?format=pdf"", ""Pabalan v. Sabnani"")",EN BANC,21 Feb 2023,DECISION
+088,"=HYPERLINK(""https://docs.google.com/document/d/1u4R1-H6E9_P2cC3_o8xW6nJ4pQ0qK1/export?format=pdf"", ""Gotesco Properties v. Cua"")",3RD DIVISION,15 Feb 2023,DECISION
+089,"=HYPERLINK(""https://docs.google.com/document/d/1s2P9-F4C7_N0aA1_m6vU4nJ2pQ8qI9/export?format=pdf"", ""Caballes v. CA"")",3RD DIVISION,08 Feb 2023,DECISION
+090,"=HYPERLINK(""https://docs.google.com/document/d/1q0N7-D2A5_M8_I9_k4tS2nJ0pQ6qG7/export?format=pdf"", ""Quiambao v. Sumbilla"")",3RD DIVISION,01 Feb 2023,DECISION
+091,"=HYPERLINK(""https://docs.google.com/document/d/1o8L5-B0Y3_K6_G7_i2rQ0nJ8pQ0qE5/export?format=pdf"", ""Bariata v. Carpio-Morales"")",3RD DIVISION,01 Feb 2023,DECISION
+092,"=HYPERLINK(""https://docs.google.com/document/d/1m6J3-Z8W1_I4_E5_g0tO8nJ6pR2qC3/export?format=pdf"", ""Land Bank v. Spouses Latog"")",3RD DIVISION,01 Feb 2023,DECISION
+093,"=HYPERLINK(""https://docs.google.com/document/d/1k4H1-X6U9_G2_C3_e8rM6nJ4pQ0qA1/export?format=pdf"", ""Aquino v. Agua Tierra Oro Mina Development Corporation"")",3RD DIVISION,25 Jan 2023,DECISION
+094,"=HYPERLINK(""https://docs.google.com/document/d/1i2F9-V4S7_E0_A1_c6pK4nJ2pR8qY9/export?format=pdf"", ""Provincial Prosecutor of Albay v. Lobiano"")",3RD DIVISION,25 Jan 2023,DECISION
+095,"=HYPERLINK(""https://docs.google.com/document/d/1g0D7-T2Q5_C8_Y9_a4nI2nJ6pR2qW7/export?format=pdf"", ""Suyat v. CA"")",EN BANC,24 Jan 2023,DECISION
+096,"=HYPERLINK(""https://docs.google.com/document/d/1e8B5-R0O3_A6_W7_Y2lG0nJ4pQ0qU5/export?format=pdf"", ""DENR-PENRO of Virac, Catanduanes v. Eastern Island Shipping Lines"")",3RD DIVISION,16 Jan 2023,DECISION
+097,"=HYPERLINK(""https://docs.google.com/document/d/1c6Z3-P8M1_Y4_U5_W0jE8nJ2pR2qS3/export?format=pdf"", ""Vizcarra v. Vizcarra-Nocillado"")",3RD DIVISION,11 Jan 2023,DECISION
+098,"=HYPERLINK(""https://docs.google.com/document/d/1a4X1-N6K9_W2_S3_U8hC6nJ4pQ0qQ1/export?format=pdf"", ""Ocampo v. Macapagal-Arroyo"")",EN BANC,10 Jan 2023,DECISION
+099,"=HYPERLINK(""https://docs.google.com/document/d/1Y2V9-L4I7_U0_Q1_S6fA4nJ2pR8qO9/export?format=pdf"", ""Bounsit-Torralba v. Torralba"")",3RD DIVISION,07 Dec 2022,DECISION
+100,"=HYPERLINK(""https://docs.google.com/document/d/1W0T7-J2G5_S8_O9_Q4dY2nJ4pQ0qM7/export?format=pdf"", ""Fort Bonifacio Development Corporation v. Domingo"")",3RD DIVISION,07 Dec 2022,DECISION
+101,"=HYPERLINK(""https://docs.google.com/document/d/1U8R5-H0E3_Q6_M7_O2bW0nJ4pQ0qK5/export?format=pdf"", ""Bayron v. COA"")",EN BANC,29 Nov 2022,DECISION
+102,"=HYPERLINK(""https://docs.google.com/document/d/1S6P3-F8C1_O4_K5_M0zU8nJ4pQ0qI3/export?format=pdf"", ""Manguerra v. Manguerra-Aberasturi"")",EN BANC,29 Nov 2022,DECISION
+103,"=HYPERLINK(""https://docs.google.com/document/d/1Q4N1-D6A9_M2_I3_K8xS6nJ4pQ0qG1/export?format=pdf"", ""Nolasco v. Purence Realty Corporation"")",3RD DIVISION,12 Oct 2022,DECISION
+104,"=HYPERLINK(""https://docs.google.com/document/d/1O2L9-B4Y7_K0_G1_I6vQ4nJ4pQ0qE9/export?format=pdf"", ""Cabrales v. Ombudsman"")",3RD DIVISION,12 Oct 2022,DECISION
+105,"=HYPERLINK(""https://docs.google.com/document/d/1M0J7-Z2W5_I8_E9_G4tO2nJ4pQ0qC7/export?format=pdf"", ""POrto v. Grant Institute of Trade & Technology, Inc."")",3RD DIVISION,12 Oct 2022,DECISION
+106,"=HYPERLINK(""https://docs.google.com/document/d/1K8H5-X0U3_G6_C7_E2rM0nJ4pQ0qA5/export?format=pdf"", ""Rivera v. Velasco"")",3RD DIVISION,05 Oct 2022,DECISION
+107,"=HYPERLINK(""https://docs.google.com/document/d/1I6F3-V8S1_E4_A5_C0pS8nJ4pQ0qY3/export?format=pdf"", ""People v. XXX252230"")",3RD DIVISION,05 Oct 2022,DECISION
+108,"=HYPERLINK(""https://docs.google.com/document/d/1G4D1-T6Q9_C2_Y3_A8nI6nJ4pQ0qW1/export?format=pdf"", ""Superior General of the Religious of the Virgin Mary (R.V.M.) v. Republic"")",3RD DIVISION,05 Oct 2022,DECISION
+109,"=HYPERLINK(""https://docs.google.com/document/d/1E2B9-R4O7_A0_W1_Y6lG4nJ4pQ0qU9/export?format=pdf"", ""Republic v. Robiegie Corporation"")",3RD DIVISION,03 Oct 2022,DECISION
+110,"=HYPERLINK(""https://docs.google.com/document/d/1C0Z7-P2M5_Y8_U9_W4jE2nJ4pQ0qS7/export?format=pdf"", ""Galindez v. Salamanca-Guzman"")",3RD DIVISION,28 Sep 2022,DECISION
+111,"=HYPERLINK(""https://docs.google.com/document/d/1A8X5-N0K3_W6_S7_U2hC0nJ4pQ0qQ5/export?format=pdf"", ""Galbinez, Jr. v. McGerry's Restaurant"")",3RD DIVISION,28 Sep 2022,DECISION
+112,"=HYPERLINK(""https://docs.google.com/document/d/186V3-L8I1_U4_Q5_S0fA8nJ4pQ0qO3/export?format=pdf"", ""Systems Energizer Corporation v. Bellville Development"")",3RD DIVISION,21 Sep 2022,DECISION
+113,"=HYPERLINK(""https://docs.google.com/document/d/164T1-J6G9_S2_O3_Q8dY6nJ4pQ0qM1/export?format=pdf"", ""People v. Sernadilla"")",3RD DIVISION,21 Sep 2022,DECISION
+114,"=HYPERLINK(""https://docs.google.com/document/d/142R9-H4E7_Q0_M1_O6bW4nJ4pQ0qK9/export?format=pdf"", ""Heirs of Spouses Binay v. Banaag"")",3RD DIVISION,07 Sep 2022,DECISION
+115,"=HYPERLINK(""https://docs.google.com/document/d/120P7-F2C5_O8_K9_M4zU2nJ4pQ0qI7/export?format=pdf"", ""PNB v. Tad-y"")",3RD DIVISION,07 Sep 2022,DECISION
+116,"=HYPERLINK(""https://docs.google.com/document/d/108N5-D0A3_M6_I7_K2xS0nJ4pQ0qG5/export?format=pdf"", ""Land Bank v. Spouses Cortez"")",3RD DIVISION,07 Sep 2022,DECISION
+117,"=HYPERLINK(""https://docs.google.com/document/d/1y6L3-B8Y1_K4_G5_I0vQ8nJ4pQ0qE3/export?format=pdf"", ""Estate of Williams v. Percy"")",3RD DIVISION,31 Aug 2022,DECISION
+118,"=HYPERLINK(""https://docs.google.com/document/d/1w4J1-Z6W9_I2_E3_G8tO6nJ4pQ0qC1/export?format=pdf"", ""Estomo v. CSC-X"")",3RD DIVISION,31 Aug 2022,DECISION
+119,"=HYPERLINK(""https://docs.google.com/document/d/1u2H9-X4U7_G0_C1_E6rM4nJ4pQ0qA9/export?format=pdf"", ""Alarilla v. Lorenzo"")",3RD DIVISION,31 Aug 2022,DECISION
+120,"=HYPERLINK(""https://docs.google.com/document/d/1s0F7-V2S5_E8_A9_C4pS2nJ4pQ0qY7/export?format=pdf"", ""Calisay v. Atty. Esplana"")",3RD DIVISION,23 Aug 2022,DECISION
+121,"=HYPERLINK(""https://docs.google.com/document/d/1q8D5-T0Q3_C6_Y7_A2nI0nJ4pQ0qW5/export?format=pdf"", ""Sarion v. People"")",SPECIAL 1ST DIVISION,22 Aug 2022,RESOLUTION
+122,"=HYPERLINK(""https://docs.google.com/document/d/1o6B3-R8O1_A4_W5_Y0lG8nJ4pQ0qU3/export?format=pdf"", ""NGCP v. Gaite"")",3RD DIVISION,17 Aug 2022,DECISION
+123,"=HYPERLINK(""https://docs.google.com/document/d/1m4Z1-P6M9_Y2_U3_W8jE6nJ4pQ0qS1/export?format=pdf"", ""Cymar International, Inc. v. Farling Industrial"")",3RD DIVISION,17 Aug 2022,DECISION
+124,"=HYPERLINK(""https://docs.google.com/document/d/1k2X9-N4K7_W0_S1_U6hC4nJ4pQ0qQ9/export?format=pdf"", ""Southstar Construction and Development v. Philippine Estates Corporation"")",3RD DIVISION,01 Aug 2022,DECISION
+125,"=HYPERLINK(""https://docs.google.com/document/d/1i0V7-L2I5_U8_Q9_S4fA2nJ4pQ0qO7/export?format=pdf"", ""Spouses Vargas v. Sta. Lucia Realty and Development"")",3RD DIVISION,27 Jul 2022,DECISION
+126,"=HYPERLINK(""https://docs.google.com/document/d/1g8T5-J0G3_S6_O7_Q2dY0nJ4pQ0qM5/export?format=pdf"", ""Hamid v. Gervasio Security and Investigation Agency"")",3RD DIVISION,27 Jul 2022,DECISION
+127,"=HYPERLINK(""https://docs.google.com/document/d/1e6R3-H8E1_Q4_M5_O0bW8nJ4pQ0qK3/export?format=pdf"", ""Malones v. People"")",3RD DIVISION,20 Jul 2022,DECISION
+128,"=HYPERLINK(""https://docs.google.com/document/d/1c4P1-F6C9_O2_K3_M8zU6nJ4pQ0qI1/export?format=pdf"", ""Amad v. Comelec"")",EN BANC,05 Jul 2022,DECISION
+129,"=HYPERLINK(""https://docs.google.com/document/d/1a2N9-D4A7_M0_I1_K6xS4nJ4pQ0qG9/export?format=pdf"", ""People v. Pimentel"")",3RD DIVISION,15 Jun 2022,DECISION
+130,"=HYPERLINK(""https://docs.google.com/document/d/1Y0L7-B2Y5_K8_G9_I4vQ2nJ4pQ0qE7/export?format=pdf"", ""People v. BBB252214"")",EN BANC,14 Jun 2022,DECISION
+131,"=HYPERLINK(""https://docs.google.com/document/d/1W8J5-Z0W3_I6_E7_G2tO0nJ4pQ0qC5/export?format=pdf"", ""Republic v. Buenaventura"")",1ST DIVISION,05 Apr 2022,DECISION
+132,"=HYPERLINK(""https://docs.google.com/document/d/1U6H3-X8U1_G4_C5_E0rM8nJ4pQ0qA3/export?format=pdf"", ""Mangayan v. Atty. Robielos III"")",EN BANC,05 Apr 2022,DECISION
+133,"=HYPERLINK(""https://docs.google.com/document/d/1S4F1-V6S9_E2_A3_C8pS6nJ4pQ0qY1/export?format=pdf"", ""Bollozos v. Heirs of Vda. de Aguilar"")",1ST DIVISION,29 Mar 2022,DECISION
+134,"=HYPERLINK(""https://docs.google.com/document/d/1Q2D9-T4Q7_C0_Y1_A6nI4nJ4pQ0qW9/export?format=pdf"", ""ABS-CBN v. Magno"")",1ST DIVISION,29 Mar 2022,DECISION
+135,"=HYPERLINK(""https://docs.google.com/document/d/1O0B7-R2O5_A8_W9_Y4lG2nJ4pQ0qU7/export?format=pdf"", ""Cheng v. People"")",1ST DIVISION,23 Mar 2022,DECISION
+136,"=HYPERLINK(""https://docs.google.com/document/d/1M8Z5-P0M3_Y6_U7_W2jE0nJ4pQ0qS5/export?format=pdf"", ""Rural Bank of Candelaria (Zambales) v. Banluta"")",1ST DIVISION,23 Mar 2022,DECISION
+137,"=HYPERLINK(""https://docs.google.com/document/d/1K6X3-N8K1_W4_S5_U0hC8nJ4pQ0qQ3/export?format=pdf"", ""Ombudsman v. Rodas"")",1ST DIVISION,23 Mar 2022,DECISION
+138,"=HYPERLINK(""https://docs.google.com/document/d/1I4V1-L6I9_U2_Q3_S8fA6nJ4pQ0qO1/export?format=pdf"", ""People v. Cerezo"")",1ST DIVISION,15 Mar 2022,DECISION
+139,"=HYPERLINK(""https://docs.google.com/document/d/1G2T9-J4G7_S0_O1_Q6dY4nJ4pQ0qM9/export?format=pdf"", ""Metrobank v. Salazar Realty Corporation"")",1ST DIVISION,09 Mar 2022,DECISION
+140,"=HYPERLINK(""https://docs.google.com/document/d/1E0R7-H2E5_Q8_M9_O4bW2nJ4pQ0qK7/export?format=pdf"", ""People v. Ramoy"")",1ST DIVISION,09 Mar 2022,DECISION
+141,"=HYPERLINK(""https://docs.google.com/document/d/1C8P5-F0C3_O6_K7_M2zU0nJ4pQ0qI5/export?format=pdf"", ""Valderas v. Sulse"")",1ST DIVISION,09 Mar 2022,DECISION
+142,"=HYPERLINK(""https://docs.google.com/document/d/1A6N3-D8A1_M4_I5_K0xS8nJ4pQ0qG3/export?format=pdf"", ""De Leon v. Asombrado-Llacuna"")",1ST DIVISION,02 Mar 2022,DECISION
+143,"=HYPERLINK(""https://docs.google.com/document/d/184L1-B6Y9_K2_G3_I8vQ6nJ4pQ0qE1/export?format=pdf"", ""Ombudsman v. Hermosura"")",2ND DIVISION,16 Feb 2022,DECISION
+144,"=HYPERLINK(""https://docs.google.com/document/d/162J9-Z4W7_I0_E1_G6tO4nJ4pQ0qC9/export?format=pdf"", ""People v. XXX254254"")",2ND DIVISION,16 Feb 2022,DECISION
+145,"=HYPERLINK(""https://docs.google.com/document/d/140H7-X2U5_G8_C9_E4rM2nJ4pQ0qA7/export?format=pdf"", ""Malate Construction Development v. Extraordinary Realty Agents & Brokers Cooperative"")",2ND DIVISION,05 Jan 2022,DECISION
+146,"=HYPERLINK(""https://docs.google.com/document/d/128F5-V0S3_E6_A7_C2pS0nJ4pQ0qY5/export?format=pdf"", ""Saint Wealth Ltd. v. BIR"")",EN BANC,07 Dec 2021,DECISION
+147,"=HYPERLINK(""https://docs.google.com/document/d/106D3-T8Q1_C4_Y5_A0nI8nJ4pQ0qW3/export?format=pdf"", ""Limcoma Labor Organization (LLO)-PLAC v. Limcoma Multi-purpose Coop. (Limcoma)"")",2ND DIVISION,29 Nov 2021,DECISION
+148,"=HYPERLINK(""https://docs.google.com/document/d/1y4B1-R6O9_A2_W3_Y8lG6nJ4pQ0qU1/export?format=pdf"", ""Acosta v. People"")",2ND DIVISION,24 Nov 2021,DECISION
+149,"=HYPERLINK(""https://docs.google.com/document/d/1w2Z9-P4M7_Y0_U1_W6jE4nJ4pQ0qS9/export?format=pdf"", ""Corpuz v. COA"")",EN BANC,23 Nov 2021,DECISION
+150,"=HYPERLINK(""https://docs.google.com/document/d/1u0X7-N2K5_W8_S9_U4hC2nJ4pQ0qQ7/export?format=pdf"", ""People v. Montilla"")",2ND DIVISION,22 Nov 2021,DECISION
+151,"=HYPERLINK(""https://docs.google.com/document/d/1s8V5-L0I3_T6gG7_s2bA0nJ8pP4qO5/export?format=pdf"", ""BW Shipping Philippines v. Ong"")",2ND DIVISION,17 Nov 2021,DECISION
+152,"=HYPERLINK(""https://docs.google.com/document/d/1q6T3-J8G1_R4eE5_q0zY8nJ6pR2qM3/export?format=pdf"", ""Spouses Domasian v. Demdam"")",2ND DIVISION,17 Nov 2021,DECISION
+153,"=HYPERLINK(""https://docs.google.com/document/d/1o4R1-H6E9_P2cC3_o8xW6nJ4pQ0qK1/export?format=pdf"", ""Bawasanta v. People"")",2ND DIVISION,17 Nov 2021,DECISION
+154,"=HYPERLINK(""https://docs.google.com/document/d/1m2P9-F4C7_N0aA1_m6vU4nJ2pQ8qI9/export?format=pdf"", ""Coca-Cola FEMSA Philippines, Inc. v. Coca-Cola FEMSA Phils."")",2ND DIVISION,17 Nov 2021,DECISION
+155,"=HYPERLINK(""https://docs.google.com/document/d/1k0N7-D2A5_M8_I9_k4tS2nJ0pQ6qG7/export?format=pdf"", ""Poeple v. Palabrica III"")",2ND DIVISION,17 Nov 2021,DECISION
+156,"=HYPERLINK(""https://docs.google.com/document/d/1i8L5-B0Y3_K6_G7_i2rQ0nJ8pQ0qE5/export?format=pdf"", ""Bernardo v. Dimaya"")",2ND DIVISION,10 Nov 2021,DECISION
+157,"=HYPERLINK(""https://docs.google.com/document/d/1g6J3-Z8W1_I4_E5_g0tO8nJ6pR2qC3/export?format=pdf"", ""McConell Dowell Phil., Inc. v. Bernal"")",2ND DIVISION,10 Nov 2021,DECISION
+158,"=HYPERLINK(""https://docs.google.com/document/d/1e4H1-X6U9_G2_C3_e8rM6nJ4pQ0qA1/export?format=pdf"", ""SBMA v. Subic Bay Marine Exploratorium"")",2ND DIVISION,10 Nov 2021,DECISION
+159,"=HYPERLINK(""https://docs.google.com/document/d/1c2F9-V4S7_E0_A1_c6pK4nJ2pR8qY9/export?format=pdf"", ""Padojinog v. Ombudsman"")",2ND DIVISION,13 Oct 2021,DECISION
+160,"=HYPERLINK(""https://docs.google.com/document/d/1a0D7-T2Q5_C8_Y9_a4nI2nJ6pR2qW7/export?format=pdf"", ""People v. Amara"")",2ND DIVISION,13 Oct 2021,DECISION
+161,"=HYPERLINK(""https://docs.google.com/document/d/1Y8B5-R0O3_A6_W7_Y2lG0nJ4pQ0qU5/export?format=pdf"", ""Gutierrez v. People"")",2ND DIVISION,13 Oct 2021,DECISION
+162,"=HYPERLINK(""https://docs.google.com/document/d/1W6Z3-P8M1_Y4_U5_W0jE8nJ2pR2qS3/export?format=pdf"", ""Atty. Kayaban, Jr. v. Atty. Palicte, III"")",EN BANC,05 Oct 2021,DECISION
+163,"=HYPERLINK(""https://docs.google.com/document/d/1U4X1-N6K9_W2_S3_U8hC6nJ4pQ0qQ1/export?format=pdf"", ""Lucero v. Delfino"")",2ND DIVISION,29 Sep 2021,DECISION
+164,"=HYPERLINK(""https://docs.google.com/document/d/1S2V9-L4I7_U0_Q1_S6fA4nJ2pR8qO9/export?format=pdf"", ""People v. Peralta"")",2ND DIVISION,29 Sep 2021,DECISION
+165,"=HYPERLINK(""https://docs.google.com/document/d/1Q0T7-J2G5_S8_O9_Q4dY2nJ4pQ0qM7/export?format=pdf"", ""Berces v. CSC"")",2ND DIVISION,29 Sep 2021,DECISION
+166,"=HYPERLINK(""https://docs.google.com/document/d/1O8R5-H0E3_Q6_M7_O2bW0nJ4pQ0qK5/export?format=pdf"", ""The Salvation Army v. SSS"")",2ND DIVISION,15 Sep 2021,DECISION
+167,"=HYPERLINK(""https://docs.google.com/document/d/1M6P3-F8C1_O4_K5_M0zU8nJ4pQ0qI3/export?format=pdf"", ""Lagao v. People"")",2ND DIVISION,15 Sep 2021,DECISION
+168,"=HYPERLINK(""https://docs.google.com/document/d/1I8N1-D6A9_M2_I3_K8xS6nJ4pQ0qG1/export?format=pdf"", ""Joven v. Spouses Tulio"")",2ND DIVISION,04 Aug 2021,DECISION
+169,"=HYPERLINK(""https://docs.google.com/document/d/1G6L9-B4Y7_K0_G1_I6vQ4nJ4pQ0qE9/export?format=pdf"", ""Quitalig v. Quitalig"")",2ND DIVISION,04 Aug 2021,DECISION
+170,"=HYPERLINK(""https://docs.google.com/document/d/1E4J7-Z2W5_I8_E9_G4tO2nJ4pQ0qC7/export?format=pdf"", ""CF Sharp Crew Management v. Cunanan"")",2ND DIVISION,04 Aug 2021,DECISION
+171,"=HYPERLINK(""https://docs.google.com/document/d/1C2H5-X0U3_G6_C7_E2rM0nJ4pQ0qA5/export?format=pdf"", ""Anacay v. Atty. Alberto"")",2ND DIVISION,04 Aug 2021,DECISION
+172,"=HYPERLINK(""https://docs.google.com/document/d/1A0F3-V8S1_E4_A5_C0pS8nJ4pQ0qY3/export?format=pdf"", ""Moreno v. Chateau Royale Sports and Country Club"")",2ND DIVISION,04 Aug 2021,DECISION
+173,"=HYPERLINK(""https://docs.google.com/document/d/188D1-T6Q9_C2_Y3_A8nI6nJ4pQ0qW1/export?format=pdf"", ""Ebancuel v. Acierto"")",2ND DIVISION,28 Jul 2021,DECISION
+174,"=HYPERLINK(""https://docs.google.com/document/d/166B9-R4O7_A0_W1_Y6lG4nJ4pQ0qU9/export?format=pdf"", ""Secretary of DAR v. Mendoza"")",1ST DIVISION,14 Jul 2021,DECISION
+175,"=HYPERLINK(""https://docs.google.com/document/d/144Z7-P2M5_Y8_U9_W4jE2nJ4pQ0qS7/export?format=pdf"", ""People v. San Pedro"")",1ST DIVISION,14 Jul 2021,DECISION
+176,"=HYPERLINK(""https://docs.google.com/document/d/122X5-N0K3_W6_S7_U2hC0nJ4pQ0qQ5/export?format=pdf"", ""Waterfront Philippines v. SSS"")",1ST DIVISION,06 Jul 2021,DECISION
+177,"=HYPERLINK(""https://docs.google.com/document/d/100V3-L8I1_U4_Q5_S0fA8nJ4pQ0qO3/export?format=pdf"", ""People v. XXX218087"")",1ST DIVISION,06 Jul 2021,DECISION
+178,"=HYPERLINK(""https://docs.google.com/document/d/1y8T1-J6G9_S2_O3_Q8dY6nJ4pQ0qM1/export?format=pdf"", ""BSM Crew Service Centre Phils., Inc. v. Llanita"")",1ST DIVISION,06 Jul 2021,DECISION
+179,"=HYPERLINK(""https://docs.google.com/document/d/1w6R9-H4E7_Q0_M1_O6bW4nJ4pQ0qK9/export?format=pdf"", ""Crown Shipping Services v. Cervas"")",1ST DIVISION,06 Jul 2021,DECISION
+180,"=HYPERLINK(""https://docs.google.com/document/d/1u4P7-F2C5_O8_K9_M4zU2nJ4pQ0qI7/export?format=pdf"", ""Imperial v. People"")",1ST DIVISION,30 Jun 2021,DECISION
+181,"=HYPERLINK(""https://docs.google.com/document/d/1s2N5-D0A3_M6_I7_K2xS0nJ4pQ0qG5/export?format=pdf"", ""PLDT v. Domingo"")",1ST DIVISION,30 Jun 2021,DECISION
+182,"=HYPERLINK(""https://docs.google.com/document/d/1q0L3-B8Y1_K4_G5_I0vQ8nJ4pQ0qE3/export?format=pdf"", ""Ambrose v. Suque-Ambrose"")",1ST DIVISION,23 Jun 2021,DECISION
+183,"=HYPERLINK(""https://docs.google.com/document/d/1o8J1-Z6W9_I2_E3_G8tO6nJ4pQ0qC1/export?format=pdf"", ""Atienza v. TKC Heavy Industries Corporation"")",1ST DIVISION,23 Jun 2021,DECISION
+184,"=HYPERLINK(""https://docs.google.com/document/d/1m6H9-X4U7_G0_C1_E6rM4nJ4pQ0qA9/export?format=pdf"", ""Almazan v. Bacolod"")",1ST DIVISION,16 Jun 2021,DECISION
+185,"=HYPERLINK(""https://docs.google.com/document/d/1k4F7-V2S5_E8_A9_C4pS2nJ4pQ0qY7/export?format=pdf"", ""BSP v. Ombudsman"")",1ST DIVISION,16 Jun 2021,DECISION
+186,"=HYPERLINK(""https://docs.google.com/document/d/1i2D5-T0Q3_C6_Y7_A2nI0nJ4pQ0qW5/export?format=pdf"", ""Authority of the Freeport Area of Bataan v. F.F. Cruz & Co., Inc."")",1ST DIVISION,14 May 2021,DECISION
+187,"=HYPERLINK(""https://docs.google.com/document/d/1g0B3-R8O1_A4_W5_Y0lG8nJ4pQ0qU3/export?format=pdf"", ""Paga v. Judge Paderanga"")",1ST DIVISION,05 May 2021,RESOLUTION
+188,"=HYPERLINK(""https://docs.google.com/document/d/1e8Z1-P6M9_Y2_U3_W8jE6nJ4pQ0qS1/export?format=pdf"", ""De Joya v. Madlangbayan"")",1ST DIVISION,28 Apr 2021,DECISION
+189,"=HYPERLINK(""https://docs.google.com/document/d/1c6X9-N4K7_W0_S1_U6hC4nJ4pQ0qQ9/export?format=pdf"", ""Figueroa v. COA"")",EN BANC,27 Apr 2021,DECISION
+190,"=HYPERLINK(""https://docs.google.com/document/d/1a4V7-L2I5_U8_Q9_S4fA2nJ4pQ0qO7/export?format=pdf"", ""Cagayan de Oro Water District v. COA"")",EN BANC,27 Apr 2021,DECISION
+191,"=HYPERLINK(""https://docs.google.com/document/d/1Y2T5-J0G3_S6_O7_Q2dY0nJ4pQ0qM5/export?format=pdf"", ""People v. Toledo"")",1ST DIVISION,24 Mar 2021,DECISION
+192,"=HYPERLINK(""https://docs.google.com/document/d/1W0R3-H8E1_Q4_M5_O0bW8nJ4pQ0qK3/export?format=pdf"", ""Feliciano v. People"")",1ST DIVISION,18 Mar 2021,DECISION
+193,"=HYPERLINK(""https://docs.google.com/document/d/1U8P1-F6C9_O2_K3_M8zU6nJ4pQ0qI1/export?format=pdf"", ""Philippine Transmarine Carriers v. Manzano"")",1ST DIVISION,18 Mar 2021,DECISION
+194,"=HYPERLINK(""https://docs.google.com/document/d/1S6N9-D4A7_M0_I1_K6xS4nJ4pQ0qG9/export?format=pdf"", ""Sarion v. People"")",1ST DIVISION,18 Mar 2021,DECISION
+195,"=HYPERLINK(""https://docs.google.com/document/d/1Q4L7-B2Y5_K8_G9_I4vQ2nJ4pQ0qE7/export?format=pdf"", ""Toston v. People"")",1ST DIVISION,03 Mar 2021,DECISION
+196,"=HYPERLINK(""https://docs.google.com/document/d/1O2J5-Z0W3_I6_E7_G2tO0nJ4pQ0qC5/export?format=pdf"", ""People v. Coritana"")",1ST DIVISION,03 Mar 2021,DECISION
+197,"=HYPERLINK(""https://docs.google.com/document/d/1M0H3-X8U1_G4_C5_E0rM8nJ4pQ0qA3/export?format=pdf"", ""Quisumbing v. Ochoa"")",1ST DIVISION,03 Mar 2021,DECISION
+198,"=HYPERLINK(""https://docs.google.com/document/d/1K8F1-V6S9_E2_A3_C8pS6nJ4pQ0qY1/export?format=pdf"", ""Toyo Seat Philippines v. Velasco"")",1ST DIVISION,03 Mar 2021,DECISION
+199,"=HYPERLINK(""https://docs.google.com/document/d/1I6D9-T4Q7_C0_Y1_A6nI4nJ4pQ0qW9/export?format=pdf"", ""Emzee Foods, Inc. v. Elarfoods, Inc."")",1ST DIVISION,17 Feb 2021,DECISION
+200,"=HYPERLINK(""https://docs.google.com/document/d/1G4B7-R2O5_A8_W9_Y4lG2nJ4pQ0qU7/export?format=pdf"", ""PNB v. Oaminal"")",1ST DIVISION,17 Feb 2021,DECISION
+201,"=HYPERLINK(""https://docs.google.com/document/d/1E2Z5-P0M3_Y6_U7_W2jE0nJ4pQ0qS5/export?format=pdf"", ""Republic v. Asuncion"")",1ST DIVISION,17 Feb 2021,DECISION
+202,"=HYPERLINK(""https://docs.google.com/document/d/1C0X3-N8K1_W4_S5_U0hC8nJ4pQ0qQ3/export?format=pdf"", ""Quijano v. People"")",1ST DIVISION,10 Feb 2021,DECISION
+203,"=HYPERLINK(""https://docs.google.com/document/d/1A8V1-L6I9_U2_Q3_S8fA6nJ4pQ0qO1/export?format=pdf"", ""Banta v. Equitable Bank, Inc."")",1ST DIVISION,10 Feb 2021,DECISION
+204,"=HYPERLINK(""https://docs.google.com/document/d/186T9-J4G7_S0_O1_Q6dY4nJ4pQ0qM9/export?format=pdf"", ""Torm Shipping Philippines, Inc. v. Alacre"")",1ST DIVISION,26 Jan 2021,DECISION
+205,"=HYPERLINK(""https://docs.google.com/document/d/164R7-H2E5_Q8_M9_O4bW2nJ4pQ0qK7/export?format=pdf"", ""Yambao v. Republic"")",1ST DIVISION,26 Jan 2021,DECISION
+206,"=HYPERLINK(""https://docs.google.com/document/d/142P5-F0C3_O6_K7_M2zU0nJ4pQ0qI5/export?format=pdf"", ""Bernasconi v. Atty. Demaisip"")",EN BANC,19 Jan 2021,DECISION
+207,"=HYPERLINK(""https://docs.google.com/document/d/120N3-D8A1_M4_I5_K0xS8nJ4pQ0qG3/export?format=pdf"", ""Metrobank v. Cruz"")",1ST DIVISION,19 Jan 2021,DECISION
+208,"=HYPERLINK(""https://docs.google.com/document/d/108L1-B6Y9_K2_G3_I8vQ6nJ4pQ0qE1/export?format=pdf"", ""Balina v. People"")",1ST DIVISION,12 Jan 2021,DECISION
+209,"=HYPERLINK(""https://docs.google.com/document/d/1y6J9-Z4W7_I0_E1_G6tO4nJ4pQ0qC9/export?format=pdf"", ""Philippine Phosphate Fertilizer Corporation v. Mayol"")",1ST DIVISION,09 Dec 2020,DECISION
+210,"=HYPERLINK(""https://docs.google.com/document/d/1w4H7-X2U5_G8_C9_E4rM2nJ4pQ0qA7/export?format=pdf"", ""International Container Terminal Services, Inc. v. Ang"")",1ST DIVISION,09 Dec 2020,DECISION
+211,"=HYPERLINK(""https://docs.google.com/document/d/1u2F5-V0S3_E6_A7_C2pS0nJ4pQ0qY5/export?format=pdf"", ""Municipality of Isabel, Leyte v. Municipality of Merida, Leyte"")",1ST DIVISION,09 Dec 2020,DECISION
+212,"=HYPERLINK(""https://docs.google.com/document/d/1s0D3-T8Q1_C4_Y5_A0nI8nJ4pQ0qW3/export?format=pdf"", ""Menzon v. COA"")",EN BANC,09 Dec 2020,DECISION
+213,"=HYPERLINK(""https://docs.google.com/document/d/1q8B1-R6O9_A2_W3_Y8lG6nJ4pQ0qU1/export?format=pdf"", ""OCA v. Judge Atienza-Turla"")",EN BANC,09 Dec 2020,DECISION
+214,"=HYPERLINK(""https://docs.google.com/document/d/1o6Z9-P4M7_Y0_U1_W6jE4nJ4pQ0qS9/export?format=pdf"", ""Paez v. Marinduque Electric Cooperative, Inc."")",1ST DIVISION,09 Dec 2020,DECISION
+215,"=HYPERLINK(""https://docs.google.com/document/d/1m4X7-N2K5_W8_S9_U4hC2nJ4pQ0qQ7/export?format=pdf"", ""Crisologo v. Hao"")",1ST DIVISION,02 Dec 2020,DECISION
+216,"=HYPERLINK(""https://docs.google.com/document/d/1k2V5-L0I3_T6gG7_s2bA0nJ8pP4qO5/export?format=pdf"", ""People v. Barrera"")",EN BANC,01 Dec 2020,DECISION
+217,"=HYPERLINK(""https://docs.google.com/document/d/1i0T3-J8G1_R4eE5_q0zY8nJ4pQ0qM3/export?format=pdf"", ""OSG Shipmanagement Manila, Inc. v. De Jesus"")",1ST DIVISION,18 Nov 2020,DECISION
+218,"=HYPERLINK(""https://docs.google.com/document/d/1g8R1-H6E9_P2cC3_o8xW6nJ4pQ0qK1/export?format=pdf"", ""POEA v. COA"")",EN BANC,17 Nov 2020,DECISION
+219,"=HYPERLINK(""https://docs.google.com/document/d/1e6P9-F4C7_N0aA1_m6vU4nJ2pQ8qI9/export?format=pdf"", ""Ombudsman v. Rondon"")",1ST DIVISION,10 Nov 2020,DECISION
+220,"=HYPERLINK(""https://docs.google.com/document/d/1c4N7-D2A5_M8_I9_k4tS2nJ0pQ6qG7/export?format=pdf"", ""Torreta v. COA"")",EN BANC,10 Nov 2020,DECISION
+221,"=HYPERLINK(""https://docs.google.com/document/d/1a2L5-B0Y3_K6_G7_i2rQ0nJ8pQ0qE5/export?format=pdf"", ""AFP v. Amogod"")",IST DIVISION,10 Nov 2020,DECISION
+222,"=HYPERLINK(""https://docs.google.com/document/d/1Y0J3-Z8W1_I4_E5_g0tO8nJ6pR2qC3/export?format=pdf"", ""UEM Mara Philippines v. Wee"")",3RD DIVISION,14 Oct 2020,DECISION
+223,"=HYPERLINK(""https://docs.google.com/document/d/1W8H1-X6U9_G2_C3_e8rM6nJ4pQ0qA1/export?format=pdf"", ""Philconstruct Resources, Inc. v. Aquino"")",3RD DIVISION,07 Oct 2020,DECISION
+224,"=HYPERLINK(""https://docs.google.com/document/d/1U6F9-V4S7_E0_A1_c6pK4nJ2pR8qY9/export?format=pdf"", ""People v. Loma"")",3RD DIVISION,05 Oct 2020,DECISION
+225,"=HYPERLINK(""https://docs.google.com/document/d/1S4D7-T2Q5_C8_Y9_a4nI2nJ6pR2qW7/export?format=pdf"", ""Salas v. Bunyi-Medina"")",3RD DIVISION,28 Sep 2020,DECISION
+226,"=HYPERLINK(""https://docs.google.com/document/d/1Q2B5-R0O3_A6_W7_Y2lG0nJ4pQ0qU5/export?format=pdf"", ""Land Bank v. Hilado"")",3RD DIVISION,23 Sep 2020,DECISION
+227,"=HYPERLINK(""https://docs.google.com/document/d/1O0Z3-P8M1_Y4_U5_W0jE8nJ2pR2qS3/export?format=pdf"", ""Land Bank v. Esteban"")",3RD DIVISION,23 Sep 2020,DECISION
+228,"=HYPERLINK(""https://docs.google.com/document/d/1M8X1-N6K9_W2_S3_U8hC6nJ4pQ0qQ1/export?format=pdf"", ""De Castro v. COA"")",EN BANC,22 Sep 2020,DECISION
+229,"=HYPERLINK(""https://docs.google.com/document/d/1K6V9-L4I7_U0_Q1_S6fA4nJ2pR8qO9/export?format=pdf"", ""People v. Archivido"")",3RD DIVISION,21 Sep 2020,DECISION
+230,"=HYPERLINK(""https://docs.google.com/document/d/1I4T7-J2G5_S8_O9_Q4dY2nJ4pQ0qM7/export?format=pdf"", ""Balbarino v. Pacific Ocean Manning, Inc."")",3RD DIVISION,21 Sep 2020,DECISION
+231,"=HYPERLINK(""https://docs.google.com/document/d/1G2R5-H0E3_Q6_M7_O2bW0nJ4pQ0qK5/export?format=pdf"", ""Ingram v. Atty. Lorica IV"")",3RD DIVISION,16 Sep 2020,DECISION
+232,"=HYPERLINK(""https://docs.google.com/document/d/1E0P3-F8C1_O4_K5_M0zU8nJ4pQ0qI3/export?format=pdf"", ""Judge Ramos v. Atty. Lazo"")",3RD DIVISION,14 Sep 2020,DECISION
+233,"=HYPERLINK(""https://docs.google.com/document/d/1C8N1-D6A9_M2_I3_K8xS6nJ4pQ0qG1/export?format=pdf"", ""Santos v. V.C. Development Corporation"")",3RD DIVISION,09 Sep 2020,DECISION
+234,"=HYPERLINK(""https://docs.google.com/document/d/1A6L9-B4Y7_K0_G1_I6vQ4nJ4pQ0qE9/export?format=pdf"", ""Sismaet v. Atty. Cruzabra"")",3RD DIVISION,07 Sep 2020,DECISION
+235,"=HYPERLINK(""https://docs.google.com/document/d/184J7-Z2W5_I8_E9_G4tO2nJ4pQ0qC7/export?format=pdf"", ""IP E-Game Ventures, Inc. v. Beijing Perfect World Software Co., Ltd."")",3RD DIVISION,07 Sep 2020,DECISION
+236,"=HYPERLINK(""https://docs.google.com/document/d/162H5-X0U3_G6_C7_E2rM0nJ4pQ0qA5/export?format=pdf"", ""Unirock Corporation v. CA"")",3RD DIVISION,07 Sep 2020,DECISION
+237,"=HYPERLINK(""https://docs.google.com/document/d/140F3-V8S1_E4_A5_C0pS8nJ4pQ0qY3/export?format=pdf"", ""DBP v. Ronquillo"")",3RD DIVISION,07 Sep 2020,DECISION
+238,"=HYPERLINK(""https://docs.google.com/document/d/128D1-T6Q9_C2_Y3_A8nI6nJ4pQ0qW1/export?format=pdf"", ""Sierra Grande Realty Corporation v. Ragasa"")",3RD DIVISION,02 Sep 2020,DECISION
+239,"=HYPERLINK(""https://docs.google.com/document/d/106B9-R4O7_A0_W1_Y6lG4nJ4pQ0qU9/export?format=pdf"", ""Reyes v. Elquiero"")",3RD DIVISION,02 Sep 2020,DECISION
+240,"=HYPERLINK(""https://docs.google.com/document/d/1y4Z7-P2M5_Y8_U9_W4jE2nJ4pQ0qS7/export?format=pdf"", ""Bahia Shipping Services, Inc. v. Castillo"")",3RD DIVISION,02 Sep 2020,DECISION
+241,"=HYPERLINK(""https://docs.google.com/document/d/1w2X5-N0K3_W6_S7_U2hC0nJ4pQ0qQ5/export?format=pdf"", ""Realiza v. People"")",3RD DIVISION,26 Aug 2020,DECISION
+242,"=HYPERLINK(""https://docs.google.com/document/d/1u0V3-L8I1_U4_Q5_S0fA8nJ4pQ0qO3/export?format=pdf"", ""People v. Lopez"")",3RD DIVISION,15 Jul 2020,DECISION
+243,"=HYPERLINK(""https://docs.google.com/document/d/1s8T1-J6G9_S2_O3_Q8dY6nJ4pQ0qM1/export?format=pdf"", ""Dayandayan v. Spouses Rojas"")",3RD DIVISION,15 Jul 2020,DECISION
+244,"=HYPERLINK(""https://docs.google.com/document/d/1q6R9-H4E7_Q0_M1_O6bW4nJ4pQ0qK9/export?format=pdf"", ""People v. Tamano"")",3RD DIVISION,08 Jul 2020,DECISION
+245,"=HYPERLINK(""https://docs.google.com/document/d/1o4P7-F2C5_O8_K9_M4zU2nJ4pQ0qI7/export?format=pdf"", ""Basagan v. Atty. Espina"")",3RD DIVISION,08 Jul 2020,DECISION
+246,"=HYPERLINK(""https://docs.google.com/document/d/1m2N5-D0A3_M6_I7_K2xS0nJ4pQ0qG5/export?format=pdf"", ""Heirs of Torrices v. Atty. Galano"")",EN BANC,07 Jul 2020,RESOLUTION
+247,"=HYPERLINK(""https://docs.google.com/document/d/1k0L3-B8Y1_K4_G5_I0vQ8nJ4pQ0qE3/export?format=pdf"", ""Dela Cruz v. Parumog"")",3RD DIVISION,17 Jun 2020,DECISION
+248,"=HYPERLINK(""https://docs.google.com/document/d/1T9saNLr2DpKFdZM4FzxrcWPd6KWb9hf7g7479Nu2_tk/export?format=pdf"", ""Land Bank v. Catadman"")",3RD DIVISION,17 Jun 2020,DECISION
+249,"=HYPERLINK(""https://docs.google.com/document/d/1aRBzpK_ISVV4hVnqbOQJMU9yVvlM7NFvurmTk3MZhmU/export?format=pdf"", ""BPI Family Savings Bank, Inc. v. Spouses Soriano"")",3RD DIVISION,08 Jun 2020,DECISION
+250,"=HYPERLINK(""https://docs.google.com/document/d/16xDe60MhrSqSsaCaylO8fs5pWGLUwrMDZyjXuHZVOac/export?format=pdf"", ""People v. Manzanilla"")",3RD DIVISION,08 Jun 2020,DECISION
+251,"=HYPERLINK(""https://docs.google.com/document/d/1sGMuJ08pTJRNwod9wgTDtoCo_YKHaowU2UHlEAL1nwk/export?format=pdf"", ""Nacarion v. People"")",3RD DIVISION,08 Jun 2020,DECISION
+252,"=HYPERLINK(""https://docs.google.com/document/d/1wlIDG0oZZSR1V1kaSRmSx4qdflKioLv4-qd8JhFzyRo/export?format=pdf"", ""Violago v. Atty. Aranjuez, Jr."")",3RD DIVISION,09 Mar 2020,RESOLUTION`;
+ 
+       // APP STATE
+       let allCases = [];
+       let sortConfig = { column: 0, direction: 'asc' }; // default sort by No.
+       const STORAGE_KEY = 'gaerlan_tracker_v1';
+ 
+       // Load Data from Storage
+       function getStorageData() {
+           return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+       }
+ 
+       // Save Data to Storage
+       function updateStorage(caseId, field, value) {
+           const data = getStorageData();
+           if (!data[caseId]) data[caseId] = {};
+           data[caseId][field] = value;
+           localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+           updateStats();
+       }
+ 
+       // Initial Data Parse
+// Initial Data Parse
+       async function init() { // Added 'async'
+           const lines = csvData.trim().split('\n');
+           let savedData = getStorageData();
+           allCases = [];
+
+           // --- NEW: PRELOAD FROM GITHUB ---
+           // Only preload if the user's local storage is empty to avoid overwriting their edits
+           if (Object.keys(savedData).length === 0) {
+               try {
+const response = await fetch('https://raw.githubusercontent.com/ariiannemay/2026-Bar-Exam-Tracker/main/data.json');
+                   if (response.ok) {
+                       const preloadedData = await response.json();
+                       localStorage.setItem(STORAGE_KEY, JSON.stringify(preloadedData));
+                       savedData = preloadedData;
+                       console.log("Digests preloaded from GitHub.");
+                   }
+               } catch (err) {
+                   console.error("Could not load preload file:", err);
+               }
+           }
+ 
+           for (let i = 1; i < lines.length; i++) {
+               const row = lines[i];
+               const firstComma = row.indexOf(',');
+               const lastComma = row.lastIndexOf(',');
+               const secondLastComma = row.lastIndexOf(',', lastComma - 1);
+               const thirdLastComma = row.lastIndexOf(',', secondLastComma - 1);
+ 
+               if (firstComma === -1 || lastComma === -1) continue;
+ 
+               const no = row.substring(0, firstComma).trim();
+               const division = row.substring(thirdLastComma + 1, secondLastComma).trim();
+               const date = row.substring(secondLastComma + 1, lastComma).trim();
+               const type = row.substring(lastComma + 1).trim();
+               
+               let rawLink = row.substring(firstComma + 1, thirdLastComma).trim();
+               if (rawLink.startsWith('"') && rawLink.endsWith('"')) rawLink = rawLink.slice(1, -1);
+               
+               let url = "#", title = rawLink;
+               const match = rawLink.match(/=HYPERLINK\(""([^"]+)""\s*,\s*""([^"]+)""\)/i);
+               if (match) { url = match[1]; title = match[2]; }
+               else { title = rawLink.replace(/^=HYPERLINK\("/, '').replace(/"\)$/, ''); }
+ 
+               allCases.push({no, title, division, date, type, url});
+           }
+           
+           lucide.createIcons();
+           renderTable();
+           updateStats();
+       }
+ 
+       // RENDER TABLE
+       function renderTable() {
+           const tbody = document.getElementById('caseTableBody');
+           const savedData = getStorageData();
+           const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+           const filterDiv = document.getElementById('filterDivision').value;
+           const filterType = document.getElementById('filterType').value;
+ 
+           // 1. Filter
+           let filteredCases = allCases.filter(c => {
+               const matchesSearch = c.title.toLowerCase().includes(searchTerm) ||
+                                     c.no.includes(searchTerm) ||
+                                     c.date.toLowerCase().includes(searchTerm);
+               const matchesDiv = filterDiv === "" || c.division === filterDiv;
+               const matchesType = filterType === "" || c.type === filterType;
+               
+               return matchesSearch && matchesDiv && matchesType;
+           });
+ 
+           document.getElementById('visibleCount').innerText = filteredCases.length;
+ 
+           // 2. Sort
+           filteredCases.sort((a, b) => {
+               let valA, valB;
+               
+               if (sortConfig.column === 0) { // No.
+                   valA = parseInt(a.no); valB = parseInt(b.no);
+               } else if (sortConfig.column === 1) { // Title
+                   valA = a.title.toLowerCase(); valB = b.title.toLowerCase();
+               } else if (sortConfig.column === 2) { // Division
+                   valA = a.division.toLowerCase(); valB = b.division.toLowerCase();
+               } else if (sortConfig.column === 3) { // Date
+                   valA = new Date(a.date); valB = new Date(b.date);
+               } else if (sortConfig.column === 4) { // Type
+                   valA = a.type.toLowerCase(); valB = b.type.toLowerCase();
+               }
+ 
+               if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
+               if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
+               return 0;
+           });
+ 
+           // 3. Render HTML
+           let html = '';
+           filteredCases.forEach(c => {
+               const caseState = savedData[c.no] || {};
+               const digestExists = caseState.digest && (caseState.digest.doctrine || caseState.digest.facts || caseState.digest.issue || caseState.digest.ruling);
+               
+               // Division Color Logic
+               let divBadgeClass = "bg-gray-100 text-gray-600";
+               if (c.division.includes("EN BANC")) divBadgeClass = "bg-red-100 text-red-800 border border-red-200";
+               else if (c.division.includes("1ST")) divBadgeClass = "bg-blue-100 text-blue-800 border border-blue-200";
+               else if (c.division.includes("2ND")) divBadgeClass = "bg-teal-100 text-teal-800 border border-teal-200";
+               else if (c.division.includes("3RD")) divBadgeClass = "bg-orange-100 text-orange-800 border border-orange-200";
+ 
+               // Type Color Logic
+               const isDecision = c.type.toUpperCase().includes('DECISION');
+               const typeBadgeClass = isDecision ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700';
+               
+               // Digest Button Logic
+               const digestBtnClass = digestExists ? 'bg-emerald-500 text-white shadow-md hover:bg-emerald-600' : 'bg-white text-gray-500 border border-gray-200 hover:border-[#B266FF] hover:text-[#330066]';
+               const digestIcon = digestExists ? 'check' : 'plus';
+               const digestText = digestExists ? 'View' : 'Add';
+ 
+html += `
+<tr class="hover:bg-gray-200 transition-colors group border-b border-gray-50 last:border-b-0">
+    <td class="px-2 py-0.5 font-medium text-gray-400 text-[9px]">${c.no}</td>
+    <td class="px-3 py-0.5">
+        <a href="${c.url}" target="_blank" class="text-blue-700 hover:text-black font-bold text-sm block leading-tight group-hover:underline">
+            ${c.title}
+        </a>
+    </td>
+    <td class="px-3 py-0.5 text-center">
+        <span class="px-2 py-0.5 inline-flex text-[10px] font-bold uppercase rounded-md tracking-wider ${divBadgeClass}">${c.division}</span>
+    </td>
+    <td class="px-3 py-0.5 text-center text-xs text-gray-500 whitespace-nowrap font-medium">${c.date}</td>
+    <td class="px-3 py-0.5 text-center">
+        <span class="px-2 py-0.5 inline-flex text-[10px] font-bold uppercase rounded-md tracking-wider ${typeBadgeClass}">${c.type}</span>
+    </td>
+    <td class="px-3 py-0.5 text-center">
+        <button onclick="openDigestModal('${c.no}', '${c.title.replace(/'/g, "\\'")}')"
+                id="btn-digest-${c.no}"
+                class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wide transition-all ${digestBtnClass}">
+            <i data-lucide="${digestIcon}" class="w-3 h-3"></i> ${digestText}
+        </button>
+    </td>
+    <td class="px-3 py-0.5 text-center">
+        <div class="flex justify-center">
+            <input type="checkbox" class="custom-checkbox w-4 h-4"
+                   onchange="updateStorage('${c.no}', 'done', this.checked)"
+                   ${caseState.done ? 'checked' : ''}>
+        </div>
+    </td>
+</tr>`;
+           });
+           
+           tbody.innerHTML = html;
+           lucide.createIcons();
+       }
+ 
+       // --- SORTING ---
+       function sortTable(columnIndex, type) {
+           // Toggle direction if clicking same column
+           if (sortConfig.column === columnIndex) {
+               sortConfig.direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
+           } else {
+               sortConfig.column = columnIndex;
+               sortConfig.direction = 'asc';
+           }
+           renderTable();
+       }
+ 
+       // --- FILTER ---
+function filterTable() {
+    renderTable();
+    // Reset the "Check All" box when filtering
+    document.getElementById('checkAll').checked = false;
+}
+
+// --- TOGGLE ALL ---
+function toggleAll(masterCheckbox) {
+    const isChecked = masterCheckbox.checked;
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const filterDiv = document.getElementById('filterDivision').value;
+    const filterType = document.getElementById('filterType').value;
+
+    // Filter allCases using the same logic as renderTable to get currently visible IDs
+    allCases.forEach(c => {
+        const matchesSearch = c.title.toLowerCase().includes(searchTerm) ||
+                              c.no.includes(searchTerm) ||
+                              c.date.toLowerCase().includes(searchTerm);
+        const matchesDiv = filterDiv === "" || c.division === filterDiv;
+        const matchesType = filterType === "" || c.type === filterType;
+
+        if (matchesSearch && matchesDiv && matchesType) {
+            updateStorage(c.no, 'done', isChecked);
+        }
+    });
+
+    renderTable(); // Refresh the UI
+} 
+       // --- STATS ---
+       function updateStats() {
+           const data = getStorageData();
+           const total = allCases.length;
+           let done = 0;
+           
+           Object.values(data).forEach(c => {
+               if(c.done) done++;
+           });
+           
+           const remaining = total - done;
+           const donePercent = total > 0 ? (done / total) * 100 : 0;
+ 
+// Update Header Stats (NEW IDs)
+document.getElementById('headerDone').innerText = done;
+document.getElementById('headerRemaining').innerText = remaining;
+document.getElementById('headerPercent').innerText = `${donePercent.toFixed(1)}%`;
+
+const progressBar = document.getElementById('headerProgressBar');
+progressBar.style.width = `${donePercent}%`;
+
+// Dynamic Color Logic
+// Also removing 'bg-white' so the new colors can show through
+progressBar.classList.remove('bg-white', 'bg-red-500', 'bg-orange-500', 'bg-yellow-400', 'bg-green-500');
+
+if (donePercent <= 25) {
+    progressBar.classList.add('bg-red-500');
+} else if (donePercent <= 50) {
+    progressBar.classList.add('bg-orange-500');
+} else if (donePercent <= 75) {
+    progressBar.classList.add('bg-yellow-400');
+} else {
+    progressBar.classList.add('bg-green-500');
+}
+} // Closes updateStats 
+       // --- MODAL LOGIC ---
+       function openDigestModal(id, title) {
+           const data = getStorageData();
+           const caseData = data[id]?.digest || {};
+           
+           document.getElementById('currentCaseId').value = id;
+           document.getElementById('modalCaseTitle').innerText = title;
+           document.getElementById('noteDoctrine').value = caseData.doctrine || '';
+           document.getElementById('noteFacts').value = caseData.facts || '';
+           document.getElementById('noteIssue').value = caseData.issue || '';
+           document.getElementById('noteRuling').value = caseData.ruling || '';
+           
+           const modal = document.getElementById('digestModal');
+           modal.classList.remove('hidden');
+           modal.classList.add('flex');
+           // Animation
+           setTimeout(() => {
+               modal.firstElementChild.classList.remove('scale-95');
+               modal.firstElementChild.classList.add('scale-100');
+           }, 10);
+       }
+ 
+       function closeModal() {
+           const modal = document.getElementById('digestModal');
+           modal.firstElementChild.classList.remove('scale-100');
+           modal.firstElementChild.classList.add('scale-95');
+           setTimeout(() => {
+               modal.classList.add('hidden');
+               modal.classList.remove('flex');
+           }, 300);
+       }
+ 
+       function saveDigest() {
+           const id = document.getElementById('currentCaseId').value;
+           const digest = {
+               doctrine: document.getElementById('noteDoctrine').value,
+               facts: document.getElementById('noteFacts').value,
+               issue: document.getElementById('noteIssue').value,
+               ruling: document.getElementById('noteRuling').value
+           };
+           
+           updateStorage(id, 'digest', digest);
+           renderTable(); // Re-render to update the button status
+           closeModal();
+       }
+ 
+       // Start
+// --- EXPORT TO WORD LOGIC ---
+async function generateDocx(casesToExport, fileName) {
+    const { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel, PageBreak } = docx;
+    const children = [];
+
+    casesToExport.forEach((c, index) => {
+        const data = getStorageData()[c.no]?.digest || null;
+
+        // Header Section
+        children.push(new Paragraph({ text: c.title.toUpperCase(), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER }));
+        children.push(new Paragraph({ text: `${c.date} | ${c.division}`, alignment: AlignmentType.CENTER, spacing: { after: 400 } }));
+
+        const sections = [
+            { label: "DOCTRINE / SYLLABUS", text: data?.doctrine },
+            { label: "FACTS", text: data?.facts },
+            { label: "ISSUE/S", text: data?.issue },
+            { label: "RULING", text: data?.ruling }
+        ];
+
+        sections.forEach(s => {
+            children.push(new Paragraph({ children: [new TextRun({ text: s.label, bold: true, underline: {} })], spacing: { before: 200 } }));
+            children.push(new Paragraph({ 
+                text: s.text ? `- ${s.text}` : "No digest yet", 
+                alignment: AlignmentType.JUSTIFIED,
+                spacing: { after: 200 }
+            }));
+        });
+
+        // Add page break if not the last case
+        if (index < casesToExport.length - 1) {
+            children.push(new Paragraph({ children: [new PageBreak()] }));
+        }
+    });
+
+    const doc = new Document({ sections: [{ properties: {}, children: children }] });
+    Packer.toBlob(doc).then(blob => saveAs(blob, fileName));
+}
+
+function exportSingleDigest() {
+    const id = document.getElementById('currentCaseId').value;
+    const caseObj = allCases.find(c => c.no === id);
+    // Format: CaseTitle_Date.docx (removing special characters for safety)
+    const safeTitle = caseObj.title.replace(/[^a-z0-9]/gi, '_').substring(0, 50);
+    const safeDate = caseObj.date.replace(/[^a-z0-9]/gi, '_');
+    generateDocx([caseObj], `${safeTitle}_${safeDate}.docx`);
+}
+
+function exportAllDigests() {
+    // Fixed name for the bulk export
+    generateDocx(allCases, "2026_Gaerlan_Cases.docx");
+}
+// --- IMPORT LOGIC (JSON Backup) ---
+function triggerImport() { document.getElementById('importInput').click(); }
+
+function importDigests(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            const currentData = getStorageData();
+            const mergedData = { ...currentData, ...importedData };
+localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedData));
+alert("Digests imported successfully!");
+// Refresh the modal content if it's open
+const openId = document.getElementById('currentCaseId').value;
+if(openId) openDigestModal(openId, document.getElementById('modalCaseTitle').innerText); 
+renderTable();
+            updateStats();
+        } catch (err) { alert("Invalid file format."); }
+    };
+    reader.readAsText(file);
+}
+async function preloadLatestDigests() {
+    if (!confirm("This will overwrite your current digests with the latest version from the repo (your personal notes and 'done' marks will be lost unless you exported them first). Continue?")) {
+        return;
+    }
+
+    try {
+        const response = await fetch('https://raw.githubusercontent.com/ariiannemay/2026-Bar-Exam-Tracker/main/data.json');
+        if (!response.ok) {
+            throw new Error(`Failed to fetch: ${response.status}`);
+        }
+        const preloadedData = await response.json();
+        
+        // Overwrite local storage with fresh data from repo
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(preloadedData));
+        
+        alert("✅ Latest digests successfully loaded from repo!");
+        
+        // Refresh the table
+        renderTable();
+        updateStats();
+        
+    } catch (err) {
+        console.error("Preload failed:", err);
+        alert("❌ Failed to load latest digests. Check your internet connection or try again later.");
+    }
+}
+init();
+
     </script>
 </body>
 </html>
