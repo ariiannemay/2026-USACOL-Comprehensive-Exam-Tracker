@@ -362,7 +362,94 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
 </head>
 
 <body class="bg-gray-100 min-h-screen p-1 sm:p-2">
-    
+
+<div id="auth-overlay" class="fixed inset-0 z-[9999] bg-gray-100 overflow-hidden flex flex-col items-center transition-opacity duration-500">
+    <div class="denial-content-container w-full max-w-[1152px] mt-1 mb-10 px-[10px]">
+        
+        <header class="header-bg text-white py-1 px-4 sm:py-2 sm:px-6 rounded-xl shadow-2xl mt-1">
+            <div class="flex items-center justify-between">
+                <div class="flex-shrink-0 w-24 h-24 flex items-center justify-center rounded-full overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/Images/USA.png" alt="USA Logo" class="w-24 h-24 object-cover">
+                </div>
+                <div class="text-center mx-4 flex-grow">
+                    <h1 class="text-xl sm:text-3xl font-extrabold header-font tracking-wider mb-2 underline" style="text-shadow: 2px 2px 0 #000000;">UNIVERSITY OF SAN AGUSTIN</h1>
+                    <h2 class="text-2xl sm:text-4xl italic font-extrabold header-font tracking-widest" style="text-shadow: 2px 2px 0 #000000; line-height: 1.1; font-size: 2.75em;">2026 COMPREHENSIVE EXAM REVIEW TRACKER</h2>
+                </div>
+                <div class="flex-shrink-0 w-32 h-32 flex items-center justify-center rounded-full overflow-hidden">
+                    <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/Images/usacol.png" alt="USACoL Icon" class="w-32 h-32 object-cover">
+                </div>
+            </div>
+        </header>
+
+        <div class="denial-message-box bg-[#f7f7f7] border-4 border-[#6D1B1B] rounded-[10px] shadow-[0_4px_15px_rgba(0,0,0,0.4)] p-[20px_10px_20px_10px] mt-[5px] text-center mb-[-10px]">
+            <h1 class="header-font text-[#cc0000] text-[3.5em] tracking-[0.1em] mb-[2px]" style="text-shadow: 0 0 10px rgba(109, 27, 27, 0.4);">ACCESS TRACKER</h1>            
+            <div class="max-w-md mx-auto px-4 mb-4">
+                <input type="password" id="auth-input" 
+                       class="w-full px-6 py-3 rounded-lg border-2 border-gray-300 focus:border-[#6D1B1B] outline-none text-center text-xl tracking-[0.3em] font-black mb-4"
+                       placeholder="enter password here">
+                <button onclick="validateAuth()" 
+                        class="try-again-btn w-full bg-[#1d4ed8] text-white font-[900] py-[12px] px-[40px] rounded-[8px] shadow-[0_5px_#0f34a0] transition-all active:translate-y-[3px] active:shadow-[0_2px_#0f34a0] text-[1.2em] uppercase">
+                    UNLOCK TRACKER
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+                <div class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                    <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
+                        <i data-lucide="hourglass" class="w-6 h-6 mr-2" style="color: #FECE1B;"></i>COMPRE EXAM DAY 1<i data-lucide="hourglass" class="w-6 h-6 ml-2" style="color: #FECE1B;"></i>
+                    </div>
+                    <div class="p-2 text-center text-black">
+                        <div class="mb-2 text-2xl header-font font-extrabold uppercase">JUNE 14, 2026</div>
+                        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+                            <div class="flex flex-col"><span id="auth-days-1" class="text-[1.75rem] font-black">---</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Days</span></div>
+                            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="auth-hrs-1" class="text-[1.75rem] font-black">--</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Hrs</span></div>
+                            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="auth-mins-1" class="text-[1.75rem] font-black">--</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Mins</span></div>
+                            <div class="flex flex-col"><span id="auth-secs-1" class="text-[1.75rem] font-black">--</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Secs</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                    <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
+                        <i data-lucide="hourglass" class="w-6 h-6 mr-2" style="color: #FECE1B;"></i>COMPRE EXAM DAY 2<i data-lucide="hourglass" class="w-6 h-6 ml-2" style="color: #FECE1B;"></i>
+                    </div>
+                    <div class="p-2 text-center text-black">
+                        <div class="mb-2 text-2xl header-font font-extrabold uppercase">JUNE 21, 2026</div>
+                        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+                            <div class="flex flex-col"><span id="auth-days-2" class="text-[1.75rem] font-black">---</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Days</span></div>
+                            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="auth-hrs-2" class="text-[1.75rem] font-black">--</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Hrs</span></div>
+                            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="auth-mins-2" class="text-[1.75rem] font-black">--</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Mins</span></div>
+                            <div class="flex flex-col"><span id="auth-secs-2" class="text-[1.75rem] font-black">--</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Secs</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
+                    <div class="flex items-center justify-between card-header-bg text-white p-2 text-lg font-bold text-center border-b-4 border-custom-yellow uppercase">
+                        <i data-lucide="hourglass" class="w-6 h-6 mr-2" style="color: #FECE1B;"></i>COMPRE EXAM DAY 3<i data-lucide="hourglass" class="w-6 h-6 ml-2" style="color: #FECE1B;"></i>
+                    </div>
+                    <div class="p-2 text-center text-black">
+                        <div class="mb-2 text-2xl header-font font-extrabold uppercase">JUNE 28, 2026</div>
+                        <div class="grid grid-cols-4 py-2 border-y-2 border-dashed border-gray-300">
+                            <div class="flex flex-col"><span id="auth-days-3" class="text-[1.75rem] font-black">---</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Days</span></div>
+                            <div class="flex flex-col border-l-2 border-r-2 border-dashed border-gray-300"><span id="auth-hrs-3" class="text-[1.75rem] font-black">--</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Hrs</span></div>
+                            <div class="flex flex-col border-r-2 border-dashed border-gray-300"><span id="auth-mins-3" class="text-[1.75rem] font-black">--</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Mins</span></div>
+                            <div class="flex flex-col"><span id="auth-secs-3" class="text-[1.75rem] font-black">--</span><span class="text-[0.5rem] uppercase font-bold text-gray-500">Secs</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-4 text-center">
+            <p class="quote text-black font-semibold text-[15px]" style="font-family: 'Cormorant Garamond', serif;">Trust that your hard work will never betray you. You did not come this far to only come this far.</p>
+            <p class="signature mt-1">
+                <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/Images/missattycpa.PNG" alt="missattycpa signature" class="inline-block h-4">
+                <span class="date-quote-style text-black ml-1 font-bold" style="font-family: 'Cormorant Garamond', serif; font-size: 0.9rem;">| november 2025</span>
+            </p>
+        </footer>
+    </div>
+</div>
+
+
     <div class="main-content-wrapper">
         <div class="max-w-6xl mx-auto space-y-2">
 
@@ -479,10 +566,18 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
         <span id="today-date-display" class="text-white today-date-text block font-extrabold" style="text-shadow: none;"></span>
     </div>
     
-    <div class="flex flex-col items-center mb-1"> <input type="text" id="user-name-input" placeholder="Input your name here..." 
-               class="w-full text-center text-xl font-bold header-font border-b border-gray-300 
-                      focus:border-blue-500 outline-none p-0 bg-transparent text-gray-800" 
-               maxlength="30"> </div>
+<div class="w-full flex items-center justify-center mb-1 relative"> 
+    <input type="text" id="user-name-input" placeholder="Input your name here..." 
+           class="w-[90%] text-center text-xl font-bold header-font border-b border-gray-300 
+                  focus:border-blue-500 outline-none p-0 bg-transparent text-gray-800" 
+           maxlength="30">
+
+    <button onclick="if(confirm('Lock tracker and log out? Progress is saved.')) { localStorage.removeItem('auth_session_start'); location.reload(); }" 
+            title="Lock Tracker (Logout)"
+            class="absolute right-0 text-gray-400 hover:text-red-600 transition-all flex-shrink-0 hover-pulse">
+        <i data-lucide="power" class="w-4 h-4"></i>
+    </button>
+</div>
 
     <h3 class="text-xl font-extrabold header-font tracking-wider text-chart-title text-center mt-1 mb-1">YOUR REVIEW PROGRESS</h3>
     
@@ -771,11 +866,17 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
                     </p>
                     <ul class="list-disc list-outside ml-5 text-sm text-gray-700 space-y-2">
                         <li class="pl-1">
-                            <strong style="color: #6D1B1B;">Progress Metric:</strong> Overall progress updates and a topic counts as “done” only once <strong>4 out of 6 boxes</strong> per topic row are checked. (Updated for 6 columns)
+                            <strong style="color: #6D1B1B;">Progress Metric:</strong> Overall progress updates and a topic counts as “done” only once <strong>4 out of 6 boxes</strong> per topic row are checked.
                         </li>
                         <li class="pl-1">
                             <strong style="color: #6D1B1B;">Data Portability:</strong> Your review progress is saved <strong>only within your current browser</strong> (Local Storage). Your data will not be synchronized automatically if you clear your browsing data or switch devices. To transfer your progress to a new device or browser, please use the <strong>Export All Data</strong> and <strong>Import Existing Data</strong> functions.
                         </li>
+                        <li class="pl-1">
+                            <strong style="color: #6D1B1B;">Other Trackers:</strong> Access the <a href="https://2026bar-reviewtracker.vercel.app/" target="_blank" class="text-blue-500 underline hover:text-blue-700 font-bold">2026 Bar Tracker</a> here // Access the <a href="https://docs.google.com/spreadsheets/d/1jGPx2rF3xePovioGsDeAyXhWuXMQeU5xXrEefAW5V8s/edit?usp=sharing" target="_blank" class="text-blue-500 underline hover:text-blue-700 font-bold">2026 Comprehensive Exam Tracker (Google Sheets version)</a> here.
+
+
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -802,23 +903,77 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
     </footer>
 
     <script>
-const ALLOWED_PASSWORDS = ["ama", "bar", "2026", "bar2026"];  // Add your extra passwords here
+const ALLOWED_PASSWORDS = ["ama", "bar", "2026", "bar2026"];
+const AUTH_TARGET_DATES = ["2026-06-14", "2026-06-21", "2026-06-28"];
 
-let userPassword = prompt("🔐 Enter the password to access the 2026 Bar Exam Review Tracker:");
-if (userPassword) {
-    userPassword = userPassword.trim().toLowerCase();  // Make it forgiving (ignore case/spaces)
-    if (ALLOWED_PASSWORDS.includes(userPassword)) {
-        // Correct password - continue loading the tracker
-    } else {
-        alert("❌ Incorrect password. Access denied.");
-        window.location.href = 'denied.html';
-        throw new Error("Access Denied");
-    }
-} else {
-    // User clicked Cancel
-    window.location.href = 'denied.html';
-    throw new Error("Access Cancelled");
+function updateAuthCountdown() {
+    const now = new Date();
+    AUTH_TARGET_DATES.forEach((dateStr, i) => {
+        const id = i + 1;
+        const target = new Date(dateStr + 'T00:00:00Z');
+        const diff = target - now;
+        
+        if (diff > 0) {
+            document.getElementById(`auth-days-${id}`).textContent = Math.floor(diff / (1000 * 60 * 60 * 24)).toString().padStart(3, '0');
+            document.getElementById(`auth-hrs-${id}`).textContent = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById(`auth-mins-${id}`).textContent = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById(`auth-secs-${id}`).textContent = Math.floor((diff % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        }
+    });
 }
+
+// 1. Move validateAuth UP so the listener can see it
+// 1. Defined globally so the listener can see it immediately
+window.validateAuth = function() {
+    const input = document.getElementById('auth-input');
+    if (ALLOWED_PASSWORDS.includes(input.value.trim().toLowerCase())) {
+        // Save current timestamp to local storage
+        localStorage.setItem('auth_session_start', Date.now());
+        document.getElementById('auth-overlay').style.display = "none";
+        document.body.style.overflow = "auto";
+    } else {
+        window.location.href = 'denied.html';
+    }
+};
+
+
+function checkAccess() {
+    const overlay = document.getElementById('auth-overlay');
+    const sessionStart = localStorage.getItem('auth_session_start');
+    const sevenDaysInMs = 7 * 24 * 60 * 60 * 1000;
+
+    // Check if session exists and is within 7 days
+    if (sessionStart && (Date.now() - sessionStart < sevenDaysInMs)) {
+        overlay.style.display = "none";
+        document.body.style.overflow = "auto";
+        document.body.style.display = "block";
+    } else {
+        // No session or expired: show the portal
+        document.body.style.display = "block";
+        document.body.style.overflow = "hidden";
+        overlay.style.display = "flex";
+        
+        setTimeout(() => { 
+            const input = document.getElementById('auth-input');
+            if(input) input.focus(); 
+        }, 50);
+    }
+    
+    setInterval(updateAuthCountdown, 1000);
+    updateAuthCountdown();
+}
+
+// 2. Event listener for the Enter key
+document.addEventListener('keydown', function(e) {
+    const overlay = document.getElementById('auth-overlay');
+    if (e.key === 'Enter' && overlay && overlay.style.display !== 'none') {
+        e.preventDefault(); 
+        validateAuth();
+    }
+});
+
+checkAccess();
+
         // --- INLINED CALENDAR MODULE HTML CONTENT ---
         const CALENDAR_MODULE_HTML = `
             <div id="calendar-module-container" class="mt-4">
