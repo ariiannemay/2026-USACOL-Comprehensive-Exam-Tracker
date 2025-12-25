@@ -355,6 +355,10 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
     animation-play-state: paused;
 }
 
+#review-notes:focus {
+    outline: none;
+    border-right: 2px solid var(--color-secondary-gold);
+}
 
     </style>
     <!-- Vercel Web Analytics -->
@@ -1677,18 +1681,20 @@ function saveModal(){
             history.current = history.stack.length - 1;
         }
 
-        function saveNotes() {
-            const notes = $('#review-notes').val();
-            localStorage.setItem(NOTEPAD_CONTENT_KEY, notes);
-            
-            if (notes !== history.stack[history.current]) {
-                pushHistory(notes);
-            }
-        }
-        
-        function applyNotesContent(content) {
-            $('#review-notes').val(content);
-            localStorage.setItem(NOTEPAD_CONTENT_KEY, content);
+function saveNotes() {
+    const notes = document.getElementById('review-notes').value;
+    // Direct key usage prevents conflicts
+    localStorage.setItem('review_notepad_content', notes);
+    
+    if (history.stack[history.current] !== notes) {
+        pushHistory(notes);
+    }
+}
+
+function applyNotesContent(content) {
+            const noteArea = document.getElementById('review-notes');
+            if (noteArea) noteArea.value = content;
+            localStorage.setItem('review_notepad_content', content);
         }
 
         function undoNotes() {
@@ -3231,6 +3237,47 @@ const response = await fetch('https://raw.githubusercontent.com/ariiannemay/2026
            updateStats();
        }
  
+// NOTEPAD PERSISTENCE (ADD THIS BLOCK) 
+const NOTEPAD_KEY = '2026_bar_review_notes';
+
+// Function to wait for an element to appear in the DOM (polls every 100ms, up to 10 seconds)
+function waitForElement(selector, callback, timeout = 10000, interval = 100) {
+    const startTime = Date.now();
+    const checkExist = setInterval(() => {
+        const element = document.querySelector(selector);
+        if (element) {
+            clearInterval(checkExist);
+            callback(element);
+        } else if (Date.now() - startTime > timeout) {
+            clearInterval(checkExist);
+            console.warn(`Element ${selector} not found after ${timeout}ms`);
+        }
+    }, interval);
+}
+
+// Use the waiter to load and attach listeners once #review-notes exists
+waitForElement('#review-notes', (reviewNotes) => {
+    // 1. Load saved note
+    const saved = localStorage.getItem(NOTEPAD_KEY);
+    if (saved !== null) {
+        reviewNotes.value = saved;
+    }
+
+    // 2. Save automatically while typing (debounced)
+    let notepadTimeout;
+    reviewNotes.addEventListener('input', (e) => {
+        clearTimeout(notepadTimeout);
+        notepadTimeout = setTimeout(() => {
+            localStorage.setItem(NOTEPAD_KEY, e.target.value);
+        }, 400); // Saves 400ms after typing stops
+    });
+
+    // 3. Save on blur (extra safety, e.g., when clicking away)
+    reviewNotes.addEventListener('blur', (e) => {
+        localStorage.setItem(NOTEPAD_KEY, e.target.value);
+    });
+});
+
        // RENDER TABLE
        function renderTable() {
            const tbody = document.getElementById('caseTableBody');
