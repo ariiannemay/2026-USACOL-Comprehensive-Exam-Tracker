@@ -789,42 +789,60 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
 <div id="digestModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-2 transition-opacity duration-300">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-[98vw] max-h-[95vh] flex flex-col overflow-hidden transform transition-all scale-95 duration-300 ease-out" id="digestModalContent">
         
-        <div class="bg-black p-3 border-b border-gray-700 flex justify-between items-center">
+    <div class="bg-black border-b border-gray-700">
+        <div class="p-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <i data-lucide="notebook-pen" class="w-5 h-5 text-white"></i>
-                <div>
-                    <h2 class="text-lg header-font tracking-wide leading-none text-white">CASE DIGEST CARD</h2>
-                    <p id="modalCaseTitle" class="text-[10px] text-gray-400 font-mono truncate max-w-2xl">Select a case...</p>
-                </div>
+                <h2 class="text-sm header-font tracking-widest text-white uppercase">Case Digest Editor</h2>
             </div>
             <button onclick="closeModal()" class="text-gray-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
-
-        <div class="p-3 overflow-y-auto bg-[#f9fafb] flex-grow space-y-3">
-            <input type="hidden" id="currentCaseId">
-            
-            <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
-                <label class="modal-label text-[10px] font-extrabold text-black uppercase tracking-wider">Doctrine / Syllabus</label>
-                <textarea id="noteDoctrine" class="w-full p-1 bg-transparent text-sm text-gray-800 leading-snug focus:outline-none" rows="3" placeholder="Enter doctrine..."></textarea>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
-                    <label class="modal-label text-[10px] font-extrabold text-black uppercase tracking-wider">Facts</label>
-                    <textarea id="noteFacts" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none" rows="6" placeholder="Brief facts..."></textarea>
-                </div>
-
-                <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
-                    <label class="modal-label text-[10px] font-extrabold text-black uppercase tracking-wider">Issue/s</label>
-                    <textarea id="noteIssue" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none" rows="6" placeholder="Legal issues..."></textarea>
-                </div>
-            </div>
-
-            <div class="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
-                <label class="modal-label text-[10px] font-extrabold text-black uppercase tracking-wider">Ruling</label>
-                <textarea id="noteRuling" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none" rows="5" placeholder="Court's ruling..."></textarea>
-            </div>
+        <div class="px-4 pb-3">
+            <h1 id="modalCaseTitle" class="text-xl sm:text-2xl font-black text-white uppercase tracking-tighter leading-tight drop-shadow-sm">
+                Select a case...
+            </h1>
         </div>
+    </div>
+
+<div class="p-3 pt-1 overflow-y-auto bg-[#f9fafb] flex-grow space-y-4">
+        <input type="hidden" id="currentCaseId">
+
+    
+<div class="flex flex-col space-y-0.5 mb-2 px-1">
+        <div class="flex items-center gap-2">
+            <span class="text-sm font-black text-black uppercase tracking-tight">G.R. No:</span>
+        <input type="text" id="noteGRNo" class="bg-transparent text-sm text-gray-800 font-bold focus:outline-none border-b border-dashed border-gray-300 flex-grow" placeholder="123556">
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-sm font-black text-black uppercase tracking-tight">Date:</span>
+        <input type="text" id="noteCaseDate" class="bg-transparent text-sm text-gray-800 font-bold focus:outline-none border-b border-dashed border-gray-300 flex-grow" placeholder="November 21, 2003">
+    </div>
+</div>
+
+<div class="bg-orange-50/50 p-2 rounded-r-lg shadow-sm border border-orange-200 border-l-[6px] border-l-orange-500">
+        <label class="modal-label text-[10px] font-extrabold text-orange-700 border-orange-700 uppercase tracking-wider mb-1 block">Doctrine / Syllabus</label>
+        <textarea id="noteDoctrine" class="w-full p-1 bg-transparent text-sm text-gray-800 leading-snug focus:outline-none font-bold" style="text-align: justify;" rows="3" placeholder="Enter doctrine..."></textarea>
+    </div>
+
+    <div class="bg-yellow-50/50 p-2 rounded-r-lg shadow-sm border border-yellow-200 border-l-[6px] border-l-yellow-500">
+        <label class="modal-label text-[10px] font-extrabold text-yellow-700 border-yellow-700 uppercase tracking-wider mb-1 block">Facts</label>
+        <textarea id="noteFacts" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none font-bold" style="text-align: justify;" rows="5" placeholder="Brief facts..."></textarea>
+    </div>
+
+    <div class="bg-green-50/50 p-2 rounded-r-lg shadow-sm border border-green-200 border-l-[6px] border-l-green-500">
+        <label class="modal-label text-[10px] font-extrabold text-green-700 border-green-700 uppercase tracking-wider mb-1 block">Issue/s</label>
+        <textarea id="noteIssue" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none font-bold" style="text-align: justify;" rows="3" placeholder="Legal issues..."></textarea>
+    </div>
+
+<div class="bg-pink-50/50 p-2 rounded-r-lg shadow-sm border border-pink-200 border-l-[6px] border-l-pink-500">
+    <label class="modal-label text-[10px] font-extrabold text-pink-700 border-pink-700 uppercase tracking-wider mb-1 block">Ruling</label>
+    <textarea id="noteRuling" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none font-bold" style="text-align: justify;" rows="5" placeholder="Court's ruling..."></textarea>
+</div>
+
+    <div class="bg-red-50/50 p-2 rounded-r-lg shadow-sm border border-red-200 border-l-[6px] border-l-red-500">
+        <label class="modal-label text-[10px] font-extrabold text-red-700 border-red-700 uppercase tracking-wider mb-1 block">Dispositive Portion</label>
+        <textarea id="noteDispositive" class="w-full p-1 bg-transparent text-sm text-gray-700 focus:outline-none font-bold" style="text-align: justify;" rows="5" placeholder="WHEREFORE, premises considered..." ></textarea>
+    </div>
 
 <div class="bg-white px-4 py-2 border-t border-gray-100 flex justify-between items-center">
     <span class="text-[10px] text-gray-400 italic">Auto-saves on 'Save'</span>
@@ -3472,18 +3490,24 @@ function updateStats() {
     if (document.getElementById('headerPercent')) document.getElementById('headerPercent').innerText = `${donePercent.toFixed(1)}%`;
 }
        // --- MODAL LOGIC ---
-       function openDigestModal(id, title) {
-           const data = getStorageData();
-           const caseData = data[id]?.digest || {};
-           
-           document.getElementById('currentCaseId').value = id;
-           document.getElementById('modalCaseTitle').innerText = title;
-           document.getElementById('noteDoctrine').value = caseData.doctrine || '';
-           document.getElementById('noteFacts').value = caseData.facts || '';
-           document.getElementById('noteIssue').value = caseData.issue || '';
-           document.getElementById('noteRuling').value = caseData.ruling || '';
-           
-           const modal = document.getElementById('digestModal');
+function openDigestModal(id, title) {
+    const data = getStorageData();
+    const caseState = data[id] || {}; 
+    const caseData = caseState.digest || {}; 
+    
+    document.getElementById('currentCaseId').value = id;
+    document.getElementById('modalCaseTitle').innerText = title;
+
+    // Mapping the new IDs to the stored data
+    document.getElementById('noteGRNo').value = caseData.grNo || '';
+    document.getElementById('noteCaseDate').value = caseData.dateText || '';
+    document.getElementById('noteDoctrine').value = caseData.doctrine || '';
+    document.getElementById('noteFacts').value = caseData.facts || '';
+    document.getElementById('noteIssue').value = caseData.issue || '';
+    document.getElementById('noteRuling').value = caseData.ruling || '';
+    document.getElementById('noteDispositive').value = caseData.dispositive || '';
+    
+    const modal = document.getElementById('digestModal');
            modal.classList.remove('hidden');
            modal.classList.add('flex');
            // Animation
@@ -3503,50 +3527,74 @@ function updateStats() {
            }, 300);
        }
  
-       function saveDigest() {
-           const id = document.getElementById('currentCaseId').value;
-           const digest = {
-               doctrine: document.getElementById('noteDoctrine').value,
-               facts: document.getElementById('noteFacts').value,
-               issue: document.getElementById('noteIssue').value,
-               ruling: document.getElementById('noteRuling').value
-           };
-           
-           updateStorage(id, 'digest', digest);
-           renderTable(); // Re-render to update the button status
-           closeModal();
-       }
+function saveDigest() {
+    const id = document.getElementById('currentCaseId').value;
+    if (!id) return;
+
+    const digest = {
+        grNo: document.getElementById('noteGRNo').value,
+        dateText: document.getElementById('noteCaseDate').value,
+        doctrine: document.getElementById('noteDoctrine').value,
+        facts: document.getElementById('noteFacts').value,
+        issue: document.getElementById('noteIssue').value,
+        ruling: document.getElementById('noteRuling').value,
+        dispositive: document.getElementById('noteDispositive').value
+    };
+    
+    updateStorage(id, 'digest', digest);
+    renderTable(); 
+    closeModal();
+}
  
        // Start
 // --- EXPORT TO WORD LOGIC ---
+// Start editing here
 async function generateDocx(casesToExport, fileName) {
     const { Document, Packer, Paragraph, TextRun, AlignmentType, HeadingLevel, PageBreak } = docx;
     const children = [];
+    const storageData = getStorageData();
 
     casesToExport.forEach((c, index) => {
-        const data = getStorageData()[c.no]?.digest || null;
+        const data = storageData[c.no]?.digest || null;
 
-        // Header Section
+        // 1. UPDATED HEADER: Includes G.R. No. and separates the Date
         children.push(new Paragraph({ text: c.title.toUpperCase(), heading: HeadingLevel.HEADING_1, alignment: AlignmentType.CENTER }));
-        children.push(new Paragraph({ text: `${c.date} | ${c.division}`, alignment: AlignmentType.CENTER, spacing: { after: 400 } }));
+        children.push(new Paragraph({ 
+            text: `G.R. No. ${data?.grNo || 'N/A'} | Date: ${data?.dateText || c.date}`, 
+            alignment: AlignmentType.CENTER, 
+            spacing: { after: 400 } 
+        }));
 
+        // 2. UPDATED SECTIONS: Added DISPOSITIVE PORTION
         const sections = [
             { label: "DOCTRINE / SYLLABUS", text: data?.doctrine },
             { label: "FACTS", text: data?.facts },
             { label: "ISSUE/S", text: data?.issue },
-            { label: "RULING", text: data?.ruling }
+            { label: "RULING", text: data?.ruling },
+            { label: "DISPOSITIVE PORTION", text: data?.dispositive, isFallo: true }
         ];
 
         sections.forEach(s => {
-            children.push(new Paragraph({ children: [new TextRun({ text: s.label, bold: true, underline: {} })], spacing: { before: 200 } }));
             children.push(new Paragraph({ 
-                text: s.text ? `- ${s.text}` : "No digest yet", 
+                children: [new TextRun({ text: s.label, bold: true, underline: {} })], 
+                spacing: { before: 200 } 
+            }));
+
+            // Logic to prevent "double content" error and format Fallo
+            const contentText = s.text ? (s.isFallo ? s.text.toUpperCase() : s.text) : "No digest content provided.";
+            
+            children.push(new Paragraph({ 
+                children: [
+                    new TextRun({ 
+                        text: s.isFallo ? contentText : `- ${contentText}`, 
+                        bold: s.isFallo 
+                    })
+                ],
                 alignment: AlignmentType.JUSTIFIED,
                 spacing: { after: 200 }
             }));
         });
 
-        // Add page break if not the last case
         if (index < casesToExport.length - 1) {
             children.push(new Paragraph({ children: [new PageBreak()] }));
         }
@@ -3572,6 +3620,7 @@ function exportAllDigests() {
 // --- IMPORT LOGIC (JSON Backup) ---
 function triggerImport() { document.getElementById('importInput').click(); }
 
+// Start editing here
 function importDigests(event) {
     const file = event.target.files[0];
     if (!file) return;
@@ -3580,18 +3629,36 @@ function importDigests(event) {
         try {
             const importedData = JSON.parse(e.target.result);
             const currentData = getStorageData();
+            
+            // Merge logic: This combines your current work with the imported file
             const mergedData = { ...currentData, ...importedData };
-localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedData));
-alert("Digests imported successfully!");
-// Refresh the modal content if it's open
-const openId = document.getElementById('currentCaseId').value;
-if(openId) openDigestModal(openId, document.getElementById('modalCaseTitle').innerText); 
-renderTable();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(mergedData));
+            
+            alert("Digests imported successfully!");
+            
+            // Re-sync the modal if it's currently being viewed
+            const openId = document.getElementById('currentCaseId').value;
+            if(openId) {
+                const updatedCase = mergedData[openId]?.digest || {};
+                document.getElementById('noteGRNo').value = updatedCase.grNo || '';
+                document.getElementById('noteCaseDate').value = updatedCase.dateText || '';
+                document.getElementById('noteDoctrine').value = updatedCase.doctrine || '';
+                document.getElementById('noteFacts').value = updatedCase.facts || '';
+                document.getElementById('noteIssue').value = updatedCase.issue || '';
+                document.getElementById('noteRuling').value = updatedCase.ruling || '';
+                document.getElementById('noteDispositive').value = updatedCase.dispositive || '';
+            }
+            renderTable();
             updateStats();
-        } catch (err) { alert("Invalid file format."); }
+        } catch (err) { 
+            alert("Invalid file format. Please use a .json backup file."); 
+        }
     };
     reader.readAsText(file);
 }
+
+// End editing here
+
 async function preloadLatestDigests() {
     if (!confirm("This will overwrite your current digests with the latest version from the repo (your personal notes and 'done' marks will be lost unless you exported them first). Continue?")) {
         return;
