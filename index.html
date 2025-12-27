@@ -576,7 +576,13 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
                   focus:border-blue-500 outline-none p-0 bg-transparent text-gray-800" 
            maxlength="30">
 
-    <button onclick="if(confirm('Lock tracker and log out? Progress is saved.')) { localStorage.removeItem('auth_session_start'); location.reload(); }" 
+    <button onclick="window.showThemedModal({
+                title: 'LOCK TRACKER',
+                message: 'Are you sure you want to lock the tracker and log out?',
+                type: 'confirm',
+                confirmText: 'LOGOUT',
+                onConfirm: () => { localStorage.removeItem('auth_session_start'); location.reload(); }
+            })" 
             title="Lock Tracker (Logout)"
             class="absolute right-0 text-gray-400 hover:text-red-600 transition-all flex-shrink-0 hover-pulse">
         <i data-lucide="power" class="w-4 h-4"></i>
@@ -923,11 +929,52 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
                  onerror="this.outerHTML = '<span class=\'text-miss\'>made by miss</span><span class=\'text-atty\'>atty</span><span class=\'text-cpa\'>cpa</span>'">
             <span class="date-text-signature">| november 2025</span>
         </p>
-    </footer>
+</footer>
 
-    <script>
+<div id="universal-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[10000] p-4 transition-opacity duration-300">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden transform transition-all scale-95 duration-300 ease-out" id="universal-modal-content">
+        <div class="header-bg p-3 flex items-center gap-3 border-b-4 border-custom-yellow">
+            <i id="modal-icon" data-lucide="alert-circle" class="w-5 h-5 text-white"></i>
+            <h2 id="modal-header-title" class="text-lg header-font tracking-widest text-white uppercase mt-1">Notification</h2>
+        </div>
+        <div class="p-6 bg-gray-50">
+            <p id="modal-body-text" class="text-sm font-bold text-gray-800 text-center leading-relaxed uppercase"></p>
+        </div>
+        <div class="bg-white p-4 border-t border-gray-100 flex gap-3 justify-center">
+            <button id="modal-cancel-btn" class="hidden px-5 py-2 text-gray-500 font-black text-xs uppercase hover:bg-gray-100 rounded-lg transition-colors">Cancel</button>
+            <button id="modal-confirm-btn" class="px-8 py-2 bg-[#6D1B1B] text-white font-black text-xs uppercase rounded-lg shadow-md hover:bg-red-900 border-b-4 border-black/20 active:border-b-0 active:translate-y-1 transition-all">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<script>
 const ALLOWED_PASSWORDS = ["ama", "bar", "2026", "bar2026"];
 const AUTH_TARGET_DATES = ["2026-07-12", "2026-07-19", "2026-07-26"];
+
+window.showThemedModal = function(options) {
+    const modal = document.getElementById('universal-modal');
+    const titleEl = document.getElementById('modal-header-title');
+    const textEl = document.getElementById('modal-body-text');
+    const confirmBtn = document.getElementById('modal-confirm-btn');
+    const cancelBtn = document.getElementById('modal-cancel-btn');
+
+    titleEl.innerText = options.title || "NOTIFICATION";
+    textEl.innerText = options.message || "";
+    confirmBtn.innerText = options.confirmText || "OK";
+    
+    if (options.type === 'confirm') {
+        cancelBtn.classList.remove('hidden');
+        cancelBtn.innerText = options.cancelText || "CANCEL";
+    } else {
+        cancelBtn.classList.add('hidden');
+    }
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    confirmBtn.onclick = () => { modal.classList.add('hidden'); if (options.onConfirm) options.onConfirm(); };
+    cancelBtn.onclick = () => { modal.classList.add('hidden'); if (options.onCancel) options.onCancel(); };
+};
 
 function updateAuthCountdown() {
     const now = new Date();
@@ -949,16 +996,23 @@ function updateAuthCountdown() {
 // 1. Defined globally so the listener can see it immediately
 window.validateAuth = function() {
     const input = document.getElementById('auth-input');
+    const nameInput = document.getElementById('auth-name-input');
+    const nameValue = nameInput ? nameInput.value.trim() : "";
+
     if (ALLOWED_PASSWORDS.includes(input.value.trim().toLowerCase())) {
-        // Save current timestamp to local storage
+        if (nameValue) localStorage.setItem('user_display_name', nameValue);
         localStorage.setItem('auth_session_start', Date.now());
         document.getElementById('auth-overlay').style.display = "none";
         document.body.style.overflow = "auto";
+        
+        loadUserName(); 
+        if(window.updateOverallDashboard) window.updateOverallDashboard();
     } else {
+        /* --- START EDITING HERE: REDIRECT INSTEAD OF MODAL --- */
         window.location.href = 'denied.html';
+        /* --- END EDITING HERE --- */
     }
 };
-
 
 function checkAccess() {
     const overlay = document.getElementById('auth-overlay');
