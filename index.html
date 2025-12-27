@@ -918,31 +918,37 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
     </div> <!-- end main-content-wrapper -->
 
     <!-- GLOBAL FOOTER -->
-    <footer class="global-app-footer">
-        <p class="quote">
-            Trust that your hard work will never betray you. You did not come this far to only come this far.
-        </p>
-        <p class="signature mt-1">
-            <img src="https://raw.githubusercontent.com/ariiannemay/2026-Bar-Exam-Tracker/main/Images/missattycpa.PNG" 
-                 alt="missattycpa signature" 
-                 class="inline-block h-3.5"
-                 onerror="this.outerHTML = '<span class=\'text-miss\'>made by miss</span><span class=\'text-atty\'>atty</span><span class=\'text-cpa\'>cpa</span>'">
-            <span class="date-text-signature">| november 2025</span>
-        </p>
+<footer class="global-app-footer">
+    <p class="quote">
+        Trust that your hard work will never betray you. You did not come this far to only come this far.
+    </p>
+    <p class="signature mt-1">
+        <img src="https://raw.githubusercontent.com/ariiannemay/2026-Bar-Exam-Tracker/main/Images/missattycpa.PNG"
+             alt="missattycpa signature"
+             class="inline-block h-3.5"
+             onerror="this.outerHTML = '<span class=\'text-miss\'>made by miss</span><span class=\'text-atty\'>atty</span><span class=\'text-cpa\'>cpa</span>'">
+        <span class="date-text-signature">| november 2025</span>
+        <!-- ADD THIS LINE -->
+<p> <span class="ml-4 text-sm text-gray-600 italic" 
+      style="font-family: 'Cormorant Garamond', serif; font-weight: 600;" 
+      id="last-saved">
+   • Last saved: never • </p>
+</span>    
+</p>
 </footer>
 
 <div id="universal-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[10000] p-4 transition-opacity duration-300">
     <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm overflow-hidden transform transition-all scale-95 duration-300 ease-out" id="universal-modal-content">
         <div class="header-bg p-3 flex items-center gap-3 border-b-4 border-custom-yellow">
             <i id="modal-icon" data-lucide="alert-circle" class="w-5 h-5 text-white"></i>
-            <h2 id="modal-header-title" class="text-lg header-font tracking-widest text-white uppercase mt-1">Notification</h2>
+            <h2 id="modal-header-title" class="text-2xl header-font tracking-widest text-white uppercase mt-1">Notification</h2>
         </div>
         <div class="p-6 bg-gray-50">
             <p id="modal-body-text" class="text-sm font-bold text-gray-800 text-center leading-relaxed uppercase"></p>
         </div>
         <div class="bg-white p-4 border-t border-gray-100 flex gap-3 justify-center">
             <button id="modal-cancel-btn" class="hidden px-5 py-2 text-gray-500 font-black text-xs uppercase hover:bg-gray-100 rounded-lg transition-colors">Cancel</button>
-            <button id="modal-confirm-btn" class="px-8 py-2 bg-[#6D1B1B] text-white font-black text-xs uppercase rounded-lg shadow-md hover:bg-red-900 border-b-4 border-black/20 active:border-b-0 active:translate-y-1 transition-all">Confirm</button>
+            <button id="modal-confirm-btn" class="px-8 py-2 bg-[#6D1B1B] text-white font-black text-xs uppercase rounded-lg shadow-md hover:bg-[#FECE1B] border-b-4 border-black/20 active:border-b-0 active:translate-y-1 transition-all">Confirm</button>
         </div>
     </div>
 </div>
@@ -2041,6 +2047,7 @@ else if (isSyllabusTask) {
             
             saveEventsToLocalStorage(events);
             closeTopicModal();
+updateLastSaved();
         }
 
         function deleteTopicTask() {
@@ -2052,6 +2059,7 @@ else if (isSyllabusTask) {
                 
                 saveEventsToLocalStorage(events);
                 closeTopicModal();
+updateLastSaved();
             }
         }
         
@@ -2770,6 +2778,21 @@ document.head.appendChild(colorFixStyle);
             return self;
         };
 
+// AUTO "Last saved" UPDATE FOR ALL SUBJECTS
+const originalCreateSyllabusLogic = window.createSyllabusLogic;
+window.createSyllabusLogic = function(...args) {
+    const logic = originalCreateSyllabusLogic(...args);
+    
+    // Override the saveProgress method
+    const originalSaveProgress = logic.saveProgress;
+    logic.saveProgress = function(progressData) {
+        originalSaveProgress.call(this, progressData);
+        updateLastSaved();  // ← This makes the footer update!
+    };
+    
+    return logic;
+};
+
 
         // --- GLOBAL SUBJECT SYLLABUS DATA (Declarations for loading) ---
         
@@ -2901,6 +2924,11 @@ document.head.appendChild(colorFixStyle);
 
         // --- INITIALIZATION ---
         window.onload = () => {
+const last = localStorage.getItem('last_saved');
+    if (last) {
+        document.getElementById('last-saved').textContent = `• Last saved: ${last} •`;
+    }
+
             // 1. Initialize Countdown Dates
             COUNTDOWN_DATA.forEach(data => {
                 const savedDate = localStorage.getItem(`comp_exam_date_${data.id}`);
@@ -3254,6 +3282,7 @@ document.head.appendChild(colorFixStyle);
            data[caseId][field] = value;
            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
            updateStats();
+updateLastSaved();
        }
  
        // Initial Data Parse
@@ -3491,6 +3520,7 @@ function toggleAll(masterCheckbox) {
     });
 
     renderTable(); // Refresh the UI
+updateLastSaved();
 } 
 // START EDITING HERE: CLEAN UP updateStats
 function updateStats() {
@@ -3598,6 +3628,7 @@ function saveDigest() {
     updateStorage(id, 'digest', digest);
     renderTable(); 
     closeModal();
+updateLastSaved();
 }
  
        // Start
@@ -3704,6 +3735,7 @@ function importDigests(event) {
             }
             renderTable();
             updateStats();
+updateLastSaved();
         } catch (err) { 
             alert("Invalid file format. Please use a .json backup file."); 
         }
@@ -3733,6 +3765,7 @@ async function preloadLatestDigests() {
         // Refresh the table
         renderTable();
         updateStats();
+updateLastSaved();
         
     } catch (err) {
         console.error("Preload failed:", err);
@@ -3784,6 +3817,23 @@ document.querySelectorAll('.date-display-wrapper').forEach(wrapper => {
         }
     });
 });
+
+function updateLastSaved() {
+    const now = new Date().toLocaleString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+    });
+    localStorage.setItem('last_saved', now);
+    const el = document.getElementById('last-saved');
+    if (el) el.textContent = `• Last saved: ${now} •`;
+}
+
+// Call this after every save operation
 
 // START EDITING HERE: QUOTE LOGIC
 const MOTIVATIONAL_QUOTES = [
