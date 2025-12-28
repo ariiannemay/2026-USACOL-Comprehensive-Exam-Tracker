@@ -373,7 +373,55 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
     display: inline-block; /* Required for scale animation */
     animation: pulse-gold 0.8s ease-in-out;
 }
+/* After .save-pulse ... */
+
+/* --- TAB NAVIGATION STYLES --- */
+.sticky-top-pane {
+    position: relative;
+    top: 0;
+    z-index: 1000;
+    background-color: #f3f4f6;
+    padding-top: 2px; /* Minimal space at very top */
+}
+
+.tab-btn {
+    transition: all 0.2s;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+    padding-top: 0.25rem !important;
+    padding-bottom: 0.25rem !important;
+    border: none !important;
+}
+
+.tab-btn.active {
+    color: white !important; /* White text when active */
+    background-color: #6D1B1B !important; /* Maroon background */
+    border-bottom: 2px solid #FECE1B !important; /* Gold accent at bottom */
+}
+
+/* Ensure icons inside active tab are white */
+.tab-btn.active i { color: white !important; }
+
+.tab-content {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ensure body doesn't jump when header sticks */
+body { scroll-behavior: smooth; }
+
     </style>
+
     <!-- Vercel Web Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -467,14 +515,13 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
 </div>
 
 
-    <div class="main-content-wrapper">
-        <div class="max-w-6xl mx-auto space-y-2">
-
-            <!-- 1. HEADER PANEL -->
-<header class="header-bg text-white py-1 px-4 sm:py-2 sm:px-6 rounded-xl shadow-2xl">
-            <div class="flex items-center justify-between">
-                
-                                <div class="flex-shrink-0 w-32 h-32 flex items-center justify-center rounded-full overflow-hidden">
+<div class="main-content-wrapper">
+<!-- STICKY TOP PANE: HEADER + TABS -->
+<div class="sticky-top-pane pt-1 pb-2">
+    <!-- Removed mb-2 and changed rounded-xl to rounded-t-xl -->
+    <header class="header-bg text-white py-1 px-4 sm:py-2 sm:px-6 rounded-t-xl shadow-lg">
+        <div class="flex items-center justify-between">
+                        <div class="flex-shrink-0 w-32 h-32 flex items-center justify-center rounded-full overflow-hidden">
                     <img src="https://raw.githubusercontent.com/ariiannemay/2026-USACOL-Comprehensive-Exam-Tracker/main/Images/USA.png" alt="USA Logo" class="w-24 h-24 object-cover" onerror="this.outerHTML = '<i data-lucide=\'graduation-cap\' class=\'w-full h-full object-cover\'></i>'">
                 </div>
                 
@@ -482,7 +529,7 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
                     <h1 class="text-xl sm:text-3xl font-extrabold header-font tracking-wider mb-2 underline" style="text-shadow: 2px 2px 0 #000000;">
                         UNIVERSITY OF SAN AGUSTIN
                     </h1>
-                    <h2 class="text-2xl sm:text-4xl italic font-extrabold header-font tracking-widest" style="text-shadow: 2px 2px 0 #000000; line-height: 1.1; font-size: 2.75em;">
+                    <h2 class="text-2xl sm:text-4xl italic font-extrabold header-font tracking-widest" style="text-shadow: 2px 2px 0 #000000; line-height: 1.1; font-size: 3em;">
                         2026 COMPREHENSIVE EXAM REVIEW TRACKER
                     </h2>
                 </div>
@@ -493,7 +540,29 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
                 </div>
         </header>
         
+                <!-- NAVIGATION TABS -->
+    <!-- Changed rounded-lg to rounded-b-xl, p-1 to p-0.5, py-2 to py-1 -->
+    <nav class="flex overflow-x-auto no-scrollbar bg-white rounded-b-xl shadow-md border-x border-b border-gray-200 p-0.5 gap-1">
+        <button onclick="switchTab('tab-dashboard')" class="tab-btn active flex-1 py-1 px-4 rounded-md text-gray-500 font-bold uppercase flex items-center justify-center gap-2" id="btn-dashboard">
+            <i data-lucide="layout-dashboard" class="w-4 h-4"></i> <span>Dashboard</span>
+        </button>
+        <button onclick="switchTab('tab-calendar')" class="tab-btn flex-1 py-1 px-4 rounded-md text-gray-500 font-bold uppercase flex items-center justify-center gap-2" id="btn-calendar">
+            <i data-lucide="calendar" class="w-4 h-4"></i> <span>Review Calendar</span>
+        </button>
+        <button onclick="switchTab('tab-subjects')" class="tab-btn flex-1 py-1 px-4 rounded-md text-gray-500 font-bold uppercase flex items-center justify-center gap-2" id="btn-subjects">
+            <i data-lucide="book-marked" class="w-4 h-4"></i> <span>Bar Subjects</span>
+        </button>
+        <button onclick="switchTab('tab-gaerlan')" class="tab-btn flex-1 py-1 px-4 rounded-md text-gray-500 font-bold uppercase flex items-center justify-center gap-2" id="btn-gaerlan">
+            <i data-lucide="pen-tool" class="w-4 h-4"></i> <span>Gaerlan Cases</span>
+        </button>
+        <button onclick="switchTab('tab-analytics')" class="tab-btn flex-1 py-1 px-4 rounded-md text-gray-500 font-bold uppercase flex items-center justify-center gap-2" id="btn-analytics">
+            <i data-lucide="line-chart" class="w-4 h-4"></i> <span>Review Targets</span>
+        </button>
+    </nav>
+            </div>
+
             <!-- 2. COUNTDOWN PANELS (Hourglass color fixed to inherited white) -->
+<div id="tab-dashboard" class="tab-content active space-y-2">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div id="card-day-1" class="bg-white rounded-xl shadow-lg border border-gray-300 relative overflow-hidden">
                     <div class="flex items-center justify-between card-header-bg text-white p-2 text-sm font-bold text-center border-b-4 border-custom-yellow uppercase">
@@ -658,12 +727,13 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
                 </div>
             </div>
 
-            <!-- 4. SUBJECT TRACKERS (Dynamic Content) -->
-            <div id="subject-trackers-container" class="space-y-4">
-                
-                <!-- CALENDAR MODULE INJECTION POINT (Before REM Tracker) -->
+</div>
+
+<div id="tab-calendar" class="tab-content">
                 <div id="calendar-module-placeholder"></div>
-                
+</div>
+
+<div id="tab-subjects" class="tab-content space-y-4">
                 <!-- Subject panels will be dynamically injected here -->
                 <div id="subject-tracker-panel-rem"></div>
                 <div id="subject-tracker-panel-crim"></div>
@@ -671,12 +741,15 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
                 <div id="subject-tracker-panel-civ"></div>
                 <div id="subject-tracker-panel-comm"></div>
                 <div id="subject-tracker-panel-poli"></div> 
+</div>
+</div>
 
+<div id="tab-gaerlan" class="tab-content">
             <!-- MERGED: Case Tracker (Placed below all subject trackers, which includes Political Law as the last one) -->
             <div class="mt-6">
                 <!-- MAIN COLLAPSIBLE CARD FROM case_tracker.html -->
                 <div class="bg-white rounded-xl shadow-lg border border-gray-300 overflow-hidden mb-6">       
-                    <details class="group">
+                    <details class="group" open>
                         <!-- HEADER (SUMMARY) -->
 <summary class="block p-0 cursor-pointer select-none transition-colors hover:bg-gray-900"
 style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
@@ -763,7 +836,7 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
 </div>
   
                             <!-- 2. TABLE CONTAINER -->
-<div class="overflow-x-auto" style="max-height: 75vh;">
+<div class="overflow-x-auto">
     <table class="min-w-full divide-y divide-gray-200 relative" id="mainTable">
 <thead class="bg-gray-50 sticky top-0 z-10 shadow-xs text-xs font-bold text-[#6D1B1B] uppercase tracking-wider">
     <tr>
@@ -796,107 +869,13 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
                                 </thead>
                                 <tbody id="caseTableBody" class="divide-y divide-gray-100 text-xs text-gray-700 bg-white">
                                     <!-- JS WILL INJECT ROWS HERE -->
-                                </tbody>
+</tbody>
                             </table>
-                        </div>
-                        
-                    </div>
+                        </div> <!-- Closes table container -->
+                    </div> <!-- Closes black header background -->
                 </details>
-            </div>
-
-</div> <div class="bg-white rounded-xl shadow-lg border border-gray-300 overflow-hidden mb-6">
-                <details id="review-targets-panel" class="group" open>
-<summary class="block p-0 cursor-pointer select-none transition-colors hover:bg-gray-800" style="background-color: gray; border-bottom: 5px solid #9ca3af;">
-    <div class="flex flex-col items-start justify-between py-3 px-6 text-white gap-2">
-        <div class="flex items-center justify-between w-full">
-            <div class="flex items-center">
-                <i data-lucide="line-chart" class="w-6 h-6 mr-3 text-white"></i>
-                <h1 class="text-xl sm:text-2xl font-bold uppercase tracking-tight">Session Targets</h1>
-            </div>
-            <div class="flex items-center text-xs">
-                <span class="text-gray-300 mr-2 font-light hidden sm:inline">Press to Expand/Collapse</span>
-                <i data-lucide="chevron-right" class="w-6 h-6 ml-2 transform transition-transform duration-300 group-open:rotate-90"></i>
-            </div>
-        </div>
-
-        <div class="flex flex-wrap items-center gap-6 w-full text-[0.7rem]">
-            <div class="flex items-center gap-4 whitespace-nowrap">
-                <span class="flex items-center font-bold tracking-tight uppercase">
-                    <i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>
-                    DONE: <span id="daily-total" class="ml-1.5 mr-1">0</span> BOXES
-                </span>
-                <span class="flex items-center font-bold tracking-tight uppercase">
-                    <i data-lucide="book-open" class="w-4 h-4 mr-1 text-gray-200"></i>
-                    TO DO: <span id="daily-todo" class="ml-1.5 mr-1">0</span> BOXES
-                </span>
-            </div>
-            
-            <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
-                <span class="whitespace-nowrap flex items-center font-bold tracking-tight uppercase">
-                    <i data-lucide="bar-chart-3" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:
-                </span>
-                <div class="flex-grow bg-white/20 h-3 rounded-full overflow-hidden relative border border-white/10">
-                    <div id="daily-target-bar-header" class="bg-white h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
-                </div>
-                <span id="daily-target-percent-header" class="ml-1 font-bold">0%</span>
-            </div>
-        </div>
-    </div>
-</summary>
-                    
-                    <div class="p-4 grid grid-cols-1 lg:grid-cols-4 gap-6 bg-gray-50/50">
-<div class="lg:col-span-1 border-b lg:border-b-0 lg:border-r border-gray-200 pb-4 lg:pb-0 pr-4">
-    <h3 class="text-[11px] font-black text-[#330066] uppercase tracking-tighter flex items-center mb-4">
-        <i data-lucide="target" class="w-3 h-3 mr-1"></i> Goals & Settings
-    </h3>
-    <div class="space-y-4">
-                                <div>
-                                    <label class="block text-[9px] font-bold text-gray-400 uppercase mb-1">Daily Box Goal</label>
-                                    <div class="flex shadow-sm">
-                                        <input type="number" id="daily-goal-input" class="w-full px-3 py-2 rounded-l-lg border-2 border-r-0 border-gray-200 focus:border-black outline-none font-bold text-center text-sm" placeholder="50">
-                                        <button onclick="window.updateAnalyticsGoal()" class="bg-black text-white px-4 py-2 rounded-r-lg font-black text-[10px] uppercase hover:bg-gray-800 transition-all border-2 border-black">SET</button>
-                                    </div>
-                                </div>
-                                <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
-                                    <div class="flex justify-between items-end mb-1">
-                                        <span class="text-[9px] font-black text-gray-400 uppercase">Today's Progress</span>
-                                        <span id="daily-target-percent" class="text-xs font-black text-black">0%</span>
-                                    </div>
-                                    <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                                        <div id="daily-target-bar" class="h-full transition-all duration-700"></div>
-                                    </div>
-                                </div>
-                                <button onclick="window.resetAnalyticsData()" class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-600 border border-red-100 rounded-lg text-[10px] font-black uppercase hover:bg-red-600 hover:text-white transition-all">
-                                    <i data-lucide="trash-2" class="w-3 h-3"></i> Clear All History
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="lg:col-span-3 space-y-4 sm:pl-4">
-                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                                <h3 class="text-[11px] font-black text-black uppercase tracking-tighter flex items-center">
-                                    <i data-lucide="calendar-range" class="w-3 h-3 mr-1"></i> Productivity Timeline
-                                </h3>
-                                <div class="flex bg-gray-200 p-1 rounded-lg">
-                                    <button onclick="window.setAnalyticsRange('weekly')" id="range-weekly" class="range-tab flex-1 px-3 py-1 text-[9px] font-black uppercase rounded-md transition-all bg-white shadow-sm text-black">Weekly</button>
-                                    <button onclick="window.setAnalyticsRange('monthly')" id="range-monthly" class="range-tab flex-1 px-3 py-1 text-[9px] font-black uppercase rounded-md transition-all text-gray-500">Monthly</button>
-                                    <button onclick="window.setAnalyticsRange('custom')" id="range-custom" class="range-tab flex-1 px-3 py-1 text-[9px] font-black uppercase rounded-md transition-all text-gray-500">Custom</button>
-                                </div>
-                            </div>
-                            <div id="custom-range-picker" class="hidden flex items-center gap-2 pt-1 border-t border-dashed border-gray-200">
-                                <input type="date" id="custom-start" class="text-[10px] p-1 border rounded font-bold" onchange="window.refreshTargetsUI()">
-                                <span class="text-[10px] font-bold text-gray-400">TO</span>
-                                <input type="date" id="custom-end" class="text-[10px] p-1 border rounded font-bold" onchange="window.refreshTargetsUI()">
-                            </div>
-                            <div class="relative pt-6 pb-2">
-                                <div class="flex items-end justify-between h-32 gap-1 px-2 border-b border-l border-gray-300 pl-6" id="analytics-chart-container"></div>
-                                <div id="analytics-labels-container" class="flex justify-between px-2 pt-2 text-[8px] font-black text-gray-400 uppercase tracking-tighter pl-6"></div>
-                            </div>
-                        </div>
-                    </div>
-                </details>
-            </div>
-
+            </div> <!-- Closes white card wrapper -->
+        </div> <!-- Closes tab-gaerlan -->
 
             <!-- NOTEPAD MODAL FROM case_tracker.html -->
 <div id="digestModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-2 transition-opacity duration-300">
@@ -979,50 +958,140 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
 </div>
             </div> <!-- End Case Tracker -->
 
+<!-- 6. ANALYTICS TAB (USACOL THEMED) -->
+        <div id="tab-analytics" class="tab-content mt-1">
+            <div class="bg-white rounded-xl shadow-lg border border-gray-300 overflow-hidden mb-6">
+                <details id="review-targets-panel" class="group" open>
+                    <!-- Header: Maroon Background with Gold Border -->
+                    <summary class="block p-0 cursor-pointer select-none transition-colors hover:bg-[#5a1616]" style="background-color: #6D1B1B; border-bottom: 5px solid #FECE1B;">
+                        <div class="flex flex-col items-start justify-between py-3 px-6 text-white gap-2">
+                            <div class="flex items-center justify-between w-full">
+                                <div class="flex items-center">
+                                    <i data-lucide="line-chart" class="w-6 h-6 mr-3 text-white"></i>
+                                    <h1 class="text-xl sm:text-2xl font-bold uppercase tracking-tight">Session Targets</h1>
+                                </div>
+                                <div class="flex items-center text-xs">
+                                    <span class="text-gray-300 mr-2 font-light hidden sm:inline">Press to Expand/Collapse</span>
+                                    <i data-lucide="chevron-right" class="w-6 h-6 ml-2 transform transition-transform duration-300 group-open:rotate-90"></i>
+                                </div>
+                            </div>
 
-            <!-- 5. GLOBAL DATA MANAGEMENT BUTTONS (UPDATED) -->
-            <div class="max-w-6xl mx-auto mt-6 mb-6 flex space-x-3 px-2 sm:px-0">
-                <button onclick="exportAllData()" class="flex-1 px-3 py-2 bg-green-600 text-white font-semibold text-sm rounded-lg shadow-lg hover:bg-green-700 transition duration-150 uppercase flex items-center justify-center">
-                    <i data-lucide="download-cloud" class="w-4 h-4 mr-1"></i> Export All Data
-                </button>
-                <button onclick="document.getElementById('global-file-input').click()" class="flex-1 px-3 py-2 bg-blue-600 text-white font-semibold text-sm rounded-lg shadow-lg hover:bg-blue-700 transition duration-150 uppercase flex items-center justify-center">
-                    <i data-lucide="upload-cloud" class="w-4 h-4 mr-1"></i> Import Existing Data
-                </button>
+                            <div class="flex flex-wrap items-center gap-6 w-full text-[0.7rem]">
+                                <div class="flex items-center gap-4 whitespace-nowrap">
+                                    <span class="flex items-center font-bold tracking-tight uppercase">
+                                        <i data-lucide="check-circle-2" class="w-4 h-4 mr-1 text-gray-200"></i>
+                                        DONE: <span id="daily-total" class="ml-1.5 mr-1">0</span> BOXES
+                                    </span>
+                                    <span class="flex items-center font-bold tracking-tight uppercase">
+                                        <i data-lucide="book-open" class="w-4 h-4 mr-1 text-gray-200"></i>
+                                        TO DO: <span id="daily-todo" class="ml-1.5 mr-1">0</span> BOXES
+                                    </span>
+                                </div>
+                                
+                                <div class="flex items-center space-x-2 flex-grow min-w-[200px]">
+                                    <span class="whitespace-nowrap flex items-center font-bold tracking-tight uppercase">
+                                        <i data-lucide="bar-chart-3" class="w-4 h-4 mr-1"></i>OVERALL PROGRESS:
+                                    </span>
+                                    <div class="flex-grow bg-white/20 h-3 rounded-full overflow-hidden relative border border-white/10">
+                                        <div id="daily-target-bar-header" class="bg-white h-full rounded-full transition-all duration-700 ease-out" style="width: 0%"></div>
+                                    </div>
+                                    <span id="daily-target-percent-header" class="ml-1 font-bold">0%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </summary>
+                    
+                    <div class="p-4 grid grid-cols-1 lg:grid-cols-4 gap-6 bg-gray-50/50">
+                        <!-- Left Column: Settings -->
+                        <div class="lg:col-span-1 border-b lg:border-b-0 lg:border-r border-gray-200 pb-4 lg:pb-0 pr-4">
+                            <h3 class="text-[11px] font-black text-[#6D1B1B] uppercase tracking-tighter flex items-center mb-4">
+                                <i data-lucide="target" class="w-3 h-3 mr-1"></i> Goals & Settings
+                            </h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-[9px] font-bold text-gray-400 uppercase mb-1">Daily Box Goal</label>
+                                    <div class="flex shadow-sm">
+                                        <input type="number" id="daily-goal-input" class="w-full px-3 py-2 rounded-l-lg border-2 border-r-0 border-gray-200 focus:border-[#6D1B1B] outline-none font-bold text-center text-sm" placeholder="50">
+                                        <button onclick="window.updateAnalyticsGoal()" class="bg-[#6D1B1B] text-white px-4 py-2 rounded-r-lg font-black text-[10px] uppercase hover:bg-[#5a1616] transition-all border-2 border-[#6D1B1B]">SET</button>
+                                    </div>
+                                </div>
+                                <div class="p-3 bg-white rounded-lg border border-gray-200 shadow-sm">
+                                    <div class="flex justify-between items-end mb-1">
+                                        <span class="text-[9px] font-black text-gray-400 uppercase">Today's Progress</span>
+                                        <span id="daily-target-percent" class="text-xs font-black text-black">0%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
+                                        <div id="daily-target-bar" class="h-full transition-all duration-700"></div>
+                                    </div>
+                                </div>
+                                <button onclick="window.resetAnalyticsData()" class="w-full flex items-center justify-center gap-2 px-3 py-2 bg-red-50 text-red-600 border border-red-100 rounded-lg text-[10px] font-black uppercase hover:bg-red-600 hover:text-white transition-all">
+                                    <i data-lucide="trash-2" class="w-3 h-3"></i> Clear All History
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Timeline & Chart -->
+                        <div class="lg:col-span-3 space-y-1 sm:pl-4">
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-1">
+                                <h3 class="text-[11px] font-black text-[#6D1B1B] uppercase tracking-tighter flex items-center">
+                                    <i data-lucide="calendar-range" class="w-3 h-3 mr-1"></i> Productivity Timeline
+                                </h3>
+                                <div class="flex bg-gray-200 p-1 rounded-lg">
+                                    <button onclick="window.setAnalyticsRange('weekly')" id="range-weekly" class="range-tab flex-1 px-3 py-1 text-[9px] font-black uppercase rounded-md transition-all bg-white shadow-sm text-black">Weekly</button>
+                                    <button onclick="window.setAnalyticsRange('monthly')" id="range-monthly" class="range-tab flex-1 px-3 py-1 text-[9px] font-black uppercase rounded-md transition-all text-gray-500">Monthly</button>
+                                    <button onclick="window.setAnalyticsRange('custom')" id="range-custom" class="range-tab flex-1 px-3 py-1 text-[9px] font-black uppercase rounded-md transition-all text-gray-500">Custom</button>
+                                </div>
+                            </div>
+                            <div id="custom-range-picker" class="hidden flex items-center gap-2 pt-1 border-t border-dashed border-gray-200">
+                                <input type="date" id="custom-start" class="text-[10px] p-1 border rounded font-bold" onchange="window.refreshTargetsUI()">
+                                <span class="text-[10px] font-bold text-gray-400">TO</span>
+                                <input type="date" id="custom-end" class="text-[10px] p-1 border rounded font-bold" onchange="window.refreshTargetsUI()">
+                            </div>
+                            <!-- Chart Unit: Increased Height to h-48 and lowered spacing -->
+                            <div class="relative pt-1 pb-2">
+                                <div class="flex items-end justify-between h-48 gap-1 px-2 border-b border-l border-gray-300 pl-6" id="analytics-chart-container"></div>
+                                <div id="analytics-labels-container" class="flex justify-between px-2 pt-2 text-[10px] font-black text-gray-400 uppercase tracking-tighter pl-6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
             </div>
+        </div>
 
-<input type="file" id="global-file-input" class="hidden" accept=".json" onchange="importAllData(event)">
-            
-            <!-- START: AESTHETIC CLOUD NOTE BLOCK -->
-            <div class="max-w-6xl mx-auto mt-8 mb-6 px-4 sm:px-0">
+<!-- START: LIMITATIONS & DATA MANAGEMENT COMBINED UNIT -->
+            <div class="mt-4 mb-6 w-full">
                 <div class="bg-blue-50/70 backdrop-blur-sm border border-blue-200 shadow-xl p-5 rounded-xl transition duration-300 hover:shadow-2xl hover:border-blue-300">
+                    
+                    <!-- 1. Tracker Limitations Content (Top) -->
                     <p class="font-bold text-sm text-blue-800 mb-2 flex items-center">
                         <i data-lucide="cloud" class="w-4 h-4 mr-2 text-blue-500"></i>
                         TRACKER LIMITATIONS
                     </p>
-                    <ul class="list-disc list-outside ml-5 text-[11px] text-gray-700 space-y-2">
+                    <ul class="list-disc list-outside ml-5 text-sm text-gray-700 space-y-2 mb-6">
                         <li class="pl-1">
-                            <strong style="color: #6D1B1B;">Progress Metric:</strong> Overall progress updates and a topic counts as “done” only once <strong>4 out of 6 boxes</strong> per topic row are checked.
+                            <strong style="color: #330066;">Progress Metric:</strong> Overall progress updates and a topic counts as “done” only once <strong>4 out of 6 boxes</strong> per topic row are checked.
                         </li>
                         <li class="pl-1">
-                            <strong style="color: #6D1B1B;">Data Portability:</strong> Your review progress is saved <strong>only within your current browser</strong> (Local Storage). Your data will not be synchronized automatically if you clear your browsing data or switch devices. To transfer your progress to a new device or browser, please use the <strong>Export All Data</strong> and <strong>Import Existing Data</strong> functions.
+                            <strong style="color: #330066;">Data Portability:</strong> Your review progress is saved <strong>only within your current browser</strong> (Local Storage). Your data will not be synchronized automatically if you clear your browsing data or switch devices. To transfer your progress to a new device or browser, please use the <strong> Export All Data</strong> and <strong> Import Existing Data</strong> functions.
                         </li>
-<li class="pl-1">
-    <strong style="color: #6D1B1B;">Device Compatibility:</strong> This tracker is optimized for <strong>Laptop/Desktop</strong> use to ensure all features and layouts render correctly.
-</li>
                         <li class="pl-1">
-                            <strong style="color: #6D1B1B;">Other Trackers:</strong> Access the <a href="https://2026bar-reviewtracker.vercel.app/" target="_blank" class="text-blue-500 underline hover:text-blue-700 font-bold">2026 Bar Tracker</a> here // Access the <a href="https://docs.google.com/spreadsheets/d/1jGPx2rF3xePovioGsDeAyXhWuXMQeU5xXrEefAW5V8s/edit?usp=sharing" target="_blank" class="text-blue-500 underline hover:text-blue-700 font-bold">2026 Comprehensive Exam Tracker (Google Sheets version)</a> here.
+                            <strong style="color: #330066;">Device Compatibility:</strong> This tracker is optimized for <strong>Laptop/Desktop</strong> use to ensure all features and layouts render correctly.
                         </li>
-
                     </ul>
+
+                    <!-- 2. Smaller Data Management Buttons (Bottom) -->
+                    <div class="flex space-x-2 w-full pt-4 border-t border-blue-200">
+                        <button onclick="exportAllData()" class="flex-1 px-2 py-1.5 bg-green-600 text-white font-bold text-[10px] rounded-lg shadow-md hover:bg-green-700 transition duration-150 uppercase flex items-center justify-center">
+                            <i data-lucide="download-cloud" class="w-3 h-3 mr-1"></i> Export All Data
+                        </button>
+                        <button onclick="document.getElementById('global-file-input').click()" class="flex-1 px-2 py-1.5 bg-blue-600 text-white font-bold text-[10px] rounded-lg shadow-md hover:bg-blue-700 transition duration-150 uppercase flex items-center justify-center">
+                            <i data-lucide="upload-cloud" class="w-3 h-3 mr-1"></i> Import Existing Data
+                        </button>
+                    </div>
+                    <input type="file" id="global-file-input" class="hidden" accept=".json" onchange="importAllData(event)">
                 </div>
             </div>
-            <!-- END: AESTHETIC CLOUD NOTE BLOCK -->
-
-        </div>
-    </div>
-
-        </div> <!-- end max-w-6xl -->
-    </div> <!-- end main-content-wrapper -->
+            <!-- END: DATA MANAGEMENT & LIMITATIONS BLOCK -->
 
     <!-- GLOBAL FOOTER -->
 <footer class="global-app-footer">
@@ -4043,7 +4112,7 @@ window.trackActivity = function(isCheck) {
     
     // CELEBRATION TRIGGER: If just reached 100%
     if (oldPercent < 100 && newPercent >= 100) {
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#330066', '#B266FF', '#FFD700'] });
+confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#6D1B1B', '#FECE1B', '#ffffff'] });
     }
 
     localStorage.setItem(ANALYTICS_STORE_KEY, JSON.stringify(data));
@@ -4151,21 +4220,29 @@ function renderRangeChart(history, goal) {
         }
     }
 
+// Start editing inside renderRangeChart loop
 daysToRender.forEach(item => {
-        const count = history[item.date.toDateString()] || 0;
-        const height = Math.min(Math.max((count / (goal * 1.2)) * 100, 3), 100);
-        const bar = document.createElement('div');
-        
-        // FIXED: All bars now use bg-gray-300 regardless of the date
-        bar.className = `flex-1 bg-gray-300 rounded-t-sm relative group transition-all duration-300 hover:bg-gray-400`;
-        bar.style.height = `${height}%`;
-        
-        bar.innerHTML = `
-            <div class="absolute -top-7 left-1/2 -translate-x-1/2 text-black text-[5px] font-black opacity-0 group-hover:opacity-100 z-50 pointer-events-none whitespace-nowrap transition-all duration-200">
-                ${count} BOXES
-            </div>
-        `;
-        chart.appendChild(bar);
+    const count = history[item.date.toDateString()] || 0;
+    const height = Math.min(Math.max((count / (goal * 1.2)) * 100, 3), 100);
+    const bar = document.createElement('div');
+    
+    // THEME UPDATE: Calculate performance color
+    const dayPercent = (count / goal) * 100;
+    let barColorClass = 'bg-red-500'; 
+    if (dayPercent >= 100) barColorClass = 'bg-green-500';
+    else if (dayPercent >= 75) barColorClass = 'bg-yellow-400';
+    else if (dayPercent >= 50) barColorClass = 'bg-orange-500';
+    else if (dayPercent >= 25) barColorClass = 'bg-orange-400';
+
+    bar.className = `flex-1 ${barColorClass} rounded-t-sm relative group transition-all duration-300 hover:brightness-110`;
+    bar.style.height = `${height}%`;
+    
+    bar.innerHTML = `
+        <div class="absolute -top-7 left-1/2 -translate-x-1/2 text-black text-[7px] font-black opacity-0 group-hover:opacity-100 z-50 pointer-events-none whitespace-nowrap transition-all duration-200">
+            ${count} BOXES
+        </div>
+    `;
+    chart.appendChild(bar);
 
         const lbl = document.createElement('span');
         lbl.className = "flex-1 text-center font-black text-[7px] sm:text-[9px] uppercase tracking-tighter mt-2 text-gray-500";
@@ -4186,6 +4263,43 @@ document.addEventListener('input', () => {
     saveTimeout = setTimeout(updateLastSaved, 1000); 
 });
 document.addEventListener('change', () => updateLastSaved());
+
+// --- TAB SWITCHING LOGIC ---
+window.switchTab = function(tabId) {
+    // Hide all contents
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // Deactivate all buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+        btn.classList.add('text-gray-500');
+    });
+
+    // Show selected content
+    document.getElementById(tabId).classList.add('active');
+    
+    // Activate clicked button
+    const activeBtn = document.getElementById('btn-' + tabId.split('-')[1]);
+    activeBtn.classList.add('active');
+    activeBtn.classList.remove('text-gray-500');
+
+    // Special handlers for specific tabs to ensure UI refreshes
+    if (tabId === 'tab-calendar' && window.CALENDAR_APP) {
+        window.CALENDAR_APP.refreshCalendar();
+        window.CALENDAR_APP.syncHeight();
+    }
+    if (tabId === 'tab-dashboard') {
+        window.updateOverallDashboard();
+    }
+    if (tabId === 'tab-analytics' && typeof refreshTargetsUI === 'function') {
+        refreshTargetsUI();
+    }
+    
+    // Scroll to top of content area on switch
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
     </script>
 </body>
