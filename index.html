@@ -1697,10 +1697,12 @@ function saveModal(){
 
                     showMessageModal("Import Success", `<p class='text-green-600'>Successfully imported data for ${subjectsImported} subjects, dates, name, calendar, and notes. The tracker has been refreshed.</p>`);
 
-                } catch (e) {
-                    console.error("Global Import error:", e);
-                    showMessageModal("Import Failed", `<p class='text-red-600'>Failed to import data. Please ensure the file is a valid JSON backup from this tracker. Error: ${e.message}</p>`);
-                }
+} catch (e) {
+    window.showThemedModal({
+        title: 'IMPORT FAILED',
+        message: 'INVALID BACKUP FILE. PLEASE ENSURE YOU ARE UPLOADING THE CORRECT JSON FILE.'
+    });
+}
             };
             reader.onerror = function() { showMessageModal("Import Error", `<p class='text-red-600'>Error reading the file.</p>`); };
             reader.readAsText(file);
@@ -1874,12 +1876,15 @@ function applyNotesContent(content) {
             localStorage.setItem('review_notepad_content', content);
         }
 
-        function undoNotes() {
+function undoNotes() {
             if (history.current > 0) {
                 history.current--;
                 applyNotesContent(history.stack[history.current]);
             } else {
-                CALENDAR_APP.showCustomAlert("NO UNDO", "NO EARLIER HISTORY FOUND.");
+                window.showThemedModal({
+                    title: 'NO UNDO',
+                    message: 'NO EARLIER HISTORY FOUND.'
+                });
             }
         }
         function redoNotes() {
@@ -1887,22 +1892,36 @@ function applyNotesContent(content) {
                 history.current++;
                 applyNotesContent(history.stack[history.current]);
             } else {
-                CALENDAR_APP.showCustomAlert("NO REDO", "NO FUTURE HISTORY FOUND.");
+                window.showThemedModal({
+                    title: 'NO REDO',
+                    message: 'NO FUTURE HISTORY FOUND.'
+                });
             }
         }
-        function clearNotes() {
-            // FIX: Removed window.confirm() and replaced with CALENDAR_APP.showCustomAlert 
-            // Note: Cannot use confirm() in this limited environment. Assuming user confirmation via a custom modal is required.
-            // Since we can't implement complex custom confirmation flow here, we'll implement a simplified clear.
-            if (confirm("ARE YOU SURE YOU WANT TO CLEAR ALL NOTES? THIS ACTION CAN BE UNDONE.")) {
-                 applyNotesContent("");
-                 pushHistory("");
-             }
+function clearNotes() {
+            window.showThemedModal({
+                title: 'CLEAR ALL NOTES',
+                message: 'ARE YOU SURE YOU WANT TO DELETE ALL CONTENT IN THE NOTEPAD? THIS ACTION CAN BE UNDONE VIA THE UNDO BUTTON.',
+                type: 'confirm',
+                confirmText: 'CLEAR ALL',
+                cancelText: 'CANCEL',
+                onConfirm: () => {
+                    applyNotesContent("");
+                    pushHistory("");
+                    window.showThemedModal({
+                        title: 'NOTEPAD CLEARED',
+                        message: 'ALL NOTES HAVE BEEN REMOVED.'
+                    });
+                }
+            });
         }
-        function copyNotes() {
+function copyNotes() {
             const notes = $('#review-notes').val();
             if (!notes) {
-                CALENDAR_APP.showCustomAlert("COPY FAILED", "NO CONTENT TO COPY.");
+                window.showThemedModal({
+                    title: 'COPY FAILED',
+                    message: 'NO CONTENT TO COPY.'
+                });
                 return;
             }
             const textarea = document.getElementById('review-notes');
@@ -1910,12 +1929,17 @@ function applyNotesContent(content) {
             
             try {
                 document.execCommand('copy');
-                CALENDAR_APP.showCustomAlert("COPY COMPLETE", "NOTES COPIED TO CLIPBOARD.");
+                window.showThemedModal({
+                    title: 'COPY COMPLETE',
+                    message: 'NOTES COPIED TO CLIPBOARD.'
+                });
             } catch (err) {
-                CALENDAR_APP.showCustomAlert("COPY FAILED", "UNABLE TO COPY NOTES TO CLIPBOARD.");
+                window.showThemedModal({
+                    title: 'COPY FAILED',
+                    message: 'UNABLE TO COPY NOTES TO CLIPBOARD.'
+                });
             }
         }
-
         function getExamDates() {
             // Accessing global COUNTDOWN_DATA defined in the main script
             return COUNTDOWN_DATA.map(examData => {
@@ -1936,13 +1960,13 @@ function applyNotesContent(content) {
             });
         }
         
-        function showCustomAlert(title, message) {
-            // Uses elements defined within the CALENDAR_MODULE_HTML template
-            $('#custom-alert-modal #alertTitle').text(title.toUpperCase());
-            const formattedMessage = message.toUpperCase().replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            $('#custom-alert-modal #alertMessage').html(formattedMessage);
-            $('#custom-alert-modal').removeClass('hidden').css('display', 'flex');
-        }
+function showCustomAlert(title, message) {
+    // Redirects all internal calendar warnings to the professional themed modal
+    window.showThemedModal({
+        title: title.toUpperCase(),
+        message: message.toUpperCase().replace(/\*\*(.*?)\*\*/g, '$1') 
+    });
+}
         function closeCustomAlert() {
             $('#custom-alert-modal').addClass('hidden').css('display', 'none');
         }
@@ -3843,9 +3867,12 @@ function importDigests(event) {
             renderTable();
             updateStats();
 updateLastSaved();
-        } catch (err) { 
-            alert("Invalid file format. Please use a .json backup file."); 
-        }
+} catch (err) { 
+    window.showThemedModal({
+        title: 'IMPORT ERROR',
+        message: 'INVALID FILE FORMAT. PLEASE UPLOAD A VALID .JSON BACKUP FILE.'
+    });
+}
     };
     reader.readAsText(file);
 }
@@ -3853,31 +3880,24 @@ updateLastSaved();
 // End editing here
 
 async function preloadLatestDigests() {
-    if (!confirm("This will overwrite your current digests with the latest version from the repo (your personal notes and 'done' marks will be lost unless you exported them first). Continue?")) {
-        return;
-    }
-
-    try {
-        const response = await fetch('https://raw.githubusercontent.com/ariiannemay/2026-Bar-Exam-Tracker/main/data.json');
-        if (!response.ok) {
-            throw new Error(`Failed to fetch: ${response.status}`);
+    window.showThemedModal({
+        title: 'PRELOAD DATA',
+        message: 'THIS WILL OVERWRITE YOUR CURRENT DIGESTS WITH DATA FROM THE REPO. PROCEED?',
+        type: 'confirm',
+        confirmText: 'OVERWRITE',
+        onConfirm: async () => {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/ariiannemay/2026-Bar-Exam-Tracker/main/data.json');
+                if (!response.ok) throw new Error();
+                const preloadedData = await response.json();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(preloadedData));
+                renderTable(); updateStats(); updateLastSaved();
+                window.showThemedModal({ title: 'SUCCESS', message: 'LATEST DIGESTS LOADED!' });
+            } catch (err) {
+                window.showThemedModal({ title: 'ERROR', message: 'FAILED TO SYNC WITH REPO.' });
+            }
         }
-        const preloadedData = await response.json();
-        
-        // Overwrite local storage with fresh data from repo
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(preloadedData));
-        
-        alert("✅ Latest digests successfully loaded from repo!");
-        
-        // Refresh the table
-        renderTable();
-        updateStats();
-updateLastSaved();
-        
-    } catch (err) {
-        console.error("Preload failed:", err);
-        alert("❌ Failed to load latest digests. Check your internet connection or try again later.");
-    }
+    });
 }
 
 // Quick clickable date picker - pops up right on the card!
@@ -3903,11 +3923,14 @@ document.querySelectorAll('.date-display-wrapper').forEach(wrapper => {
 
         const today = new Date();
         today.setHours(0,0,0,0);
-        if (new Date(newDate) < today) {
-            alert("Please select a future date.");
-            picker.value = saved; // revert
-            return;
-        }
+if (new Date(newDate) < today) {
+    window.showThemedModal({
+        title: 'INVALID DATE',
+        message: 'PLEASE SELECT A FUTURE DATE FOR YOUR EXAM COUNTDOWN.'
+    });
+    picker.value = saved; 
+    return;
+}
 
         // Save
         localStorage.setItem(`comp_exam_date_${id}`, newDate);
