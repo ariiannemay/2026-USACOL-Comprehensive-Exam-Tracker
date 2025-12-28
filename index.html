@@ -364,7 +364,15 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
     outline: none;
     border-right: 2px solid var(--color-secondary-gold);
 }
-
+@keyframes pulse-gold {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); color: #FECE1B; opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+.save-pulse {
+    display: inline-block; /* Required for scale animation */
+    animation: pulse-gold 0.8s ease-in-out;
+}
     </style>
     <!-- Vercel Web Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
@@ -1868,12 +1876,14 @@ function saveNotes() {
     if (history.stack[history.current] !== notes) {
         pushHistory(notes);
     }
+if (typeof updateLastSaved === 'function') updateLastSaved();
 }
 
 function applyNotesContent(content) {
             const noteArea = document.getElementById('review-notes');
             if (noteArea) noteArea.value = content;
             localStorage.setItem('review_notepad_content', content);
+if (typeof updateLastSaved === 'function') updateLastSaved();
         }
 
 function undoNotes() {
@@ -3950,19 +3960,19 @@ if (new Date(newDate) < today) {
 
 function updateLastSaved() {
     const now = new Date().toLocaleString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: true
+        month: 'long', day: 'numeric', year: 'numeric',
+        hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true
     });
     localStorage.setItem('last_saved', now);
     const el = document.getElementById('last-saved');
-    if (el) el.textContent = `• Last saved: ${now} •`;
+    if (el) {
+        el.textContent = `• Last saved: ${now} •`;
+        // Trigger pulse
+        el.classList.remove('save-pulse');
+        void el.offsetWidth; // This "resets" the animation
+        el.classList.add('save-pulse');
+    }
 }
-
 // Call this after every save operation
 
 // START EDITING HERE: QUOTE LOGIC
@@ -4165,6 +4175,17 @@ daysToRender.forEach(item => {
 }
 
 init();
+
+// Universal listener for changes in other tabs
+window.addEventListener('storage', () => updateLastSaved());
+
+// Universal listener for clicks/typing in THIS tab (debounced for performance)
+let saveTimeout;
+document.addEventListener('input', () => {
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(updateLastSaved, 1000); 
+});
+document.addEventListener('change', () => updateLastSaved());
 
     </script>
 </body>
