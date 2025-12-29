@@ -967,13 +967,17 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
 
     
 <div class="flex flex-col space-y-0.5 mb-2 px-1">
-        <div class="flex items-center gap-2">
-            <span class="text-sm font-black text-black uppercase tracking-tight">G.R. No:</span>
-        <input type="text" id="noteGRNo" class="bg-transparent text-sm text-gray-800 font-bold focus:outline-none border-b border-dashed border-gray-300 flex-grow" placeholder="123556">
+    <div class="flex items-center gap-2">
+        <span class="text-sm font-black text-black uppercase tracking-tight">G.R. No:</span>
+        <input type="text" id="noteGRNo" class="bg-transparent text-sm text-gray-800 font-bold focus:outline-none border-b border-dashed border-gray-300 flex-grow" placeholder="Enter GR Number...">
     </div>
     <div class="flex items-center gap-2">
         <span class="text-sm font-black text-black uppercase tracking-tight">Date:</span>
-        <input type="text" id="noteCaseDate" class="bg-transparent text-sm text-gray-800 font-bold focus:outline-none border-b border-dashed border-gray-300 flex-grow" placeholder="November 21, 2003">
+        <input type="text" id="noteCaseDate" class="bg-transparent text-sm text-gray-800 font-bold focus:outline-none border-b border-dashed border-gray-300 flex-grow" readonly placeholder="Detected from CSV...">
+    </div>
+    <div class="flex items-center gap-2">
+        <span class="text-sm font-black text-black uppercase tracking-tight">Division:</span>
+        <input type="text" id="noteDivision" class="bg-transparent text-sm text-gray-800 font-bold focus:outline-none border-b border-dashed border-gray-300 flex-grow" readonly placeholder="Detected from CSV...">
     </div>
 </div>
 
@@ -3890,13 +3894,15 @@ function openDigestModal(id, title) {
     const data = getStorageData();
     const caseState = data[id] || {}; 
     const caseData = caseState.digest || {}; 
+const caseInfo = allCases.find(c => c.no === id);
     
     document.getElementById('currentCaseId').value = id;
     document.getElementById('modalCaseTitle').innerText = title;
 
     // Mapping the new IDs to the stored data
-    document.getElementById('noteGRNo').value = caseData.grNo || '';
-    document.getElementById('noteCaseDate').value = caseData.dateText || '';
+document.getElementById('noteGRNo').value = caseData.grNo || '';
+document.getElementById('noteCaseDate').value = caseInfo ? caseInfo.date : '';
+document.getElementById('noteDivision').value = caseInfo ? caseInfo.division : '';
     document.getElementById('noteDoctrine').value = caseData.doctrine || '';
     document.getElementById('noteFacts').value = caseData.facts || '';
     document.getElementById('noteIssue').value = caseData.issue || '';
