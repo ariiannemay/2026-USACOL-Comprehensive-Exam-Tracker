@@ -4292,11 +4292,11 @@ const targetBar = document.getElementById('daily-target-bar');
     if (targetBar) {
         targetBar.style.width = `${percent}%`;
         targetBar.className = 'h-full transition-all duration-1000 shadow-inner rounded-full'; 
-        // Logic updated: 100% is Green, others follow traffic light pattern
-        if (percent >= 100) targetBar.classList.add('bg-green-500');
-        else if (percent >= 75) targetBar.classList.add('bg-yellow-400');
-        else if (percent >= 50) targetBar.classList.add('bg-orange-500');
-        else targetBar.classList.add('bg-red-500');
+        // SYNCED WITH SUBJECT TRACKER:
+        if (percent <= 25) targetBar.classList.add('bg-red-500');
+        else if (percent <= 50) targetBar.classList.add('bg-orange-500');
+        else if (percent <= 75) targetBar.classList.add('bg-yellow-400');
+        else targetBar.classList.add('bg-green-500');
     }
     renderRangeChart(history, goal);
 }
@@ -4379,27 +4379,27 @@ function renderRangeChart(history, goal) {
         const element = document.createElement('div');
 
 if (isCalendar) {
-            // --- SYNCED PROGRESS COLORS: 100% IS GREEN ---
+            // --- SYNCED WITH SUBJECT TRACKER THEME ---
             let bgClass = 'bg-gray-50 text-gray-300';
             if (count > 0) {
-                if (dayPercent >= 100) bgClass = 'bg-green-500 text-white shadow-md'; 
-                else if (dayPercent >= 75) bgClass = 'bg-yellow-400 text-black';       
-                else if (dayPercent >= 50) bgClass = 'bg-orange-500 text-white';     
-                else bgClass = 'bg-red-500 text-white';                              
+                if (dayPercent <= 25) bgClass = 'bg-red-500 text-white'; 
+                else if (dayPercent <= 50) bgClass = 'bg-orange-500 text-white';       
+                else if (dayPercent <= 75) bgClass = 'bg-yellow-400 text-black';     
+                else bgClass = 'bg-green-500 text-white shadow-md';                              
             }
             const isToday = dateStr === new Date().toDateString();
-            const todayRing = isToday ? 'ring-2 ring-[#330066] ring-offset-1' : ''; // Keeps purple theme ring
+            const todayRing = isToday ? 'ring-2 ring-[#330066] ring-offset-1' : '';
             
             element.className = `heatmap-cell text-[10px] font-black flex items-center justify-center rounded-md transition-all ${bgClass} ${todayRing} h-8 w-8 mx-auto`;
             element.innerText = dateObj.getDate();
         } else {
             const h = Math.min(Math.max((count / (goal * 1.2)) * 100, 3), 100);
             
-            // --- BAR COLORS: 100% IS GREEN ---
+            // --- SYNCED WITH SUBJECT TRACKER THEME ---
             let barColor = 'bg-red-500';
-            if (dayPercent >= 100) barColor = 'bg-green-500 shadow-md';
-            else if (dayPercent >= 75) barColor = 'bg-yellow-400';
-            else if (dayPercent >= 50) barColor = 'bg-orange-500';
+            if (dayPercent > 75) barColor = 'bg-green-500 shadow-md';
+            else if (dayPercent > 50) barColor = 'bg-yellow-400';
+            else if (dayPercent > 25) barColor = 'bg-orange-500';
             
             element.className = `flex-1 ${barColor} rounded-t-lg transition-all duration-500 hover:scale-x-105`;
             element.style.height = `${h}%`;
