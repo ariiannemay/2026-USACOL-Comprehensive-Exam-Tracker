@@ -421,7 +421,6 @@ th.sortable:hover { background-color: #f1f1f1; color: #000; }
 body { scroll-behavior: smooth; }
 
 /* --- ADVANCED ANALYTICS & HEATMAP STYLES --- */
-/* --- OVERHAULED CALENDAR HEATMAP STYLES --- */
 /* Syncs container height for all views */
 #analytics-chart-container { 
     min-height: 200px; 
@@ -3303,6 +3302,7 @@ const last = localStorage.getItem('last_saved');
                 saveModal = function() {
                     originalSaveModal();
                     updateScheduleTable();
+            refreshTargetsUI();  
                 };
             }
             
@@ -3310,6 +3310,9 @@ const last = localStorage.getItem('last_saved');
             document.getElementById('modal-cancel-btn').addEventListener('click', closeModal);
             
             document.getElementById('message-modal-close-btn')?.addEventListener('click', closeMessageModal);
+if (typeof refreshTargetsUI === 'function') {
+                refreshTargetsUI();
+            }
         };
 
         // APPENDED: Case Tracker Script from case_tracker.html (at the end of the main script block)
@@ -4180,7 +4183,6 @@ document.head.appendChild(qStyle);
 // END EDITING HERE
 
 // --- REVIEW TARGETS LOGIC ---
-// --- REVIEW TARGETS LOGIC (CONSOLIDATED & MAROON THEMED) ---
 let currentRange = 'weekly'; 
 const ANALYTICS_STORE_KEY = 'bar_tracker_analytics_v3';
 
@@ -4282,13 +4284,15 @@ function refreshTargetsUI() {
     if (document.getElementById('daily-goal-input')) document.getElementById('daily-goal-input').value = goal;
     if (document.getElementById('daily-target-percent')) document.getElementById('daily-target-percent').innerText = `${percent.toFixed(0)}%`;
     
-    const targetBar = document.getElementById('daily-target-bar');
+const targetBar = document.getElementById('daily-target-bar');
     if (targetBar) {
         targetBar.style.width = `${percent}%`;
-        targetBar.className = 'h-full transition-all duration-1000 shadow-inner'; 
-        if (percent <= 25) targetBar.classList.add('bg-red-500');
-        else if (percent <= 75) targetBar.classList.add('bg-yellow-400');
-        else targetBar.classList.add('bg-[#6D1B1B]');
+        targetBar.className = 'h-full transition-all duration-1000 shadow-inner rounded-full'; 
+        // Logic updated: 100% is Green, others follow traffic light pattern
+        if (percent >= 100) targetBar.classList.add('bg-green-500');
+        else if (percent >= 75) targetBar.classList.add('bg-yellow-400');
+        else if (percent >= 50) targetBar.classList.add('bg-orange-500');
+        else targetBar.classList.add('bg-red-500');
     }
     renderRangeChart(history, goal);
 }
@@ -4370,22 +4374,30 @@ function renderRangeChart(history, goal) {
         const dayPercent = (count / goal) * 100;
         const element = document.createElement('div');
 
-        if (isCalendar) {
+if (isCalendar) {
+            // --- SYNCED PROGRESS COLORS: 100% IS GREEN ---
             let bgClass = 'bg-gray-50 text-gray-300';
             if (count > 0) {
-                if (dayPercent >= 100) bgClass = 'bg-[#6D1B1B] text-white';
-                else if (dayPercent >= 60) bgClass = 'bg-[#B66D6D] text-white';
-                else bgClass = 'bg-[#FECE1B] text-[#6D1B1B]';
+                if (dayPercent >= 100) bgClass = 'bg-green-500 text-white shadow-md'; 
+                else if (dayPercent >= 75) bgClass = 'bg-yellow-400 text-black';       
+                else if (dayPercent >= 50) bgClass = 'bg-orange-500 text-white';     
+                else bgClass = 'bg-red-500 text-white';                              
             }
             const isToday = dateStr === new Date().toDateString();
-            element.className = `heatmap-cell text-[10px] font-black flex items-center justify-center rounded-md transition-all ${bgClass} ${isToday ? 'ring-2 ring-[#6D1B1B] ring-offset-1' : ''} h-8 w-8 mx-auto`;
+            const todayRing = isToday ? 'ring-2 ring-[#330066] ring-offset-1' : ''; // Keeps purple theme ring
+            
+            element.className = `heatmap-cell text-[10px] font-black flex items-center justify-center rounded-md transition-all ${bgClass} ${todayRing} h-8 w-8 mx-auto`;
             element.innerText = dateObj.getDate();
         } else {
             const h = Math.min(Math.max((count / (goal * 1.2)) * 100, 3), 100);
-            let barColor = 'bg-red-400';
-            if (dayPercent >= 100) barColor = 'bg-[#6D1B1B]';
-            else if (dayPercent >= 50) barColor = 'bg-orange-400';
-            element.className = `flex-1 ${barColor} rounded-t-md transition-all duration-500 hover:brightness-110`;
+            
+            // --- BAR COLORS: 100% IS GREEN ---
+            let barColor = 'bg-red-500';
+            if (dayPercent >= 100) barColor = 'bg-green-500 shadow-md';
+            else if (dayPercent >= 75) barColor = 'bg-yellow-400';
+            else if (dayPercent >= 50) barColor = 'bg-orange-500';
+            
+            element.className = `flex-1 ${barColor} rounded-t-lg transition-all duration-500 hover:scale-x-105`;
             element.style.height = `${h}%`;
             const lbl = document.createElement('span');
             lbl.className = "flex-1 text-center font-black text-[7px] text-gray-400 mt-1";
