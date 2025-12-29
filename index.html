@@ -1924,15 +1924,12 @@ function saveModal(){
             document.head.appendChild(script);
         }
         
-        // --- GLOBAL DASHBOARD LOGIC (drawPieChart, updateScheduleTable, updateOverallDashboard remain unchanged) ---
-        // ... (Functions omitted for brevity, they remain as they were in the previous step)
-        
         // --- CALENDAR DATA SOURCE (SIMPLIFIED FOR CALENDAR ONLY) ---
-        // This is the new, minimal data source for the Calendar's dropdowns.
-        // It ONLY contains Depth 1 topics and the necessary metadata (id, topic, color, shortTitle)
-        // Note: The topics here must match the topics in the external JS files!
-        const CONSOLIDATED_SYLLABUS = {
-            poli: { title: 'POLITICAL AND PUBLIC INTERNATIONAL LAW', shortTitle: 'POLI LAW', color: '#795548', 
+const CONSOLIDATED_SYLLABUS = {
+            poli: { 
+                title: 'POLITICAL AND PUBLIC INTERNATIONAL LAW', 
+                shortTitle: 'POLI LAW', 
+                color: '#795548', 
                 data: [
                     {id: 5001, topic: "I. BASIC CONCEPTS", depth: 1, trackable: true},
                     {id: 5007, topic: "II. NATIONAL TERRITORY", depth: 1, trackable: true},
@@ -1950,62 +1947,83 @@ function saveModal(){
                     {id: 5064, topic: "XIV. PUBLIC INTERNATIONAL LAW", depth: 1, trackable: true},
                 ]
             },
-            comm: { title: 'COMMERCIAL AND TAXATION LAWS', shortTitle: 'COMM & TAX', color: '#eab308', 
+            comm: { 
+                title: 'COMMERCIAL AND TAXATION LAWS', 
+                shortTitle: 'COMM & TAX', 
+                color: '#eab308', 
                 data: [
                     {id: 4001, topic: 'I. BUSINESS ORGANIZATIONS', depth: 1, trackable: true},
-                    {id: 4005, topic: 'II. INSURANCE (P.D. NO. 612, AS AMENDED BY R.A. NO. 10607)', depth: 1, trackable: true},
+                    {id: 4005, topic: 'II. INSURANCE', depth: 1, trackable: true},
                     {id: 4010, topic: 'III. TRANSPORTATION', depth: 1, trackable: true},
                     {id: 4014, topic: 'IV. BANKING', depth: 1, trackable: true},
-                    {id: 4019, topic: 'V. INTELLECTUAL PROPERTY – R.A. NO. 8293, AS AMENDED', depth: 1, trackable: true},
+                    {id: 4019, topic: 'V. INTELLECTUAL PROPERTY', depth: 1, trackable: true},
                     {id: 4023, topic: 'VI. SPECIAL COMMERCIAL LAWS', depth: 1, trackable: true},
                     {id: 4027, topic: 'VII. TAXATION LAW', depth: 1, trackable: true},
                 ]
             },
-            civ: { title: 'CIVIL LAW AND LAND TITLES AND DEEDS', shortTitle: 'CIVIL LAW', color: '#1e3a8a', 
+            civ: { 
+                title: 'CIVIL LAW AND LAND TITLES AND DEEDS', 
+                shortTitle: 'CIVIL LAW', 
+                color: '#1e3a8a', 
                 data: [
-                    {id:3001,topic:"I. EFFECT AND APPLICATION OF LAWS",depth:1, trackable:true},
-                    {id:3011,topic:"II. PERSONS AND FAMILY RELATIONS",depth:1, trackable:true},
-                    {id:3024,topic:"III. PROPERTY, OWNERSHIP, AND ITS MODIFICATIONS",depth:1, trackable:true},
-                    {id:3035,topic:"IV. SUCCESSION",depth:1, trackable:true},
-                    {id:3041,topic:"V. OBLIGATIONS AND CONTRACTS",depth:1, trackable:true},
-                    {id:3046,topic:"VI. SPECIAL CONTRACTS",depth:1, trackable:true},
-                    {id:3053,topic:"VII. TORTS AND QUASI-DELICTS",depth:1, trackable:true},
+                    {id: 3001, topic: "I. EFFECT AND APPLICATION OF LAWS", depth: 1, trackable: true},
+                    {id: 3005, topic: "II. PERSONS", depth: 1, trackable: true},
+                    {id: 3011, topic: "III. FAMILY CODE", depth: 1, trackable: true},
+                    {id: 3015, topic: "IV. CIVIL REGISTER", depth: 1, trackable: true},
+                    {id: 3024, topic: "V. PROPERTY, OWNERSHIP, AND ITS MODIFICATIONS", depth: 1, trackable: true},
+                    {id: 3030, topic: "VI. LAND TITLES AND DEEDS", depth: 1, trackable: true},
+                    {id: 3035, topic: "VII. SUCCESSION", depth: 1, trackable: true},
+                    {id: 3041, topic: "VIII. OBLIGATIONS AND CONTRACTS", depth: 1, trackable: true},
+                    {id: 3046, topic: "IX. SPECIAL CONTRACTS", depth: 1, trackable: true},
+                    {id: 3050, topic: "X. QUASI-CONTRACTS", depth: 1, trackable: true},
+                    {id: 3053, topic: "XI. TORTS AND QUASI-DELICTS", depth: 1, trackable: true},
+                    {id: 3060, topic: "XII. DAMAGES", depth: 1, trackable: true},
                 ]
             },
-            lab: { title: 'LABOR AND SOCIAL LEGISLATION', shortTitle: 'LABOR LAW', color: '#38761d', 
+            lab: { 
+                title: 'LABOR AND SOCIAL LEGISLATION', 
+                shortTitle: 'LABOR LAW', 
+                color: '#38761d', 
                 data: [
-                    {id:2001,topic:"I. BASIC PRINCIPLES AND CONCEPTS",depth:1, trackable:true},
-                    {id:2008,topic:"II. RECRUITMENT AND PLACEMENT",depth:1, trackable:true},
-                    {id:2014,topic:"III. EMPLOYMENT RELATIONSHIP",depth:1, trackable:true},
-                    {id:2019,topic:"IV. LABOR STANDARDS",depth:1, trackable:true},
-                    {id:2025,topic:"V. LABOR RELATIONS",depth:1, trackable:true},
-                    {id:2031,topic:"VI. SUSPENSION AND TERMINATION OF EMPLOYMENT",depth:1, trackable:true},
-                    {id:2037,topic:"VII. SOCIAL LEGISLATION",depth:1, trackable:true},
-                    {id:2042,topic:"VIII. LABOR ADJUDICATION: JURISDICTION & REMEDIES",depth:1, trackable:true},
+                    {id: 2001, topic: "I. BASIC PRINCIPLES AND CONCEPTS", depth: 1, trackable: true},
+                    {id: 2008, topic: "II. RECRUITMENT AND PLACEMENT", depth: 1, trackable: true},
+                    {id: 2014, topic: "III. EMPLOYMENT RELATIONSHIP", depth: 1, trackable: true},
+                    {id: 2019, topic: "IV. LABOR STANDARDS", depth: 1, trackable: true},
+                    {id: 2025, topic: "V. LABOR RELATIONS", depth: 1, trackable: true},
+                    {id: 2031, topic: "VI. SUSPENSION AND TERMINATION OF EMPLOYMENT", depth: 1, trackable: true},
+                    {id: 2037, topic: "VII. SOCIAL LEGISLATION", depth: 1, trackable: true},
+                    {id: 2042, topic: "VIII. LABOR ADJUDICATION-JURISDICTION & REMEDIES", depth: 1, trackable: true},
                 ]
             },
-            crim: { title: 'CRIMINAL LAW', shortTitle: 'CRIM LAW', color: '#b33a3a', 
+            crim: { 
+                title: 'CRIMINAL LAW', 
+                shortTitle: 'CRIM LAW', 
+                color: '#b33a3a', 
                 data: [
-                    {id:1001,topic:"I. FUNDAMENTAL PRINCIPLES",depth:1, trackable: true},
-                    {id:1013,topic:"II. FELONIES AND CRIMINAL LIABILITY (RPC BOOK 1 AND RELATED LAWS)",depth:1, trackable: true},
-                    {id:1032,topic:"III. CRIMES AND THEIR PENALTIES (RPC BOOK 2 AND RELATED SPECIAL LAWS)",depth:1, trackable: true},
+                    {id: 1001, topic: "I. FUNDAMENTAL PRINCIPLES", depth: 1, trackable: true},
+                    {id: 1013, topic: "II. FELONIES AND CRIMINAL LIABILITY", depth: 1, trackable: true},
+                    {id: 1032, topic: "III. CRIMES AND THEIR PENALTIES", depth: 1, trackable: true},
                 ]
             },
-            rem: { title: 'REMEDIAL LAW, LEGAL ETHICS, & LEGAL FORMS', shortTitle: 'REM LAW', color: '#674ea7', 
+            rem: { 
+                title: 'REMEDIAL LAW, LEGAL ETHICS, & LEGAL FORMS', 
+                shortTitle: 'REM LAW', 
+                color: '#674ea7', 
                 data: [
-                    {id:1,topic:"I. GENERAL PRINCIPLES",depth:1, trackable: true},
-                    {id:9,topic:"II. JURISDICTION",depth:1, trackable: true},
-                    {id:43,topic:"III. CIVIL PROCEDURE (Rules of Court, as amended by A.M. No. 19-10-20-SC)",depth:1, trackable: true},
-                    {id:158,topic:"V. PROVISIONAL REMEDIES",depth:1, trackable: true},
-                    {id:174,topic:"VI. SPECIAL CIVIL ACTIONS",depth:1, trackable: true},
-                    {id:190,topic:"VII. SPECIAL PROCEEDINGS AND WRITS",depth:1, trackable: true},
-                    {id:217,topic:"VIII. CRIMINAL PROCEDURE",depth:1, trackable: true},
-                    {id:335,topic:"IX. EVIDENCE",depth:1, trackable: true},
-                    {id:414,topic:"X. LEGAL AND JUDICIAL ETHICS",depth:1, trackable: true},
-                    {id:583,topic:"XI. PRACTICAL EXERCISES",depth:1, trackable: true},
-                ]
+                    {id: 1, topic: "I. GENERAL PRINCIPLES", depth: 1, trackable: true},
+                    {id: 9, topic: "II. JURISDICTION", depth: 1, trackable: true},
+                    {id: 43, topic: "III. CIVIL PROCEDURE", depth: 1, trackable: true},
+                    {id: 158, topic: "IV. PROVISIONAL REMEDIES", depth: 1, trackable: true},
+                    {id: 174, topic: "V. SPECIAL CIVIL ACTIONS", depth: 1, trackable: true},
+                    {id: 190, topic: "VI. SPECIAL PROCEEDINGS AND WRITS", depth: 1, trackable: true},
+                    {id: 217, topic: "VII. CRIMINAL PROCEDURE", depth: 1, trackable: true},
+                    {id: 335, topic: "VIII. EVIDENCE", depth: 1, trackable: true},
+                    {id: 414, topic: "IX. LEGAL AND JUDICIAL ETHICS", depth: 1, trackable: true},
+                    {id: 583, topic: "X. PRACTICAL EXERCISES", depth: 1, trackable: true},
+                    ]
             },
         };
+        
         const CALENDAR_EVENTS_KEY = 'review_calendar_events';
         const NOTEPAD_CONTENT_KEY = 'review_notepad_content'; 
         const CALENDAR_SUBJECT_KEYS = Object.keys(CONSOLIDATED_SYLLABUS);
