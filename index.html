@@ -513,6 +513,14 @@ body { scroll-behavior: smooth; }
     border-color: #1a1a1a transparent transparent;
 }
 
+/* Remove manual resize corner and hide scrollbars for a clean notepad look */
+#digestModal textarea {
+    resize: none;
+    overflow-y: hidden;
+    min-height: 40px;
+    transition: height 0.1s ease;
+}
+
     </style>
 
     <!-- Vercel Web Analytics -->
@@ -1258,6 +1266,14 @@ style="background-color: #000000; border-bottom: 5px solid #9ca3af;">
 <script>
 const ALLOWED_PASSWORDS = ["ama", "bar", "2026", "bar2026"];
 const AUTH_TARGET_DATES = ["2026-07-12", "2026-07-19", "2026-07-26"];
+
+/* --- AUTO-EXPAND LOGIC START --- */
+function autoExpandTextarea(el) {
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+}
+/* --- AUTO-EXPAND LOGIC END --- */
 
 window.showThemedModal = function(options) {
     const modal = document.getElementById('universal-modal');
@@ -3939,30 +3955,53 @@ function openDigestModal(id, title) {
     const data = getStorageData();
     const caseState = data[id] || {}; 
     const caseData = caseState.digest || {}; 
-const caseInfo = allCases.find(c => c.no === id);
-    
-    document.getElementById('currentCaseId').value = id;
-    document.getElementById('modalCaseTitle').innerText = title;
+    const caseInfo = allCases.find(c => c.no === id);
 
-    // Mapping the new IDs to the stored data
-document.getElementById('noteGRNo').value = caseData.grNo || '';
-document.getElementById('noteCaseDate').value = caseInfo ? caseInfo.date : '';
-document.getElementById('noteDivision').value = caseInfo ? caseInfo.division : '';
-    document.getElementById('noteDoctrine').value = caseData.doctrine || '';
-    document.getElementById('noteFacts').value = caseData.facts || '';
-    document.getElementById('noteIssue').value = caseData.issue || '';
-    document.getElementById('noteRuling').value = caseData.ruling || '';
-    document.getElementById('noteDispositive').value = caseData.dispositive || '';
+    document.getElementById('currentCaseId').value = id;
     
+    let titleEl = document.getElementById('modalCaseTitle');
+    if (titleEl) titleEl.innerText = title;
+
+    // 1. Set the values first
+    document.getElementById('noteGRNo').value = caseData.grNo || '';
+    document.getElementById('noteCaseDate').value = caseInfo ? caseInfo.date : '';
+    document.getElementById('noteDivision').value = caseInfo ? caseInfo.division : '';
+    
+    // 2. Define the elements correctly
+    const doctrine = document.getElementById('noteDoctrine');
+    const facts = document.getElementById('noteFacts');
+    const issue = document.getElementById('noteIssue');
+    const ruling = document.getElementById('noteRuling');
+    const dispositive = document.getElementById('noteDispositive');
+
+    doctrine.value = caseData.doctrine || '';
+    facts.value = caseData.facts || '';
+    issue.value = caseData.issue || '';
+    ruling.value = caseData.ruling || '';
+    dispositive.value = caseData.dispositive || '';
+
+    // 3. Show the modal
     const modal = document.getElementById('digestModal');
-           modal.classList.remove('hidden');
-           modal.classList.add('flex');
-           // Animation
-           setTimeout(() => {
-               modal.firstElementChild.classList.remove('scale-95');
-               modal.firstElementChild.classList.add('scale-100');
-           }, 10);
-       }
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
+    // 4. Trigger the expansion logic safely
+    const textareas = [doctrine, facts, issue, ruling, dispositive];
+    textareas.forEach(el => {
+        if (el) {
+            autoExpandTextarea(el);
+            if (!el.getAttribute('data-expand-bound')) {
+                el.addEventListener('input', () => autoExpandTextarea(el));
+                el.setAttribute('data-expand-bound', 'true');
+            }
+        }
+    });
+    
+    setTimeout(() => {
+        modal.firstElementChild.classList.remove('scale-95');
+        modal.firstElementChild.classList.add('scale-100');
+    }, 10);
+}
  
        function closeModal() {
            const modal = document.getElementById('digestModal');
@@ -3991,9 +4030,8 @@ function saveDigest() {
     updateStorage(id, 'digest', digest);
     renderTable(); 
     closeModal();
-updateLastSaved();
-}
- 
+    updateLastSaved();
+} 
        // Start
 // --- EXPORT TO WORD LOGIC ---
 // Start editing here
