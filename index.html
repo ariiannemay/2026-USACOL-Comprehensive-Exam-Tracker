@@ -521,8 +521,26 @@ body { scroll-behavior: smooth; }
     transition: height 0.1s ease;
 }
 
-    </style>
+/* Start of Width Fix */
+#tab-calendar .calendar-wrapper, 
+#tab-calendar .calendar-wrapper.mx-auto {
+    max-width: 100% !important;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
 
+#calendar-grid-container {
+    grid-template-columns: 1fr !important; /* Forces vertical stack on mobile if needed, but we want the grid wide */
+}
+
+@media (min-width: 1024px) {
+    #calendar-grid-container {
+        grid-template-columns: 3.5fr 1fr !important; /* Gives the calendar even more room */
+    }
+}
+/* End of Width Fix */ 
+    
+</style>
     <!-- Vercel Web Analytics -->
     <script defer src="/_vercel/insights/script.js"></script>
 </head>
