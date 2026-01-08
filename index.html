@@ -3691,9 +3691,17 @@ switchModalMode: function(mode) {
                 });
             }
 
-            function renderSyllabusPanel() {
+function renderSyllabusPanel() {
                  const syllabusContainer = document.getElementById(`syllabus-${subjectName}`);
                  if (!syllabusContainer) { setTimeout(renderSyllabusPanel, 10); return; }
+
+                 // --- ADDED: PRESERVE OPEN STATES ---
+                 const openStates = {};
+                 document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`).forEach(details => {
+                     if (details.id) {
+                         openStates[details.id] = details.open;
+                     }
+                 });
 
                  const topicWithChildren = (function() {
                      const children = new Set();
@@ -3707,11 +3715,7 @@ switchModalMode: function(mode) {
                  })();
 
                  function hasChildren(topicId) { return topicWithChildren.has(topicId); }
-                
-                const openSections = {};
-                document.querySelectorAll(`#subject-tracker-panel-${subjectName} details`).forEach(details => {
-                    if (details.id) { openSections[details.id] = details.open; }
-                });
+
 
                 const progress = getProgress();
                 let html = '';
@@ -3730,12 +3734,15 @@ switchModalMode: function(mode) {
                     const iconTitle = currentStatus === 2 ? 'Clear All' : (currentStatus === 1 ? 'Clear All' : 'Tick All');
                     const isTopLevelTopic = item.depth === 1;
 
-                    if (isTopLevelTopic) {
+if (isTopLevelTopic) {
                         if (isDepth2Open) { html += `</div></details></div>`; isDepth2Open = false; }
                         if (currentSectionOpen) { html += `</div></details></div>`; }
                         
                         const sectionId = `${subjectName}-section-${item.id}`;
-                        const isOpen = openSections[sectionId] === false; 
+                        
+                        // --- MODIFIED: USE PRESERVED STATE ---
+                        // Default to false (closed) unless it was previously open
+                        const isOpen = openStates[sectionId] === true; 
                         const openAttr = isOpen ? 'open' : '';
                         
                         html += `\n<div class="syllabus-sub-section"><details id="${sectionId}" class="w-full" ${openAttr}><summary class="topic-header"><div class="topic-header-text"><i data-lucide="chevron-right" class="w-4 h-4 mr-2 chevron-icon"></i><span class="font-extrabold text-lg text-black/90">${item.topic}</span></div><i data-lucide="${iconName}" class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></summary><div class="p-2">\n`;
@@ -3765,10 +3772,13 @@ switchModalMode: function(mode) {
                             <div class="flex items-center justify-center space-x-1 pl-2"><i data-lucide="${iconName}" class="tick-all-icon ${iconColor} ${iconSize} flex-shrink-0" title="${iconTitle}" onclick="window.handleTickAll${subjectName.toUpperCase()}(${item.id}); event.stopPropagation(); event.preventDefault();"></i></div>\n
                         `;
 
-                        if (isCollapsible) {
+if (isCollapsible) {
                             const depth2Id = `${subjectName}-depth2-${item.id}`;
-                            const isOpen = openSections[depth2Id] === true;
+                            
+                            // --- MODIFIED: USE PRESERVED STATE ---
+                            const isOpen = openStates[depth2Id] === true;
                             const openAttr = isOpen ? 'open' : '';
+                            
                             html += `<div class="depth2-details"><details id="${depth2Id}" class="w-full" ${openAttr}><summary class="checklist-grid hover:bg-gray-50/50 transition">${rowContent}</summary><div class="depth3-content-wrapper pt-1 pb-2">`;
                             isDepth2Open = true;
                         } else {
