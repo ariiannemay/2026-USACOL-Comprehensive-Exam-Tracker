@@ -4172,83 +4172,77 @@ function initializeSubjectTrackers() {
 
         window.updateOverallDashboard = updateOverallDashboard;
 
+/* --- MASTER INITIALIZATION LOADER --- */
+window.onload = () => {
+    // 1. AUTH: Critical check to handle the password overlay
+    checkAccess(); 
 
-        // --- INITIALIZATION ---
-        window.onload = () => {
-const last = localStorage.getItem('last_saved');
-    if (last) {
-        document.getElementById('last-saved').textContent = `• Last saved: ${last} •`;
+    const defaultTab = 'tab-dashboard';
+
+    // 2. PERSISTENCE: Restore "Last Saved" and "Username"
+    const last = localStorage.getItem('last_saved');
+    const lastSavedEl = document.getElementById('last-saved');
+    if (last && lastSavedEl) lastSavedEl.textContent = `• Last saved: ${last} •`;
+
+    const savedUsername = localStorage.getItem('user_display_name');
+    if (savedUsername && savedUsername.trim() !== '') {
+        const usernameInput = document.getElementById('user-name-input');
+        if (usernameInput) usernameInput.value = `Welcome, ${savedUsername}! ✨`;
     }
 
-            // 1. Initialize Countdown Dates
-            COUNTDOWN_DATA.forEach(data => {
-                const savedDate = localStorage.getItem(`comp_exam_date_${data.id}`);
-                const finalDate = savedDate || data.targetDate;
-                if (finalDate) {
-                    data.targetDate = finalDate;
-                    document.querySelector(`#target-date-display-${data.id} .date-text`).textContent = formatUniqueDate(finalDate);
-                }
-            });
+    // 3. COUNTDOWNS: Initialize target dates
+    COUNTDOWN_DATA.forEach(data => {
+        const savedDate = localStorage.getItem(`comp_exam_date_${data.id}`);
+        const finalDate = savedDate || data.targetDate;
+        if (finalDate) {
+            data.targetDate = finalDate;
+            const display = document.querySelector(`#target-date-display-${data.id} .date-text`);
+            if (display) display.textContent = formatUniqueDate(finalDate);
+        }
+    });
 
-            // Display today's date
-            document.getElementById('today-date-display').textContent = getLocalDisplayDate();
-            setInterval(() => {
-                document.getElementById('today-date-display').textContent = getLocalDisplayDate();
-            }, 60000); 
-            
-            // 2. Load Calendar Module HTML and initialize its logic (now inline)
-            document.getElementById('calendar-module-placeholder').innerHTML = CALENDAR_MODULE_HTML;
-            
-// 3. Initialize Calendar and Notepad Logic
-            window.CALENDAR_APP.loadNotes();
+    // 4. MODULES: Initialize core app components
+    const calPlaceholder = document.getElementById('calendar-module-placeholder');
+    if (calPlaceholder) calPlaceholder.innerHTML = CALENDAR_MODULE_HTML;
+    
+    if (window.CALENDAR_APP) {
+        window.CALENDAR_APP.loadNotes();
+        window.CALENDAR_APP.initializeCalendar();
+    }
+    
+    initializeSubjectTrackers();
+    renderMaterials();
+    renderTodoView();
+    renderLinks();
+    init(); // Crucial for Gaerlan Case list to appear
 
-            // ANTI-CACHE LOAD: Force textarea to match Local Storage on every refresh
-            const persistentNotes = localStorage.getItem('review_notepad_content');
-            const noteArea = document.getElementById('review-notes');
-            if (noteArea && persistentNotes !== null) {
-                noteArea.value = persistentNotes;
-            }
+    // 5. NAVIGATION: Launch starting tab
+    switchTab(defaultTab);
 
-            window.CALENDAR_APP.initializeCalendar();
-            
-            // Initial sync/toggle check for calendar panel (needed to set notepad height)
-            const detailsElement = document.getElementById('calendar-details');
-            if(detailsElement) {
-                $(detailsElement).on('toggle', function() {
-                    const indicator = $('.toggle-indicator i');
-                    if ($(this).prop('open')) {
-                        indicator.removeClass('fa-chevron-right').addClass('fa-chevron-down');
-                        window.CALENDAR_APP.syncHeight();
-                    } else {
-                        indicator.removeClass('fa-chevron-down').addClass('fa-chevron-right');
-                    }
-                }).trigger('toggle');
-            }
+    // 6. SYNC: Final UI refresh
+    setTimeout(() => {
+        if (window.updateOverallDashboard) window.updateOverallDashboard();
+        if (typeof updateProgress === 'function') updateProgress(); 
+        if (window.CALENDAR_APP) window.CALENDAR_APP.syncHeight();
+        if (window.lucide) lucide.createIcons();
+    }, 2000);
 
+    // 7. CLOCK: Start real-time timers
+    updateAllCountdowns();
+    setInterval(updateAllCountdowns, 1000);
 
-            // 4. Load Subject Panels (This is ASYNCHRONOUS)
-            initializeSubjectTrackers();
-            
-            // 5. Initialize Lucide Icons for static content
-            if (lucide && lucide.createIcons) {
-                lucide.createIcons();
-            }
+    // 8. PRE-LOAD: Silent load for default subject notes
+    if (typeof lazyLoadSubject === 'function') {
+        lazyLoadSubject('rem', () => { if (typeof updateProgress === 'function') updateProgress(); });
+    }
 
-// 6. Attach General Event Listeners and load user name
-            updateAllCountdowns();
-            setInterval(updateAllCountdowns, 1000);
-            
-loadUserName(); // Call immediately on load
-
-
-            // RESTORE CLICKABLE DATES (Explicit mapping)
-            const d1 = document.getElementById('target-date-display-1');
-            const d2 = document.getElementById('target-date-display-2');
-            const d3 = document.getElementById('target-date-display-3');
-            
-            if(d1) d1.onclick = () => openModal(1);
-            if(d2) d2.onclick = () => openModal(2);
-            if(d3) d3.onclick = () => openModal(3);
+    // 9. RESTORE CLICKABLE DATES (Explicit mapping moved inside onload)
+    const d1 = document.getElementById('target-date-display-1');
+    const d2 = document.getElementById('target-date-display-2');
+    const d3 = document.getElementById('target-date-display-3');
+    if(d1) d1.onclick = () => openModal(1);
+    if(d2) d2.onclick = () => openModal(2);
+    if(d3) d3.onclick = () => openModal(3);
 
             // The dashboard update MUST wait for external subjects to load (1.5 seconds delay to be safe)
             setTimeout(window.updateOverallDashboard, 1500);
@@ -6311,25 +6305,6 @@ container.innerHTML = userLinks.map((link, i) => `
 lucide.createIcons();
 }
 
-// --- INITIALIZE ---
-window.onload = () => {
-// Set your desired starting tab here
-const defaultTab = 'tab-dashboard';
-
-// 1. Initialize all data trackers first
-renderTodoView();
-renderLinks();
-renderMaterials();
-
-// 2. Pre-load the default subject logic in the background
-lazyLoadSubject('rem', () => {
-updateProgress(); // This ensures subject percentages show up on the buttons immediately
-});
-
-// 3. Switch to your preferred tab
-switchTab(defaultTab);
-};
-
 /* --- THEMED MODAL SYSTEM --- */
 function showThemedConfirm(title, message, onConfirm) {
 const container = document.getElementById('themed-modal-container');
@@ -7006,64 +6981,16 @@ localStorage.setItem('bar_collapsed_topics', JSON.stringify(collapsedTopics));
 renderMaterials(); // Refresh to show/hide
 }
 
-// AUTO-INIT EVERYTHING ON LOAD
-window.addEventListener('DOMContentLoaded', () => {
-    // 1. Fix duplicate Tailwind/Lucide loads (remove one set in <head>)
-    // Already good – you have only one now
-
-    // 2. Load all subject logic files so Bar Subjects panels populate
-    initializeSubjectTrackers();
-
-    // 3. Initialize Calendar properly
-    document.getElementById('calendar-module-placeholder').innerHTML = CALENDAR_MODULE_HTML;
-    window.CALENDAR_APP.loadNotes();
-    window.CALENDAR_APP.initializeCalendar();
-    setTimeout(() => window.CALENDAR_APP.syncHeight(), 100);
-
-    // 4. Auto-load default Review Notes subject so it's not "stuck loading"
-    switchNotesSubject('rem'); // or 'poli' – whatever you prefer as default
-
-    // 5. Render other tabs that need it
-    renderMaterials();
-    renderTodoView();
-    renderLinks();
-
-// UPDATE: Add this block here to reload username on every load/refresh
-    const savedUsername = localStorage.getItem('user_display_name'); // Corrected Key
-    if (savedUsername && savedUsername.trim() !== '') {
-        const usernameInput = document.getElementById('user-name-input'); // Corrected ID
-        if (usernameInput) {
-            usernameInput.value = `Welcome, ${savedUsername}! ✨`;
-        }
-    }
-    // END UPDATE
-
-    // 6. Update dashboard stats (wait a bit for subjects to load)
-    setTimeout(() => {
-        Object.values(SUBJECT_LOGIC_MAP).forEach(logic => logic?.render());
-        updateOverallDashboard();
-        updateProgress(); // For notes master bar
-    }, 2000);
-
-    // 7. Start countdowns
-    updateAllCountdowns();
-    setInterval(updateAllCountdowns, 1000);
-
-    lucide.createIcons();
-});
-
-
-// Debounced update to avoid calling too often while typing fast
+/* --- KEEP THESE HELPER FUNCTIONS AT THE VERY BOTTOM --- */
 let progressUpdateTimeout;
 function debounceUpdateProgressAndSave() {
     clearTimeout(progressUpdateTimeout);
     progressUpdateTimeout = setTimeout(() => {
-        updateProgress();         // Updates master bar + subject tab percentages
-        updateLastSaved();        // Updates footer "Last saved" time + pulse
-    }, 800); // Wait 800ms after user stops typing
+        updateProgress();
+        updateLastSaved();
+    }, 800);
 }
 
-// Optional: Also update on blur (when clicking away)
 function setupNotesLiveUpdate() {
     document.querySelectorAll('#notes-list-wrapper textarea').forEach(textarea => {
         textarea.addEventListener('blur', () => {
@@ -7072,8 +6999,9 @@ function setupNotesLiveUpdate() {
         });
     });
 }
+/* --- END OF SCRIPT --- */
+</script>
 
-    </script>
 
 <div id="themed-modal-container" class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-[200] p-4">
 <div id="themed-modal-content" class="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden modal-animate-in border border-red-100">
